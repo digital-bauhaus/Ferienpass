@@ -1,7 +1,4 @@
-package de.jonashackt.springbootvuejs.domain;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+package de.bauhaus.digital.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package de.jonashackt.springbootvuejs.domain;
+package de.bauhaus.digital.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

@@ -1,6 +1,9 @@
-package de.jonashackt.springbootvuejs.transformation;
+package de.bauhaus.digital.transformation;
 
-import de.jonashackt.springbootvuejs.domain.*;
+import de.bauhaus.digital.domain.Arzt;
+import de.bauhaus.digital.domain.Behinderung;
+import de.bauhaus.digital.domain.Kontakt;
+import de.bauhaus.digital.domain.Teilnehmer;
 
 import java.time.LocalDate;
 

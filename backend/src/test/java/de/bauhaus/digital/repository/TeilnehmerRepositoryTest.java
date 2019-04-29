@@ -1,7 +1,7 @@
-package de.jonashackt.springbootvuejs.repository;
+package de.bauhaus.digital.repository;
 
-import de.jonashackt.springbootvuejs.FerienpassAdminApplication;
-import de.jonashackt.springbootvuejs.domain.*;
+import de.bauhaus.digital.FerienpassAdminApplication;
+import de.bauhaus.digital.domain.*;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.hamcrest.MatcherAssert;

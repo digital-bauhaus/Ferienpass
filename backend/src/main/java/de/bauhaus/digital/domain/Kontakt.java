@@ -1,4 +1,4 @@
-package de.jonashackt.springbootvuejs.domain;
+package de.bauhaus.digital.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

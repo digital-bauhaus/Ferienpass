@@ -1,4 +1,4 @@
-package de.jonashackt.springbootvuejs.transformation;
+package de.bauhaus.digital.transformation;
 
 import java.util.HashMap;
 import java.util.Map;

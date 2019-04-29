@@ -1,12 +1,12 @@
-package de.jonashackt.springbootvuejs.controller;
+package de.bauhaus.digital.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.jonashackt.springbootvuejs.domain.*;
-import de.jonashackt.springbootvuejs.repository.ProjektRepository;
-import de.jonashackt.springbootvuejs.repository.TeilnehmerRepository;
-import de.jonashackt.springbootvuejs.transformation.AnmeldungJson;
-import de.jonashackt.springbootvuejs.transformation.AnmeldungToAdmin;
-import de.jonashackt.springbootvuejs.transformation.Project;
+import de.bauhaus.digital.domain.*;
+import de.bauhaus.digital.repository.ProjektRepository;
+import de.bauhaus.digital.repository.TeilnehmerRepository;
+import de.bauhaus.digital.transformation.AnmeldungJson;
+import de.bauhaus.digital.transformation.AnmeldungToAdmin;
+import de.bauhaus.digital.transformation.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,7 @@
-package de.jonashackt.springbootvuejs.repository;
+package de.bauhaus.digital.repository;
 
 
-import de.jonashackt.springbootvuejs.domain.Projekt;
-import de.jonashackt.springbootvuejs.domain.Teilnehmer;
+import de.bauhaus.digital.domain.Teilnehmer;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

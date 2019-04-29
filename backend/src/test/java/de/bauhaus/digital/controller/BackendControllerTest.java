@@ -1,11 +1,11 @@
-package de.jonashackt.springbootvuejs.controller;
+package de.bauhaus.digital.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.jonashackt.springbootvuejs.FerienpassAdminApplication;
-import de.jonashackt.springbootvuejs.domain.*;
-import de.jonashackt.springbootvuejs.repository.TeilnehmerRepositoryTest;
-import de.jonashackt.springbootvuejs.transformation.AnmeldungJson;
+import de.bauhaus.digital.FerienpassAdminApplication;
+import de.bauhaus.digital.domain.*;
+import de.bauhaus.digital.repository.TeilnehmerRepositoryTest;
+import de.bauhaus.digital.transformation.AnmeldungJson;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
