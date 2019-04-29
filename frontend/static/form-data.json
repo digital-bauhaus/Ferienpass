@@ -1,0 +1,1040 @@
+{
+  "title": "Ferienpass Weimar – Anmeldung",
+  "zipCodeWhitelist": [
+    99423,
+    99425,
+    99427,
+    99428
+  ],
+  "sections": [
+    {
+      "title": "Grunddaten",
+      "expandOnStart": true,
+      "components": [
+        {
+          "component": "Group",
+          "params": {
+            "title": "Grunddaten",
+            "hideTitle": true,
+            "components": [
+              {
+                "component": "TextField",
+                "params": {
+                  "label": "Familienname",
+                  "name": "base__family-name",
+                  "required": true
+                }
+              },
+              {
+                "component": "TextField",
+                "params": {
+                  "label": "Vorname meines Kindes",
+                  "name": "base__forename",
+                  "required": true
+                }
+              },
+              {
+                "component": "Group",
+                "params": {
+                  "title": "Geburtsdatum meines Kindes",
+                  "horizontal": true,
+                  "components": [
+                    {
+                      "component": "TextField",
+                      "params": {
+                        "label": "Tag",
+                        "name": "base__birthdate-day",
+                        "required": true,
+                        "pattern": "(0?[1-9]|[1-2][0-9]|3[0-1])",
+                        "maxlength": 2,
+                        "storeValue": true
+                      }
+                    },
+                    {
+                      "component": "Select",
+                      "params": {
+                        "label": "Monat",
+                        "name": "base__birthdate-month",
+                        "required": true,
+                        "options": [
+                          {
+                            "label": "—",
+                            "value": 0
+                          },
+                          {
+                            "label": "Januar",
+                            "value": 1
+                          },
+                          {
+                            "label": "Februar",
+                            "value": 2
+                          },
+                          {
+                            "label": "März",
+                            "value": 3
+                          },
+                          {
+                            "label": "April",
+                            "value": 4
+                          },
+                          {
+                            "label": "Mai",
+                            "value": 5
+                          },
+                          {
+                            "label": "Juni",
+                            "value": 6
+                          },
+                          {
+                            "label": "Juli",
+                            "value": 7
+                          },
+                          {
+                            "label": "August",
+                            "value": 8
+                          },
+                          {
+                            "label": "September",
+                            "value": 9
+                          },
+                          {
+                            "label": "Oktober",
+                            "value": 10
+                          },
+                          {
+                            "label": "November",
+                            "value": 11
+                          },
+                          {
+                            "label": "Dezember",
+                            "value": 12
+                          }
+                        ],
+                        "storeValue": true
+                      }
+                    },
+                    {
+                      "component": "TextField",
+                      "params": {
+                        "label": "Jahr",
+                        "name": "base__birthdate-year",
+                        "required": true,
+                        "pattern": "\\d{4}",
+                        "maxlength": 4,
+                        "storeValue": true
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "component": "TextField",
+                "params": {
+                  "label": "Straße",
+                  "name": "base__street-name",
+                  "required": true
+                }
+              },
+              {
+                "component": "TextField",
+                "params": {
+                  "label": "Hausnummer",
+                  "name": "base__house-number",
+                  "required": true
+                }
+              },
+              {
+                "component": "TextField",
+                "params": {
+                  "label": "Postleitzahl",
+                  "name": "base__zip-code",
+                  "required": true,
+                  "pattern": "\\d{5}",
+                  "maxlength": 5,
+                  "storeValue": true
+                }
+              },
+              {
+                "component": "TextField",
+                "params": {
+                  "label": "Wohnort",
+                  "name": "base__residence",
+                  "required": true
+                }
+              },
+              {
+                "component": "TextField",
+                "params": {
+                  "label": "Telefon",
+                  "name": "base__phone-number",
+                  "required": true,
+                  "type": "tel"
+                }
+              },
+              {
+                "component": "TextField",
+                "params": {
+                  "label": "eMail",
+                  "name": "base__email",
+                  "required": true
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Angebote",
+      "components": [
+        {
+          "component": {
+            "template": "<p>Mein Kind möchte an folgenden Veranstaltungen teilnehmen:</p>"
+          }
+        },
+        {
+          "component": "Group",
+          "params": {
+            "title": "Angebote",
+            "hideTitle": true,
+            "components": [
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Piratenfest an der Ilm",
+                  "name": "projects__id-1",
+                  "meta": {
+                    "date": "26. Juni 2017",
+                    "org": "Sportjugend Weimar",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Bauspielplatz",
+                  "name": "projects__id-2",
+                  "meta": {
+                    "date": "26. bis 28. Juni 2017",
+                    "org": "Kramixxo & Waggong",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Papier-Werkstatt",
+                  "name": "projects__id-3",
+                  "meta": {
+                    "date": "26. bis 28. Juni 2017",
+                    "org": "Weimarer Mal- und Zeichenschule e.V.",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Indianer und ihre Tiere",
+                  "name": "projects__id-4",
+                  "meta": {
+                    "date": "27. bis 28. Juni 2017",
+                    "org": "Camsin e.V.",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Filz-Werkstatt",
+                  "name": "projects__id-5",
+                  "meta": {
+                    "date": "29. bis 30. Juni 2017",
+                    "org": "Weimarer Mal- und Zeichenschule e.V.",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Indianer und ihre Tiere",
+                  "name": "projects__id-6",
+                  "meta": {
+                    "date": "29. bis 30. Juni 2017",
+                    "org": "Camsin e.V.",
+                    "minimumAge": 11
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Das Alien vom Planeten Alpha Omega Pi",
+                  "name": "projects__id-7",
+                  "meta": {
+                    "date": "3. bis 7. Juli 2017",
+                    "org": "Buchkinder_Weimar",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Graffiti",
+                  "name": "projects__id-8",
+                  "meta": {
+                    "date": "3. bis 4. Juli 2017",
+                    "org": "„Für Euch“ e.V. – Schulförderverein des Johannes Landenberger Förderzentrums",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Fahrrad-Tour aus dem Feiniger Radweg",
+                  "name": "projects__id-9",
+                  "meta": {
+                    "date": "4. Juli 2017",
+                    "org": "Team Jugendarbeit Weimar",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Die große Schatzsuche",
+                  "name": "projects__id-10",
+                  "meta": {
+                    "date": "10. bis 12. Juli 2017",
+                    "org": "Weimarer Mal- und Zeichenschule e.V.",
+                    "minimumAge": 11
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Skateboard-Kurs",
+                  "name": "projects__id-11",
+                  "meta": {
+                    "date": "12. bis 14. Juli 2017",
+                    "org": "Nordlicht e.V.",
+                    "minimumAge": 11
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Kinderzirkus",
+                  "name": "projects__id-12",
+                  "meta": {
+                    "date": "17. bis 19. Juli 2017",
+                    "org": "Tasifan",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Klettern",
+                  "name": "projects__id-13",
+                  "meta": {
+                    "date": "25. Juli 2017",
+                    "org": "Sektion Weimar des Deutschen Alpenvereins e.V.",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Klettern",
+                  "name": "projects__id-14",
+                  "meta": {
+                    "date": "26. Juli 2017",
+                    "org": "Sektion Weimar des Deutschen Alpenvereins e.V.",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "GrenzbeWEGnung",
+                  "name": "projects__id-15",
+                  "meta": {
+                    "date": "31. Juli bis 4. August 2017",
+                    "org": "WE-DANCE e.V.",
+                    "minimumAge": 11
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Angeln",
+                  "name": "projects__id-16",
+                  "meta": {
+                    "date": "31. Juli bis 1. August 2017",
+                    "org": "Nordlicht e.V.",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Jiddisch – Wir singen tanzen spielen",
+                  "name": "projects__id-17",
+                  "meta": {
+                    "date": "2. bis 6. August 2017",
+                    "org": "other music e.V.",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Angeln",
+                  "name": "projects__id-18",
+                  "meta": {
+                    "date": "2. bis 3. August 2017",
+                    "org": "Nordlicht e.V.",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Natur-Erlebnis-Camp",
+                  "name": "projects__id-19",
+                  "meta": {
+                    "date": "7. bis 9. August 2017",
+                    "org": "Kramixxo & Waggong",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Geräusche-Jagd",
+                  "name": "projects__id-20",
+                  "meta": {
+                    "date": "8. August 2017",
+                    "org": "Radio LOTTE Weimar",
+                    "minimumAge": 8
+                  }
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Schlauchboot-Tour",
+                  "name": "projects__id-21",
+                  "meta": {
+                    "date": "9. August 2017",
+                    "org": "erlebniswelten",
+                    "minimumAge": 8
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "component": {
+            "template": "<p><b>Hinweis:</b> Die Bestätigung des Platzes erfolgt bei der Anmeldung entsprechend der zur Verfügung stehenden Kapazitäten für die Angebote. Sollte ein Angebot seitens der Veranstalter aus unvorhergesehenen Gründen abgesagt werden, besteht kein Anspruch auf ein Ersatzangebot. Der gezahlte Beitrag für dieses Angebot wird Ihnen komplett zurück erstattet.</p>"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Allergien, Krankheiten, …",
+      "components": [
+        {
+          "component": "DynamicList",
+          "params": {
+            "title": "Allergien",
+            "name": "conditions__allergies",
+            "emptyMessage": "Bei meinem Kind muss auf folgende Allergie(n) geachtet werden.",
+            "textField": {
+              "component": "TextField",
+              "params": {
+                "label": "Neuen Eintrag hinzufügen",
+                "placeholder": "z. B. Heuschnupfen",
+                "hideLabel": true
+              }
+            }
+          }
+        },
+        {
+          "component": "DynamicList",
+          "params": {
+            "title": "Krankheiten",
+            "name": "conditions__diseases",
+            "emptyMessage": "Krankheiten des Kindes bitte hier angeben.",
+            "textField": {
+              "component": "TextField",
+              "params": {
+                "label": "Neuen Eintrag hinzufügen",
+                "placeholder": "z. B. Epilepsie",
+                "hideLabel": true
+              }
+            }
+          }
+        },
+        {
+          "component": "Group",
+          "params": {
+            "title": "Hitzeempfindlichkeit",
+            "components": [
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Mein Kind ist hitzeempfindlich.",
+                  "name": "conditions__heat-sensitivity"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "component": "DynamicList",
+          "params": {
+            "title": "Medikamente",
+            "name": "conditions__medication",
+            "emptyMessage": "Vom Kind einzunehmende Medikamente hier eintragen.",
+            "textField": {
+              "component": "TextField",
+              "params": {
+                "label": "Neuen Eintrag hinzufügen",
+                "placeholder": "z. B. Diazepam",
+                "hideLabel": true
+              }
+            }
+          }
+        },
+        {
+          "component": "Group",
+          "params": {
+            "title": "Ernährungsbesonderheiten",
+            "components": [
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Vegetarier",
+                  "name": "conditions__vegetarian"
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Laktose-Unverträglichkeit",
+                  "name": "conditions__lactose-intolerance"
+                }
+              },
+              {
+                "component": "Checkbox",
+                "params": {
+                  "label": "Eier-Unverträglichkeit",
+                  "name": "conditions__egg-intolerance"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "component": "DynamicList",
+          "params": {
+            "title": "Weitere Ernährungsbesonderheiten",
+            "name": "conditions__nutrition",
+            "emptyMessage": "Bitte beschreiben.",
+            "textField": {
+              "component": "TextField",
+              "params": {
+                "label": "Neuen Eintrag hinzufügen",
+                "placeholder": "z. B. Milchpulver-Unverträglichkeit",
+                "hideLabel": true
+              }
+            }
+          }
+        },
+        {
+          "component": "RadioGroup",
+          "params": {
+            "title": "Behandlungserlaubnis bei Erkrankungen und Unfällen",
+            "name": "conditions__child-treatment-allowed",
+            "components": [
+              {
+                "component": "RadioButton",
+                "params": {
+                  "label": "Ja",
+                  "value": "yes"
+                }
+              },
+              {
+                "component": "RadioButton",
+                "params": {
+                  "label": "Nein",
+                  "value": "no"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "component": "Group",
+          "params": {
+            "title": "Krankenkasse",
+            "components": [
+              {
+                "component": "TextField",
+                "params": {
+                  "label": "Name",
+                  "name": "conditions__health-insurance",
+                  "required": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "component": "Group",
+          "params": {
+            "title": "In Notfällen zu informieren",
+            "components": [
+              {
+                "component": "TextField",
+                "params": {
+                  "label": "Name",
+                  "name": "conditions__emergency-name",
+                  "required": true
+                }
+              },
+              {
+                "component": "TextField",
+                "params": {
+                  "label": "Anschrift",
+                  "name": "conditions__emergency-address",
+                  "required": true
+                }
+              },
+              {
+                "component": "TextField",
+                "params": {
+                  "label": "Telefon",
+                  "name": "conditions__emergency-phone-number",
+                  "required": true,
+                  "type": "tel"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "component": "Group",
+          "params": {
+            "title": "Hausarzt",
+            "components": [
+              {
+                "component": "TextField",
+                "params": {
+                  "label": "Name",
+                  "name": "conditions__family-doctor-name",
+                  "required": false
+                }
+              },
+              {
+                "component": "TextField",
+                "params": {
+                  "label": "Anschrift",
+                  "name": "conditions__family-doctor-address",
+                  "required": false
+                }
+              },
+              {
+                "component": "TextField",
+                "params": {
+                  "label": "Telefon",
+                  "name": "conditions__family-doctor-phone-number",
+                  "required": false,
+                  "type": "tel"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Angaben bei Behinderung",
+      "components": [
+        {
+          "component": "DependingSection",
+          "params": {
+            "title": "Beeinträchtigung",
+            "checkbox": {
+              "component": "Checkbox",
+              "params": {
+                "label": "Bei meinem Kind liegt eine Beeinträchtigung vor",
+                "name": "disabilities__disability-existent"
+              }
+            },
+            "components": [
+              {
+                "component": "Group",
+                "params": {
+                  "title": "Merkzeichen",
+                  "components": [
+                    {
+                      "component": "Checkbox",
+                      "params": {
+                        "label": "„aG“ (Außergewöhnliche Gehbehinderung)",
+                        "name": "disabilities__mark-ag"
+                      }
+                    },
+                    {
+                      "component": "Checkbox",
+                      "params": {
+                        "label": "„H“ (Hilflosigkeit)",
+                        "name": "disabilities__mark-h"
+                      }
+                    },
+                    {
+                      "component": "Checkbox",
+                      "params": {
+                        "label": "„Bl“ (Blind)",
+                        "name": "disabilities__mark-bl"
+                      }
+                    },
+                    {
+                      "component": "Checkbox",
+                      "params": {
+                        "label": "„Gl“ (Gehörlos)",
+                        "name": "disabilities__mark-gl"
+                      }
+                    },
+                    {
+                      "component": "Checkbox",
+                      "params": {
+                        "label": "„B“ (Berechtigung zur Mitnahme einer Begleitperson)",
+                        "name": "disabilities__mark-b"
+                      }
+                    },
+                    {
+                      "component": "Checkbox",
+                      "params": {
+                        "label": "„G“ (Erhebliche Beeinträchtigung der Bewegungsfähigkeit im Straßenverkehr)",
+                        "name": "disabilities__mark-g"
+                      }
+                    },
+                    {
+                      "component": "Checkbox",
+                      "params": {
+                        "label": "„TBL“ (Taubblind)",
+                        "name": "disabilities__mark-tbl"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "component": "Group",
+                "params": {
+                  "title": "Hilfsmittel",
+                  "components": [
+                    {
+                      "component": "Checkbox",
+                      "params": {
+                        "label": "Rollstuhlnutzung",
+                        "name": "disabilities__wheelchair"
+                      }
+                    },
+                    {
+                      "component": "TextArea",
+                      "params": {
+                        "label": "Weitere Hilfsmittel beschreiben:",
+                        "name": "disabilities__additional-tools"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "component": "Group",
+                "params": {
+                  "title": "Wertmarke",
+                  "components": [
+                    {
+                      "component": "Checkbox",
+                      "params": {
+                        "label": "Wertmarke vorhanden",
+                        "name": "disabilities__token-available"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "component": "DependingSection",
+                "params": {
+                  "title": "Begleitung",
+                  "checkbox": {
+                    "component": "Checkbox",
+                    "params": {
+                      "label": "Mein Kind hat im Schulalltag eine Schulbegleitung und benötigt auch während der Ferienfreizeit eine Begleitperson",
+                      "name": "disabilities__companion-required"
+                    }
+                  },
+                  "components": [
+                    {
+                      "component": "Group",
+                      "params": {
+                        "title": "Wofür wird die Begleitperson benötigt?",
+                        "components": [
+                          {
+                            "component": "Checkbox",
+                            "params": {
+                              "label": "Pflege",
+                              "name": "disabilities__companion-for-nursing"
+                            }
+                          },
+                          {
+                            "component": "Checkbox",
+                            "params": {
+                              "label": "Medizinische Versorgung",
+                              "name": "disabilities__companion-for-health-care"
+                            }
+                          },
+                          {
+                            "component": "Checkbox",
+                            "params": {
+                              "label": "Mobilität",
+                              "name": "disabilities__companion-for-mobility"
+                            }
+                          },
+                          {
+                            "component": "Checkbox",
+                            "params": {
+                              "label": "Orientierung",
+                              "name": "disabilities__companion-for-orientation"
+                            }
+                          },
+                          {
+                            "component": "Checkbox",
+                            "params": {
+                              "label": "Soziale Begleitung",
+                              "name": "disabilities__companion-social"
+                            }
+                          },
+                          {
+                            "component": "DynamicList",
+                            "params": {
+                              "title": "Sinneswahrnehmung",
+                              "name": "disabilities__affected-senses",
+                              "emptyMessage": "Beeinträchtigte Sinneswahrnehmungen angeben",
+                              "textField": {
+                                "component": "TextField",
+                                "params": {
+                                  "label": "Neuen Eintrag hinzufügen",
+                                  "placeholder": "z. B. Sicht",
+                                  "hideLabel": true
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "component": "TextArea",
+                      "params": {
+                        "label": "Darauf ist im Umgang mit meinem Kind unbedingt zu achten:",
+                        "name": "disabilities__companion-additional-notes"
+                      }
+                    },
+                    {
+                      "component": "Checkbox",
+                      "params": {
+                        "label": "Wir benötigen Unterstützung bei der Organisation der Begleitperson",
+                        "name": "disabilities__companion-help-finding-required"
+                      }
+                    },
+                    {
+                      "component": "TextArea",
+                      "params": {
+                        "label": "Welcher Dienst ist in der Regel für die Begleitung/Betreuung zuständig? (Bitte Kontaktdaten des Dienstes/der Dienste angeben):",
+                        "name": "disabilities__companion-usual-service"
+                      }
+                    },
+                    {
+                      "component": "Checkbox",
+                      "params": {
+                        "label": "Hiermit beantrage ich die Übernahme der Kosten für die Begleitung/Betreuung o.g. Kindes während der Teilnahme an den Ferienfreizeiten gemäß der Anmeldung auf Seite 1. Auf die Förderung einer Begleitperson für Ferienfreizeiten besteht kein Rechtsanspruch. Die  bedürftigkeitsabhängige Prüfung erfolgt am Einzelfall durch das Amt für Familie und Soziales der Stadt Weimar. Voraussetzung hierfür ist, dass das Kind als Hauptwohnsitz in Weimar lebt.",
+                        "name": "disabilities__companion-cost-takeover"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Erklärung",
+      "components": [
+        {
+          "component": "RadioGroup",
+          "params": {
+            "title": "Mein Kind darf alleine heimgehen?",
+            "name": "declaration__going-home-alone-allowed",
+            "components": [
+              {
+                "component": "RadioButton",
+                "params": {
+                  "label": "Ja",
+                  "value": "yes"
+                }
+              },
+              {
+                "component": "RadioButton",
+                "params": {
+                  "label": "Nein, es wird abgeholt",
+                  "value": "no"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "component": "RadioGroup",
+          "params": {
+            "title": "Mein Kind darf reiten?",
+            "name": "declaration__horse-riding-allowed",
+            "components": [
+              {
+                "component": "RadioButton",
+                "params": {
+                  "label": "Ja",
+                  "value": "yes"
+                }
+              },
+              {
+                "component": "RadioButton",
+                "params": {
+                  "label": "Nein",
+                  "value": "no"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "component": "RadioGroup",
+          "params": {
+            "title": "Mein Kind darf schwimmen?",
+            "name": "declaration__swimming-allowed",
+            "components": [
+              {
+                "component": "RadioButton",
+                "params": {
+                  "label": "Ja",
+                  "value": "yes"
+                }
+              },
+              {
+                "component": "RadioButton",
+                "params": {
+                  "label": "Nein",
+                  "value": "no"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "component": "TextField",
+          "params": {
+            "label": "Schwimmabzeichen",
+            "name": "declaration__swimming-badge"
+          }
+        },
+        {
+          "component": {
+            "template": "<p><b>Wir bitten die Eltern bzw. Erziehungsberechtigten folgende Erklärung zu unterschreiben</b>:</p>"
+          }
+        },
+        {
+          "component": "OrderedList",
+          "params": {
+            "title": "Wir bitten die Eltern bzw. Erziehungsberechtigten folgende Erklärung zu unterschreiben:",
+            "entries": [
+              "Mit meiner Unterschrift (6.) bestätige ich die verbindliche Anmeldung meines Kindes bei allen gewählten Veranstaltungen des Ferienpasses. Den Teilnehmerbeitrag bezahle ich im Kinderbüro zusammen mit dieser Anmeldung.",
+              "Erforderliche Erklärung für die Beantragung einer Begleitperson bei einer Behinderung des Kindes mit Hauptwohnsitz Weimar: Ich bin damit einverstanden, dass meine hier gemachten Angaben an das Amt für Familie und Soziales der Stadt Weimar weitergegeben werden.",
+              "Im Ferienpass sollen möglichst alle Kinder, egal ob mit oder ohne Behinderung, die Möglichkeit für tolle Ferien geboten bekommen. Leider sind nicht alle Angebote des Ferienpasses für alle Kinder mit körperlichen oder geistigen Einschränkungen geeignet. Sorgeberechtigte prüfen, ob das Angebot und die räumlichen Gegebenheiten den Fähigkeiten des Kindes entsprechen. Ein Elterngespräch zur Abklärung räumlicher Voraussetzung ist unbedingt zu empfehlen.",
+              "Die Vorgaben bzw. Anweisungen des Betreuungspersonals sind bei allen Veranstaltungen des Ferienpasses einzuhalten (insbesondere im Zusammenhang mit gesetzlichen Regelungen, wie z.B. Aufsichtspflicht oder Jugendschutzgesetz, …). Bei entsprechenden Verstößen behalten wir uns vor, TeilnehmerInnen ggf. vorzeitig auszuschließen und sie nach Hause zu schicken bzw. abholen zu lassen. In diesen Fällen versuchen wir, sie rechtzeitig darüber in Kenntnis zu setzen.",
+              "Für etwaige Schäden (z.B. auf dem Hin- oder Rückweg) übernehmen wir keine Haftung.",
+              "Bei der Veranstaltung gilt das Jugendschutzgesetz sowie ein striktes Rauch- und Alkoholverbot.",
+              "Wir übernehmen keine Haftung für verlorene Gegenstände. Bitte geben Sie Ihrem Kind keine Wertgegenstände, elektronisches Spielzeug oder Ähnliches mit",
+              "Bitte informieren Sie Ihr Kind über diese Inhalte, damit die Veranstaltung für alle Beteiligten möglichst konfliktfrei verläuft und dadurch in guter Erinnerung bleibt.",
+              "Mit meiner Unterschrift bestätige ich mein Einverständnis, dass mein Kind zum Zwecke der Veröffentlichung und der Dokumentation im Rahmen des Ferienpasses gefilmt und fotografiert werden darf.",
+              "Die Datenschutzerklärung habe ich zur Kenntnis genommen."
+            ]
+          }
+        },
+        {
+          "component": {
+            "template": "<p>Die Anmeldung zu den Aktionen ist verbindlich. Bitte geben Sie dieses vierseitige Formular vollständig ausgefüllt und unterschrieben im Kinderbüro ab. Der ausstehende Betrag ist bei der Anmeldung im Kinderbüro Weimar zu entrichten. Daraufhin erhalten Sie einen Stempel im Ferienpass, der bei den Aktionen vorgezeigt werden muss.</p>"
+          }
+        },
+        {
+          "component": {
+            "template": "<p>Das Kinderbüro finden Sie im mon ami am Goetheplatz: <br>Kinderbüro Weimar, Goetheplatz, 99423 Weimar, Telefon: 0 36 43 / 49 49 90</p>"
+          }
+        },
+        {
+          "component": {
+            "template": "<p><b>Stornierungsregelung</b>: Nach der Bezahlung entstehen Stornierungskosten. Bei Stornierung einer Aktion bis einer Woche vor der Veranstaltung werden 50% der Kosten berechnet. Ab einer Woche vor der Veranstaltung werden 100% berechnet. Die Stornierungskosten können umgangen werden, wenn ein anderes Kind für den freien Platz benannt wird.</p>"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Datenschutzerklärung",
+      "components": [
+        {
+          "component": "ParagraphList",
+          "params": {
+            "entries": [
+              "Mit Ihrer Unterschrift nimmt das Kinderbüro Weimar die oben genannten Daten und Kontakte auf. Diese Informationen werden im EDV-System des Kinderbüros gespeichert. Personenbezogene Daten werden dabei durch geeignete technische und organisatorische Maßnahmen vor der Kenntnis Dritter geschützt. Sonstige Informationen zu den Kindern werden vom Kinderbüro nur verarbeitet oder genutzt, wenn sie zur Umsetzung der Ziele des Ferienpasses nützlich sind und keine Anhaltspunkte bestehen, dass die betroffene Person ein schutzwürdiges Interesse hat, das der Verarbeitung oder Nutzung entgegensteht.",
+              "Nur das Kinderbüro und Personen, die zur Durchführung der Ferienpass-Angebote Kenntnis über bestimmte Informationen haben müssen, haben Zugang zu den Daten.",
+              "Bei Abmeldung des Kindes werden die in §1 genannten Daten aus dem Verzeichnis gelöscht.",
+              "Alle personenbezogenen Daten werden nach Ablauf eines Jahres gelöscht."
+            ]
+          }
+        },
+        {
+          "component": "Checkbox",
+          "params": {
+            "label": "Ich bestätige die Richtigkeit meiner Angaben. Wurden wissentlich falsche Angaben gemacht, darf die Organisation das angemeldete Kind von den Angeboten ausschließen.",
+            "name": "privacy-policy__confirmation"
+          }
+        }
+      ]
+    }
+  ]
+}
