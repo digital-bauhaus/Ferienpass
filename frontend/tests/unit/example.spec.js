@@ -1,12 +1,12 @@
 import { shallowMount } from '@vue/test-utils'
-import HelloWorld from '@/components/HelloWorld.vue'
+import Verwaltung from '@/components/Verwaltung.vue'
 
-describe('HelloWorld.vue', () => {
+describe('Verwaltung.vue', () => {
   it('renders props.msg when passed', () => {
-    const msg = 'new message'
-    const wrapper = shallowMount(HelloWorld, {
+    const msg = 'Alle Veranstaltungen'
+    const wrapper = shallowMount(Verwaltung, {
       propsData: { msg }
     })
-    expect(wrapper.text()).toMatch(msg)
+    expect(wrapper.text()).toContain(msg)
   })
 })
