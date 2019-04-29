@@ -2,10 +2,9 @@
   <html>
     <nav>
       <input type="text" class="searchbar" placeholder="Suche ...">
-      <a href="/#/Verwaltung/" >Alle Veranstaltungen</a>
+      <a href="/#/Veranstaltungen/" >Alle Veranstaltungen</a>
       <a href="/#/VeranstaltungEdit?id=-1" >Veranstaltung erstellen </a>
       <a href="/#/Teilnehmer/"  class="selected">Alle Teilnehmer</a>
-      <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
     </nav>
     <main>
     <h1>Teilnehmerübersicht</h1>

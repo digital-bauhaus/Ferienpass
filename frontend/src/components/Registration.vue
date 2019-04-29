@@ -10,7 +10,7 @@
     :data-zip-code="zipCode ? zipCode : ''"
   >
     <header>
-      <img src="static/img/logo.png" alt="Ferienpass Weimar" class="site-logo">
+      <img src="../assets/logo.png" alt="Ferienpass Weimar" class="site-logo">
     </header>
 
     <h1>Ferienpass Weimar – Anmeldung</h1>
@@ -135,6 +135,7 @@
 
 <script>
 import { AXIOS } from './http-common';
+import formDataJson from './../assets/form-data'
 
 export default {
   name: 'Registration',
@@ -198,7 +199,7 @@ export default {
     }
   },
   created () {
-    this.fetchData();
+    this.fetchFormData();
     this.retrieveAllAdminProjects();
   },
   updated () {
@@ -225,18 +226,15 @@ export default {
     modalProjectOverbooked () {
       this.$swal('Oh nein!', 'Eines der Angebote ist leider schon belegt!', 'warning')
     },
-    fetchData () {
-      fetch('/static/form-data.json')
-        .then(response => response.json())
-        .then(json => {
-          this.formData = json;
-          this.grunddaten = this.formData.sections[0];
-          this.angebote = this.formData.sections[1];
-          this.allergienkrankheiten = this.formData.sections[2];
-          this.behinderung = this.formData.sections[3];
-          this.erklaerung = this.formData.sections[4];
-          this.datenschutz = this.formData.sections[5];
-        });
+    fetchFormData () {
+      this.formData = formDataJson;
+      console.log("formData fetched!");
+      this.grunddaten = this.formData.sections[0];
+      this.angebote = this.formData.sections[1];
+      this.allergienkrankheiten = this.formData.sections[2];
+      this.behinderung = this.formData.sections[3];
+      this.erklaerung = this.formData.sections[4];
+      this.datenschutz = this.formData.sections[5];
     },
     retrieveAllAdminProjects () {
       AXIOS.get('/allprojects')

@@ -1,10 +1,9 @@
 <template>
     <html>
     <nav>
-      <a href="/#/Verwaltung/" >Alle Veranstaltungen</a>
+      <a href="/#/Veranstaltungen/" >Alle Veranstaltungen</a>
       <a href="/#/VeranstaltungEdit?id=-1" class="selected" >Veranstaltung erstellen </a>
       <a href="/#/Teilnehmer/" >Alle Teilnehmer</a>
-      <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
     </nav>
     <main>
     <h1 v-if="this.id<0">Veranstaltung anlegen</h1>

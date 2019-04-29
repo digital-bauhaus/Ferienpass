@@ -13,6 +13,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
 	</properties>
 
 	<build>
@@ -20,7 +21,7 @@
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<version>1.5</version>
+				<version>${frontend-maven-plugin.version}</version>
 				<executions>
 					<!-- Install our node and npm version to run npm/node scripts-->
 					<execution>
@@ -29,28 +30,7 @@
 							<goal>install-node-and-npm</goal>
 						</goals>
 						<configuration>
-							<nodeVersion>v6.11.3</nodeVersion>
-						</configuration>
-					</execution>
-					<!-- Set NPM Registry -->
-					<execution>
-						<id>npm set registry</id>
-						<goals>
-							<goal>npm</goal>
-						</goals>
-						<configuration>
-							<arguments>config set registry https://registry.npmjs.org</arguments>
-						</configuration>
-					</execution>
-					<!-- Set SSL privilege -->
-					<execution>
-						<id>npm set non-strict ssl</id>
-						<goals>
-							<goal>npm</goal>
-						</goals>
-						<!-- Optional configuration which provides for running any npm command -->
-						<configuration>
-							<arguments>config set strict-ssl false</arguments>
+							<nodeVersion>v11.14.0</nodeVersion>
 						</configuration>
 					</execution>
 					<!-- Install all project dependencies -->
@@ -63,7 +43,7 @@
 						<phase>generate-resources</phase>
 						<!-- Optional configuration which provides for running any npm command -->
 						<configuration>
-							<arguments>install -force</arguments>
+							<arguments>install</arguments>
 						</configuration>
 					</execution>
 					<!-- Build and minify static files -->
@@ -76,6 +56,30 @@
 							<arguments>run build</arguments>
 						</configuration>
 					</execution>
+					<!-- Run Unit tests with Jest -->
+					<execution>
+						<id>npm run test:unit</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<phase>test</phase>
+						<configuration>
+							<arguments>run test:unit</arguments>
+						</configuration>
+					</execution>
+					<!-- Run End2End tests with Nightwatch -->
+					<!--
+					<execution>
+					<id>npm run test:e2e</id>
+					<goals>
+						<goal>npm</goal>
+					</goals>
+					<phase>test</phase>
+					<configuration>
+					  	<arguments>run test:e2e</arguments>
+					</configuration>
+					</execution>
+					-->
 				</executions>
 			</plugin>
 		</plugins>

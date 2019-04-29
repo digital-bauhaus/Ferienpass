@@ -1,10 +1,9 @@
 <template>
     <html>
     <nav>
-      <a href="/#/Verwaltung/" >Alle Veranstaltungen</a>
+      <a href="/#/Veranstaltungen/" >Alle Veranstaltungen</a>
       <a href="/#/VeranstaltungEdit?id=-1">Veranstaltung erstellen </a>
       <a href="/#/Teilnehmer/" class="selected" >Alle Teilnehmer</a>
-      <a href="/#/TeilnehmerAdd/" >Teilnehmer erstellen</a>
     </nav>
     <main>
       <h1>Teilnehmerbearbeitung</h1>
@@ -13,24 +12,24 @@
         <table border="0">
         <tr>
         <td><label for ="firstName">Vorname: </label></td>
-        <td><input type="text" id="firstName" placeholder="Vorname" v-model="user.vorname" :value="user.vorname"></td>
+        <td><input type="text" id="firstName" placeholder="Vorname" v-model="user.vorname"></td>
         <td><label for ="street">Straße: </label></td>
-        <td><input type="text" id="street" placeholder="Straße" v-model="user.strasse" :value="user.strasse"></td>
+        <td><input type="text" id="street" placeholder="Straße" v-model="user.strasse"></td>
         </tr><tr>
         <td><label for ="lastName">Nachname: </label></td>
-        <td><input type="text" id ="lastName" placeholder="Nachname" v-model="user.nachname" :value="user.nachname"></td>
+        <td><input type="text" id ="lastName" placeholder="Nachname" v-model="user.nachname"></td>
         <td><label for ="city">Stadt: </label></td>
-        <td><input type="text" id="city" placeholder="Stadt" v-model="user.stadt" :value="user.stadt"></td>
+        <td><input type="text" id="city" placeholder="Stadt" v-model="user.stadt"></td>
         </tr><tr>
         <td><label for ="birthDate">Geburtsdatum (Jahr,Monat,Tag): </label></td>
-        <td><input type="text" id="birthDate" placeholder="Geburtstag" v-model="user.geburtsdatum" :value="user.geburtsdatum"></td>
+        <td><input type="text" id="birthDate" placeholder="Geburtstag" v-model="user.geburtsdatum"></td>
         <td><label for ="postcode">Postleitzahl: </label></td>
-        <td><input type="text" id="postcode" placeholder="Postleitzahl" v-model="user.postleitzahl" :value="user.postleitzahl"></td>
+        <td><input type="text" id="postcode" placeholder="Postleitzahl" v-model="user.postleitzahl"></td>
         </tr><tr>
         <td><label for ="telephone">Telefonnummer: </label></td>
-        <td><input type="text" id="telephone" placeholder="Telefonnummer" v-model="user.telefon" :value="user.telefon"></td>
+        <td><input type="text" id="telephone" placeholder="Telefonnummer" v-model="user.telefon"></td>
         <td><label for ="healthcare">Krankenkasse: </label></td>
-        <td><input type="text" id="healthcare" v-model="user.krankenkasse" :value="user.krankenkasse"></td>
+        <td><input type="text" id="healthcare" v-model="user.krankenkasse"></td>
         </tr>
         </table>
         <br />
@@ -42,7 +41,7 @@
         <td><label><input v-model="user.darfReiten" type="checkbox" id="check">Darf reiten</label><br/></td>
         </tr><tr>
         <td><label><input v-model="user.darfSchwimmen" type="checkbox" id="check">Darf schwimmen</label><br/></td>
-        <td>Schwimmstufe:</td><td><input type="text" id="schwimmAbzeichen" v-model="user.schwimmAbzeichen" :value="user.schwimmAbzeichen"></td>
+        <td>Schwimmstufe:</td><td><input type="text" id="schwimmAbzeichen" v-model="user.schwimmAbzeichen"></td>
         </tr><tr>
         <td><label><input v-model="user.bezahlt" type="checkbox" id="check">Hat bezahlt</label></td><td />
         <td><label><input v-model="user.darfBehandeltWerden" type="checkbox" id="check">Behandlungserlaubnis bei Erkrankungen und Unfällen</label></td><td />
@@ -57,25 +56,25 @@
         <table>
         <tr>
         <td><label for ="user.notfallKontakt.name">Name, Vorname:</label></td>
-        <td><input type="text" v-model="user.notfallKontakt.name" :value="user.notfallKontakt.name"></td>
+        <td><input type="text" v-model="user.notfallKontakt.name"></td>
         </tr><tr>
         <td><label for ="user.notfallKontakt.address">Addresse:</label></td>
-        <td><input type="text" id="contactaddress" v-model="user.notfallKontakt.address" :value="user.notfallKontakt.address"></td>
+        <td><input type="text" id="contactaddress" v-model="user.notfallKontakt.address"></td>
         </tr><tr>
         <td><label for ="user.notfallKontakt.telephone">Telefon:</label></td>
-        <td><input type="text" id="contacttelephone" v-model="user.notfallKontakt.telephone" :value="user.notfallKontakt.telephone"></td>
+        <td><input type="text" id="contacttelephone" v-model="user.notfallKontakt.telephone"></td>
         </tr>
         </table></td>
         <td colspan="2">
         <table><tr>
         <td><label for ="user.arzt.name">Name, Vorname:</label></td>
-        <td><input type="text" id="doctorname" placeholder="Name" v-model="user.arzt.name" :value="user.arzt.name"></td>
+        <td><input type="text" id="doctorname" placeholder="Name" v-model="user.arzt.name"></td>
         </tr><tr>
         <td><label for ="user.arzt.address">Adresse:</label></td>
-        <td><input type="text" id="doctoraddress" v-model="user.arzt.address" placeholder="Addresse" :value="user.arzt.address"></td>
+        <td><input type="text" id="doctoraddress" v-model="user.arzt.address" placeholder="Addresse"></td>
         </tr><tr>
         <td><label for ="user.arzt.telephone">Telefon:</label></td>
-        <td><input type="text" id="doctortelephone" v-model="user.arzt.telephone" placeholder="Telefon" :value="user.arzt.telephone"></td>
+        <td><input type="text" id="doctortelephone" v-model="user.arzt.telephone" placeholder="Telefon"></td>
         </tr></table></td>
         </tr></table>
 
@@ -125,7 +124,7 @@
       </tr><tr>
       <td><label><input v-model="user.behinderung.merkzeichen_Taubblind_TBL" type="checkbox" id="check">„TBL“ (Taubblindheit)</label></td>
       <td><label><input v-model="user.behinderung.rollstuhlNutzungNotwendig" type="checkbox" id="check">Rollstuhlnutzung </label></td>
-      <td>anderes Hilfsmittel:<input type="text" id="hilfsmittel" v-model="user.behinderung.weitereHilfsmittel" :value="user.behinderung.weitereHilfsmittel"></td></tr>
+      <td>anderes Hilfsmittel:<input type="text" id="hilfsmittel" v-model="user.behinderung.weitereHilfsmittel"></td></tr>
       </table>
       <br />
       <label><b>Wertmarke vorhanden:</b><input v-model="user.behinderung.wertmarkeVorhanden" type="checkbox" id="check"></label> <br />

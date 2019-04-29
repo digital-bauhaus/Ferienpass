@@ -5,7 +5,7 @@
     <form >
       <input type="text" name="Admin-Name" value="" placeholder="Admin"> <br/>
       <input type="password" name="Passwort" value="" placeholder="Passwort"><br/>
-      <button onclick="window.location.href='/#/Test'">einloggen</button>
+      <button onclick="window.location.href='/#/Verwaltung'">einloggen</button>
     </form>
     </div>
 </html>
