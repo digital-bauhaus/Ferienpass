@@ -9,6 +9,10 @@
     :data-age="age ? age : ''"
     :data-zip-code="zipCode ? zipCode : ''"
   >
+    <header>
+      <img src="static/img/logo.png" alt="Ferienpass Weimar" class="site-logo">
+    </header>
+
     <h1>Ferienpass Weimar – Anmeldung</h1>
 
     <checkbox
@@ -403,6 +407,16 @@ export default {
 </script>
 
 <style>
+header {
+  max-width: 100%;
+  background-color: rgb(0, 26, 125);
+  text-align: center;
+}
+
+.site-logo {
+  padding: 20px 0;
+}
+
 .form {
   /* Initialize the form section counter */
   counter-reset: form-section;
