@@ -2,6 +2,7 @@ package de.bauhaus.digital.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bauhaus.digital.domain.*;
+import de.bauhaus.digital.exception.ResourceNotFoundException;
 import de.bauhaus.digital.repository.ProjektRepository;
 import de.bauhaus.digital.repository.TeilnehmerRepository;
 import de.bauhaus.digital.transformation.AnmeldungJson;
@@ -72,6 +73,51 @@ public class BackendController {
         LOG.info(user.toString() + " successfully saved into DB");
 
         return user.getId();
+    }
+
+    @RequestMapping(path = "/user", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public Teilnehmer updateUser(@RequestBody Teilnehmer user) {
+
+        return teilnehmerRepository.findById(user.getId()).map(teilnehmer2Update -> {
+
+            //Basic data
+            teilnehmer2Update.setVorname(user.getVorname());
+            teilnehmer2Update.setNachname(user.getNachname());
+            teilnehmer2Update.setGeburtsdatum(user.getGeburtsdatum());
+            teilnehmer2Update.setStrasse(user.getStrasse());
+            teilnehmer2Update.setPostleitzahl(user.getPostleitzahl());
+            teilnehmer2Update.setStadt(user.getStadt());
+            teilnehmer2Update.setTelefon(user.getTelefon());
+            teilnehmer2Update.setKrankenkasse(user.getKrankenkasse());
+
+            teilnehmer2Update.setArzt(user.getArzt());
+            teilnehmer2Update.setNotfallKontakt(user.getNotfallKontakt());
+            teilnehmer2Update.setBehinderung(user.getBehinderung());
+
+            //Diverse
+            teilnehmer2Update.setDarfBehandeltWerden(user.isDarfBehandeltWerden());
+            teilnehmer2Update.setDarfAlleinNachHause(user.isDarfAlleinNachHause());
+            teilnehmer2Update.setDarfReiten(user.isDarfReiten());
+            teilnehmer2Update.setDarfSchwimmen(user.isDarfSchwimmen());
+            teilnehmer2Update.setSchwimmAbzeichen(user.getSchwimmAbzeichen());
+            teilnehmer2Update.setErlaubeMedikamentation(user.isErlaubeMedikamentation());
+            teilnehmer2Update.setBezahlt(user.isBezahlt());
+
+            //Limitations
+            teilnehmer2Update.setKrankheiten(user.getKrankheiten());
+            teilnehmer2Update.setHitzeempfindlichkeiten(user.getHitzeempfindlichkeiten());
+            teilnehmer2Update.setMedikamente(user.getMedikamente());
+            teilnehmer2Update.setAllergien(user.getAllergien());
+            teilnehmer2Update.setEssenLimitierungen(user.getEssenLimitierungen());
+
+            Teilnehmer savedTeilnehmer = teilnehmerRepository.save(teilnehmer2Update);
+            LOG.info("User with id "+ user.getId() + " successfully updated");
+            return savedTeilnehmer;
+
+        }).orElseThrow(() -> new ResourceNotFoundException("User " + user.getId() + " not found"));
+
+
     }
 
 
@@ -310,108 +356,6 @@ public class BackendController {
         }
         LOG.info("Returning " + projekt.getAnmeldungen().size() + " registered participants for project " + projekt.getName());
         return projekt.getAnmeldungen();
-    }
-
-    //UPDATE USER
-    @RequestMapping(path = "/updateUser")
-    @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody
-    Teilnehmer updateUser(@RequestParam Long userId, @RequestParam String vorname, @RequestParam String nachname,
-                          @RequestParam String geburtsdatum, @RequestParam String strasse, @RequestParam String plz,
-                          @RequestParam String stadt, @RequestParam String tel, @RequestParam String krankenkasse,
-                          @RequestParam String kontaktName, @RequestParam String kontaktAdresse,
-                          @RequestParam String kontaktTel, @RequestParam String arztName, @RequestParam String arztAdresse,
-                          @RequestParam String arztTel, @RequestParam Boolean erlaubeMedikamentation, @RequestParam Boolean darfSchwimmen,
-                          @RequestParam Boolean darfReiten, @RequestParam Boolean darfAlleinNachHause, @RequestParam String schwimmAbzeichen,
-                          @RequestParam Boolean bezahlt, @RequestParam Boolean darfBehandeltWerden, @RequestParam Boolean liegtBehinderungVor,
-                          @RequestParam Boolean behinderungG, @RequestParam Boolean behinderungH, @RequestParam Boolean behinderungAG,
-                          @RequestParam Boolean behinderungB1, @RequestParam Boolean behinderungG1, @RequestParam Boolean behinderungB,
-                          @RequestParam Boolean behinderungTBL, @RequestParam Boolean rollstuhl,
-                          @RequestParam String behinderungHilfsmittel, @RequestParam Boolean wertMarke, @RequestParam Boolean begleitungNotwending,
-                          @RequestParam Boolean begleitPflege, @RequestParam Boolean begleitMedVor, @RequestParam Boolean begleitMobilität,
-                          @RequestParam Boolean begleitOrientierung, @RequestParam Boolean begleitSozial, @RequestParam String eingeschränkteSinne,
-                          @RequestParam String hinweiseZumUmgang, @RequestParam Boolean behinderungUnterstützung,
-                          @RequestParam String untersützungKontakt, @RequestParam Boolean kostenÜbernahme,
-                          @RequestParam String krankheiten, @RequestParam String allergien, @RequestParam String essenLimitierungen,
-                          @RequestParam String medikamente, @RequestParam String hitzeempfindlichkeiten) {
-        Teilnehmer teilnehmer = teilnehmerRepository.findById(userId).orElse(null);
-        if (teilnehmer == null) {
-            LOG.info("Could not update user with id: " + userId + " because there is no entry in the database.");
-            return null;
-        }
-        //Handicap
-        teilnehmer.setLiegtBehinderungVor(liegtBehinderungVor);
-        if (liegtBehinderungVor) {
-            Behinderung b = teilnehmer.getBehinderung();
-            b.setMerkzeichen_BeeintraechtigungImStrassenverkehr_G(behinderungG);
-            b.setMerkzeichen_Taubblind_TBL(behinderungTBL);
-            b.setMerkzeichen_AussergewoehnlicheGehbehinderung_aG(behinderungAG);
-            b.setMerkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B(behinderungB);
-            b.setMerkzeichen_Blind_Bl(behinderungB1);
-            b.setMerkzeichen_Hilflosigkeit_H(behinderungH);
-            b.setRollstuhlNutzungNotwendig(rollstuhl);
-            b.setMerkzeichen_Gehoerlos_Gl(behinderungG1);
-            b.setHinweiseZumUmgangMitDemKind(hinweiseZumUmgang);
-            b.setBeantragungKostenuebernahmeBegleitpersonNotwendig(kostenÜbernahme);
-            b.setBegleitpersonMedizinischeVersorgung(begleitMedVor);
-            b.setBegleitpersonMobilitaet(begleitMobilität);
-            b.setBegleitpersonSozialeBegleitung(begleitSozial);
-            b.setBegleitpersonOrientierung(begleitOrientierung);
-            b.setBegleitpersonPflege(begleitPflege);
-            b.setBegleitungNotwendig(begleitungNotwending);
-            b.setEingeschraenkteSinne(eingeschränkteSinne);
-            b.setUnterstuetzungSucheBegleitpersonNotwendig(behinderungUnterstützung);
-            b.setGewohnterBegleitpersonenDienstleister(untersützungKontakt);
-            b.setWertmarkeVorhanden(wertMarke);
-            b.setWeitereHilfsmittel(behinderungHilfsmittel);
-        }
-
-        //Basic data
-        teilnehmer.setVorname(vorname);
-        teilnehmer.setNachname(nachname);
-        String[] dateRaw = geburtsdatum.split(",");
-        teilnehmer.setGeburtsdatum(LocalDate.of(Integer.valueOf(dateRaw[0]), Integer.valueOf(dateRaw[1]), Integer.valueOf(dateRaw[2])));
-        teilnehmer.setStrasse(strasse);
-        teilnehmer.setPostleitzahl(plz);
-        teilnehmer.setStadt(stadt);
-        teilnehmer.setTelefon(tel);
-        teilnehmer.setKrankenkasse(krankenkasse);
-
-        //Emergency contact
-        Kontakt kontakt = teilnehmer.getNotfallKontakt();
-        kontakt.setAddress(kontaktAdresse);
-        kontakt.setName(kontaktName);
-        kontakt.setTelephone(kontaktTel);
-        teilnehmer.setNotfallKontakt(kontakt);
-
-        //Medical contact
-        Arzt arzt = teilnehmer.getArzt();
-        arzt.setAddress(arztAdresse);
-        arzt.setName(arztName);
-        arzt.setTelephone(arztTel);
-        teilnehmer.setArzt(arzt);
-
-        //Diverse
-        teilnehmer.setDarfBehandeltWerden(darfBehandeltWerden);
-        teilnehmer.setDarfAlleinNachHause(darfAlleinNachHause);
-        teilnehmer.setDarfReiten(darfReiten);
-        teilnehmer.setDarfSchwimmen(darfSchwimmen);
-        teilnehmer.setSchwimmAbzeichen(schwimmAbzeichen);
-        teilnehmer.setErlaubeMedikamentation(erlaubeMedikamentation);
-        teilnehmer.setBezahlt(bezahlt);
-
-        //Limitations
-        teilnehmer.setKrankheiten(krankheiten);
-        teilnehmer.setHitzeempfindlichkeiten(hitzeempfindlichkeiten);
-        teilnehmer.setMedikamente(medikamente);
-        teilnehmer.setAllergien(allergien);
-        teilnehmer.setEssenLimitierungen(essenLimitierungen);
-
-
-
-        teilnehmerRepository.save(teilnehmer);
-        LOG.info("Successfully updated Teilnehmer " + nachname);
-        return teilnehmer;
     }
 
 

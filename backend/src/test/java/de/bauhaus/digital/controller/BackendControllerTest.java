@@ -110,163 +110,98 @@ public class BackendControllerTest {
     }
 
     @Test
-    public void isUserUpdatedCorrectlyThroughParamApi() throws  Exception {
-        Teilnehmer newUser = teilnehmerRepositoryTest.createUser();
-        newUser.setVorname("Max");
-        newUser.setNachname("Mustermann");
+    public void isUserUpdatedCorrectly() {
+        Long userId = addUser(teilnehmerRepositoryTest.createUser());
+
+        Arzt arzt = new Arzt(
+                "Doktor Who",
+                "Arzthaus 1",
+                "555-6891");
+
+        Kontakt kontakt = new Kontakt(
+                "Igor Müller",
+                "Hinter dem Dorf 4",
+                "555-2532");
+
+        String krankheiten = "Grippe: Muss oft Husten Hustenbonbons";
 
 
-        Long userId =
-                given()
-                        .body(newUser)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL + "/adduser")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
-                        .body().as(Long.class);
+        String essenLimitierungen = "Laktoseintoleranz";
+        String allergien = "Heuschnupfen: Nasenspray nur 2x am Tag";
 
+        Behinderung behinderung = new Behinderung();
+        behinderung.setRollstuhlNutzungNotwendig(true);
+        behinderung.setMerkzeichen_Hilflosigkeit_H(true);
+        behinderung.setWertmarkeVorhanden(true);
 
+        String medikamente = "Nasenspray von Forte: 2x am Tag";
+
+        String hitzeempfindlichkeiten = "grosse Hitze: eincremen";
 
         String vorname = "Klaus";
         String nachname = "Klausen";
-        String geburtsdatum = "1999,12,31";
-        String strasse = "Bahnhof 5";
-        String plz = "00111";
+        LocalDate geburtsdatum = LocalDate.of(1999, 12, 31);
+        String strasse = "Bahnhofstraße 5";
         String stadt = "Erfurt";
-        String tel = "999994444";
+        String plz = "99082";
+        String telefon = "03544444";
         String krankenkasse = "AOK";
-        String kontaktName = "AlaramKontakt";
-        String kontaktAdresse = "Hinter dem Dorf 4";
-        String kontaktTel = "0101010101";
-        String arztName = "Doktor Who";
-        String arztAdresse = "Arzthaus 1";
-        String arztTel = "5555";
-        boolean erlaubeMedikamentation = false;
-        boolean darfSchwimmen = true;
-        boolean darfReiten = false;
-        boolean darfAlleinNachHause = true;
-        String schwimmAbzeichen = "Seepferdchen";
-        boolean bezahlt = false;
-        boolean darfBehandeltWerden = true;
-        boolean liegtBehinderungVor = true;
-        boolean behinderungG = false;
-        boolean behinderungH = true;
-        boolean behinderungAG = false;
-        boolean behinderungB1 = false;
-        boolean behinderungG1 = false;
-        boolean behinderungB = false;
-        boolean behinderungTBL = false;
-        boolean rollstuhl = true;
-        String behinderungHilfsmittel = "";
-        boolean wertMarke = true;
-        boolean begleitungNotwending = false;
-        boolean begleitPflege = false;
-        boolean begleitMedVor = false;
-        boolean begleitMobilität = false;
-        boolean begleitOrientierung = false;
-        boolean begleitSozial = false;
-        String eingeschränkteSinne = "";
-        String hinweiseZumUmgang = "";
-        boolean behinderungUnterstützung = false;
-        String untersützungKontakt = "";
-        boolean kostenÜbernahme = true;
-        String allergien="Heuschnupfen";
-        String krankheiten = "Grippaler Infekt";
-        String essenLimitierungen = "Käfer";
-        String medikamete = "Bio Bier";
-        String hitzeempfindlichkeiten = "Hat er";
+        Teilnehmer klausKlausen = new Teilnehmer(
+                vorname,
+                nachname,
+                geburtsdatum,
+                LocalDate.now(),
+                strasse,
+                stadt,
+                plz,
+                telefon,
+                krankenkasse,
+                false,
+                kontakt,
+                true,
+                false,
+                true,
+                "Seepferdchen",
+                false,
+                true,
+                arzt,
+                allergien,
+                essenLimitierungen,
+                krankheiten,
+                true,
+                behinderung,
+                hitzeempfindlichkeiten,
+                medikamente);
 
-        Teilnehmer updatedTeilnehmer =
-                given()
-                        .param("userId", userId)
-                        .param("vorname",vorname)
-                        .param("nachname",nachname)
-                        .param("geburtsdatum",geburtsdatum)
-                        .param("strasse",strasse)
-                        .param("plz",plz)
-                        .param("stadt",stadt)
-                        .param("tel",tel)
-                        .param("krankenkasse",krankenkasse)
-                        .param("kontaktName",kontaktName)
-                        .param("kontaktAdresse",kontaktAdresse)
-                        .param("kontaktTel",kontaktTel)
-                        .param("arztName",arztName)
-                        .param("arztAdresse",arztAdresse)
-                        .param("arztTel",arztTel)
-                        .param("erlaubeMedikamentation", erlaubeMedikamentation)
-                        .param("darfSchwimmen", darfSchwimmen)
-                        .param("darfReiten", darfReiten)
-                        .param("darfAlleinNachHause", darfAlleinNachHause)
-                        .param("schwimmAbzeichen", schwimmAbzeichen)
-                        .param("bezahlt", bezahlt)
-                        .param("darfBehandeltWerden", darfBehandeltWerden)
-                        .param("liegtBehinderungVor", liegtBehinderungVor)
-                        .param("behinderungG", behinderungG)
-                        .param("behinderungH", behinderungH)
-                        .param("behinderungAG", behinderungAG)
-                        .param("behinderungB1", behinderungB1)
-                        .param("behinderungG1", behinderungG1)
-                        .param("behinderungB", behinderungB)
-                        .param("behinderungTBL", behinderungTBL)
-                        .param("rollstuhl", rollstuhl)
-                        .param("behinderungHilfsmittel", behinderungHilfsmittel)
-                        .param("wertMarke", wertMarke)
-                        .param("begleitungNotwending", begleitungNotwending)
-                        .param("begleitPflege", begleitPflege)
-                        .param("begleitMedVor", begleitMedVor)
-                        .param("begleitMobilität", begleitMobilität)
-                        .param("begleitOrientierung", begleitOrientierung)
-                        .param("begleitSozial", begleitSozial)
-                        .param("eingeschränkteSinne", eingeschränkteSinne)
-                        .param("hinweiseZumUmgang", hinweiseZumUmgang)
-                        .param("behinderungUnterstützung", behinderungUnterstützung)
-                        .param("untersützungKontakt", untersützungKontakt)
-                        .param("kostenÜbernahme", kostenÜbernahme)
-                        .param("allergien",allergien)
-                        .param("krankheiten",krankheiten)
-                        .param("essenLimitierungen",essenLimitierungen)
-                        .param("hitzeempfindlichkeiten",hitzeempfindlichkeiten)
-                        .param("medikamente",medikamete)
-                        .when()
-                        .get(BASE_URL+"/updateUser")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Teilnehmer.class);
+        // Exlicitely set Id of User to update, so our implementation can find it
+        klausKlausen.setId(userId);
 
-        Teilnehmer responseUser =
-                given()
-                        .pathParam("id", userId)
-                        .when()
-                        .get(BASE_URL + "/user/{id}")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Teilnehmer.class);
+        updateUser(klausKlausen);
+
+        Teilnehmer responseUser = getUser(userId);
+
 
         Assert.assertThat(responseUser.getVorname(),is(vorname));
         Assert.assertThat(responseUser.getNachname(),is(nachname));
-        String[] datum = geburtsdatum.split(",");
-        Assert.assertThat(responseUser.getGeburtsdatum(),is(LocalDate.of(Integer.parseInt(datum[0]),Integer.parseInt(datum[1]),Integer.parseInt(datum[2]))));
+        Assert.assertThat(responseUser.getGeburtsdatum(),is(geburtsdatum));
         Assert.assertThat(responseUser.getStrasse(),is(strasse));
         Assert.assertThat(responseUser.getPostleitzahl(),is(plz));
         Assert.assertThat(responseUser.getStadt(),is(stadt));
-        Assert.assertThat(responseUser.getTelefon(),is(tel));
+        Assert.assertThat(responseUser.getTelefon(),is(telefon));
         Assert.assertThat(responseUser.getKrankenkasse(),is(krankenkasse));
-        Assert.assertThat(responseUser.getNotfallKontakt().getName(),is(kontaktName));
-        Assert.assertThat(responseUser.getNotfallKontakt().getAddress(),is(kontaktAdresse));
-        Assert.assertThat(responseUser.getNotfallKontakt().getTelephone(),is(kontaktTel));
-        Assert.assertThat(responseUser.getArzt().getName(),is(arztName));
-        Assert.assertThat(responseUser.getArzt().getAddress(),is(arztAdresse));
-        Assert.assertThat(responseUser.getArzt().getTelephone(),is(arztTel));
+        Assert.assertThat(responseUser.getNotfallKontakt().getName(),is(kontakt.getName()));
+        Assert.assertThat(responseUser.getNotfallKontakt().getAddress(),is(kontakt.getAddress()));
+        Assert.assertThat(responseUser.getNotfallKontakt().getTelephone(),is(kontakt.getTelephone()));
+        Assert.assertThat(responseUser.getArzt().getName(),is(arzt.getName()));
+        Assert.assertThat(responseUser.getArzt().getAddress(),is(arzt.getAddress()));
+        Assert.assertThat(responseUser.getArzt().getTelephone(),is(arzt.getTelephone()));
         Assert.assertThat(responseUser.getAllergien(),is(allergien));
         Assert.assertThat(responseUser.getKrankheiten(),is(krankheiten));
         Assert.assertThat(responseUser.getEssenLimitierungen(),is(essenLimitierungen));
-        Assert.assertThat(responseUser.getMedikamente(),is(medikamete));
+        Assert.assertThat(responseUser.getMedikamente(),is(medikamente));
         Assert.assertThat(responseUser.getHitzeempfindlichkeiten(),is(hitzeempfindlichkeiten));
-
     }
+
 
     /*******************************************
      * Tests API for registering from Ferienpass-Anmeldung Microservice
@@ -841,6 +776,16 @@ public class BackendControllerTest {
                 .statusCode(is(HttpStatus.SC_CREATED))
                 .extract()
                 .body().as(Long.class);
+    }
+
+    private void updateUser(Teilnehmer teilnehmer) {
+        given()
+            .body(teilnehmer)
+            .contentType(ContentType.JSON)
+        .when()
+            .put(BASE_URL + "/user")
+        .then()
+            .statusCode(is(HttpStatus.SC_NO_CONTENT));
     }
 
     private Long registerNewUserFromAnmeldungFrontend(AnmeldungJson anmeldungJson) {

@@ -10,76 +10,83 @@
       <form method="post" v-on:submit.prevent="updateUser">
         <h2>Allgemeine Informationen</h2>
         <table border="0">
-        <tr>
-        <td><label for ="firstName">Vorname: </label></td>
-        <td><input type="text" id="firstName" placeholder="Vorname" v-model="user.vorname"></td>
-        <td><label for ="street">Straße: </label></td>
-        <td><input type="text" id="street" placeholder="Straße" v-model="user.strasse"></td>
-        </tr><tr>
-        <td><label for ="lastName">Nachname: </label></td>
-        <td><input type="text" id ="lastName" placeholder="Nachname" v-model="user.nachname"></td>
-        <td><label for ="city">Stadt: </label></td>
-        <td><input type="text" id="city" placeholder="Stadt" v-model="user.stadt"></td>
-        </tr><tr>
-        <td><label for ="birthDate">Geburtsdatum (Jahr,Monat,Tag): </label></td>
-        <td><input type="text" id="birthDate" placeholder="Geburtstag" v-model="user.geburtsdatum"></td>
-        <td><label for ="postcode">Postleitzahl: </label></td>
-        <td><input type="text" id="postcode" placeholder="Postleitzahl" v-model="user.postleitzahl"></td>
-        </tr><tr>
-        <td><label for ="telephone">Telefonnummer: </label></td>
-        <td><input type="text" id="telephone" placeholder="Telefonnummer" v-model="user.telefon"></td>
-        <td><label for ="healthcare">Krankenkasse: </label></td>
-        <td><input type="text" id="healthcare" v-model="user.krankenkasse"></td>
-        </tr>
+            <tr>
+                <td><label for ="firstName">Vorname: </label></td>
+                <td><input type="text" id="firstName" placeholder="Vorname" v-model="user.vorname"></td>
+                <td><label for ="street">Straße: </label></td>
+                <td><input type="text" id="street" placeholder="Straße" v-model="user.strasse"></td>
+            </tr>
+            <tr>
+                <td><label for ="lastName">Nachname: </label></td>
+                <td><input type="text" id ="lastName" placeholder="Nachname" v-model="user.nachname"></td>
+                <td><label for ="city">Stadt: </label></td>
+                <td><input type="text" id="city" placeholder="Stadt" v-model="user.stadt"></td>
+            </tr>
+            <tr>
+                <td><label for ="birthDate">Geburtsdatum (Jahr,Monat,Tag): </label></td>
+                <td><input type="text" id="birthDate" placeholder="Geburtstag" v-model="user.geburtsdatum"></td>
+                <td><label for ="postcode">Postleitzahl: </label></td>
+                <td><input type="text" id="postcode" placeholder="Postleitzahl" v-model="user.postleitzahl"></td>
+            </tr>
+            <tr>
+                <td><label for ="telephone">Telefonnummer: </label></td>
+                <td><input type="text" id="telephone" placeholder="Telefonnummer" v-model="user.telefon"></td>
+                <td><label for ="healthcare">Krankenkasse: </label></td>
+                <td><input type="text" id="healthcare" v-model="user.krankenkasse"></td>
+            </tr>
         </table>
         <br />
         <hr />
         <h2>Weitere Angaben:</h2>
-        <table><tr>
-        <td><label><input v-model="user.erlaubeMedikamentation" type="checkbox" id="check">Erlaube Medikation</label></td>
-        <td><label><input v-model="user.darfAlleinNachHause" type="checkbox" id="check">Darf alleine nach Hause gehen</label></td>
-        <td><label><input v-model="user.darfReiten" type="checkbox" id="check">Darf reiten</label><br/></td>
-        </tr><tr>
-        <td><label><input v-model="user.darfSchwimmen" type="checkbox" id="check">Darf schwimmen</label><br/></td>
-        <td>Schwimmstufe:</td><td><input type="text" id="schwimmAbzeichen" v-model="user.schwimmAbzeichen"></td>
-        </tr><tr>
-        <td><label><input v-model="user.bezahlt" type="checkbox" id="check">Hat bezahlt</label></td><td />
-        <td><label><input v-model="user.darfBehandeltWerden" type="checkbox" id="check">Behandlungserlaubnis bei Erkrankungen und Unfällen</label></td><td />
-        </tr>
+        <table>
+            <tr>
+                <td><label><input v-model="user.erlaubeMedikamentation" type="checkbox" id="check">Erlaube Medikation</label></td>
+                <td><label><input v-model="user.darfAlleinNachHause" type="checkbox" id="check">Darf alleine nach Hause gehen</label></td>
+                <td><label><input v-model="user.darfReiten" type="checkbox" id="check">Darf reiten</label><br/></td>
+            </tr>
+            <tr>
+                <td><label><input v-model="user.darfSchwimmen" type="checkbox" id="check">Darf schwimmen</label><br/></td>
+                <td>Schwimmstufe:</td><td><input type="text" id="schwimmAbzeichen" v-model="user.schwimmAbzeichen"></td>
+                </tr><tr>
+                <td><label><input v-model="user.bezahlt" type="checkbox" id="check">Hat bezahlt</label></td><td />
+                <td><label><input v-model="user.darfBehandeltWerden" type="checkbox" id="check">Behandlungserlaubnis bei Erkrankungen und Unfällen</label></td><td />
+            </tr>
         </table>
-<br />
-<hr />
+        <br />
+        <hr />
         <h2>Notfallkontaktdaten</h2>
         <table><tr><th colspan="2">Notfallkontakt</th><th colspan="2">Arzt</th></tr>
         <tr>
         <td colspan="2">
         <table>
         <tr>
-        <td><label for ="user.notfallKontakt.name">Name, Vorname:</label></td>
+        <td><label>Name, Vorname:</label></td>
         <td><input type="text" v-model="user.notfallKontakt.name"></td>
         </tr><tr>
-        <td><label for ="user.notfallKontakt.address">Addresse:</label></td>
+        <td><label>Addresse:</label></td>
         <td><input type="text" id="contactaddress" v-model="user.notfallKontakt.address"></td>
         </tr><tr>
-        <td><label for ="user.notfallKontakt.telephone">Telefon:</label></td>
+        <td><label>Telefon:</label></td>
         <td><input type="text" id="contacttelephone" v-model="user.notfallKontakt.telephone"></td>
         </tr>
         </table></td>
         <td colspan="2">
         <table><tr>
-        <td><label for ="user.arzt.name">Name, Vorname:</label></td>
+        <td><label>Name, Vorname:</label></td>
         <td><input type="text" id="doctorname" placeholder="Name" v-model="user.arzt.name"></td>
         </tr><tr>
-        <td><label for ="user.arzt.address">Adresse:</label></td>
+        <td><label>Adresse:</label></td>
         <td><input type="text" id="doctoraddress" v-model="user.arzt.address" placeholder="Addresse"></td>
         </tr><tr>
-        <td><label for ="user.arzt.telephone">Telefon:</label></td>
+        <td><label>Telefon:</label></td>
         <td><input type="text" id="doctortelephone" v-model="user.arzt.telephone" placeholder="Telefon"></td>
         </tr></table></td>
         </tr></table>
 
         <input type="submit" value="Änderung speichern">
         </form>
+
+
         <br />
         <hr />
         <form method="post" v-on:submit.prevent="updateUser">
@@ -164,7 +171,7 @@
       <table>
       <tr><th>Name</th><th>Stornieren</th></tr>
       <tr v-for="(projekt, index) of projectsOfUser">
-      <td><label for="projekt.name"> {{projekt.name}}</label></td>
+      <td><label> {{projekt.name}}</label></td>
       <td><button v-on:click="cancelProject(user.id,projekt.id)">Stornieren</button></td>
       </tr>
       </table>
@@ -175,7 +182,7 @@
       <table>
       <tr><th>Name</th><th>Aktivieren</th></tr>
       <tr v-for="(projekt, index) of user.angemeldeteProjekte">
-      <td><label for="projekt.name">{{projekt.name}}</label></td>
+      <td><label>{{projekt.name}}</label></td>
       <td><button v-on:click="activateProject(user.id, projekt.id)">Reaktivieren</button></td>
       </tr>
       </table>
@@ -187,12 +194,11 @@
       <table>
       <tr><th>Name</th><th>Anmelden</th></tr>
       <tr v-for="(projekt, index) of allAvailableProjects">
-      <td><label for="projekt.name"> {{projekt.name}}</label></td>
+      <td><label> {{projekt.name}}</label></td>
       <td><button v-on:click="assignProject(user.id,projekt.id)">Eintragen</button></td>
       </tr>
       </table>
       </div>
-      </form>
 <br />
 <hr />
     </main>
@@ -223,77 +229,19 @@ export default {
     this.getAllProjects()
   },
   methods: {
-    updateUser () {
-      var params = new URLSearchParams();
-      var id = parseInt(this.$route.query.id);
-      params.append('userId', id);
-      params.append('vorname', this.user.vorname);
-      params.append('nachname', this.user.nachname);
-      params.append('geburtsdatum', this.user.geburtsdatum);
-      params.append('strasse', this.user.strasse);
-      params.append('stadt', this.user.stadt);
-      params.append('plz', this.user.postleitzahl);
-      params.append('tel', this.user.telefon);
-      params.append('krankenkasse', this.user.krankenkasse);
-
-      params.append('kontaktName', this.user.notfallKontakt.name);
-      params.append('kontaktAdresse', this.user.notfallKontakt.address);
-      params.append('kontaktTel', this.user.notfallKontakt.telephone);
-
-      params.append('arztName', this.user.arzt.name);
-      params.append('arztAdresse', this.user.arzt.address);
-      params.append('arztTel', this.user.arzt.telephone);
-
-      params.append('erlaubeMedikamentation', (this.user.erlaubeMedikamentation === true));
-      params.append('darfSchwimmen', (this.user.darfSchwimmen === true));
-      params.append('darfAlleinNachHause', (this.user.darfAlleinNachHause === true));
-      params.append('darfReiten', (this.user.darfReiten === true));
-      params.append('schwimmAbzeichen', this.user.schwimmAbzeichen);
-      params.append('bezahlt', (this.user.bezahlt === true));
-      params.append('darfBehandeltWerden', (this.user.darfBehandeltWerden === true));
-
-      params.append('allergien', this.user.allergien);
-      params.append('krankheiten', this.user.krankheiten);
-      params.append('essenLimitierungen', this.user.essenLimitierungen);
-      params.append('medikamente', this.user.medikamente);
-      params.append('hitzeempfindlichkeiten', this.user.hitzeempfindlichkeiten);
-
-      params.append('liegtBehinderungVor', (this.user.liegtBehinderungVor === true));
-      params.append('behinderungG', (this.user.behinderung.merkzeichen_BeeintraechtigungImStrassenverkehr_G === true));
-      params.append('behinderungH', (this.user.behinderung.merkzeichen_Hilflosigkeit_H === true));
-      params.append('behinderungAG', (this.user.behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG === true));
-      params.append('behinderungB1', (this.user.behinderung.merkzeichen_Blind_Bl === true));
-      params.append('behinderungG1', (this.user.behinderung.merkzeichen_Gehoerlos_Gl === true));
-      params.append('behinderungB', (this.user.behinderung.merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B === true));
-      params.append('behinderungTBL', (this.user.behinderung.merkzeichen_Taubblind_TBL === true));
-      params.append('rollstuhl', (this.user.behinderung.rollstuhlNutzungNotwendig === true));
-      params.append('behinderungHilfsmittel', this.user.behinderung.weitereHilfsmittel);
-
-      params.append('wertMarke', (this.user.behinderung.wertmarkeVorhanden === true));
-      params.append('begleitungNotwending', (this.user.behinderung.begleitungNotwendig === true));
-      params.append('begleitPflege', (this.user.behinderung.begleitpersonPflege === true));
-      params.append('begleitMedVor', (this.user.behinderung.begleitpersonMedizinischeVersorgung === true));
-      params.append('begleitMobilität', (this.user.behinderung.begleitpersonMobilitaet === true));
-      params.append('begleitOrientierung', (this.user.behinderung.begleitpersonOrientierung === true));
-      params.append('begleitSozial', (this.user.behinderung.begleitpersonSozialeBegleitung === true));
-      params.append('eingeschränkteSinne', this.user.behinderung.eingeschraenkteSinne);
-
-      params.append('hinweiseZumUmgang', this.user.behinderung.hinweiseZumUmgangMitDemKind);
-      params.append('behinderungUnterstützung', (this.user.behinderung.unterstuetzungSucheBegleitpersonNotwendig === true));
-      params.append('untersützungKontakt', this.user.behinderung.gewohnterBegleitpersonenDienstleister);
-      params.append('kostenÜbernahme', (this.user.behinderung.beantragungKostenuebernahmeBegleitpersonNotwendig === true));
-
-      AXIOS.post('/updateUser', params)
-      .then(response => {
-        this.popupClass = 'fadeIn'
-        var self = this;
-        setTimeout(function () {
-          self.popupClass = 'fadeOut';
-        }, 2000);
-      })
-      .catch(e => {
-        this.errors.push(e)
-      })
+    updateUser() {
+      this.user.id = parseInt(this.$route.query.id);
+      AXIOS.put('/user', this.user)
+          .then(response => {
+              this.popupClass = 'fadeIn'
+              var self = this;
+              setTimeout(function () {
+                  self.popupClass = 'fadeOut';
+              }, 2000);
+          })
+          .catch(e => {
+              this.errors.push(e)
+          })
     },
     deleteListItem (id, typeList, itemPos) {
     /* note that the numbers of variable typeList correspond to the index value of the enumeration ListType in the backend */
