@@ -26,3 +26,39 @@ Die bisherige Microservice-Struktur wird zugunsten einer vereinfachten Weiterent
 
 Dabei steht die Anmeldungsseite direkt auf der Startseite zur Verfügung (lokal http://localhost:8088/#/) , die Administrationsfunktionen liegen tiefer und finden sich ab http://localhost:8088/#/login
 
+
+
+    +-------------------+   +--------------------+
+    |                   |   |                    |
+    |                   |   |                    |
+    |                   |   |                    |
+    |     Anmeldung     |   |     Verwaltung     |
+    |     (Vue.js)      |   |      (Vue.js)      |
+    |                   |   |                    |
+    |                   |   |                    |
+    +-------------------+   +--------------------+
+              |                       |
+    +---------v-----------------------v----------+
+    |                                            |
+    |                                            |
+    |                                            |
+    |      Spring Boot Backend (REST API)        |
+    |                                            |
+    |                                            |
+    |                                            |
+    +--------------------------------------------+
+                          |
+                          v
+            +---------------------------+
+            |                           |
+            |    Postgres-DB            |
+            |    (lokal H2 in-memory)   |
+            |                           |
+            +---------------------------+
+
+
+### Continuous Integration and Deployment
+
+Tests werden automatisch bei jedem Push auf den master branch ausgeführt und es finded ein automatischer Deploy auf Heroku statt, wenn der TravisCI build erfolgreich durchgelaufen ist. Die Anwendung kann unter der folgendne URL aufgerufen werden:
+
+https://ferienpass.herokuapp.com/#/
