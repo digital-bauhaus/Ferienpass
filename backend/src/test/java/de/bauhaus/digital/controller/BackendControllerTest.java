@@ -8,6 +8,8 @@ import de.bauhaus.digital.repository.TeilnehmerRepositoryTest;
 import de.bauhaus.digital.transformation.AnmeldungJson;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
+import org.hamcrest.MatcherAssert;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -104,6 +106,165 @@ public class BackendControllerTest {
         long id2 = allUsers.get(initialSize+1).getId();
         assertThat(id1,is(userId));
         assertThat(id2,is(userId2));
+
+    }
+
+    @Test
+    public void isUserUpdatedCorrectlyThroughParamApi() throws  Exception {
+        Teilnehmer newUser = teilnehmerRepositoryTest.createUser();
+        newUser.setVorname("Max");
+        newUser.setNachname("Mustermann");
+
+
+        Long userId =
+                given()
+                        .body(newUser)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL + "/adduser")
+                        .then()
+                        .statusCode(is(HttpStatus.SC_CREATED))
+                        .extract()
+                        .body().as(Long.class);
+
+
+
+        String vorname = "Klaus";
+        String nachname = "Klausen";
+        String geburtsdatum = "1999,12,31";
+        String strasse = "Bahnhof 5";
+        String plz = "00111";
+        String stadt = "Erfurt";
+        String tel = "999994444";
+        String krankenkasse = "AOK";
+        String kontaktName = "AlaramKontakt";
+        String kontaktAdresse = "Hinter dem Dorf 4";
+        String kontaktTel = "0101010101";
+        String arztName = "Doktor Who";
+        String arztAdresse = "Arzthaus 1";
+        String arztTel = "5555";
+        boolean erlaubeMedikamentation = false;
+        boolean darfSchwimmen = true;
+        boolean darfReiten = false;
+        boolean darfAlleinNachHause = true;
+        String schwimmAbzeichen = "Seepferdchen";
+        boolean bezahlt = false;
+        boolean darfBehandeltWerden = true;
+        boolean liegtBehinderungVor = true;
+        boolean behinderungG = false;
+        boolean behinderungH = true;
+        boolean behinderungAG = false;
+        boolean behinderungB1 = false;
+        boolean behinderungG1 = false;
+        boolean behinderungB = false;
+        boolean behinderungTBL = false;
+        boolean rollstuhl = true;
+        String behinderungHilfsmittel = "";
+        boolean wertMarke = true;
+        boolean begleitungNotwending = false;
+        boolean begleitPflege = false;
+        boolean begleitMedVor = false;
+        boolean begleitMobilität = false;
+        boolean begleitOrientierung = false;
+        boolean begleitSozial = false;
+        String eingeschränkteSinne = "";
+        String hinweiseZumUmgang = "";
+        boolean behinderungUnterstützung = false;
+        String untersützungKontakt = "";
+        boolean kostenÜbernahme = true;
+        String allergien="Heuschnupfen";
+        String krankheiten = "Grippaler Infekt";
+        String essenLimitierungen = "Käfer";
+        String medikamete = "Bio Bier";
+        String hitzeempfindlichkeiten = "Hat er";
+
+        Teilnehmer updatedTeilnehmer =
+                given()
+                        .param("userId", userId)
+                        .param("vorname",vorname)
+                        .param("nachname",nachname)
+                        .param("geburtsdatum",geburtsdatum)
+                        .param("strasse",strasse)
+                        .param("plz",plz)
+                        .param("stadt",stadt)
+                        .param("tel",tel)
+                        .param("krankenkasse",krankenkasse)
+                        .param("kontaktName",kontaktName)
+                        .param("kontaktAdresse",kontaktAdresse)
+                        .param("kontaktTel",kontaktTel)
+                        .param("arztName",arztName)
+                        .param("arztAdresse",arztAdresse)
+                        .param("arztTel",arztTel)
+                        .param("erlaubeMedikamentation", erlaubeMedikamentation)
+                        .param("darfSchwimmen", darfSchwimmen)
+                        .param("darfReiten", darfReiten)
+                        .param("darfAlleinNachHause", darfAlleinNachHause)
+                        .param("schwimmAbzeichen", schwimmAbzeichen)
+                        .param("bezahlt", bezahlt)
+                        .param("darfBehandeltWerden", darfBehandeltWerden)
+                        .param("liegtBehinderungVor", liegtBehinderungVor)
+                        .param("behinderungG", behinderungG)
+                        .param("behinderungH", behinderungH)
+                        .param("behinderungAG", behinderungAG)
+                        .param("behinderungB1", behinderungB1)
+                        .param("behinderungG1", behinderungG1)
+                        .param("behinderungB", behinderungB)
+                        .param("behinderungTBL", behinderungTBL)
+                        .param("rollstuhl", rollstuhl)
+                        .param("behinderungHilfsmittel", behinderungHilfsmittel)
+                        .param("wertMarke", wertMarke)
+                        .param("begleitungNotwending", begleitungNotwending)
+                        .param("begleitPflege", begleitPflege)
+                        .param("begleitMedVor", begleitMedVor)
+                        .param("begleitMobilität", begleitMobilität)
+                        .param("begleitOrientierung", begleitOrientierung)
+                        .param("begleitSozial", begleitSozial)
+                        .param("eingeschränkteSinne", eingeschränkteSinne)
+                        .param("hinweiseZumUmgang", hinweiseZumUmgang)
+                        .param("behinderungUnterstützung", behinderungUnterstützung)
+                        .param("untersützungKontakt", untersützungKontakt)
+                        .param("kostenÜbernahme", kostenÜbernahme)
+                        .param("allergien",allergien)
+                        .param("krankheiten",krankheiten)
+                        .param("essenLimitierungen",essenLimitierungen)
+                        .param("hitzeempfindlichkeiten",hitzeempfindlichkeiten)
+                        .param("medikamente",medikamete)
+                        .when()
+                        .get(BASE_URL+"/updateUser")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .extract().as(Teilnehmer.class);
+
+        Teilnehmer responseUser =
+                given()
+                        .pathParam("id", userId)
+                        .when()
+                        .get(BASE_URL + "/user/{id}")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Teilnehmer.class);
+
+        Assert.assertThat(responseUser.getVorname(),is(vorname));
+        Assert.assertThat(responseUser.getNachname(),is(nachname));
+        String[] datum = geburtsdatum.split(",");
+        Assert.assertThat(responseUser.getGeburtsdatum(),is(LocalDate.of(Integer.parseInt(datum[0]),Integer.parseInt(datum[1]),Integer.parseInt(datum[2]))));
+        Assert.assertThat(responseUser.getStrasse(),is(strasse));
+        Assert.assertThat(responseUser.getPostleitzahl(),is(plz));
+        Assert.assertThat(responseUser.getStadt(),is(stadt));
+        Assert.assertThat(responseUser.getTelefon(),is(tel));
+        Assert.assertThat(responseUser.getKrankenkasse(),is(krankenkasse));
+        Assert.assertThat(responseUser.getNotfallKontakt().getName(),is(kontaktName));
+        Assert.assertThat(responseUser.getNotfallKontakt().getAddress(),is(kontaktAdresse));
+        Assert.assertThat(responseUser.getNotfallKontakt().getTelephone(),is(kontaktTel));
+        Assert.assertThat(responseUser.getArzt().getName(),is(arztName));
+        Assert.assertThat(responseUser.getArzt().getAddress(),is(arztAdresse));
+        Assert.assertThat(responseUser.getArzt().getTelephone(),is(arztTel));
+        Assert.assertThat(responseUser.getAllergien(),is(allergien));
+        Assert.assertThat(responseUser.getKrankheiten(),is(krankheiten));
+        Assert.assertThat(responseUser.getEssenLimitierungen(),is(essenLimitierungen));
+        Assert.assertThat(responseUser.getMedikamente(),is(medikamete));
+        Assert.assertThat(responseUser.getHitzeempfindlichkeiten(),is(hitzeempfindlichkeiten));
 
     }
 
@@ -492,7 +653,7 @@ public class BackendControllerTest {
     public void addProjectAndSetItToInactive() {
         //Create a project
         Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
-        Long projectID =addProjekt(projekt);
+        Long projectID = addProjekt(projekt);
         assertThat(projekt.isAktiv(),is(true));
 
         //set project inactive
@@ -587,6 +748,77 @@ public class BackendControllerTest {
         assertThat(newSumOfRegisteredTeilnehmer,is(sumOfRegisteredTeilnehmer+4));
     }
 
+    @Test
+    public void findProjectsByFirstNameAndLastName() throws Exception {
+        Teilnehmer newUser = teilnehmerRepositoryTest.createUser();
+        newUser.setVorname("Anton");
+        newUser.setNachname("Tirol");
+
+
+        Long userId =
+                given()
+                        .body(newUser)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL + "/adduser")
+                        .then()
+                        .statusCode(is(HttpStatus.SC_CREATED))
+                        .extract()
+                        .body().as(Long.class);
+
+        Teilnehmer responseUser =
+                given()
+                        .pathParam("id", userId)
+                        .when()
+                        .get(BASE_URL + "/user/{id}")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Teilnehmer.class);
+
+        Assert.assertThat(responseUser.getNachname(),is("Tirol"));
+        Assert.assertThat(responseUser.getVorname(),is("Anton"));
+
+        Projekt p = teilnehmerRepositoryTest.createSingleProject();
+        Long projectID =
+                given()
+                        .body(p)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL+"/addproject")
+                        .then()
+                        .statusCode(is(HttpStatus.SC_CREATED))
+                        .extract()
+                        .body().as(Long.class);
+
+        Map<String,Long> newID_Map = new HashMap<String, Long>();
+        newID_Map.put("user",responseUser.getId());
+        newID_Map.put("project", projectID);
+        Boolean success =
+                given()
+                        .body(newID_Map)
+                        .contentType(ContentType.JSON)
+                        .when()
+                        .post(BASE_URL+"/assignProject")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .extract().as(Boolean.class);
+        MatcherAssert.assertThat(success,is(true));
+
+        List<Projekt> projectsByFirstNameAndLastName =
+                Arrays.asList(given()
+                        .param("vorname","Anton")
+                        .param("nachname","Tirol")
+                        .when()
+                        .get(BASE_URL+"/projectsof")
+                        .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .extract().as(Projekt[].class));
+        Assert.assertThat(projectsByFirstNameAndLastName.size(),is(1));
+    }
+
+
+
     private List<Projekt> getAllProjekteWhereUserIsAssigned(Teilnehmer responseUser) {
         return Arrays.asList(
                 given()
@@ -637,14 +869,14 @@ public class BackendControllerTest {
 
     private Long addProjekt(Projekt projekt) {
         return given()
-                .body(projekt)
-                .contentType(ContentType.JSON)
-                .when()
-                .post(BASE_URL+"/addproject")
-                .then()
-                .statusCode(is(HttpStatus.SC_CREATED))
-                .extract()
-                .body().as(Long.class);
+                    .body(projekt)
+                    .contentType(ContentType.JSON)
+               .when()
+                    .post(BASE_URL+"/addproject")
+               .then()
+                    .statusCode(is(HttpStatus.SC_CREATED))
+                    .extract()
+                        .body().as(Long.class);
     }
 
     private List<Projekt> getAllProjects() {

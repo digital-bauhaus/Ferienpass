@@ -58,7 +58,7 @@ public class BackendController {
     @GetMapping(path = "/user/{id}")
     public @ResponseBody
     Teilnehmer getUserById(@PathVariable("id") long id) {
-        return teilnehmerRepository.findOne(id);
+        return teilnehmerRepository.findById(id).orElse(null);
     }
 
     //Add a new user (Teilnehmer) based on a user object
@@ -83,10 +83,10 @@ public class BackendController {
         Long user_id = ids.get("user");
         Long projekt_id = ids.get("project");
         LOG.info("Assigning project with id: " + projekt_id + " for user id: " + user_id);
-        Teilnehmer teilnehmer = teilnehmerRepository.findOne(user_id);
+        Teilnehmer teilnehmer = teilnehmerRepository.findById(user_id).orElse(null);
         if (teilnehmer == null)
             return false;
-        Projekt projekt = projektRepository.findOne(projekt_id);
+        Projekt projekt = projektRepository.findById(projekt_id).orElse(null);
         if (projekt == null)
             return false;
 
@@ -129,7 +129,7 @@ public class BackendController {
 
         for (Project project : anmeldungJson.getProjects()) {
             if(project.isRegistered()) {
-                Projekt projekt = projektRepository.findOne(project.getId().longValue());
+                Projekt projekt = projektRepository.findById(project.getId().longValue()).orElse(null);
                 if(projekt.hasProjektFreeSlots()) {
                     projekt.addAnmeldung(neuAngemeldeterTeilnehmer);
                 } else {
@@ -226,7 +226,7 @@ public class BackendController {
     public @ResponseBody
     Boolean updateProject(@RequestParam Long id, @RequestParam String name, @RequestParam String date, @RequestParam String endDate, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
                        @RequestParam int slotsReserved, @RequestParam String traeger, @RequestParam String weblink) {
-        Projekt project = projektRepository.findOne(id);
+        Projekt project = projektRepository.findById(id).orElse(null);
         if (project == null) {
             LOG.info("Could not find a project to update with id:" + id);
             return false;
@@ -268,7 +268,7 @@ public class BackendController {
     public @ResponseBody
     Boolean deleteProject(@RequestParam Long project_id) {
 
-        Projekt p = projektRepository.findOne(project_id);
+        Projekt p = projektRepository.findById(project_id).orElse(null);
         if (p == null)
             return  false;
         p.setAktiv(false);
@@ -296,14 +296,14 @@ public class BackendController {
     @GetMapping(path = "/project/{projekt_id}")
     public @ResponseBody
     Projekt getProjectById(@PathVariable("projekt_id") Long projekt_id) {
-        return projektRepository.findOne(projekt_id);
+        return projektRepository.findById(projekt_id).orElse(null);
     }
 
     //Get all users (Teilnehmer) for a given project by ID
     @GetMapping(path = "/projectRegistrations/{projekt_id}")
     public @ResponseBody
     List<Teilnehmer> getRegisteredUsersByProjectId(@PathVariable("projekt_id") Long projekt_id) {
-        Projekt projekt = projektRepository.findOne(projekt_id);
+        Projekt projekt = projektRepository.findById(projekt_id).orElse(null);
         if (projekt == null) {
             LOG.info("Did not found project for id: " + projekt_id);
             return null;
@@ -334,7 +334,7 @@ public class BackendController {
                           @RequestParam String untersützungKontakt, @RequestParam Boolean kostenÜbernahme,
                           @RequestParam String krankheiten, @RequestParam String allergien, @RequestParam String essenLimitierungen,
                           @RequestParam String medikamente, @RequestParam String hitzeempfindlichkeiten) {
-        Teilnehmer teilnehmer = teilnehmerRepository.findOne(userId);
+        Teilnehmer teilnehmer = teilnehmerRepository.findById(userId).orElse(null);
         if (teilnehmer == null) {
             LOG.info("Could not update user with id: " + userId + " because there is no entry in the database.");
             return null;
