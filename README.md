@@ -75,6 +75,9 @@ Entwickelt werden soll mit Hilfe von Feature-Branches und Pull-Requests - der ma
 * __Commit message!__ Beim Commit darauf achten, dass der Kommentar die GitHub-Issue-Nummer enthält, z.B. `#4 Neuer Button erstellt` 
 * Pushen
 
+
+##### Feature ready? --> Pull Request!
+
 * __When your Feature is ready__ Pull Request auf GitHub erstellen
 
 ![create-pull-request](docs/create-pull-request.png)
@@ -87,6 +90,11 @@ Entwickelt werden soll mit Hilfe von Feature-Branches und Pull-Requests - der ma
 
 ![heroku-review-app-link](docs/heroku-review-app-link.png)
 
+* Auf GitHub werden alle Commits, die Builds sowie die Heroku-Deployments vollständig im Pull Request dargestellt:
+
+![github-pr](docs/github-pr.png)
+
+Wenn alles passt, kann das Featuer in den master-Branch gemergt werden per `Merge pull request`. __Danach landed der Stand automatisch auf Staging bzw. Produktion!__
 
 ##### Staging / Production
 
