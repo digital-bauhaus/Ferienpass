@@ -24,8 +24,7 @@ import java.util.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -367,8 +366,9 @@ public class BackendControllerTest {
         projekteOhneFreieSlots = registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(anmeldungJson);
 
         assertThat(projekteOhneFreieSlots.size(), is(2));
-        assertThat(projekteOhneFreieSlots.get(0), is(fussballId));
-        assertThat(projekteOhneFreieSlots.get(1), is(golfSpielenId));
+        assertThat(projekteOhneFreieSlots, hasItem(golfSpielenId));
+        assertThat(projekteOhneFreieSlots, hasItem(fussballId));
+        assertThat(projekteOhneFreieSlots, not(hasItem(pizzaBackenId)));
 
         // Nun haben wir 2 ausgebuchte Projekte und nur Pizza backen hat noch Slots frei
         // Wenn ein Teilnehmer sich auf ausgebuchte Projekte nicht mehr anmelden kann,
@@ -401,8 +401,10 @@ public class BackendControllerTest {
         setzeAnmeldungFuerPizza(anmeldungJson, false);
 
         projekteOhneFreieSlots = registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(anmeldungJson);
-        assertThat(projekteOhneFreieSlots.get(0), is(fussballId));
-        assertThat(projekteOhneFreieSlots.get(1), is(golfSpielenId));
+        assertThat(projekteOhneFreieSlots, hasItem(fussballId));
+        assertThat(projekteOhneFreieSlots, hasItem(golfSpielenId));
+        assertThat(projekteOhneFreieSlots, not(hasItem(pizzaBackenId)));
+
     }
 
     private void setzeNeuenNamen(AnmeldungJson anmeldungJson, String vorname, String nachname) {
