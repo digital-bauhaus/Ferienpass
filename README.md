@@ -1,6 +1,7 @@
 # Ferienpass
 
 [![Build Status](https://travis-ci.org/digital-bauhaus/Ferienpass.svg?branch=master)](https://travis-ci.org/digital-bauhaus/Ferienpass)
+[![Coverage Status](https://coveralls.io/repos/github/digital-bauhaus/Ferienpass/badge.svg?branch=master)](https://coveralls.io/github/digital-bauhaus/Ferienpass?branch=master)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/digital-bauhaus/Ferienpass-Anmeldung/blob/master/LICENSE)
 
 ### Historie
