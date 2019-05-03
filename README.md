@@ -57,6 +57,32 @@ Dabei steht die Anmeldungsseite direkt auf der Startseite zur Verfügung (lokal 
             |                           |
             +---------------------------+
 
+### Prerequisites
+
+Maven:
+
+`brew install maven`
+
+`choco install maven`
+
+`apt-get install maven`
+
+JDK:
+
+`brew cask install java`
+
+`choco install jdk`
+
+`apt-get install jdk`
+
+NPM:
+
+`brew install npm`
+
+`choco install npm`
+
+`apt-get install npm`
+
 
 ### Continuous Integration and Deployment
 
