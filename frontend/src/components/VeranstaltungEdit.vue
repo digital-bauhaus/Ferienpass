@@ -28,7 +28,7 @@
      <td><input type="text" id="reserve" placeholder="Reservierte Plätze" v-model="project.slotsReserviert"></td>
      </tr><tr>
      <td><label>Minimales Alter: </label></td>
-     <td><input type="text" id="age" placeholder="Altersbegrenzung" v-model="project.alterLimitierung"></td>
+     <td><input type="text" id="age" placeholder="Altersbegrenzung" v-model="project.mindestAlter"></td>
      </tr><tr>
      <td><label>Preis: </label></td>
      <td><input type="text" id="price" placeholder="Preis" v-model="project.kosten"></td>
@@ -77,7 +77,7 @@ export default {
     createOrUpdateProject () {
       var params = new URLSearchParams();
       var id = parseInt(this.$route.query.id);
-      var age = parseInt(this.project.alterLimitierung);
+      var age = parseInt(this.project.mindestAlter);
       var minAge = parseInt(this.project.alterLimitierungMin);
       var price = parseInt(this.project.kosten);
       var slots = parseInt(this.project.slotsGesamt);

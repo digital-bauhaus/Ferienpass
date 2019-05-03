@@ -260,7 +260,7 @@ export default {
             endDate: adminProjekt.datumEnde,
             id: adminProjekt.id,
             org: adminProjekt.traeger,
-            minimumAge: adminProjekt.alterLimitierung
+            minimumAge: adminProjekt.mindestAlter
           }
         }
         this.alleAnmeldungProjekte.push(projektParam);
