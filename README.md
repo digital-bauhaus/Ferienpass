@@ -74,7 +74,12 @@ Entwickelt werden soll mit Hilfe von Feature-Branches und Pull-Requests - der ma
 * __Do Tests run?__ Vor dem Commit sicherstellen, dass alle Tests laufen und die Anwendung baut
 * __Commit message!__ Beim Commit darauf achten, dass der Kommentar die GitHub-Issue-Nummer enthält, z.B. `#4 Neuer Button erstellt` 
 * Pushen
-* __Review App:__ Pull Request erstellen & auf [Heroku](https://dashboard.heroku.com/pipelines/6d86397b-7093-4252-b978-2f57b25e5620) eine Review-App erstellen (Access für die Pipeline bitte bei [jonashackt](https://github.com/jonashackt) anfragen, der `Create Review App`-Button erscheint, sobald der PullRequest erstellt wurde):
+
+* __When your Feature is ready__ Pull Request auf GitHub erstellen
+
+![create-pull-request](create-pull-request.png)
+
+* __Review App:__ Auf [Heroku](https://dashboard.heroku.com/pipelines/6d86397b-7093-4252-b978-2f57b25e5620) eine Review-App erstellen (Access für die Pipeline bitte bei [jonashackt](https://github.com/jonashackt) anfragen, der `Create Review App`-Button erscheint, sobald der PullRequest erstellt wurde):
 
 ![heroku-pipeline](heroku-pipeline.png)
 
