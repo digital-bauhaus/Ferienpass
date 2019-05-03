@@ -258,12 +258,12 @@ public class BackendController {
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Long addNewProject(@RequestParam String name, @RequestParam String date,
-                       @RequestParam String endDate, @RequestParam int age,
+                       @RequestParam String endDate, @RequestParam int minAge,
                        @RequestParam int maxAge, @RequestParam int price,
                        @RequestParam int slots,
                        @RequestParam int slotsReserved, @RequestParam String traeger, @RequestParam String weblink) {
         Projekt project = new Projekt(name, dateString2LocalDate(date),
-                dateString2LocalDate(endDate), age, maxAge, price, slots,
+                dateString2LocalDate(endDate), minAge, maxAge, price, slots,
                 slotsReserved, traeger, weblink);
         projektRepository.save(project);
         LOG.info(project.toString() + "successfully saved into DB");
@@ -277,7 +277,7 @@ public class BackendController {
     public @ResponseBody
     Boolean updateProject(@RequestParam Long id, @RequestParam String name,
                           @RequestParam String date,
-                          @RequestParam String endDate, @RequestParam int age,
+                          @RequestParam String endDate, @RequestParam int minAge,
                           @RequestParam int maxAge, @RequestParam int price,
                           @RequestParam int slots,
                        @RequestParam int slotsReserved, @RequestParam String traeger, @RequestParam String weblink) {
@@ -301,7 +301,8 @@ public class BackendController {
         dateRaw = endDate.split(",");
         project.setDatumEnde(LocalDate.of(Integer.valueOf(dateRaw[0]), Integer.valueOf(dateRaw[1]), Integer.valueOf(dateRaw[2])));
 
-        project.setMindestAlter(age);
+        project.setMindestAlter(minAge);
+        project.setHoechstAlter(maxAge);
         project.setKosten(price);
         project.setSlotsGesamt(slots);
         project.setSlotsReserviert(slotsReserved);
