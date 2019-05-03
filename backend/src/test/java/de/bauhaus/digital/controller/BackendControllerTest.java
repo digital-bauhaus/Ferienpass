@@ -558,7 +558,7 @@ public class BackendControllerTest {
                         .param("name", projekt.getName())
                         .param("date", localDate2String(projekt.getDatum()))
                         .param("endDate", localDate2String(projekt.getDatumEnde()))
-                        .param("age",projekt.getMindestAlter())
+                        .param("minAge",projekt.getMindestAlter())
                         .param("maxAge",projekt.getHoechstAlter())
                         .param("price",projekt.getKosten())
                         .param("slots",projekt.getSlotsGesamt())
