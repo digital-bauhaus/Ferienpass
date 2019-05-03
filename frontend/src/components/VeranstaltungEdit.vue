@@ -130,26 +130,32 @@ export default {
 
       if (this.id < 0) {
         AXIOS.post('/createproject', params)
-        .then(response => {})
+        .then(response => {
+            this.popupClass = 'fadeIn';
+            var self = this;
+            setTimeout(function () {
+                self.popupClass = 'fadeOut';
+            }, 2000);
+        })
         .catch(e => {
           this.errors.push(e)
         })
       } else {
         params.append('id', id);
         AXIOS.post('/updateproject', params)
-        .then(response => { this.updateSuccess = (response.data === 'true') })
+        .then(response => {
+            this.popupClass = 'fadeIn';
+            var self = this;
+            setTimeout(function () {
+                self.popupClass = 'fadeOut';
+            }, 2000);
+            })
         .catch(e => {
           this.errors.push(e)
         })
       }
 
-      if (this.updateSuccess !== 'true') {
-        this.popupClass = 'fadeIn'
-        var self = this;
-        setTimeout(function () {
-          self.popupClass = 'fadeOut';
-        }, 2000);
-      }
+
     },
     kill (event) {
       event.target.parentElement.parentElement.remove();

@@ -18,6 +18,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -587,6 +588,7 @@ public class BackendControllerTest {
     }
 
     private String localDate2String(LocalDate datum) {
+        // TODO is this really correct?
         return datum.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
@@ -606,6 +608,61 @@ public class BackendControllerTest {
         assertThat(projectID, is(responseProjekt.getId()));
         assertThat(projekt.getName(), is(responseProjekt.getName()));
         assertThat(responseProjekt.isAktiv(),is(false));
+    }
+
+    @Test
+    public void testProjectCanBeUpdated() {
+        //Create a project
+        Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
+
+        // add project to database via API
+        Long projectID = addProjekt(projekt);
+
+        String name = "Neuer Name";
+        LocalDate date = LocalDate.now();
+        LocalDate endDate   = LocalDate.now();
+        int slotsTotal = 10;
+        int slotsReserved = 5;
+        int minAge = 1;
+        int maxAge = 5;
+        int price = 20;
+        String weblink = "www.test.de";
+        String sponsor = "Testsponsor";
+
+        // update Project
+        given()
+                .param("id", projectID)
+                .param("name", name)
+                .param("date", localDate2String(date))
+                .param("endDate", localDate2String(endDate))
+                .param("minAge",minAge)
+                .param("maxAge",maxAge)
+                .param("price",price)
+                .param("slots",slotsTotal)
+                .param("slotsReserved",slotsReserved)
+                .param("traeger",sponsor)
+                .param("weblink",weblink)
+            .when()
+                .put(BASE_URL + "/updateproject")
+            .then()
+                .statusCode(is(HttpStatus.SC_NO_CONTENT))
+                .assertThat();
+
+        // retrieve project again from database
+        Projekt responseProject = getProjekt(projectID);
+
+        // assert project was updated correctly
+        assertThat(responseProject.getName(), is(name));
+        // TODO date has to be checked too!
+        //assertThat(responseProject.getDatum(), is(date));
+        //assertThat(responseProject.getDatumEnde(), is(endDate));
+        assertThat(responseProject.getSlotsGesamt(), is(slotsTotal));
+        assertThat(responseProject.getSlotsReserviert(), is(slotsReserved));
+        assertThat(responseProject.getMindestAlter(), is(minAge));
+        assertThat(responseProject.getHoechstAlter(), is(maxAge));
+        assertThat(responseProject.getKosten(), is(price));
+        assertThat(responseProject.getWebLink(), is(weblink));
+        assertThat(responseProject.getTraeger(), is(sponsor));
     }
 
     private Projekt getProjekt(Long projectID) {

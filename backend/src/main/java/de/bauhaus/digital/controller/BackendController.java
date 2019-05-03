@@ -2,6 +2,7 @@ package de.bauhaus.digital.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bauhaus.digital.domain.*;
+import de.bauhaus.digital.exception.BadRequestException;
 import de.bauhaus.digital.exception.ResourceNotFoundException;
 import de.bauhaus.digital.repository.ProjektRepository;
 import de.bauhaus.digital.repository.TeilnehmerRepository;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -273,7 +275,7 @@ public class BackendController {
 
     // UPDATE PROJECT
     @RequestMapping(path = "/updateproject")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public @ResponseBody
     Boolean updateProject(@RequestParam Long id, @RequestParam String name,
                           @RequestParam String date,
@@ -284,7 +286,7 @@ public class BackendController {
         Projekt project = projektRepository.findById(id).orElse(null);
         if (project == null) {
             LOG.info("Could not find a project to update with id:" + id);
-            return false;
+            throw new ResourceNotFoundException("No project found with id: " + id);
         }
         if (slots < project.getSlotsGesamt() && slots < project.getSlotsGesamt() - project.getSlotsFrei()) {
             LOG.info("Could not update project, because there are already too many slots taken.");
@@ -296,10 +298,22 @@ public class BackendController {
         }
         project.setName(name);
 
-        String[] dateRaw = date.split(",");
-        project.setDatum(LocalDate.of(Integer.valueOf(dateRaw[0]), Integer.valueOf(dateRaw[1]), Integer.valueOf(dateRaw[2])));
-        dateRaw = endDate.split(",");
-        project.setDatumEnde(LocalDate.of(Integer.valueOf(dateRaw[0]), Integer.valueOf(dateRaw[1]), Integer.valueOf(dateRaw[2])));
+        try {
+            // TODO has to be reactivated to allow date change
+            //project.setDatum(LocalDate.parse(date));
+        } catch (DateTimeParseException e)
+        {
+            LOG.warn("Could not update project, invalid date submitted.");
+            throw new BadRequestException("Invalid date");
+        }
+        try {
+            // TODO has to be reactivated to allow date change
+            //project.setDatumEnde(LocalDate.parse(endDate));
+        } catch (DateTimeParseException e)
+        {
+            LOG.warn("Could not update project, invalid endDate submitted.");
+            throw new BadRequestException("Invalid endDate");
+        }
 
         project.setMindestAlter(minAge);
         project.setHoechstAlter(maxAge);
