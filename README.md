@@ -59,6 +59,30 @@ Dabei steht die Anmeldungsseite direkt auf der Startseite zur Verfügung (lokal 
 
 ### Continuous Integration and Deployment
 
-Tests werden automatisch bei jedem Push auf den master branch ausgeführt und es finded ein automatischer Deploy auf Heroku statt, wenn der TravisCI build erfolgreich durchgelaufen ist. Die Anwendung kann unter der folgendne URL aufgerufen werden:
+Tests werden automatisch bei jedem Push auf den Feature-Branches oder den master durch [TravisCI](https://travis-ci.org/digital-bauhaus/Ferienpass) ausgeführt und es finded ein automatischer Deploy auf Heroku statt, wenn der TravisCI build erfolgreich durchgelaufen ist.
+
+Entwickelt werden soll mit Hilfe von Feature-Branches und Pull-Requests - der master-Branch ist als "Produktions-ready" immer baufähig zu halten.
+ 
+
+##### Dev-Workflow
+
+* __Clone:__ lokal das Repository clonen per `git clone https://github.com/digital-bauhaus/Ferienpass.git`
+* __No Merge Commits:__ lokal das Erstellen von Merge-Commits unterbinden mit der Einstellung: `git config --global pull.rebase preserve`
+* __Focus on Issues:__ auf [GitHub ein Issue](https://github.com/digital-bauhaus/Ferienpass/issues) auswählen oder neu erstellen
+* __Create Branch:__ dann einen neuen Branch erstellen nach dem Muster `feature/#issueNummer-issue-titel`, z.B. `feature/#2-kostenplichtige-anmeldung`
+* lokal pullen und entwickeln 
+* __Do Tests run?__ Vor dem Commit sicherstellen, dass alle Tests laufen und die Anwendung baut
+* __Commit message!__ Beim Commit darauf achten, dass der Kommentar die GitHub-Issue-Nummer enthält, z.B. `#4 Neuer Button erstellt` 
+* Pushen
+* __Review App:__ Pull Request erstellen & auf [Heroku](https://dashboard.heroku.com/pipelines/6d86397b-7093-4252-b978-2f57b25e5620) eine Review-App erstellen (Access für die Pipeline bitte bei [jonashackt](https://github.com/jonashackt) anfragen, der `Create Review App`-Button erscheint, sobald der PullRequest erstellt wurde):
+
+![heroku-pipeline](heroku-pipeline.png)
+
+* Heroku erstellt eine eigene URL für die Anwendung, unter der sie getestet werden kann 
+
+
+##### Staging / Production
+
+Die pre-produktive / produktive Anwendung kann unter der folgenden URL aufgerufen werden:
 
 https://ferienpass.herokuapp.com/#/
