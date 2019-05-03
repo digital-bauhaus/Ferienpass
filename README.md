@@ -77,13 +77,15 @@ Entwickelt werden soll mit Hilfe von Feature-Branches und Pull-Requests - der ma
 
 * __When your Feature is ready__ Pull Request auf GitHub erstellen
 
-![create-pull-request](create-pull-request.png)
+![create-pull-request](docs/create-pull-request.png)
 
-* __Review App:__ Auf [Heroku](https://dashboard.heroku.com/pipelines/6d86397b-7093-4252-b978-2f57b25e5620) eine Review-App erstellen (Access für die Pipeline bitte bei [jonashackt](https://github.com/jonashackt) anfragen, der `Create Review App`-Button erscheint, sobald der PullRequest erstellt wurde):
+* __Review App:__ [Heroku](https://dashboard.heroku.com/pipelines/6d86397b-7093-4252-b978-2f57b25e5620) erstellt nun automatisch eine Review-App für diesen PullRequest/Branch (Access für die Pipeline bitte bei [jonashackt](https://github.com/jonashackt) anfragen):
 
-![heroku-pipeline](heroku-pipeline.png)
+![heroku-pipeline](docs/heroku-pipeline.png)
 
-* Heroku erstellt eine eigene URL für die Anwendung, unter der sie getestet werden kann 
+* Heroku erstellt eine eigene URL für die Anwendung, unter der sie getestet werden kann. Die URL kann über `Open App in browser` über den kleinen Button neben der App geöffnet werden:
+
+![heroku-review-app-link](docs/heroku-review-app-link.png)
 
 
 ##### Staging / Production
