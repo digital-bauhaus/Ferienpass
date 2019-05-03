@@ -256,8 +256,8 @@ export default {
           name: 'projekt-id' + adminProjekt.id,
           registered: false,
           projekt: {
-            date: adminProjekt.datum,
-            endDate: adminProjekt.datumEnde,
+            date: new Date(adminProjekt.datum),
+            endDate: new Date(adminProjekt.datumEnde),
             id: adminProjekt.id,
             org: adminProjekt.traeger,
             minimumAge: adminProjekt.mindestAlter,
