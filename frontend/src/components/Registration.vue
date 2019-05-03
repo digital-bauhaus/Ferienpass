@@ -221,7 +221,7 @@ export default {
       console.log(this.alleAnmeldungProjekte);
     },
     modalSuccess () {
-      this.$swal('Geschafft!', 'Deine Anmeldung war erfolgreich!', 'success')
+      this.$swal('Geschafft!', 'Deine Anmeldung war erfolgreich!\n Sie erhalten eine eMail mit der Zahlungsaufforderung.', 'success')
     },
     modalProjectOverbooked () {
       this.$swal('Oh nein!', 'Eines der Angebote ist leider schon belegt!', 'warning')

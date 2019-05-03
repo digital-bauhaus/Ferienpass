@@ -122,8 +122,6 @@ public class AnmeldungToAdmin {
 
         teilnehmer.setKrankenkasse(anmeldungJson.getConditionsHealthInsurance());
         teilnehmer.setNotfallKontakt(mappeNotfallKontakt(anmeldungJson));
-        //TODO: Warum muss die Notrufnummer zweimal gesetzt werden? verstehe die Frage nicht.
-        teilnehmer.setKrankenkasse(anmeldungJson.getConditionsEmergencyPhoneNumber());
 
         teilnehmer.setArzt(mappeArzt(anmeldungJson));
     }

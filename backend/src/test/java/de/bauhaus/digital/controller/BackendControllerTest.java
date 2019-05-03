@@ -462,7 +462,10 @@ public class BackendControllerTest {
     }
 
     private void pruefeAllergienKrankheitenEtc(Teilnehmer responseUser) {
-        //ToDo: Woher kommen die Daten dieses Users?
+        String expectedHealthInsurance = "Techniker Krankenkasse";
+        assertThat(responseUser.getKrankenkasse(),is(expectedHealthInsurance));
+
+        //ToDo: Woher kommen die Daten dieses Users? -> aus resources/requests/anmeldung-post-data.json
         String expextedAllergies = "Heuschnupfen\nHausstaub\nNussallergie\nKatzenhaarallergie\nRegenallergie";
         assertThat(responseUser.getAllergien(),is(expextedAllergies));
 
