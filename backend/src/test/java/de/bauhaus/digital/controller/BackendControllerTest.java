@@ -6,7 +6,6 @@ import de.bauhaus.digital.FerienpassAdminApplication;
 import de.bauhaus.digital.domain.*;
 import de.bauhaus.digital.repository.TeilnehmerRepositoryTest;
 import de.bauhaus.digital.transformation.AnmeldungJson;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.hamcrest.MatcherAssert;
@@ -213,8 +212,8 @@ public class BackendControllerTest {
 
         deleteUser(responseUser);
 
+        getNoUser(userId);
     }
-
 
 
 
@@ -885,6 +884,16 @@ public class BackendControllerTest {
                 .assertThat()
                 .extract().as(Teilnehmer.class);
     }
+
+    private void getNoUser(Long userId) {
+            given()
+                .pathParam("id", userId)
+                .when()
+                .get(BASE_URL + "/user/{id}")
+                .then()
+                .statusCode(HttpStatus.SC_NOT_FOUND);
+    }
+
 
     private boolean setProjektInactive(Long projectID) {
         return given()

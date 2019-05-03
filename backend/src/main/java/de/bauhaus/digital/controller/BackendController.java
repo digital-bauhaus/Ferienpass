@@ -3,6 +3,7 @@ package de.bauhaus.digital.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bauhaus.digital.domain.*;
 import de.bauhaus.digital.exception.ResourceNotFoundException;
+import de.bauhaus.digital.exception.UserNotFoundException;
 import de.bauhaus.digital.repository.ProjektRepository;
 import de.bauhaus.digital.repository.TeilnehmerRepository;
 import de.bauhaus.digital.transformation.AnmeldungJson;
@@ -60,7 +61,12 @@ public class BackendController {
     @GetMapping(path = "/user/{id}")
     public @ResponseBody
     Teilnehmer getUserById(@PathVariable("id") long id) {
-        return teilnehmerRepository.findById(id).orElse(null);
+        Optional<Teilnehmer> optionalTeilnehmer = teilnehmerRepository.findById(id);
+        if(optionalTeilnehmer.isPresent()) {
+            return optionalTeilnehmer.get();
+        } else {
+            throw new UserNotFoundException("Teilnehmer mit der id " + id + " nicht gefunden.");
+        }
     }
 
     //Add a new user (Teilnehmer) based on a user object
