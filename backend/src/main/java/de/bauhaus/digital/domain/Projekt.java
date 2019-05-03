@@ -13,7 +13,8 @@ public class Projekt {
     private String name;
     private LocalDate datum;
     private LocalDate datumEnde;
-    private int alterLimitierung;
+    private int mindestAlter;
+    private int hoechstAlter;
     //private String organisation;
     private int kosten;
     private int slotsGesamt;
@@ -31,25 +32,36 @@ public class Projekt {
 
     protected Projekt() {}
 
-    public Projekt(String name, LocalDate datum, LocalDate datumEnde, int alterLimitierung, int kosten, int slotsGesamt, int slotsReserviert, String traeger, String webLink) {
-        this.setName(name);
-        this.setDatum(datum);
-        this.setDatumEnde(datumEnde);
-        this.setAlterLimitierung(alterLimitierung);
-        this.setKosten(kosten);
-        this.setSlotsGesamt(slotsGesamt);
-        this.setSlotsFrei(slotsGesamt - slotsReserviert);
-        this.setSlotsReserviert(slotsReserviert);
-        this.setTraeger(traeger);
-        this.setWebLink(webLink);
-        this.setAktiv(true);
+    public Projekt(String name, LocalDate datum, LocalDate datumEnde,
+                   int mindestAlter, int hoechstAlter, int kosten,
+                   int slotsGesamt, int slotsReserviert, String traeger,
+                   String webLink) {
+        setName(name);
+        setDatum(datum);
+        setDatumEnde(datumEnde);
+        setMindestAlter(mindestAlter);
+        setHoechstAlter(hoechstAlter);
+        setKosten(kosten);
+        setSlotsGesamt(slotsGesamt);
+        setSlotsFrei(slotsGesamt - slotsReserviert);
+        setSlotsReserviert(slotsReserviert);
+        setTraeger(traeger);
+        setWebLink(webLink);
+        setAktiv(true);
     }
+
+
 
     @Override
     public String toString() {
         return String.format(
-                "Projekt[id=%d, Name='%s', Datum='%s', alterLimitierung='%d', Kosten='%d' Slots Gesamt='%d', Frei Slots='%d', Reservierte Slots='%d', Weblink='%s']",
-                getId(), getName(), getDatum(), getAlterLimitierung(), getKosten(), getSlotsGesamt(), getSlotsFrei(), getSlotsReserviert(), getWebLink());
+                "Projekt[id=%d, Name='%s', Datum='%s', mindestAlter='%d', " +
+                        "hoechstAlter='%d', Kosten='%d' Slots Gesamt='%d', " +
+                        "Frei Slots='%d', Reservierte Slots='%d', Weblink='%s']",
+                getId(), getName(), getDatum(), getMindestAlter(),
+                getHoechstAlter(), getKosten(), getSlotsGesamt(),
+                getSlotsFrei(),
+                getSlotsReserviert(), getWebLink());
     }
 
     public long getId() {
@@ -76,13 +88,22 @@ public class Projekt {
         this.datum = datum;
     }
 
-    public int getAlterLimitierung() {
-        return alterLimitierung;
+    public int getMindestAlter() {
+        return mindestAlter;
     }
 
-    public void setAlterLimitierung(int alterLimitierung) {
-        this.alterLimitierung = alterLimitierung;
+    public void setMindestAlter(int mindestAlter) {
+        this.mindestAlter = mindestAlter;
     }
+
+    public int getHoechstAlter() {
+        return hoechstAlter;
+    }
+
+    public void setHoechstAlter(int hoechstAlter) {
+        this.hoechstAlter = hoechstAlter;
+    }
+
 
     public int getKosten() {
         return kosten;
@@ -178,4 +199,5 @@ public class Projekt {
     public boolean hasProjektFreeSlots() {
         return this.slotsFrei > 0;
     }
+
 }

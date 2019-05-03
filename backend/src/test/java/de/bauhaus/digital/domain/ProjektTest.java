@@ -27,8 +27,12 @@ public class ProjektTest {
         assertThat(gartenParty.getSlotsReserviert(), is(8));
     }
 
-    public static Projekt createProjekt(String projektName, LocalDate datum, LocalDate datumEnde, int slotsgesamt, int slotsReserviert) {
-        return new Projekt(projektName, datum, datumEnde, 15, 12, slotsgesamt, slotsReserviert, "Sportjugend Weimar", "www.google.com");
+    public static Projekt createProjekt(String projektName, LocalDate datum,
+                                        LocalDate datumEnde, int slotsgesamt,
+                                        int slotsReserviert) {
+        return new Projekt(projektName, datum, datumEnde, 15, 20, 12,
+                slotsgesamt, slotsReserviert, "Sportjugend Weimar",
+                "www.google.com");
     }
 
     public static Teilnehmer createUser(String name, String vorname) {

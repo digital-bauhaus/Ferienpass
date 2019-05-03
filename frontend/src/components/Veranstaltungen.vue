@@ -78,7 +78,7 @@ export default {
       doc.text('Projektdaten', 20, y += deltaLine)
       doc.text('Name: ' + this.allprojects[projectID].name, 20, y += deltaLine)
       doc.text('Veranstaltungsdatum: ' + this.allprojects[projectID].datum, 20, y += deltaLine)
-      doc.text('Altersbeschränkung: ' + this.allprojects[projectID].alterLimitierung, 20, y += deltaLine)
+      doc.text('Altersbeschränkung: ' + this.allprojects[projectID].mindestAlter, 20, y += deltaLine)
       doc.text('Regulärer Preis: ' + this.allprojects[projectID].kosten, 20, y += deltaLine)
       doc.text('Freie Plätze: ' + this.allprojects[projectID].slotsFrei, 20, y += deltaLine)
       doc.text('Belegte Plätze: ' + this.allprojects[projectID].slotsReserviert, 20, y += deltaLine)

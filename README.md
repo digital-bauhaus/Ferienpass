@@ -107,6 +107,8 @@ check following links
 
 `http://localhost:8088/#/Veranstaltungen/`
 
+`http://localhost:8088/swagger-ui.html`
+
 ### Continuous Integration and Deployment
 
 Tests werden automatisch bei jedem Push auf den Feature-Branches oder den master durch [TravisCI](https://travis-ci.org/digital-bauhaus/Ferienpass) ausgeführt und es finded ein automatischer Deploy auf Heroku statt, wenn der TravisCI build erfolgreich durchgelaufen ist.

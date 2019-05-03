@@ -76,8 +76,15 @@ public class TeilnehmerRepositoryTest {
         return user;
     }
 
-    public static Projekt createSampleProject(String projektName, int slotsGesamt, LocalDate datum, LocalDate endeDatum, String traeger, int alterLimitierung) {
-        return new Projekt(projektName, datum, endeDatum, alterLimitierung, 20, slotsGesamt, 1, traeger, "www.google.com");
+    public static Projekt createSampleProject(String projektName,
+                                              int slotsGesamt,
+                                              LocalDate datum,
+                                              LocalDate endeDatum,
+                                              String traeger,
+                                              int mindestAlter,
+                                              int hoechstAlter) {
+        return new Projekt(projektName, datum, endeDatum, mindestAlter,
+                hoechstAlter, 20, slotsGesamt, 1, traeger, "www.google.com");
     }
 
     public static Teilnehmer createUser() {
@@ -108,13 +115,17 @@ public class TeilnehmerRepositoryTest {
     public List<Projekt> createProjects(int numberOfProjects) {
         ArrayList<Projekt> result = new ArrayList<Projekt>();
         for (int i = addedProjects; i < addedProjects+numberOfProjects; i++){
-            Projekt p = new Projekt("Testprojekt " + i, LocalDate.of(2018, 6, 4), LocalDate.of(2018, 6, 7), 5+i, 20, 3+i, 1, "Sportjugend Weimar", "www.google.com");
+            Projekt p = new Projekt("Testprojekt " + i, LocalDate.of(2018, 6,
+                    4), LocalDate.of(2018, 6, 7), 5+i, 20+i, 20, 3+i, 1,
+                    "Sportjugend Weimar", "www.google.com");
             result.add(p);}
         return result;
     }
 
     public Projekt createSingleProject() {
-       return new Projekt("Schwimmen im See", LocalDate.of(2018, 7, 1), LocalDate.of(2018, 7, 3), 15, 12, 10, 5, "Sportjugend Weimar","www.google.com");
+       return new Projekt("Schwimmen im See", LocalDate.of(2018, 7, 1),
+               LocalDate.of(2018, 7, 3), 15, 20, 12, 10, 5, "Sportjugend " +
+               "Weimar","www.google.com");
     }
 
     @Before
@@ -128,21 +139,24 @@ public class TeilnehmerRepositoryTest {
                 LocalDate.of(2018, 7, 16),
                 LocalDate.of(2018, 7, 17),
                 "Tasifan",
-                10));
+                10,
+                20));
         projects.save(createSampleProject(
                 "Bauspielplatz",
                 10,
                 LocalDate.of(2018, 8, 02),
                 LocalDate.of(2018, 8, 02),
                 "Nordlicht e.V.",
-                6));
+                6,
+                20));
         projects.save(createSampleProject(
                 "Papier-Werkstatt",
                 8,
                 LocalDate.of(2018, 7, 23),
                 LocalDate.of(2018, 7, 25),
                 "Sektion Weimar des Deutschen Alpenvereins e.V.",
-                8));
+                8,
+                20));
     }
 
     @Test
