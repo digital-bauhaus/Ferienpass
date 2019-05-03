@@ -55,6 +55,7 @@ public class BackendController {
         LOG.info("GET called on /allusers resource");
         return teilnehmerRepository.findAllUsers();
     }
+
     // GET USER INFORMATION BY ID
     @GetMapping(path = "/user/{id}")
     public @ResponseBody
@@ -112,7 +113,7 @@ public class BackendController {
             teilnehmer2Update.setEssenLimitierungen(user.getEssenLimitierungen());
 
             Teilnehmer savedTeilnehmer = teilnehmerRepository.save(teilnehmer2Update);
-            LOG.info("User with id "+ user.getId() + " successfully updated");
+            LOG.info("User with id " + user.getId() + " successfully updated");
             return savedTeilnehmer;
 
         }).orElseThrow(() -> new ResourceNotFoundException("User " + user.getId() + " not found"));
@@ -145,7 +146,7 @@ public class BackendController {
     }
 
     private Boolean assignUserToProjektWhenNotAlreadyAssigned(Teilnehmer teilnehmer, Projekt projekt) {
-        if(projekt.isTeilnehmerNotAlreadyAsignedToProjekt(teilnehmer)) {
+        if (projekt.isTeilnehmerNotAlreadyAsignedToProjekt(teilnehmer)) {
             projekt.addAnmeldung(teilnehmer);
             projektRepository.save(projekt);
             LOG.info("Successfully assigned project " + projekt.getName() + " to user " + teilnehmer.getNachname());
@@ -154,7 +155,6 @@ public class BackendController {
         }
         return true;
     }
-
 
 
     /*******************************************
@@ -174,9 +174,9 @@ public class BackendController {
         boolean oneOrMoreProjekteVoll = false;
 
         for (Project project : anmeldungJson.getProjects()) {
-            if(project.isRegistered()) {
+            if (project.isRegistered()) {
                 Projekt projekt = projektRepository.findById(project.getId().longValue()).orElse(null);
-                if(projekt.hasProjektFreeSlots()) {
+                if (projekt.hasProjektFreeSlots()) {
                     projekt.addAnmeldung(neuAngemeldeterTeilnehmer);
                 } else {
                     LOG.info("The Projekt " + projekt.getName() + " with Id " + projekt.getId() + " has no free Slots left!");
@@ -185,7 +185,7 @@ public class BackendController {
             }
         }
 
-        if(oneOrMoreProjekteVoll) {
+        if (oneOrMoreProjekteVoll) {
             List<Long> everyProjektWithoutFreeSlots = addEveryProjektThatHasNoFreeSlots();
             LOG.info("Respond with Http 409 Conflict and the list of all Projekt´s, that has no free slots.");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(everyProjektWithoutFreeSlots);
@@ -201,7 +201,7 @@ public class BackendController {
     private List<Long> addEveryProjektThatHasNoFreeSlots() {
         List<Long> projekteOhneFreiSlots = new ArrayList<>();
         projektRepository.findAllProjects().forEach(projekt -> {
-            if(!projekt.hasProjektFreeSlots()) {
+            if (!projekt.hasProjektFreeSlots()) {
                 projekteOhneFreiSlots.add(projekt.getId());
             }
         });
@@ -227,9 +227,9 @@ public class BackendController {
     List<Projekt> showProjectsOfUser(@RequestParam String vorname, @RequestParam String nachname) {
         LOG.info("GET called on /projectsof resource");
         List<Projekt> resultList = new ArrayList<>();
-        for (Projekt p:projektRepository.findAll()) {
-            for (Teilnehmer t: p.getAnmeldungen()) {
-                if(t.getVorname().equals(vorname) && t.getNachname().equals(nachname))
+        for (Projekt p : projektRepository.findAll()) {
+            for (Teilnehmer t : p.getAnmeldungen()) {
+                if (t.getVorname().equals(vorname) && t.getNachname().equals(nachname))
                     resultList.add(p);
             }
         }
@@ -244,8 +244,8 @@ public class BackendController {
         LOG.info("GET called on /projectsofid resource with userID: " + userID);
         List<Projekt> resultList = new ArrayList<>();
         for (Projekt projekt : projektRepository.findAll()) {
-            for (Teilnehmer teilnehmer: projekt.getAnmeldungen()) {
-                if(teilnehmer.getId() == userID)
+            for (Teilnehmer teilnehmer : projekt.getAnmeldungen()) {
+                if (teilnehmer.getId() == userID)
                     resultList.add(projekt);
             }
         }
@@ -271,7 +271,7 @@ public class BackendController {
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Boolean updateProject(@RequestParam Long id, @RequestParam String name, @RequestParam String date, @RequestParam String endDate, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
-                       @RequestParam int slotsReserved, @RequestParam String traeger, @RequestParam String weblink) {
+                          @RequestParam int slotsReserved, @RequestParam String traeger, @RequestParam String weblink) {
         Projekt project = projektRepository.findById(id).orElse(null);
         if (project == null) {
             LOG.info("Could not find a project to update with id:" + id);
@@ -279,11 +279,11 @@ public class BackendController {
         }
         if (slots < project.getSlotsGesamt() && slots < project.getSlotsGesamt() - project.getSlotsFrei()) {
             LOG.info("Could not update project, because there are already too many slots taken.");
-            return  false;
+            return false;
         }
-        if(slotsReserved > project.getSlotsReserviert() && slotsReserved - project.getSlotsReserviert() > project.getSlotsFrei()) {
+        if (slotsReserved > project.getSlotsReserviert() && slotsReserved - project.getSlotsReserviert() > project.getSlotsFrei()) {
             LOG.info("Could not update project, because you want to reserve more slots than slots are free.");
-            return  false;
+            return false;
         }
         project.setName(name);
 
@@ -316,11 +316,29 @@ public class BackendController {
 
         Projekt p = projektRepository.findById(project_id).orElse(null);
         if (p == null)
-            return  false;
+            return false;
         p.setAktiv(false);
         projektRepository.save(p);
         LOG.info(p.toString() + " is set to inactive");
 
+        return true;
+    }
+
+
+    // remove user from project
+    @RequestMapping(path = "/removefromproject")
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    Boolean removefromproject(@RequestBody Map<String, Long> ids) {
+        Long projectId = (long) ids.get("projectId");
+        Long userId = ids.get("userId");
+        Projekt p = this.projektRepository.findById(projectId).orElse(null);
+        Teilnehmer t = this.teilnehmerRepository.findById(userId).orElse(null);;
+        if (p == null || t == null)
+            return false;
+        p.addStornierterTeilnehmer(t);
+        projektRepository.save(p);
+        LOG.info(t.toString() + " remove from project " + p.toString());
         return true;
     }
 

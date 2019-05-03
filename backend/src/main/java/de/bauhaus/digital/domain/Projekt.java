@@ -166,6 +166,11 @@ public class Projekt {
         this.stornierteTeilnehmer = stornierteTeilnehmer;
     }
 
+    public void addStornierterTeilnehmer(Teilnehmer stornierterTeilnehmer) {
+        this.stornierteTeilnehmer.add(stornierterTeilnehmer);
+        this.anmeldungen.remove(stornierterTeilnehmer);
+    }
+
     public boolean isTeilnehmerNotAlreadyAsignedToProjekt(Teilnehmer teilnehmer) {
         return !this.anmeldungen.contains(teilnehmer);
     }

@@ -262,20 +262,21 @@ export default {
       })
     },
     cancelProject (id, projectId) {
-      AXIOS.post('/cancelproject', {
-        user_id: id,
-        project: projectId
+      AXIOS.post('/removefromproject', {
+        userId: id,
+        projectId: projectId
       })
         .then(response => {
-          this.popupClass = 'fadeIn'
+          this.popupClass = 'fadeIn';
           var self = this;
           setTimeout(function () {
             self.popupClass = 'fadeOut';
           }, 2000);
+          this.getProjectsOfUser()
         })
           .catch(e => {
             this.errors.push(e)
-          })
+          });
     },
     assignProject (id, projectId) {
       AXIOS.post('/assignProject', {
@@ -288,11 +289,11 @@ export default {
           setTimeout(function () {
             self.popupClass = 'fadeOut';
           }, 2000);
+          this.getProjectsOfUser()
         })
           .catch(e => {
             this.errors.push(e)
-          })
-      this.getProjectsOfUser()
+          });
     },
     getUserData () {
       var id = parseInt(this.$route.query.id);
