@@ -292,7 +292,7 @@ public class BackendController {
         dateRaw = endDate.split(",");
         project.setDatumEnde(LocalDate.of(Integer.valueOf(dateRaw[0]), Integer.valueOf(dateRaw[1]), Integer.valueOf(dateRaw[2])));
 
-        project.setAlterLimitierung(age);
+        project.setMindestAlter(age);
         project.setKosten(price);
         project.setSlotsGesamt(slots);
         project.setSlotsReserviert(slotsReserved);

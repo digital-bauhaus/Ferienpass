@@ -13,7 +13,7 @@ public class Projekt {
     private String name;
     private LocalDate datum;
     private LocalDate datumEnde;
-    private int alterLimitierung;
+    private int mindestAlter;
     //private String organisation;
     private int kosten;
     private int slotsGesamt;
@@ -31,11 +31,11 @@ public class Projekt {
 
     protected Projekt() {}
 
-    public Projekt(String name, LocalDate datum, LocalDate datumEnde, int alterLimitierung, int kosten, int slotsGesamt, int slotsReserviert, String traeger, String webLink) {
+    public Projekt(String name, LocalDate datum, LocalDate datumEnde, int mindestAlter, int kosten, int slotsGesamt, int slotsReserviert, String traeger, String webLink) {
         this.setName(name);
         this.setDatum(datum);
         this.setDatumEnde(datumEnde);
-        this.setAlterLimitierung(alterLimitierung);
+        this.setMindestAlter(mindestAlter);
         this.setKosten(kosten);
         this.setSlotsGesamt(slotsGesamt);
         this.setSlotsFrei(slotsGesamt - slotsReserviert);
@@ -48,8 +48,8 @@ public class Projekt {
     @Override
     public String toString() {
         return String.format(
-                "Projekt[id=%d, Name='%s', Datum='%s', alterLimitierung='%d', Kosten='%d' Slots Gesamt='%d', Frei Slots='%d', Reservierte Slots='%d', Weblink='%s']",
-                getId(), getName(), getDatum(), getAlterLimitierung(), getKosten(), getSlotsGesamt(), getSlotsFrei(), getSlotsReserviert(), getWebLink());
+                "Projekt[id=%d, Name='%s', Datum='%s', mindestAlter='%d', Kosten='%d' Slots Gesamt='%d', Frei Slots='%d', Reservierte Slots='%d', Weblink='%s']",
+                getId(), getName(), getDatum(), getMindestAlter(), getKosten(), getSlotsGesamt(), getSlotsFrei(), getSlotsReserviert(), getWebLink());
     }
 
     public long getId() {
@@ -76,12 +76,12 @@ public class Projekt {
         this.datum = datum;
     }
 
-    public int getAlterLimitierung() {
-        return alterLimitierung;
+    public int getMindestAlter() {
+        return mindestAlter;
     }
 
-    public void setAlterLimitierung(int alterLimitierung) {
-        this.alterLimitierung = alterLimitierung;
+    public void setMindestAlter(int mindestAlter) {
+        this.mindestAlter = mindestAlter;
     }
 
     public int getKosten() {
