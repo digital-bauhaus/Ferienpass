@@ -619,16 +619,14 @@
                 "component": "TextField",
                 "params": {
                   "label": "Name",
-                  "name": "conditions__emergency-name",
-                  "required": true
+                  "name": "conditions__emergency-name"
                 }
               },
               {
                 "component": "TextField",
                 "params": {
                   "label": "Anschrift",
-                  "name": "conditions__emergency-address",
-                  "required": true
+                  "name": "conditions__emergency-address"
                 }
               },
               {
@@ -636,7 +634,6 @@
                 "params": {
                   "label": "Telefon",
                   "name": "conditions__emergency-phone-number",
-                  "required": true,
                   "type": "tel"
                 }
               }
