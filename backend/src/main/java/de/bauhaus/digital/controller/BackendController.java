@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController()
 @RequestMapping("/api")
@@ -120,6 +121,12 @@ public class BackendController {
 
     }
 
+
+    @RequestMapping(path = "/user", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@RequestBody Teilnehmer user) {
+        teilnehmerRepository.delete(user);
+    }
 
     //Assign Project to user
     @RequestMapping(path = "/assignProject", method = RequestMethod.POST)
