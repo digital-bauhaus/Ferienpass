@@ -18,7 +18,10 @@
         <span style="font-weight: bold;">{{ params.label }}</span>
         <ul class="meta-list">
           <li>{{ params.projekt.date[2] }}.{{ params.projekt.date[1] }}.{{ params.projekt.date[0] }} - {{ params.projekt.endDate[2] }}.{{ params.projekt.endDate[1] }}.{{ params.projekt.endDate[0] }}</li>
-          <li>Ab {{ params.projekt.minimumAge }} Jahren</li>
+          <li v-if="params.projekt.minimumAge > 0">
+            Ab {{ params.projekt.minimumAge }} Jahren</li>
+          <li v-if="params.projekt.maximumAge > 0">
+            Bis {{ params.projekt.maximumAge}} Jahre</li>
           <li>{{ params.projekt.org }}</li>
         </ul>
       </template>
