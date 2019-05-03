@@ -523,6 +523,7 @@ public class BackendControllerTest {
         assertThat(responeProjekt.getSlotsFrei(), is(projekt.getSlotsFrei()));
         assertThat(responeProjekt.getKosten(), is(projekt.getKosten()));
         assertThat(responeProjekt.getMindestAlter(), is(projekt.getMindestAlter()));
+        assertThat(responeProjekt.getHoechstAlter(), is(projekt.getHoechstAlter()));
         assertThat(responeProjekt.getDatum(), is(projekt.getDatum()));
         assertThat(responeProjekt.getSlotsGesamt(), is(projekt.getSlotsGesamt()));
         assertThat(responeProjekt.getWebLink(), is(projekt.getWebLink()));
@@ -558,6 +559,7 @@ public class BackendControllerTest {
                         .param("date", localDate2String(projekt.getDatum()))
                         .param("endDate", localDate2String(projekt.getDatumEnde()))
                         .param("age",projekt.getMindestAlter())
+                        .param("maxAge",projekt.getHoechstAlter())
                         .param("price",projekt.getKosten())
                         .param("slots",projekt.getSlotsGesamt())
                         .param("slotsReserved",projekt.getSlotsReserviert())
@@ -577,6 +579,7 @@ public class BackendControllerTest {
         assertThat(responseProjekt.getSlotsFrei(), is(projekt.getSlotsFrei()));
         assertThat(responseProjekt.getKosten(), is(projekt.getKosten()));
         assertThat(responseProjekt.getMindestAlter(), is(projekt.getMindestAlter()));
+        assertThat(responseProjekt.getHoechstAlter(), is(projekt.getHoechstAlter()));
         assertThat(responseProjekt.getDatum(), is(projekt.getDatum()));
         assertThat(responseProjekt.getSlotsGesamt(), is(projekt.getSlotsGesamt()));
         assertThat(responseProjekt.getWebLink(), is(projekt.getWebLink()));
