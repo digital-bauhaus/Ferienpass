@@ -109,13 +109,13 @@ public class FerienpassAdminApplication implements CommandLineRunner {
 	}
 
 	// Enable CORS globally for requests from Anmeldung frontend in webpack dev-server mode
-	@Bean
+/*	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("http://localhost:8090");
+				registry.addMapping("/**").allowedOrigins("http://localhost:8080");
 			}
 		};
-	}
+	}*/
 }
