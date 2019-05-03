@@ -1,6 +1,7 @@
 # Ferienpass
 
 [![Build Status](https://travis-ci.org/digital-bauhaus/Ferienpass.svg?branch=master)](https://travis-ci.org/digital-bauhaus/Ferienpass)
+[![Coverage Status](https://coveralls.io/repos/github/digital-bauhaus/Ferienpass/badge.svg?branch=master)](https://coveralls.io/github/digital-bauhaus/Ferienpass?branch=master)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/digital-bauhaus/Ferienpass-Anmeldung/blob/master/LICENSE)
 
 ### Historie
@@ -59,6 +60,45 @@ Dabei steht die Anmeldungsseite direkt auf der Startseite zur Verfügung (lokal 
 
 ### Continuous Integration and Deployment
 
-Tests werden automatisch bei jedem Push auf den master branch ausgeführt und es finded ein automatischer Deploy auf Heroku statt, wenn der TravisCI build erfolgreich durchgelaufen ist. Die Anwendung kann unter der folgendne URL aufgerufen werden:
+Tests werden automatisch bei jedem Push auf den Feature-Branches oder den master durch [TravisCI](https://travis-ci.org/digital-bauhaus/Ferienpass) ausgeführt und es finded ein automatischer Deploy auf Heroku statt, wenn der TravisCI build erfolgreich durchgelaufen ist.
+
+Entwickelt werden soll mit Hilfe von Feature-Branches und Pull-Requests - der master-Branch ist als "Produktions-ready" immer baufähig zu halten.
+ 
+
+##### Dev-Workflow
+
+* __Clone:__ lokal das Repository clonen per `git clone https://github.com/digital-bauhaus/Ferienpass.git`
+* __No Merge Commits:__ lokal das Erstellen von Merge-Commits unterbinden mit der Einstellung: `git config --global pull.rebase preserve`
+* __Focus on Issues:__ auf [GitHub ein Issue](https://github.com/digital-bauhaus/Ferienpass/issues) auswählen oder neu erstellen
+* __Create Branch:__ dann einen neuen Branch erstellen nach dem Muster `feature/#issueNummer-issue-titel`, z.B. `feature/#2-kostenplichtige-anmeldung`
+* lokal pullen und entwickeln 
+* __Do Tests run?__ Vor dem Commit sicherstellen, dass alle Tests laufen und die Anwendung baut
+* __Commit message!__ Beim Commit darauf achten, dass der Kommentar die GitHub-Issue-Nummer enthält, z.B. `#4 Neuer Button erstellt` 
+* Pushen
+
+
+##### Feature ready? --> Pull Request!
+
+* __When your Feature is ready__ Pull Request auf GitHub erstellen
+
+![create-pull-request](docs/create-pull-request.png)
+
+* __Review App:__ [Heroku](https://dashboard.heroku.com/pipelines/6d86397b-7093-4252-b978-2f57b25e5620) erstellt nun automatisch eine Review-App für diesen PullRequest/Branch (Access für die Pipeline bitte bei [jonashackt](https://github.com/jonashackt) anfragen):
+
+![heroku-pipeline](docs/heroku-pipeline.png)
+
+* Heroku erstellt eine eigene URL für die Anwendung, unter der sie getestet werden kann. Die URL kann über `Open App in browser` über den kleinen Button neben der App geöffnet werden:
+
+![heroku-review-app-link](docs/heroku-review-app-link.png)
+
+* Auf GitHub werden alle Commits, die Builds sowie die Heroku-Deployments vollständig im Pull Request dargestellt:
+
+![github-pr](docs/github-pr.png)
+
+Wenn alles passt, kann das Featuer in den master-Branch gemergt werden per `Merge pull request`. __Danach landed der Stand automatisch auf Staging bzw. Produktion!__
+
+##### Staging / Production
+
+Die pre-produktive / produktive Anwendung kann unter der folgenden URL aufgerufen werden:
 
 https://ferienpass.herokuapp.com/#/
