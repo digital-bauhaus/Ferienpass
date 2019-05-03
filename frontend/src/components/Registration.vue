@@ -180,7 +180,7 @@ export default {
             age--;
           }
 
-          this.disableUnavailableProjectsIfToYoung(age);
+          this.disableUnavailableProjectsIfToYoungOrOld(age);
           return age;
         }
       }
@@ -260,7 +260,8 @@ export default {
             endDate: adminProjekt.datumEnde,
             id: adminProjekt.id,
             org: adminProjekt.traeger,
-            minimumAge: adminProjekt.alterLimitierung
+            minimumAge: adminProjekt.mindestAlter,
+            maximumAge: adminProjekt.hoechstAlter
           }
         }
         this.alleAnmeldungProjekte.push(projektParam);
@@ -365,14 +366,15 @@ export default {
       const targetSection = heading.nextElementSibling;
       targetSection.hidden = expanded;
     },
-    disableUnavailableProjectsIfToYoung (age) {
+    disableUnavailableProjectsIfToYoungOrOld (age) {
       const projectControls = Array.prototype.slice.call(
         document.querySelectorAll('[name^="projekt-id"]')
       );
       projectControls.forEach(projectControl => {
         projectControl.removeAttribute('disabled');
         const minimumAge = parseInt(projectControl.dataset.minimumAge);
-        if (age < minimumAge) {
+        const maximumAge = parseInt(projectControl.dataset.maximumAge);
+        if (age < minimumAge || age > maximumAge) {
           projectControl.setAttribute('disabled', null);
         }
       });

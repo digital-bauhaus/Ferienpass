@@ -168,6 +168,7 @@
                   "label": "Telefon",
                   "name": "base__phone-number",
                   "required": true,
+                  "pattern": "^([+]*[0-9]+[0-9]*)([0-9 -]*[/]?[0-9 ]*)$",
                   "type": "tel"
                 }
               },
@@ -176,6 +177,7 @@
                 "params": {
                   "label": "eMail",
                   "name": "base__email",
+                  "type": "email",
                   "required": true
                 }
               }
@@ -634,6 +636,7 @@
                 "params": {
                   "label": "Telefon",
                   "name": "conditions__emergency-phone-number",
+                  "pattern": "^([+]*[0-9]+[0-9]*)([0-9 -]*[/]?[0-9 ]*)$",
                   "type": "tel"
                 }
               }
@@ -667,6 +670,7 @@
                   "label": "Telefon",
                   "name": "conditions__family-doctor-phone-number",
                   "required": false,
+                  "pattern": "^([+]*[0-9]+[0-9]*)([0-9 -]*[/]?[0-9 ]*)$",
                   "type": "tel"
                 }
               }

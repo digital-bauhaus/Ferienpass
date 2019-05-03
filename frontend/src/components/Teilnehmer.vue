@@ -17,6 +17,7 @@
          <th v-on:click="sortDate()" class="clickable">Buchung</th>
          <th>Addresse</th>
          <th>Telefon</th>
+         <th>eMail</th>
          <th>Geburtsdatum</th>
          <th>Bearbeiten</th>
        </tr>
@@ -27,6 +28,7 @@
          <td>{{user.registrierungsdatum}}</td>
          <td>{{user.strasse}}, {{user.stadt}}</td>
          <td>{{user.telefon}}</td>
+         <td>{{user.email}}</td>
          <td>{{user.geburtsdatum}}</td>
          <td>
            <router-link :to="{path: '../TeilnehmerEdit', query: {id: user.id }}" class="fakebutton">Bearbeiten</router-link>
