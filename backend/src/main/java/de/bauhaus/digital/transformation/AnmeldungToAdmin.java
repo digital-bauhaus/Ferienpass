@@ -75,16 +75,16 @@ public class AnmeldungToAdmin {
 
     private static void mappeBegleitpersonenDaten(AnmeldungJson anmeldungJson, Behinderung behinderung) {
         behinderung.setBegleitungNotwendig(anmeldungJson.getDisabilitiesCompanionRequired());
-        behinderung.setBegleitpersonPflege(anmeldungJson.getDisabilitiesCompanionForNursing());
-        behinderung.setBegleitpersonMedizinischeVersorgung(anmeldungJson.getDisabilitiesCompanionForHealthCare());
-        behinderung.setBegleitpersonMobilitaet(anmeldungJson.getDisabilitiesCompanionForMobility());
-        behinderung.setBegleitpersonOrientierung(anmeldungJson.getDisabilitiesCompanionForOrientation());
-        behinderung.setBegleitpersonSozialeBegleitung(anmeldungJson.getDisabilitiesCompanionSocial());
-
-        behinderung.setUnterstuetzungSucheBegleitpersonNotwendig(anmeldungJson.getDisabilitiesCompanionHelpFindingRequired());
-        behinderung.setGewohnterBegleitpersonenDienstleister(anmeldungJson.getDisabilitiesCompanionUsualService());
-        behinderung.setBeantragungKostenuebernahmeBegleitpersonNotwendig(anmeldungJson.getDisabilitiesCompanionCostTakeover());
-
+        if (behinderung.isBegleitungNotwendig()) {
+            behinderung.setBegleitpersonPflege(anmeldungJson.getDisabilitiesCompanionForNursing());
+            behinderung.setBegleitpersonMedizinischeVersorgung(anmeldungJson.getDisabilitiesCompanionForHealthCare());
+            behinderung.setBegleitpersonMobilitaet(anmeldungJson.getDisabilitiesCompanionForMobility());
+            behinderung.setBegleitpersonOrientierung(anmeldungJson.getDisabilitiesCompanionForOrientation());
+            behinderung.setBegleitpersonSozialeBegleitung(anmeldungJson.getDisabilitiesCompanionSocial());
+            behinderung.setUnterstuetzungSucheBegleitpersonNotwendig(anmeldungJson.getDisabilitiesCompanionHelpFindingRequired());
+            behinderung.setGewohnterBegleitpersonenDienstleister(anmeldungJson.getDisabilitiesCompanionUsualService());
+            behinderung.setBeantragungKostenuebernahmeBegleitpersonNotwendig(anmeldungJson.getDisabilitiesCompanionCostTakeover());
+        }
     }
 
     private static void mappeMerkzeichen(AnmeldungJson anmeldungJson, Behinderung behinderung) {
