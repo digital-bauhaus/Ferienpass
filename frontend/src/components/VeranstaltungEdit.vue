@@ -50,7 +50,7 @@
                   <td><label>Höchstalter: </label></td>
                   <td><input type="text" id="maxAge"
                              placeholder="Altersbegrenzung"
-                             v-model="project.hoechstAtler"></td>
+                             v-model="project.hoechstAlter"></td>
               </tr>
               <tr>
                   <td><label>Preis: </label></td>
