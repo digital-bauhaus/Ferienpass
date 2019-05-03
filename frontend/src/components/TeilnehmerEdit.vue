@@ -12,27 +12,33 @@
         <table border="0">
             <tr>
                 <td><label for ="firstName">Vorname: </label></td>
-                <td><input type="text" id="firstName" placeholder="Vorname" v-model="user.vorname"></td>
+                <td><input type="text" id="firstName" placeholder="-" v-model="user.vorname"></td>
                 <td><label for ="street">Straße: </label></td>
-                <td><input type="text" id="street" placeholder="Straße" v-model="user.strasse"></td>
+                <td><input type="text" id="street" placeholder="-" v-model="user.strasse"></td>
             </tr>
             <tr>
                 <td><label for ="lastName">Nachname: </label></td>
-                <td><input type="text" id ="lastName" placeholder="Nachname" v-model="user.nachname"></td>
+                <td><input type="text" id ="lastName" placeholder="-" v-model="user.nachname"></td>
                 <td><label for ="city">Stadt: </label></td>
-                <td><input type="text" id="city" placeholder="Stadt" v-model="user.stadt"></td>
+                <td><input type="text" id="city" placeholder="-" v-model="user.stadt"></td>
             </tr>
             <tr>
                 <td><label for ="birthDate">Geburtsdatum (Jahr,Monat,Tag): </label></td>
-                <td><input type="text" id="birthDate" placeholder="Geburtstag" v-model="user.geburtsdatum"></td>
+                <td><input type="text" id="birthDate" placeholder="-" v-model="user.geburtsdatum"></td>
                 <td><label for ="postcode">Postleitzahl: </label></td>
-                <td><input type="text" id="postcode" placeholder="Postleitzahl" v-model="user.postleitzahl"></td>
+                <td><input type="text" id="postcode" placeholder="-" v-model="user.postleitzahl"></td>
             </tr>
             <tr>
                 <td><label for ="telephone">Telefonnummer: </label></td>
-                <td><input type="text" id="telephone" placeholder="Telefonnummer" v-model="user.telefon"></td>
+                <td><input type="text" id="telephone" placeholder="-" v-model="user.telefon"></td>
                 <td><label for ="healthcare">Krankenkasse: </label></td>
                 <td><input type="text" id="healthcare" v-model="user.krankenkasse"></td>
+            </tr>
+            <tr>
+                <td><label for="email">eMail</label></td>
+                <td><input type="text" id="email" placeholder="-" v-model="user.email"></td>
+                <td />
+                <td />
             </tr>
         </table>
         <br />
