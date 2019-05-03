@@ -6,6 +6,7 @@ import de.bauhaus.digital.FerienpassAdminApplication;
 import de.bauhaus.digital.domain.*;
 import de.bauhaus.digital.repository.TeilnehmerRepositoryTest;
 import de.bauhaus.digital.transformation.AnmeldungJson;
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.hamcrest.MatcherAssert;
@@ -201,6 +202,20 @@ public class BackendControllerTest {
         Assert.assertThat(responseUser.getMedikamente(),is(medikamente));
         Assert.assertThat(responseUser.getHitzeempfindlichkeiten(),is(hitzeempfindlichkeiten));
     }
+
+    @Test
+    public void isUserDeletedCorrectly() {
+        Long userId = addUser(teilnehmerRepositoryTest.createUser());
+
+        Teilnehmer responseUser = getUser(userId);
+
+        Assert.assertThat(responseUser.getId(), is(userId));
+
+        deleteUser(responseUser);
+
+    }
+
+
 
 
     /*******************************************
@@ -695,42 +710,28 @@ public class BackendControllerTest {
         newUser.setVorname("Anton");
         newUser.setNachname("Tirol");
 
+        addUser(newUser);
 
-        Long userId =
-                given()
-                        .body(newUser)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL + "/adduser")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
-                        .body().as(Long.class);
+        Long userId = addUser(newUser);
 
-        Teilnehmer responseUser =
-                given()
-                        .pathParam("id", userId)
-                        .when()
-                        .get(BASE_URL + "/user/{id}")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Teilnehmer.class);
+        Teilnehmer responseUser = getUser(userId);
 
         Assert.assertThat(responseUser.getNachname(),is("Tirol"));
         Assert.assertThat(responseUser.getVorname(),is("Anton"));
 
-        Projekt p = teilnehmerRepositoryTest.createSingleProject();
+        Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
         Long projectID =
                 given()
-                        .body(p)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/addproject")
-                        .then()
-                        .statusCode(is(HttpStatus.SC_CREATED))
-                        .extract()
+                    .body(projekt)
+                    .contentType(ContentType.JSON)
+                .when()
+                    .post(BASE_URL+"/addproject")
+                .then()
+                    .statusCode(is(HttpStatus.SC_CREATED))
+                    .extract()
                         .body().as(Long.class);
+
+
 
         Map<String,Long> newID_Map = new HashMap<String, Long>();
         newID_Map.put("user",responseUser.getId());
@@ -792,6 +793,16 @@ public class BackendControllerTest {
             .put(BASE_URL + "/user")
         .then()
             .statusCode(is(HttpStatus.SC_NO_CONTENT));
+    }
+
+    private void deleteUser(Teilnehmer teilnehmer) {
+        given()
+                .body(teilnehmer)
+                .contentType(ContentType.JSON)
+        .when()
+                .delete(BASE_URL + "/user")
+        .then()
+                .statusCode(is(HttpStatus.SC_NO_CONTENT));
     }
 
     private Long registerNewUserFromAnmeldungFrontend(AnmeldungJson anmeldungJson) {
@@ -891,7 +902,7 @@ public class BackendControllerTest {
 
         allProjects.forEach(projekt -> System.out.println(projekt.getId() + ", Name: " + projekt.getName()));
         allProjects.forEach(projekt -> {
-            projekt.getAnmeldungen().forEach(teilnehmer -> System.out.println(projekt.getId() + ", Teilnehmer: " + teilnehmer.getVorname() ));
+            projekt.getAnmeldungen().forEach(teilnehmer -> System.out.println(projekt.getId() + ", Teilnehmer: " + teilnehmer.getVorname()));
 
         });
         System.out.println("Projekte " + allProjects);
