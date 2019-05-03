@@ -44,8 +44,16 @@ export default {
   },
   computed: {
     dateRangeFormatted() {
-      return this.params.projekt.date.toLocaleDateString() + " - " +
-              this.params.projekt.endDate.toLocaleDateString();
+      return this.params.projekt.date.toLocaleDateString('de-DE', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit'
+          }) + " - " +
+              this.params.projekt.endDate.toLocaleDateString('de-DE', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit'
+              });
     }
   }
 };
