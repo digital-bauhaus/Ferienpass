@@ -257,9 +257,14 @@ public class BackendController {
     @RequestMapping(path = "/createproject")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    Long addNewProject(@RequestParam String name, @RequestParam String date, @RequestParam String endDate, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
+    Long addNewProject(@RequestParam String name, @RequestParam String date,
+                       @RequestParam String endDate, @RequestParam int age,
+                       @RequestParam int maxAge, @RequestParam int price,
+                       @RequestParam int slots,
                        @RequestParam int slotsReserved, @RequestParam String traeger, @RequestParam String weblink) {
-        Projekt project = new Projekt(name, dateString2LocalDate(date), dateString2LocalDate(endDate), age, price, slots, slotsReserved, traeger, weblink);
+        Projekt project = new Projekt(name, dateString2LocalDate(date),
+                dateString2LocalDate(endDate), age, maxAge, price, slots,
+                slotsReserved, traeger, weblink);
         projektRepository.save(project);
         LOG.info(project.toString() + "successfully saved into DB");
 
@@ -270,7 +275,11 @@ public class BackendController {
     @RequestMapping(path = "/updateproject")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    Boolean updateProject(@RequestParam Long id, @RequestParam String name, @RequestParam String date, @RequestParam String endDate, @RequestParam int age, @RequestParam int price, @RequestParam int slots,
+    Boolean updateProject(@RequestParam Long id, @RequestParam String name,
+                          @RequestParam String date,
+                          @RequestParam String endDate, @RequestParam int age,
+                          @RequestParam int maxAge, @RequestParam int price,
+                          @RequestParam int slots,
                        @RequestParam int slotsReserved, @RequestParam String traeger, @RequestParam String weblink) {
         Projekt project = projektRepository.findById(id).orElse(null);
         if (project == null) {

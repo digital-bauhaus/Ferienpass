@@ -33,21 +33,24 @@ public class FerienpassAdminApplication implements CommandLineRunner {
 				LocalDate.of(2018, 7, 16),
 				LocalDate.of(2018, 7, 17),
 				"Tasifan",
-				10);
+				10,
+				17);
 		createSampleProject(
 				"Bauspielplatz",
 				10,
 				LocalDate.of(2018, 8, 02),
 				LocalDate.of(2018, 8, 02),
 				"Nordlicht e.V.",
-				6);
+				6,
+				80);
 		createSampleProject(
 				"Papier-Werkstatt",
 				8,
 				LocalDate.of(2018, 7, 23),
 				LocalDate.of(2018, 7, 25),
 				"Sektion Weimar des Deutschen Alpenvereins e.V.",
-				8);
+				8,
+				12);
 	}
 
 	private void createSampleUser() {
@@ -96,8 +99,13 @@ public class FerienpassAdminApplication implements CommandLineRunner {
 		System.out.println(user.toString() + " successfully saved into DB");
 	}
 
-	private Projekt createSampleProject(String projektName, int slotsGesamt, LocalDate datum, LocalDate endeDatum, String traeger, int alterLimitierung) {
-		Projekt project = new Projekt(projektName, datum, endeDatum, alterLimitierung, 20, slotsGesamt, 1, traeger, "www.google.com");
+	private Projekt createSampleProject(String projektName, int slotsGesamt,
+										LocalDate datum, LocalDate endeDatum,
+										String traeger, int mindestAlter,
+										int hoechstAlter) {
+		Projekt project = new Projekt(projektName, datum, endeDatum,
+				mindestAlter, hoechstAlter, 20, slotsGesamt, 1, traeger, "www" +
+				".google.com");
 		projektRepository.save(project);
 		System.out.println(project.toString() + " successfully saved into DB");
 		return project;
