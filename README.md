@@ -59,30 +59,53 @@ Dabei steht die Anmeldungsseite direkt auf der Startseite zur Verfügung (lokal 
 
 ### Prerequisites
 
-Maven:
+* Maven
+* Java
+* NPM (optional)
 
-`brew install maven`
+MacOS
 
-`choco install maven`
+```console
+> brew cask install java
+> brew install maven
+> brew install npm
+```
 
-`apt-get install maven`
+Windows
 
-JDK:
+```console
+> choco install jdk
+> choco install maven
+> choco install npm
+```
 
-`brew cask install java`
+Linux
 
-`choco install jdk`
+```console
+> apt-get install jdk
+> apt-get install maven
+> apt-get install npm
+```
 
-`apt-get install jdk`
+### Local Setup
 
-NPM:
+build project
 
-`brew install npm`
+```console
+> mvn clean install
+```
 
-`choco install npm`
+run project
 
-`apt-get install npm`
+```console
+> mvn --projects backend spring-boot:run
+```
 
+check following links
+
+`http://localhost:8088/#/`
+
+`http://localhost:8088/#/Veranstaltungen/`
 
 ### Continuous Integration and Deployment
 
