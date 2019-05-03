@@ -97,6 +97,10 @@ Entwickelt werden soll mit Hilfe von Feature-Branches und Pull-Requests - der ma
 
 Wenn alles passt, kann das Featuer in den master-Branch gemergt werden per `Merge pull request`. __Danach landed der Stand automatisch auf Staging bzw. Produktion!__
 
+* __Delete Feature-Branch:__ Direkt auf GitHub im Pull Request sollte man den Feature Branch gleich noch löschen! Dann wird auch auf Heroku die Review App wieder weggeräumt (und verursacht keine Kosten!).
+
+* __local master FTW:__ Lokal nun wieder auf den master-Branch wechseln und das Projekt neu pullen, der alte Feature-Branch sollte nun auch lokal gelöscht sein.
+
 ##### Staging / Production
 
 Die pre-produktive / produktive Anwendung kann unter der folgenden URL aufgerufen werden:
