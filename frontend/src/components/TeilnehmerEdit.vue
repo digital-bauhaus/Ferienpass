@@ -33,13 +33,11 @@
                 <td><input type="text" id="telephone" placeholder="-" v-model="user.telefon"></td>
                 <td><label for ="healthcare">Krankenkasse: </label></td>
                 <td><input type="text" id="healthcare" v-model="user.krankenkasse"></td>
-                <td><label><input v-model="user.bezahlt" type="checkbox" id="check" class="regular-checkbox">Hat bezahlt</label></td><td />
             </tr>
             <tr>
                 <td><label for="email">eMail</label></td>
                 <td><input type="text" id="email" placeholder="-" v-model="user.email"></td>
-                <td />
-                <td />
+                <td><label>Hat bezahlt</label></td><td><input v-model="user.bezahlt" type="checkbox" id="check" class="regular-checkbox"></td>
             </tr>
         </table>
         <br />
