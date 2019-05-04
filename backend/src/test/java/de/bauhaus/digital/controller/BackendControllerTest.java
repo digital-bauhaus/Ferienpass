@@ -145,6 +145,7 @@ public class BackendControllerTest {
         String plz = "99082";
         String telefon = "03544444";
         String krankenkasse = "AOK";
+        String email = "myEmail@weimar.de";
         Teilnehmer klausKlausen = new Teilnehmer(
                 vorname,
                 nachname,
@@ -170,7 +171,8 @@ public class BackendControllerTest {
                 true,
                 behinderung,
                 hitzeempfindlichkeiten,
-                medikamente);
+                medikamente,
+                email);
 
         // Exlicitely set Id of User to update, so our implementation can find it
         klausKlausen.setId(userId);
@@ -199,6 +201,7 @@ public class BackendControllerTest {
         Assert.assertThat(responseUser.getEssenLimitierungen(),is(essenLimitierungen));
         Assert.assertThat(responseUser.getMedikamente(),is(medikamente));
         Assert.assertThat(responseUser.getHitzeempfindlichkeiten(),is(hitzeempfindlichkeiten));
+        Assert.assertThat(responseUser.getEmail(), is(email));
     }
 
 
