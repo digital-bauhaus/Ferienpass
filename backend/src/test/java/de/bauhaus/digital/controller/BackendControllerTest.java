@@ -128,6 +128,7 @@ public class BackendControllerTest {
         String essenLimitierungen = "Laktoseintoleranz";
         String allergien = "Heuschnupfen: Nasenspray nur 2x am Tag";
 
+        Boolean liegtBehinderungVor = true;
         Behinderung behinderung = new Behinderung();
         behinderung.setRollstuhlNutzungNotwendig(true);
         behinderung.setMerkzeichen_Hilflosigkeit_H(true);
@@ -168,7 +169,7 @@ public class BackendControllerTest {
                 allergien,
                 essenLimitierungen,
                 krankheiten,
-                true,
+                liegtBehinderungVor,
                 behinderung,
                 hitzeempfindlichkeiten,
                 medikamente,
@@ -202,6 +203,7 @@ public class BackendControllerTest {
         Assert.assertThat(responseUser.getMedikamente(),is(medikamente));
         Assert.assertThat(responseUser.getHitzeempfindlichkeiten(),is(hitzeempfindlichkeiten));
         Assert.assertThat(responseUser.getEmail(), is(email));
+        Assert.assertThat(responseUser.isLiegtBehinderungVor(), is(liegtBehinderungVor));
     }
 
 

@@ -94,6 +94,7 @@ public class BackendController {
 
             teilnehmer2Update.setArzt(user.getArzt());
             teilnehmer2Update.setNotfallKontakt(user.getNotfallKontakt());
+            teilnehmer2Update.setLiegtBehinderungVor(user.isLiegtBehinderungVor());
             teilnehmer2Update.setBehinderung(user.getBehinderung());
 
             //Diverse
