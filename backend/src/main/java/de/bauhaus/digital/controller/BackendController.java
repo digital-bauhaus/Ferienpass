@@ -130,8 +130,8 @@ public class BackendController {
 
     @RequestMapping(path = "/user", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@RequestBody Teilnehmer user) {
-        teilnehmerRepository.delete(user);
+    public void deleteUser(@RequestBody long userId) {
+        teilnehmerRepository.deleteById(userId);
     }
 
     //Assign Project to user
@@ -331,20 +331,37 @@ public class BackendController {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
-    // DELETE PROJECT
-    @RequestMapping(path = "/deleteproject")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    Boolean deleteProject(@RequestParam Long project_id) {
+    @RequestMapping(path = "/projekt/{projekt_id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Boolean setProjectToInactive(@PathVariable("projekt_id") Long projekt_id) {
 
-        Projekt p = projektRepository.findById(project_id).orElse(null);
-        if (p == null)
+        Optional<Projekt> maybeProjekt = projektRepository.findById(projekt_id);
+        if (maybeProjekt.isPresent()) {
+            Projekt projekt = maybeProjekt.get();
+            projekt.setAktiv(false);
+            projektRepository.save(projekt);
+            LOG.info(projekt.getName() + " with id " + projekt.getId() + " is set to inactive");
+            return true;
+        } else {
+            //TODO: Refactor to ProjectNotFoundException
             return  false;
-        p.setAktiv(false);
-        projektRepository.save(p);
-        LOG.info(p.toString() + " is set to inactive");
+        }
+    }
 
-        return true;
+    // DELETE PROJECT
+    @RequestMapping(path = "/projekt/{projekt_id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Boolean deleteProject(@PathVariable("projekt_id") Long projekt_id) {
+
+        Optional<Projekt> maybeProjekt = projektRepository.findById(projekt_id);
+        if (maybeProjekt.isPresent()) {
+            projektRepository.deleteById(projekt_id);
+            LOG.info("Projekt with id " + projekt_id +" has been deleted.");
+            return true;
+        } else {
+            //TODO: Refactor to ProjectNotFoundException
+            return  false;
+        }
     }
 
 

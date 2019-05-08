@@ -2,7 +2,7 @@ package de.bauhaus.digital.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.bauhaus.digital.FerienpassAdminApplication;
+import de.bauhaus.digital.FerienpassApplication;
 import de.bauhaus.digital.domain.*;
 import de.bauhaus.digital.repository.TeilnehmerRepositoryTest;
 import de.bauhaus.digital.transformation.AnmeldungJson;
@@ -26,10 +26,11 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static de.bauhaus.digital.DomainFactory.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-        classes = FerienpassAdminApplication.class,
+        classes = FerienpassApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
         properties = "server.port = 8089"
 )
@@ -40,14 +41,12 @@ public class BackendControllerTest {
     private Resource anmeldungJsonFile;
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    private TeilnehmerRepositoryTest teilnehmerRepositoryTest = new TeilnehmerRepositoryTest();
-
     /****************************
      * Test user (Teilnehmer) API
      ****************************/
     @Test
     public void addNewUserAndRetrieveItBack() {
-        Teilnehmer user = teilnehmerRepositoryTest.createUser();
+        Teilnehmer user = createUser();
 
         Long userId = addUser(user);
 
@@ -58,7 +57,7 @@ public class BackendControllerTest {
 
     @Test
     public void addNewUserAddSeveralListItemsAndRemoveThemAgain() {
-        Teilnehmer user = teilnehmerRepositoryTest.createUser();
+        Teilnehmer user = createUser();
 
         String allergy = "Arbeiten: Viele Aufgaben und viel reden \n"+
         "Freizeit: Urlaub und Spaß haben";
@@ -96,8 +95,8 @@ public class BackendControllerTest {
     public void addTwoUsersAndCheckWhetherAllUsersAreComplete() {
         int initialSize = getAllUsers().size();
 
-        Long userId = addUser(teilnehmerRepositoryTest.createUser());
-        Long userId2 = addUser(teilnehmerRepositoryTest.createUser());
+        Long userId = addUser(createUser());
+        Long userId2 = addUser(createUser());
 
         List<Teilnehmer> allUsers = getAllUsers();
 
@@ -111,7 +110,7 @@ public class BackendControllerTest {
 
     @Test
     public void isUserUpdatedCorrectly() {
-        Long userId = addUser(teilnehmerRepositoryTest.createUser());
+        Long userId = addUser(createUser());
 
         Arzt arzt = new Arzt(
                 "Doktor Who",
@@ -204,13 +203,13 @@ public class BackendControllerTest {
 
     @Test
     public void isUserDeletedCorrectly() {
-        Long userId = addUser(teilnehmerRepositoryTest.createUser());
+        Long userId = addUser(createUser());
 
         Teilnehmer responseUser = getUser(userId);
 
         Assert.assertThat(responseUser.getId(), is(userId));
 
-        deleteUser(responseUser);
+        deleteUser(responseUser.getId());
 
         getNoUser(userId);
     }
@@ -528,7 +527,7 @@ public class BackendControllerTest {
      ****************************/
     @Test
     public void addNewProjectAndetrieveItBack() {
-        Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
+        Projekt projekt = createSingleProject();
         Long projectID = addProjekt(projekt);
 
         Projekt responeProjekt = getProjekt(projectID);
@@ -547,9 +546,9 @@ public class BackendControllerTest {
 
     @Test
     public void addProjectAndUserAndAssignProjectToUserAndRetrieveAllProjectsForThisUser() {
-        Long projectID = addProjekt(teilnehmerRepositoryTest.createSingleProject());
+        Long projectID = addProjekt(createSingleProject());
 
-        Long userId = addUser(teilnehmerRepositoryTest.createUser());
+        Long userId = addUser(createUser());
         List<Teilnehmer> allUsers = getAllUsers();
 
         assertThat(allUsers.get(allUsers.size()-1).getId(), is(userId));
@@ -566,7 +565,7 @@ public class BackendControllerTest {
 
     @Test
     public void addProjectUsingParametersAndTestForSuccess() {
-        Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
+        Projekt projekt = createSingleProject();
         Long projectID =
                 given()
                         .param("name", projekt.getName())
@@ -607,7 +606,7 @@ public class BackendControllerTest {
     @Test
     public void addProjectAndSetItToInactive() {
         //Create a project
-        Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
+        Projekt projekt = createSingleProject();
         Long projectID = addProjekt(projekt);
         assertThat(projekt.isAktiv(),is(true));
 
@@ -635,8 +634,8 @@ public class BackendControllerTest {
 
     @Test
     public void assignProjektToUserAndRetrieveAllProjectsForTheUsers() {
-        Long userId = addUser(teilnehmerRepositoryTest.createUser());
-        Long projectId = addProjekt(teilnehmerRepositoryTest.createSingleProject());
+        Long userId = addUser(createUser());
+        Long projectId = addProjekt(createSingleProject());
 
         Boolean wasTeilnehmerAssignedToProjekt = assignUser2Projekt(projectId, userId);
         assertThat(wasTeilnehmerAssignedToProjekt, is(true));
@@ -659,18 +658,18 @@ public class BackendControllerTest {
 
         // number of registered Teilnehmer in all projects should be equal
         // to number of registered projects of all Teilnehmer
-        Projekt projekt1 = teilnehmerRepositoryTest.createSingleProject();
+        Projekt projekt1 = createSingleProject();
         Long projectID1 = addProjekt(projekt1);
         assertThat(projekt1.isAktiv(),is(true));
 
-        Projekt projekt2 = teilnehmerRepositoryTest.createSingleProject();
+        Projekt projekt2 = createSingleProject();
         Long projectID2 = addProjekt(projekt2);
         assertThat(projekt2.isAktiv(),is(true));
 
-        Teilnehmer user1 = teilnehmerRepositoryTest.createUser();
+        Teilnehmer user1 = createUser();
         Long userId1 = addUser(user1);
 
-        Teilnehmer user2 = teilnehmerRepositoryTest.createUser();
+        Teilnehmer user2 = createUser();
         Long userId2 = addUser(user2);
 
         allProjects = getAllProjects();
@@ -704,12 +703,10 @@ public class BackendControllerTest {
     }
 
     @Test
-    public void findProjectsByFirstNameAndLastName() throws Exception {
-        Teilnehmer newUser = teilnehmerRepositoryTest.createUser();
+    public void shouldAssignUserCorrectlyToProjekt() throws Exception {
+        Teilnehmer newUser = createUser();
         newUser.setVorname("Anton");
         newUser.setNachname("Tirol");
-
-        addUser(newUser);
 
         Long userId = addUser(newUser);
 
@@ -718,46 +715,35 @@ public class BackendControllerTest {
         Assert.assertThat(responseUser.getNachname(),is("Tirol"));
         Assert.assertThat(responseUser.getVorname(),is("Anton"));
 
-        Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
-        Long projectID =
-                given()
-                    .body(projekt)
-                    .contentType(ContentType.JSON)
-                .when()
-                    .post(BASE_URL+"/addproject")
-                .then()
-                    .statusCode(is(HttpStatus.SC_CREATED))
-                    .extract()
-                        .body().as(Long.class);
+        Long projectId = addProjekt(createSingleProject());
 
+        Boolean isUserAssignedToProject = assignUser2Projekt(projectId, responseUser.getId());
 
+        MatcherAssert.assertThat(isUserAssignedToProject,is(true));
 
-        Map<String,Long> newID_Map = new HashMap<String, Long>();
-        newID_Map.put("user",responseUser.getId());
-        newID_Map.put("project", projectID);
-        Boolean success =
-                given()
-                        .body(newID_Map)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .post(BASE_URL+"/assignProject")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Boolean.class);
-        MatcherAssert.assertThat(success,is(true));
-
-        List<Projekt> projectsByFirstNameAndLastName =
-                Arrays.asList(given()
-                        .param("vorname","Anton")
-                        .param("nachname","Tirol")
-                        .when()
-                        .get(BASE_URL+"/projectsof")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .extract().as(Projekt[].class));
+        List<Projekt> projectsByFirstNameAndLastName = getAlleZugewiesenenProjekteByFirstNameAndLastName();
         Assert.assertThat(projectsByFirstNameAndLastName.size(),is(1));
     }
 
+    @Test
+    public void shouldDeleteAddedProjectCorrectly() {
+        Long projectId = addProjekt(createSingleProject());
+
+        Boolean isProjectDeleted = deleteProjekt(projectId);
+
+        assertThat(isProjectDeleted, is(true));
+    }
+
+    private List<Projekt> getAlleZugewiesenenProjekteByFirstNameAndLastName() {
+        return Arrays.asList(given()
+                .param("vorname","Anton")
+                .param("nachname","Tirol")
+                .when()
+                .get(BASE_URL+"/projectsof")
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract().as(Projekt[].class));
+    }
 
 
     private List<Projekt> getAllProjekteWhereUserIsAssigned(Teilnehmer responseUser) {
@@ -794,9 +780,9 @@ public class BackendControllerTest {
             .statusCode(is(HttpStatus.SC_NO_CONTENT));
     }
 
-    private void deleteUser(Teilnehmer teilnehmer) {
+    private void deleteUser(long userId) {
         given()
-                .body(teilnehmer)
+                .body(userId)
                 .contentType(ContentType.JSON)
         .when()
                 .delete(BASE_URL + "/user")
@@ -895,15 +881,27 @@ public class BackendControllerTest {
     }
 
 
-    private boolean setProjektInactive(Long projectID) {
+    private boolean setProjektInactive(Long projektId) {
         return given()
-                .param("project_id", projectID)
+                    .pathParam("projekt_id", projektId)
                 .when()
-                .get(BASE_URL + "/deleteproject")
+                    .put(BASE_URL + "/projekt/{projekt_id}")
                 .then()
-                .statusCode(HttpStatus.SC_CREATED)
-                .assertThat()
-                .extract().as(Boolean.class);
+                    .assertThat()
+                    .statusCode(HttpStatus.SC_OK)
+                    .extract().as(Boolean.class);
+    }
+
+    private Boolean deleteProjekt(Long projektId) {
+        return given()
+                    .pathParam("projekt_id", projektId)
+                    .contentType(ContentType.JSON)
+                .when()
+                    .delete(BASE_URL + "/projekt/{projekt_id}")
+                .then()
+                    .statusCode(is(HttpStatus.SC_OK))
+                    .extract().body().as(Boolean.class);
+
     }
 
     private void debugOutProjekte() {
