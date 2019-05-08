@@ -83,7 +83,7 @@ public class BackendController {
     }
 
     @RequestMapping(path = "/user", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public Teilnehmer updateUser(@RequestBody Teilnehmer user) {
 
         return teilnehmerRepository.findById(user.getId()).map(teilnehmer2Update -> {
@@ -128,10 +128,11 @@ public class BackendController {
     }
 
 
-    @RequestMapping(path = "/user", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/user/{userId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@RequestBody long userId) {
+    public void deleteUser(@PathVariable("userId") long userId) {
         teilnehmerRepository.deleteById(userId);
+        LOG.info("User with id "+ userId + " deleted");
     }
 
     //Assign Project to user

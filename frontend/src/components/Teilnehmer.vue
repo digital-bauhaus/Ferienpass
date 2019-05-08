@@ -33,6 +33,7 @@
          <td>
            <router-link :to="{path: '../TeilnehmerEdit', query: {id: user.id }}" class="fakebutton">Bearbeiten</router-link>
            <span class="fakebutton"><a>PDF</a></span>
+           <span class="fakebutton" v-on:click="deleteUser(user.id)">Teilnehmer löschen</span>
          </td>
        </tr>
      </table>
@@ -82,6 +83,15 @@ export default {
     })
   },
   methods: {
+    deleteUser(userId) {
+      AXIOS.delete('/user/' + userId)
+        .then(response => {
+          this.allusers = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
     sortTable (n) {
       var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
       switchcount = 0;

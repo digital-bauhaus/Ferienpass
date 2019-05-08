@@ -777,15 +777,15 @@ public class BackendControllerTest {
         .when()
             .put(BASE_URL + "/user")
         .then()
-            .statusCode(is(HttpStatus.SC_NO_CONTENT));
+            .statusCode(is(HttpStatus.SC_OK));
     }
 
     private void deleteUser(long userId) {
         given()
-                .body(userId)
+                .pathParam("userId", userId)
                 .contentType(ContentType.JSON)
         .when()
-                .delete(BASE_URL + "/user")
+                .delete(BASE_URL + "/user/{userId}")
         .then()
                 .statusCode(is(HttpStatus.SC_NO_CONTENT));
     }
