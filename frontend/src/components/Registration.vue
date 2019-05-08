@@ -17,7 +17,7 @@
 
     <checkbox
       class="school-child-checkbox"
-      :params="{ 'label': 'Mein Kind geht zur Schule' }"
+      :params="{ 'label': 'Mein Kind geht zur Schule *' }"
       @change="onSchoolChildChange"
     />
     <!-- Grunddaten -->
