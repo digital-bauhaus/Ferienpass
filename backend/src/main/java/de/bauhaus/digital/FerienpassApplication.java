@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import java.time.LocalDate;
 
 @SpringBootApplication
-public class FerienpassAdminApplication implements CommandLineRunner {
+public class FerienpassApplication implements CommandLineRunner {
 
 	@Autowired
 	private TeilnehmerRepository teilnehmerRepository;
@@ -115,7 +115,7 @@ public class FerienpassAdminApplication implements CommandLineRunner {
 
 
 	public static void main(String[] args) {
-		SpringApplication.run(FerienpassAdminApplication.class, args);
+		SpringApplication.run(FerienpassApplication.class, args);
 	}
 
 	// Enable CORS globally for requests from Anmeldung frontend in webpack dev-server mode

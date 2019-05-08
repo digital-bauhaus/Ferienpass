@@ -33,6 +33,7 @@
          <td>
            <router-link :to="{path: '../TeilnehmerEdit', query: {id: user.id }}" class="fakebutton">Bearbeiten</router-link>
            <span class="fakebutton"><a>PDF</a></span>
+           <span class="fakebutton" v-on:click="deleteUser(user.id)">Teilnehmer löschen</span>
          </td>
        </tr>
      </table>
@@ -82,6 +83,42 @@ export default {
     })
   },
   methods: {
+    deleteUser(userId) {
+
+      swal({
+        title: "Wirklich löschen?",
+        text: "Der Teilnehmer wird vollständig gelöscht und die Daten sind verloren! Er muss sich über die Anmeldung wieder NEU anmelden!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          AXIOS.delete('/user/' + userId)
+            .then(response => {
+              this.retrieveAllUsersFromBackend()
+              swal("Teilnehmer wurde gelöscht!", {
+                icon: "success",
+              });
+            })
+            .catch(e => {
+              this.errors.push(e)
+              swal("Da ist was schief gegangen :(");
+            })
+        } else {
+          //swal("Keine Bange, der Teilnehmer wurde NICHT gelöscht :)");
+        }
+      });
+    },
+    retrieveAllUsersFromBackend() {
+      AXIOS.get('/allusers')
+              .then(response => {
+                this.allusers = response.data
+              })
+              .catch(e => {
+                this.errors.push(e)
+              })
+    },
     sortTable (n) {
       var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
       switchcount = 0;

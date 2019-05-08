@@ -3,6 +3,7 @@ package de.bauhaus.digital.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bauhaus.digital.domain.*;
 import de.bauhaus.digital.exception.ResourceNotFoundException;
+import de.bauhaus.digital.exception.UserNotFoundException;
 import de.bauhaus.digital.repository.ProjektRepository;
 import de.bauhaus.digital.repository.TeilnehmerRepository;
 import de.bauhaus.digital.transformation.AnmeldungJson;
@@ -20,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController()
 @RequestMapping("/api")
@@ -59,7 +61,12 @@ public class BackendController {
     @GetMapping(path = "/user/{id}")
     public @ResponseBody
     Teilnehmer getUserById(@PathVariable("id") long id) {
-        return teilnehmerRepository.findById(id).orElse(null);
+        Optional<Teilnehmer> optionalTeilnehmer = teilnehmerRepository.findById(id);
+        if(optionalTeilnehmer.isPresent()) {
+            return optionalTeilnehmer.get();
+        } else {
+            throw new UserNotFoundException("Teilnehmer mit der id " + id + " nicht gefunden.");
+        }
     }
 
     //Add a new user (Teilnehmer) based on a user object
@@ -76,7 +83,7 @@ public class BackendController {
     }
 
     @RequestMapping(path = "/user", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public Teilnehmer updateUser(@RequestBody Teilnehmer user) {
 
         return teilnehmerRepository.findById(user.getId()).map(teilnehmer2Update -> {
@@ -123,6 +130,13 @@ public class BackendController {
 
     }
 
+
+    @RequestMapping(path = "/user/{userId}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable("userId") long userId) {
+        teilnehmerRepository.deleteById(userId);
+        LOG.info("User with id "+ userId + " deleted");
+    }
 
     //Assign Project to user
     @RequestMapping(path = "/assignProject", method = RequestMethod.POST)
@@ -321,20 +335,37 @@ public class BackendController {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
-    // DELETE PROJECT
-    @RequestMapping(path = "/deleteproject")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    Boolean deleteProject(@RequestParam Long project_id) {
+    @RequestMapping(path = "/projekt/{projekt_id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Boolean setProjectToInactive(@PathVariable("projekt_id") Long projekt_id) {
 
-        Projekt p = projektRepository.findById(project_id).orElse(null);
-        if (p == null)
+        Optional<Projekt> maybeProjekt = projektRepository.findById(projekt_id);
+        if (maybeProjekt.isPresent()) {
+            Projekt projekt = maybeProjekt.get();
+            projekt.setAktiv(false);
+            projektRepository.save(projekt);
+            LOG.info(projekt.getName() + " with id " + projekt.getId() + " is set to inactive");
+            return true;
+        } else {
+            //TODO: Refactor to ProjectNotFoundException
             return  false;
-        p.setAktiv(false);
-        projektRepository.save(p);
-        LOG.info(p.toString() + " is set to inactive");
+        }
+    }
 
-        return true;
+    // DELETE PROJECT
+    @RequestMapping(path = "/projekt/{projekt_id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Boolean deleteProject(@PathVariable("projekt_id") Long projekt_id) {
+
+        Optional<Projekt> maybeProjekt = projektRepository.findById(projekt_id);
+        if (maybeProjekt.isPresent()) {
+            projektRepository.deleteById(projekt_id);
+            LOG.info("Projekt with id " + projekt_id +" has been deleted.");
+            return true;
+        } else {
+            //TODO: Refactor to ProjectNotFoundException
+            return  false;
+        }
     }
 
 
