@@ -46,6 +46,7 @@ public class TeilnehmerRepositoryTest {
         String schwimmAbzeichen = "Seepferdchen";
         String hitze = "Wärme: bis 25 Grad ist alles okay";
         String medikamente = "Nasentropfen_ maximal 2x am Tag ein Schub";
+        String email = "myEmail@weimar.de";
 
         Teilnehmer user = new Teilnehmer(
                 "Gary",
@@ -71,7 +72,8 @@ public class TeilnehmerRepositoryTest {
                 true,
                 behinderung,
                 hitze,
-                medikamente);
+                medikamente,
+                email);
 
         return user;
     }
@@ -105,9 +107,10 @@ public class TeilnehmerRepositoryTest {
         String medikaments = "Nasenspray von Forte: 2x am Tag";
 
         String hitzeempfindlichkeits = "grosse Hitze: eincremen";
+        String email = "myEmail@weimar.de";
 
         Teilnehmer user = new Teilnehmer("Gary","Eich", LocalDate.of(2005,10,20),registerDate, "Bahnhofstraße 4", "Weimar", "99423", "03544444", "0453434", true, kontact,
-                true, false, false, "Seepferdchen", false, false, arzt,  allergien, essenLimitierungen, krankheiten, true, behinderung,hitzeempfindlichkeits,medikaments);
+                true, false, false, "Seepferdchen", false, false, arzt,  allergien, essenLimitierungen, krankheiten, true, behinderung,hitzeempfindlichkeits,medikaments, email);
         return user;
     }
 
