@@ -37,6 +37,7 @@ public class DomainFactory {
         String schwimmAbzeichen = "Seepferdchen";
         String hitze = "Wärme: bis 25 Grad ist alles okay";
         String medikamente = "Nasentropfen_ maximal 2x am Tag ein Schub";
+        String email = "myEmail@weimar.de";
 
         Teilnehmer user = new Teilnehmer(
                 "Gary",
@@ -62,7 +63,8 @@ public class DomainFactory {
                 true,
                 behinderung,
                 hitze,
-                medikamente);
+                medikamente,
+                email);
 
         return user;
     }
@@ -83,11 +85,11 @@ public class DomainFactory {
         behinderung.setMerkzeichen_Taubblind_TBL(true);
 
         String medikaments = "Nasenspray von Forte: 2x am Tag";
+        String email = "myEmail@weimar.de";
 
         String hitzeempfindlichkeits = "grosse Hitze: eincremen";
 
-        Teilnehmer user = new Teilnehmer("Gary","Eich", LocalDate.of(2005,10,20),registerDate, "Bahnhofstraße 4", "Weimar", "99423", "03544444", "0453434", true, kontact,
-                true, false, false, "Seepferdchen", false, false, arzt,  allergien, essenLimitierungen, krankheiten, true, behinderung,hitzeempfindlichkeits,medikaments);
-        return user;
+        return new Teilnehmer("Gary","Eich", LocalDate.of(2005,10,20),registerDate, "Bahnhofstraße 4", "Weimar", "99423", "03544444", "0453434", true, kontact,
+                true, false, false, "Seepferdchen", false, false, arzt,  allergien, essenLimitierungen, krankheiten, true, behinderung,hitzeempfindlichkeits,medikaments,email);
     }
 }
