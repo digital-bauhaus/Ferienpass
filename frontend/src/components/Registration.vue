@@ -50,7 +50,8 @@
       </h2>
 
       <div :hidden="!angebote.expandOnStart">
-        <p>Mein Kind möchte an folgenden Veranstaltungen teilnehmen:</p>
+        <p>Mein Kind möchte an folgenden Veranstaltungen teilnehmen:
+        <br />Hinweis: Grau hinterlegte Projekte sind ausgebucht oder können aufgrund der Altersbeschränkung nicht gewählt werden.</p>
         <component
           v-for="(projektParams, index) of alleAnmeldungProjekte" :key="index"
           :is="component_checkbox"
