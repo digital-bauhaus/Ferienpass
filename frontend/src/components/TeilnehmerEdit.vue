@@ -37,8 +37,7 @@
             <tr>
                 <td><label for="email">eMail</label></td>
                 <td><input type="text" id="email" placeholder="-" v-model="user.email"></td>
-                <td />
-                <td />
+                <td><label>Hat bezahlt</label></td><td><input v-model="user.bezahlt" type="checkbox" id="check" class="regular-checkbox"></td>
             </tr>
         </table>
         <br />
@@ -46,16 +45,17 @@
         <h2>Weitere Angaben:</h2>
         <table>
             <tr>
-                <td><label><input v-model="user.erlaubeMedikamentation" type="checkbox" id="check">Erlaube Medikation</label></td>
-                <td><label><input v-model="user.darfAlleinNachHause" type="checkbox" id="check">Darf alleine nach Hause gehen</label></td>
-                <td><label><input v-model="user.darfReiten" type="checkbox" id="check">Darf reiten</label><br/></td>
+                <td><label>Erlaube Medikation</label></td><td><input type="checkbox" v-model="user.erlaubeMedikamentation" class="regular-checkbox" id="checkMedikation"></input></td>
+                <td><label>Darf alleine nach Hause gehen</label></td><td><input v-model="user.darfAlleinNachHause" type="checkbox" id="checkHause" class="regular-checkbox"></td>
             </tr>
             <tr>
-                <td><label><input v-model="user.darfSchwimmen" type="checkbox" id="check">Darf schwimmen</label><br/></td>
-                <td>Schwimmstufe:</td><td><input type="text" id="schwimmAbzeichen" v-model="user.schwimmAbzeichen"></td>
-                </tr><tr>
-                <td><label><input v-model="user.bezahlt" type="checkbox" id="check">Hat bezahlt</label></td><td />
-                <td><label><input v-model="user.darfBehandeltWerden" type="checkbox" id="check">Behandlungserlaubnis bei Erkrankungen und Unfällen</label></td><td />
+                <td><label>Darf schwimmen</label></td><td><input v-model="user.darfSchwimmen" type="checkbox" id="checkSchwimmen" class="regular-checkbox"></td>
+                <td>Schwimmstufe:</td><td><input type="text" id="schwimmAbzeichen" v-model="user.schwimmAbzeichen" class="regular-checkbox"></td>
+            </tr>
+            <tr>
+
+                <td><label>Darf reiten</label></td><td><input v-model="user.darfReiten" type="checkbox" class="regular-checkbox" id="checkReiten"></td>
+                <td><label>Behandlungserlaubnis bei Erkrankungen und Unfällen</label></td><td><input v-model="user.darfBehandeltWerden" type="checkbox" id="checkBehandlung" class="regular-checkbox"></td>
             </tr>
         </table>
         <br />
@@ -110,7 +110,7 @@
         <td><textarea rows="4" cols="50" v-model="user.hitzeempfindlichkeiten" /></td>
         <td><textarea rows="4" cols="50" v-model="user.medikamente" /></td>
         </tr>
-        </table>
+       </table>
 
         <table><tr><th>Ernährungsbesonderheiten</th></tr>
         <tr><td><textarea rows="4" cols="50" v-model="user.essenLimitierungen" /></td>
@@ -122,52 +122,53 @@
 <hr />
 <form method="post" v-on:submit.prevent="updateUser">
       <h3>Behinderungen</h3>
-      <label><b>Behinderungsausweis liegt vor:</b><input v-model="user.liegtBehinderungVor" type="checkbox" id="check"></label> <br />
+      <label><b>Behinderungsausweis liegt vor:</b><input v-model="user.liegtBehinderungVor" type="checkbox" id="check" class="regular-checkbox"></label> <br />
       <div v-if="user.liegtBehinderungVor">
       <table>
       <tr><th colspan="4">Art der Behinderung</th></tr>
       <tr>
-      <td><label><input v-model="user.behinderung.merkzeichen_BeeintraechtigungImStrassenverkehr_G" type="checkbox" id="check">„G“ (erhebliche Gehbehinderung) </label></td>
-      <td><label><input v-model="user.behinderung.merkzeichen_Hilflosigkeit_H" type="checkbox" id="check">„H“ (Hilflosigkeit) </label></td>
-      <td><label><input v-model="user.behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG" type="checkbox" id="check">„aG“ (außergewöhnliche Gehbehinderung) </label></td>
+      <td><label>„G“ (erhebliche Gehbehinderung) </label></td><td><input v-model="user.behinderung.merkzeichen_BeeintraechtigungImStrassenverkehr_G" type="checkbox" class="regular-checkbox" id="check"></td>
+      <td><label>„H“ (Hilflosigkeit) </label></td><td><input v-model="user.behinderung.merkzeichen_Hilflosigkeit_H" type="checkbox" class="regular-checkbox" id="check"></td>
+      <td><label>„aG“ (außergewöhnliche Gehbehinderung) </label></td><td><input v-model="user.behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG" type="checkbox" class="regular-checkbox" id="check"></td>
       </tr><tr>
-      <td><label><input v-model="user.behinderung.merkzeichen_Blind_Bl" type="checkbox" id="check">„Bl“ (Blindheit) </label></td>
-      <td><label><input v-model="user.behinderung.merkzeichen_Gehoerlos_Gl" type="checkbox" id="check">„Gl“ (Gehörlosigkeit) </label></td>
-      <td><label><input v-model="user.behinderung.merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B" type="checkbox" id="check">„B“ (Berechtigung zur Mitnahme einer Begleitperson) </label></td>
+      <td><label>„Bl“ (Blindheit) </label></td><td><input v-model="user.behinderung.merkzeichen_Blind_Bl" type="checkbox" class="regular-checkbox" id="check"></td>
+      <td><label>„Gl“ (Gehörlosigkeit) </label></td><td><input v-model="user.behinderung.merkzeichen_Gehoerlos_Gl" type="checkbox" class="regular-checkbox" id="check"></td>
+      <td><label>„B“ (Berechtigung zur Mitnahme einer Begleitperson) </label></td><td><input v-model="user.behinderung.merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B" type="checkbox" id="check"></td>
       </tr><tr>
-      <td><label><input v-model="user.behinderung.merkzeichen_Taubblind_TBL" type="checkbox" id="check">„TBL“ (Taubblindheit)</label></td>
-      <td><label><input v-model="user.behinderung.rollstuhlNutzungNotwendig" type="checkbox" id="check">Rollstuhlnutzung </label></td>
-      <td>anderes Hilfsmittel:<input type="text" id="hilfsmittel" v-model="user.behinderung.weitereHilfsmittel"></td></tr>
+      <td><label>„TBL“ (Taubblindheit)</label></td><td><input v-model="user.behinderung.merkzeichen_Taubblind_TBL" type="checkbox" class="regular-checkbox" id="check"></td>
+      <td><label>Rollstuhlnutzung </label></td><td><input v-model="user.behinderung.rollstuhlNutzungNotwendig" type="checkbox" class="regular-checkbox" id="check"></td>
+      <td>anderes Hilfsmittel:</td><td><input type="text" id="hilfsmittel" v-model="user.behinderung.weitereHilfsmittel"></td></tr>
       </table>
       <br />
-      <label><b>Wertmarke vorhanden:</b><input v-model="user.behinderung.wertmarkeVorhanden" type="checkbox" id="check"></label> <br />
+      <label><b>Wertmarke vorhanden:</b><input v-model="user.behinderung.wertmarkeVorhanden" type="checkbox" class="regular-checkbox" id="check"></label> <br />
       <br />
-      <label><b>Begleitung notwending:</b><input v-model="user.behinderung.begleitungNotwendig" type="checkbox" id="check"></label> <br />
+      <label><b>Begleitung notwending:</b><input v-model="user.behinderung.begleitungNotwendig" type="checkbox" class="regular-checkbox" id="check"></label> <br />
 
       <div v-if="user.behinderung.begleitungNotwendig">
       <table><tr>
-      <td><label><input v-model="user.behinderung.begleitpersonPflege" type="checkbox" id="check">Pflege </label></td>
-      <td><label><input v-model="user.behinderung.begleitpersonMedizinischeVersorgung" type="checkbox" id="check">Medizinische Versorgung </label></td>
-      <td><label><input v-model="user.behinderung.begleitpersonMobilitaet" type="checkbox" id="check">Mobilität</label></td>
+      <td><label>Pflege </label></td><td><input v-model="user.behinderung.begleitpersonPflege" type="checkbox" class="regular-checkbox" id="check"></td>
+      <td><label>Medizinische Versorgung </label></td><td><input v-model="user.behinderung.begleitpersonMedizinischeVersorgung" type="checkbox" class="regular-checkbox" id="check"></td>
+      <td><label>Mobilität</label></td><td><input v-model="user.behinderung.begleitpersonMobilitaet" type="checkbox" class="regular-checkbox" id="check"></td>
       </tr><tr>
-      <td><label><input v-model="user.behinderung.begleitpersonOrientierung" type="checkbox" id="check">Orientierung</label></td>
-      <td><label><input v-model="user.behinderung.begleitpersonSozialeBegleitung" type="checkbox" id="check">Soziale Begleitung</label></td>
-      <td><label>Sinneswahrnehmung</label><input type="text" v-model="user.behinderung.eingeschraenkteSinne"></td>
+      <td><label>Orientierung</label></td><td><input v-model="user.behinderung.begleitpersonOrientierung" type="checkbox" class="regular-checkbox" id="check"></td>
+      <td><label>Soziale Begleitung</label></td><td><input v-model="user.behinderung.begleitpersonSozialeBegleitung" type="checkbox" class="regular-checkbox" id="check"></td>
+      <td><label>Sinneswahrnehmung</label></td><td><input type="text" v-model="user.behinderung.eingeschraenkteSinne"></td>
       </tr>
       </table>
       </div>
       </div>
       <br />
-      <table><tr><td>Hinweise zum Umgang mit Kind</td><td><textarea rows="4" cols="50" v-model="user.behinderung.hinweiseZumUmgangMitDemKind" /></td></tr></table>
+
+      <table><tr><th /><th/></tr><tr><td>Hinweise zum Umgang mit Kind:</td><td><textarea rows="4" cols="50" v-model="user.behinderung.hinweiseZumUmgangMitDemKind" /></td></tr></table>
       <br />
       <label><b>Benötigt Unterstützung bei der Organisation der Begleitperson</b><input v-model="user.behinderung.unterstuetzungSucheBegleitpersonNotwendig" type="checkbox" id="check"></label> <br />
 
       <div v-if="user.behinderung.unterstuetzungSucheBegleitpersonNotwendig">
-      <table><tr>
+      <table><tr><th /><th /></tr><tr>
       <td>Kontaktdaten des regulären Dienstes:</td><td><textarea rows="4" cols="50" v-model="user.behinderung.gewohnterBegleitpersonenDienstleister" /></td></tr></table>
       </div>
       <br />
-      <label><b>Beantragung der Kostenübernahme</b><input v-model="user.behinderung.beantragungKostenuebernahmeBegleitpersonNotwendig" type="checkbox" id="check"></label> <br />
+      <label><b>Beantragung der Kostenübernahme</b><input v-model="user.behinderung.beantragungKostenuebernahmeBegleitpersonNotwendig" type="checkbox" class="regular-checkbox" id="check"></label> <br />
 <br />
 <input type="submit" value="Änderung speichern">
 </form>
@@ -358,5 +359,97 @@ export default {
   margin: 2px;
   font-size: 15px;
 }
+
+
+.regular-checkbox {
+	-webkit-appearance: none;
+    background-color: #fafafa;
+	border: 1px solid #cacece;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+	padding: 9px;
+	border-radius: 3px;
+	display: inline-block;
+	position: relative;
+	z-index: +1;
+}
+.regular-checkbox:active, .regular-checkbox:checked:active {
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+}
+
+.regular-checkbox:checked {
+	background-color: #e9ecee;
+	border: 1px solid #adb8c0;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+	color: #99a1a7;
+}
+
+.regular-checkbox:checked:after {
+	content: '14';
+	font-size: 14px;
+	position: absolute;
+	top: 0px;
+	left: 3px;
+	color: #99a1a7;
+}
+input[type=checkbox] {
+    position: relative;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+input[type=checkbox]:after {
+    display: block;
+    content: "Nein";
+    position: absolute;
+    top: 0;
+    visibility: visible;
+    height: 30px;
+    line-height: 30px;
+    width: 40px;
+    text-align: center;
+    border-radius: 4px;
+    background: #FF7256;
+    color: #000000;
+    font-weight: 400;
+    cursor: pointer;
+    font-size: medium;
+}
+
+input[type=checkbox]:checked:after {
+    content: "Ja";
+    background: #76EE00;
+    position: absolute;
+    top: 0;
+    visibility: visible;
+    height: 30px;
+    line-height: 30px;
+    width: 40px;
+    text-align: center;
+    border-radius: 4px;
+    font-weight: 400;
+    color: #000000;
+    cursor: pointer;
+    font-size: large;
+}
+
+textarea {
+  background-image:linear-gradient(
+     hsl(190,10%,98%), hsl(190,40%,74%)
+  );
+  padding:1ex;
+  font-size:1em;
+  border-radius: 8px;
+  box-sizing:border-box;
+  color:black;
+}
+
+button {
+  border-radius: 8px;
+  background: #CD853F;
+  color: #FFFFFF;
+  font-size: medium;
+  width:100px;
+}
+
 </style>
 

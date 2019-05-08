@@ -24,8 +24,7 @@ import java.util.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 import static de.bauhaus.digital.DomainFactory.*;
 
 @RunWith(SpringRunner.class)
@@ -128,6 +127,7 @@ public class BackendControllerTest {
         String essenLimitierungen = "Laktoseintoleranz";
         String allergien = "Heuschnupfen: Nasenspray nur 2x am Tag";
 
+        Boolean liegtBehinderungVor = true;
         Behinderung behinderung = new Behinderung();
         behinderung.setRollstuhlNutzungNotwendig(true);
         behinderung.setMerkzeichen_Hilflosigkeit_H(true);
@@ -145,6 +145,7 @@ public class BackendControllerTest {
         String plz = "99082";
         String telefon = "03544444";
         String krankenkasse = "AOK";
+        String email = "myEmail@weimar.de";
         Teilnehmer klausKlausen = new Teilnehmer(
                 vorname,
                 nachname,
@@ -167,10 +168,11 @@ public class BackendControllerTest {
                 allergien,
                 essenLimitierungen,
                 krankheiten,
-                true,
+                liegtBehinderungVor,
                 behinderung,
                 hitzeempfindlichkeiten,
-                medikamente);
+                medikamente,
+                email);
 
         // Exlicitely set Id of User to update, so our implementation can find it
         klausKlausen.setId(userId);
@@ -199,6 +201,8 @@ public class BackendControllerTest {
         Assert.assertThat(responseUser.getEssenLimitierungen(),is(essenLimitierungen));
         Assert.assertThat(responseUser.getMedikamente(),is(medikamente));
         Assert.assertThat(responseUser.getHitzeempfindlichkeiten(),is(hitzeempfindlichkeiten));
+        Assert.assertThat(responseUser.getEmail(), is(email));
+        Assert.assertThat(responseUser.isLiegtBehinderungVor(), is(liegtBehinderungVor));
     }
 
     @Test
@@ -380,8 +384,9 @@ public class BackendControllerTest {
         projekteOhneFreieSlots = registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(anmeldungJson);
 
         assertThat(projekteOhneFreieSlots.size(), is(2));
-        assertThat(projekteOhneFreieSlots.get(0), is(fussballId));
-        assertThat(projekteOhneFreieSlots.get(1), is(golfSpielenId));
+        assertThat(projekteOhneFreieSlots, hasItem(golfSpielenId));
+        assertThat(projekteOhneFreieSlots, hasItem(fussballId));
+        assertThat(projekteOhneFreieSlots, not(hasItem(pizzaBackenId)));
 
         // Nun haben wir 2 ausgebuchte Projekte und nur Pizza backen hat noch Slots frei
         // Wenn ein Teilnehmer sich auf ausgebuchte Projekte nicht mehr anmelden kann,
@@ -414,8 +419,10 @@ public class BackendControllerTest {
         setzeAnmeldungFuerPizza(anmeldungJson, false);
 
         projekteOhneFreieSlots = registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(anmeldungJson);
-        assertThat(projekteOhneFreieSlots.get(0), is(fussballId));
-        assertThat(projekteOhneFreieSlots.get(1), is(golfSpielenId));
+        assertThat(projekteOhneFreieSlots, hasItem(fussballId));
+        assertThat(projekteOhneFreieSlots, hasItem(golfSpielenId));
+        assertThat(projekteOhneFreieSlots, not(hasItem(pizzaBackenId)));
+
     }
 
     private void setzeNeuenNamen(AnmeldungJson anmeldungJson, String vorname, String nachname) {

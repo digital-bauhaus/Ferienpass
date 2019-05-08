@@ -98,7 +98,7 @@ public class Teilnehmer {
                       boolean allowTreatment, Kontakt emergencyContact, boolean allowHomeAlone, boolean allowRiding, boolean allowSwimming, String schwimmAbzeichen, boolean hasPayed,
                       boolean darfBehandeltWerden, Arzt doctor,
                       String allergien, String essenLimitierungen, String krankheiten, boolean beeintraechtigt, Behinderung behinderung,
-                      String hitzempfindlichkeiten, String medikamente) {
+                      String hitzempfindlichkeiten, String medikamente, String email) {
 
         this.setVorname(firstName);
         this.setNachname(lastName);
@@ -126,6 +126,7 @@ public class Teilnehmer {
         this.setMedikamente(medikamente);
         this.setHitzeempfindlichkeiten(hitzempfindlichkeiten);
         this.setDarfBehandeltWerden(darfBehandeltWerden);
+        this.setEmail((email));
     }
 
     public String getEmail() {

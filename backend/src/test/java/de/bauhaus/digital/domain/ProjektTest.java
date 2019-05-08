@@ -53,9 +53,10 @@ public class ProjektTest {
         String medikaments = "Nasenspray von Forte: 2x am Tag";
 
         String hitzeempfindlichkeits = "grosse Hitze: eincremen";
+        String email = "myEmail@weimar.de";
 
         Teilnehmer user = new Teilnehmer(vorname,name, LocalDate.of(2005,10,20),registerDate, "Bahnhofstraße 4", "Weimar", "99423", "03544444", "0453434", true, kontact,
-                true, false, false, "Seepferdchen", false, false, arzt,  allergien, essenLimitierungen, krankheiten, true, behinderung,hitzeempfindlichkeits,medikaments);
+                true, false, false, "Seepferdchen", false, false, arzt,  allergien, essenLimitierungen, krankheiten, true, behinderung,hitzeempfindlichkeits,medikaments, email);
         return user;
     }
 

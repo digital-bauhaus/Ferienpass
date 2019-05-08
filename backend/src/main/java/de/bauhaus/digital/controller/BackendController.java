@@ -90,6 +90,7 @@ public class BackendController {
 
             //Basic data
             teilnehmer2Update.setVorname(user.getVorname());
+            teilnehmer2Update.setVorname(user.getVorname());
             teilnehmer2Update.setNachname(user.getNachname());
             teilnehmer2Update.setGeburtsdatum(user.getGeburtsdatum());
             teilnehmer2Update.setStrasse(user.getStrasse());
@@ -100,6 +101,7 @@ public class BackendController {
 
             teilnehmer2Update.setArzt(user.getArzt());
             teilnehmer2Update.setNotfallKontakt(user.getNotfallKontakt());
+            teilnehmer2Update.setLiegtBehinderungVor(user.isLiegtBehinderungVor());
             teilnehmer2Update.setBehinderung(user.getBehinderung());
 
             //Diverse
@@ -110,6 +112,7 @@ public class BackendController {
             teilnehmer2Update.setSchwimmAbzeichen(user.getSchwimmAbzeichen());
             teilnehmer2Update.setErlaubeMedikamentation(user.isErlaubeMedikamentation());
             teilnehmer2Update.setBezahlt(user.isBezahlt());
+            teilnehmer2Update.setEmail((user.getEmail()));
 
             //Limitations
             teilnehmer2Update.setKrankheiten(user.getKrankheiten());

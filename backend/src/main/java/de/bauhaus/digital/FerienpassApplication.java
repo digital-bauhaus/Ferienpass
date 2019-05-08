@@ -67,6 +67,7 @@ public class FerienpassApplication implements CommandLineRunner {
 		String schwimmAbzeichen = "Seepferdchen";
 		String hitze = "Wärme: bis 25 Grad ist alles okay";
 		String medikamente = "Nasentropfen_ maximal 2x am Tag ein Schub";
+		String email = "myEmail@weimar.de";
 
 		Teilnehmer user = new Teilnehmer(
 				"Gary",
@@ -92,7 +93,8 @@ public class FerienpassApplication implements CommandLineRunner {
 				true,
 				behinderung,
 				hitze,
-				medikamente);
+				medikamente,
+				email);
 
 		teilnehmerRepository.save(user);
 
