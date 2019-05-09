@@ -18,7 +18,6 @@ public class Projekt {
     //private String organisation;
     private int kosten;
     private int slotsGesamt;
-    private int slotsFrei;
     private int slotsReserviert;
     private String traeger;
     private String webLink;
@@ -43,7 +42,6 @@ public class Projekt {
         setHoechstAlter(hoechstAlter);
         setKosten(kosten);
         setSlotsGesamt(slotsGesamt);
-        setSlotsFrei(slotsGesamt - slotsReserviert);
         setSlotsReserviert(slotsReserviert);
         setTraeger(traeger);
         setWebLink(webLink);
@@ -121,14 +119,6 @@ public class Projekt {
         this.slotsGesamt = slotsGesamt;
     }
 
-    public int getSlotsFrei() {
-        return slotsFrei;
-    }
-
-    public void setSlotsFrei(int slotsFrei) {
-        this.slotsFrei = slotsFrei;
-    }
-
     public int getSlotsReserviert() {
         return slotsReserviert;
     }
@@ -176,7 +166,6 @@ public class Projekt {
     public void addAnmeldung(Teilnehmer teilnehmer) {
         this.anmeldungen.add(teilnehmer);
         this.setSlotsReserviert(this.slotsReserviert + 1);
-        this.setSlotsFrei(this.slotsFrei - 1);
     }
 
     public List<Teilnehmer> getStornierteTeilnehmer() {
@@ -197,7 +186,11 @@ public class Projekt {
     }
 
     public boolean hasProjektFreeSlots() {
-        return this.slotsFrei > 0;
+        return getSlotsFrei() > 0;
+    }
+
+    public int getSlotsFrei() {
+        return Math.max(0, this.slotsGesamt - this.slotsReserviert);
     }
 
 }
