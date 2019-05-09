@@ -10,7 +10,7 @@
     :data-zip-code="zipCode ? zipCode : ''"
   >
     <header>
-      <img src="../assets/logo.png" alt="Ferienpass Weimar" class="site-logo">
+      <img src="../assets/ferienpasslogo_ohne_hg.png" alt="Ferienpass Weimar" class="site-logo">
     </header>
 
     <h1>Ferienpass Weimar – Anmeldung</h1>
@@ -410,7 +410,7 @@ export default {
 <style>
 header {
   max-width: 100%;
-  background-color: rgb(0, 26, 125);
+  background-color: rgba(51, 122, 183, 1);
   text-align: center;
 }
 
