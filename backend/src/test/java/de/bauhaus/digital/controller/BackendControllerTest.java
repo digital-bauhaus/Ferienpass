@@ -711,25 +711,43 @@ public class BackendControllerTest {
 
     @Test
     public void shouldAssignUserCorrectlyToProjekt() throws Exception {
+        // Given
+        Long projectId = addProjekt(createSingleProject());
+
         Teilnehmer newUser = createUser();
         newUser.setVorname("Anton");
         newUser.setNachname("Tirol");
-
         Long userId = addUser(newUser);
 
-        Teilnehmer responseUser = getUser(userId);
+        // When
+        Boolean isUserAssignedToProject = assignUser2Projekt(projectId, userId);
 
-        Assert.assertThat(responseUser.getNachname(),is("Tirol"));
-        Assert.assertThat(responseUser.getVorname(),is("Anton"));
+        // Then
+        assertThat(isUserAssignedToProject,is(true));
 
+        Projekt projekt = getProjekt(projectId);
+        Teilnehmer teilnehmer = projekt.getAnmeldungen().get(0);
+        assertThat(teilnehmer.getId(), is(userId));
+
+        List<Projekt> projectsByFirstNameAndLastName = getAlleZugewiesenenProjekteByFirstNameAndLastName("Anton", "Tirol");
+        assertThat(projectsByFirstNameAndLastName.size(),is(1));
+    }
+
+    @Test
+    public void shouldUnassignUserCorrectlyFromProjekt() throws Exception {
+        // Given
+        Long userId = addUser(createUser());
         Long projectId = addProjekt(createSingleProject());
+        assignUser2Projekt(projectId, userId);
 
-        Boolean isUserAssignedToProject = assignUser2Projekt(projectId, responseUser.getId());
+        // When
+        Boolean isUserUnassignedFromProject = unassignUserFromProjekt(projectId, userId);
 
-        MatcherAssert.assertThat(isUserAssignedToProject,is(true));
-
-        List<Projekt> projectsByFirstNameAndLastName = getAlleZugewiesenenProjekteByFirstNameAndLastName();
-        Assert.assertThat(projectsByFirstNameAndLastName.size(),is(1));
+        // Then
+        assertThat(isUserUnassignedFromProject, is(true));
+        Projekt projekt = getProjekt(projectId);
+        Teilnehmer teilnehmer = projekt.getStornierteTeilnehmer().get(0);
+        assertThat(teilnehmer.getId(), is(userId));
     }
 
     @Test
@@ -741,10 +759,10 @@ public class BackendControllerTest {
         assertThat(isProjectDeleted, is(true));
     }
 
-    private List<Projekt> getAlleZugewiesenenProjekteByFirstNameAndLastName() {
+    private List<Projekt> getAlleZugewiesenenProjekteByFirstNameAndLastName(String vorname, String nachname) {
         return Arrays.asList(given()
-                .param("vorname","Anton")
-                .param("nachname","Tirol")
+                .param("vorname",vorname)
+                .param("nachname",nachname)
                 .when()
                 .get(BASE_URL+"/projectsof")
                 .then()
@@ -854,17 +872,27 @@ public class BackendControllerTest {
     }
 
     private Boolean assignUser2Projekt(Long projektId, Long userId) {
-        Map<String,Long> newID_Map = new HashMap<String, Long>();
-        newID_Map.put("user",userId);
-        newID_Map.put("project", projektId);
         return given()
-                .body(newID_Map)
-                .contentType(ContentType.JSON)
+                    .pathParam("projektId", projektId)
+                    .pathParam("userId", userId)
+                    .contentType(ContentType.JSON)
                 .when()
-                .post(BASE_URL+"/assignProject")
+                    .put(BASE_URL + "/projekt/{projektId}/user/{userId}")
                 .then()
-                .statusCode(HttpStatus.SC_OK)
-                .extract().as(Boolean.class);
+                    .statusCode(is(HttpStatus.SC_OK))
+                    .extract().body().as(Boolean.class);
+    }
+
+    private Boolean unassignUserFromProjekt(Long projektId, Long userId) {
+        return given()
+                    .pathParam("projektId", projektId)
+                    .pathParam("userId", userId)
+                    .contentType(ContentType.JSON)
+                .when()
+                    .delete(BASE_URL + "/projekt/{projektId}/user/{userId}")
+                .then()
+                    .statusCode(is(HttpStatus.SC_OK))
+                    .extract().body().as(Boolean.class);
     }
 
     private Teilnehmer getUser(Long userId) {

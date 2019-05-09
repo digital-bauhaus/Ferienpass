@@ -179,7 +179,7 @@
       <tr><th>Name</th><th>Stornieren</th></tr>
       <tr v-for="(projekt, index) of projectsOfUser">
       <td><label> {{projekt.name}}</label></td>
-      <td><button v-on:click="cancelProject(user.id,projekt.id)">Stornieren</button></td>
+      <td><button v-on:click="unassignFromProject(projekt.id,user.id)">Stornieren</button></td>
       </tr>
       </table>
       </div>
@@ -202,7 +202,7 @@
       <tr><th>Name</th><th>Anmelden</th></tr>
       <tr v-for="(projekt, index) of allAvailableProjects">
       <td><label> {{projekt.name}}</label></td>
-      <td><button v-on:click="assignProject(user.id,projekt.id)">Eintragen</button></td>
+      <td><button v-on:click="assignToProject(projekt.id,user.id)">Eintragen</button></td>
       </tr>
       </table>
       </div>
@@ -268,38 +268,33 @@ export default {
         this.errors.push(e)
       })
     },
-    cancelProject (id, projectId) {
-      AXIOS.post('/cancelproject', {
-        user_id: id,
-        project: projectId
-      })
-        .then(response => {
-          this.popupClass = 'fadeIn'
-          var self = this;
-          setTimeout(function () {
-            self.popupClass = 'fadeOut';
-          }, 2000);
-        })
-          .catch(e => {
-            this.errors.push(e)
-          })
+    unassignFromProject (projectId, userId) {
+        AXIOS.delete('projekt/' + projectId + '/user/' + userId)
+            .then(response => {
+                this.popupClass = 'fadeIn';
+                var self = this;
+                setTimeout(function () {
+                    self.popupClass = 'fadeOut';
+                }, 2000);
+                this.getProjectsOfUser()
+            })
+            .catch(e => {
+                this.errors.push(e)
+            });
     },
-    assignProject (id, projectId) {
-      AXIOS.post('/assignProject', {
-        user: id,
-        project: projectId
-      })
-        .then(response => {
-          this.popupClass = 'fadeIn'
-          var self = this;
-          setTimeout(function () {
-            self.popupClass = 'fadeOut';
-          }, 2000);
-        })
-          .catch(e => {
-            this.errors.push(e)
-          })
-      this.getProjectsOfUser()
+    assignToProject (projectId, userId) {
+        AXIOS.put('projekt/' + projectId + '/user/' + userId)
+            .then(response => {
+                this.popupClass = 'fadeIn'
+                var self = this;
+                setTimeout(function () {
+                    self.popupClass = 'fadeOut';
+                }, 2000);
+                this.getProjectsOfUser()
+            })
+            .catch(e => {
+                this.errors.push(e)
+            });
     },
     getUserData () {
       var id = parseInt(this.$route.query.id);
