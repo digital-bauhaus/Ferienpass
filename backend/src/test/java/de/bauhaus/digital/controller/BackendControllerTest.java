@@ -568,42 +568,6 @@ public class BackendControllerTest {
         assertThat(responseProjekt.getAnmeldungen().get(0).getId(), is(responseUser.getId()));
     }
 
-    @Test
-    public void addProjectUsingParametersAndTestForSuccess() {
-        Projekt projekt = createSampleProject();
-        Long projectID =
-                given()
-                        .param("name", projekt.getName())
-                        .param("date", localDate2String(projekt.getDatum()))
-                        .param("endDate", localDate2String(projekt.getDatumEnde()))
-                        .param("minAge",projekt.getMindestAlter())
-                        .param("maxAge",projekt.getHoechstAlter())
-                        .param("price",projekt.getKosten())
-                        .param("slots",projekt.getSlotsGesamt())
-                        .param("slotsReserved",projekt.getSlotsReserviert())
-                        .param("traeger",projekt.getTraeger())
-                        .param("weblink",projekt.getWebLink())
-                .when()
-                .get(BASE_URL + "/createproject")
-                .then()
-                .statusCode(HttpStatus.SC_CREATED)
-                .assertThat()
-                .extract().as(Long.class);
-
-        Projekt responseProjekt = getProjekt(projectID);
-
-        assertThat(projectID, is(responseProjekt.getId()));
-        assertThat(responseProjekt.getName(), is(projekt.getName()));
-        assertThat(responseProjekt.getSlotsFrei(), is(projekt.getSlotsFrei()));
-        assertThat(responseProjekt.getKosten(), is(projekt.getKosten()));
-        assertThat(responseProjekt.getMindestAlter(), is(projekt.getMindestAlter()));
-        assertThat(responseProjekt.getHoechstAlter(), is(projekt.getHoechstAlter()));
-        assertThat(responseProjekt.getDatum(), is(projekt.getDatum()));
-        assertThat(responseProjekt.getSlotsGesamt(), is(projekt.getSlotsGesamt()));
-        assertThat(responseProjekt.getWebLink(), is(projekt.getWebLink()));
-        assertThat(responseProjekt.getAnmeldungen(), is(projekt.getAnmeldungen()));
-    }
-
     private String localDate2String(LocalDate datum) {
         return datum.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
@@ -624,72 +588,6 @@ public class BackendControllerTest {
         assertThat(projectID, is(responseProjekt.getId()));
         assertThat(projekt.getName(), is(responseProjekt.getName()));
         assertThat(responseProjekt.isAktiv(),is(false));
-    }
-
-    @Test
-    public void testProjectCanBeUpdated() {
-        //Create a project
-        Projekt projekt = createSampleProject();
-
-        // add project to database via API
-        Long projectID = addProjekt(projekt);
-
-        String name = "Neuer Name";
-        LocalDate date = LocalDate.now();
-        LocalDate endDate   = LocalDate.now();
-        int slotsTotal = 10;
-        int slotsReserved = 5;
-        int minAge = 1;
-        int maxAge = 5;
-        int price = 20;
-        String weblink = "www.test.de";
-        String sponsor = "Testsponsor";
-
-        // update Project
-        given()
-                .param("id", projectID)
-                .param("name", name)
-                .param("date", localDate2String(date))
-                .param("endDate", localDate2String(endDate))
-                .param("minAge",minAge)
-                .param("maxAge",maxAge)
-                .param("price",price)
-                .param("slots",slotsTotal)
-                .param("slotsReserved",slotsReserved)
-                .param("traeger",sponsor)
-                .param("weblink",weblink)
-            .when()
-                .put(BASE_URL + "/updateproject")
-            .then()
-                .statusCode(is(HttpStatus.SC_CREATED))
-                .assertThat();
-
-        // retrieve project again from database
-        Projekt responseProject = getProjekt(projectID);
-
-        // assert project was updated correctly
-        assertThat(responseProject.getName(), is(name));
-        // TODO date has to be checked too!
-        //assertThat(responseProject.getDatum(), is(date));
-        //assertThat(responseProject.getDatumEnde(), is(endDate));
-        assertThat(responseProject.getSlotsGesamt(), is(slotsTotal));
-        assertThat(responseProject.getSlotsReserviert(), is(slotsReserved));
-        assertThat(responseProject.getMindestAlter(), is(minAge));
-        assertThat(responseProject.getHoechstAlter(), is(maxAge));
-        assertThat(responseProject.getKosten(), is(price));
-        assertThat(responseProject.getWebLink(), is(weblink));
-        assertThat(responseProject.getTraeger(), is(sponsor));
-    }
-
-    private Projekt getProjekt(Long projectID) {
-        return given()
-                .pathParam("projekt_id", projectID)
-                .when()
-                .get(BASE_URL + "/project/{projekt_id}")
-                .then()
-                .statusCode(HttpStatus.SC_OK)
-                .assertThat()
-                .extract().as(Projekt.class);
     }
 
     @Test
@@ -804,6 +702,27 @@ public class BackendControllerTest {
     }
 
     @Test
+    public void shouldUpdateProjectCorrectly() {
+        Long projectId = addProjekt(createSampleProject());
+
+        Projekt projekt = getProjekt(projectId);
+        projekt.setName("Klettern am Berg");
+        projekt.setDatum(LocalDate.of(2019, 8,3));
+        projekt.setDatumEnde(LocalDate.of(2019, 9,2));
+        projekt.setSlotsReserviert(6);
+        projekt.setSlotsGesamt(25);
+
+
+        Projekt updatedProjekt = updateProjekt(projekt);
+
+        assertThat(updatedProjekt.getName(), is(projekt.getName()));
+        assertThat(updatedProjekt.getDatum(), is(projekt.getDatum()));
+        assertThat(updatedProjekt.getDatumEnde(), is(projekt.getDatumEnde()));
+        assertThat(updatedProjekt.getSlotsReserviert(), is(projekt.getSlotsReserviert()));
+        assertThat(updatedProjekt.getSlotsGesamt(), is(projekt.getSlotsGesamt()));
+    }
+
+    @Test
     public void shouldDeleteAddedProjectCorrectly() {
         Long projectId = addProjekt(createSampleProject());
 
@@ -892,16 +811,39 @@ public class BackendControllerTest {
                 .body().as(Long[].class));
     }
 
+    private Projekt getProjekt(Long projectID) {
+        return given()
+                .pathParam("projekt_id", projectID)
+                .when()
+                .get(BASE_URL + "/project/{projekt_id}")
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .assertThat()
+                .extract().as(Projekt.class);
+    }
+
     private Long addProjekt(Projekt projekt) {
         return given()
                     .body(projekt)
                     .contentType(ContentType.JSON)
                .when()
-                    .post(BASE_URL+"/addproject")
+                    .post(BASE_URL+"/projekt")
                .then()
                     .statusCode(is(HttpStatus.SC_CREATED))
                     .extract()
                         .body().as(Long.class);
+    }
+
+    private Projekt updateProjekt(Projekt projekt) {
+        return given()
+                    .body(projekt)
+                    .contentType(ContentType.JSON)
+                .when()
+                    .put(BASE_URL+"/projekt")
+                .then()
+                    .statusCode(is(HttpStatus.SC_OK))
+                    .extract()
+                    .body().as(Projekt.class);
     }
 
     private List<Projekt> getAllProjects() {

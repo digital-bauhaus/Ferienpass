@@ -249,81 +249,6 @@ public class BackendController {
         return resultList;
     }
 
-    // CREATE PROJECT
-    @RequestMapping(path = "/createproject")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    Long addNewProject(@RequestParam String name, @RequestParam String date,
-                       @RequestParam String endDate, @RequestParam int minAge,
-                       @RequestParam int maxAge, @RequestParam int price,
-                       @RequestParam int slots,
-                       @RequestParam int slotsReserved, @RequestParam String traeger, @RequestParam String weblink) {
-        Projekt project = new Projekt(name, dateString2LocalDate(date),
-                dateString2LocalDate(endDate), minAge, maxAge, price, slots,
-                slotsReserved, traeger, weblink);
-        projektRepository.save(project);
-        LOG.info(project.toString() + "successfully saved into DB");
-
-        return project.getId();
-    }
-
-    // UPDATE PROJECT
-    @RequestMapping(path = "/updateproject")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    Boolean updateProject(@RequestParam Long id, @RequestParam String name,
-                          @RequestParam String date,
-                          @RequestParam String endDate, @RequestParam int minAge,
-                          @RequestParam int maxAge, @RequestParam int price,
-                          @RequestParam int slots,
-                       @RequestParam int slotsReserved, @RequestParam String traeger, @RequestParam String weblink) {
-        Projekt project = projektRepository.findById(id).orElse(null);
-        if (project == null) {
-            LOG.info("Could not find a project to update with id:" + id);
-            throw new ResourceNotFoundException("No project found with id: " + id);
-        }
-        if (slots < project.getSlotsGesamt() && slots < project.getSlotsGesamt() - project.getSlotsFrei()) {
-            LOG.info("Could not update project, because there are already too many slots taken.");
-            return  false;
-        }
-        if (slotsReserved > project.getSlotsReserviert() && slotsReserved - project.getSlotsReserviert() > project.getSlotsFrei()) {
-            LOG.info("Could not update project, because you want to reserve more slots than slots are free.");
-            return  false;
-        }
-        project.setName(name);
-
-        String[] dateRaw;
-
-        try {
-            dateRaw = date.split("-");
-            project.setDatum(LocalDate.of(Integer.valueOf(dateRaw[0]), Integer.valueOf(dateRaw[1]), Integer.valueOf(dateRaw[2])));
-        } catch (DateTimeParseException e)
-        {
-            LOG.warn("Could not update project, invalid date submitted.");
-            throw new BadRequestException("Invalid date");
-        }
-        try {
-            dateRaw = endDate.split("-");
-            project.setDatumEnde(LocalDate.of(Integer.valueOf(dateRaw[0]), Integer.valueOf(dateRaw[1]), Integer.valueOf(dateRaw[2])));
-        } catch (DateTimeParseException e)
-        {
-            LOG.warn("Could not update project, invalid endDate submitted.");
-            throw new BadRequestException("Invalid endDate");
-        }
-
-        project.setMindestAlter(minAge);
-        project.setHoechstAlter(maxAge);
-        project.setKosten(price);
-        project.setSlotsGesamt(slots);
-        project.setSlotsReserviert(slotsReserved);
-        project.setTraeger(traeger);
-        project.setWebLink(weblink);
-        projektRepository.save(project);
-        LOG.info(project.toString() + "successfully saved into DB");
-
-        return true;
-    }
-
     private LocalDate dateString2LocalDate(@RequestParam String date) {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
@@ -360,7 +285,7 @@ public class BackendController {
     }
 
 
-    @RequestMapping(path = "/addproject", method = RequestMethod.POST)
+    @RequestMapping(path = "/projekt", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Long addNewProject(@RequestBody Projekt projekt) {
@@ -370,6 +295,23 @@ public class BackendController {
         LOG.info(projekt.toString() + " successfully saved into DB");
 
         return projekt.getId();
+    }
+
+    @RequestMapping(path = "/projekt", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    Projekt updateProject(@RequestBody Projekt projekt) {
+
+        Optional<Projekt> maybeProjekt = projektRepository.findById(projekt.getId());
+        if (maybeProjekt.isPresent()) {
+            Projekt foundProjekt = maybeProjekt.get();
+            foundProjekt = projekt;
+            projektRepository.save(foundProjekt);
+            LOG.info("Projekt with id " + projekt.getId() + " successfully updated on DB.");
+            return foundProjekt;
+        } else {
+            throw new ProjektNotFoundException("Projekt mit der id " + projekt.getId() + " wurde nicht gefunden.");
+        }
     }
 
 
