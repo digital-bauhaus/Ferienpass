@@ -1,5 +1,8 @@
 package de.bauhaus.digital.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,7 +21,6 @@ public class Projekt {
     //private String organisation;
     private int kosten;
     private int slotsGesamt;
-    private int slotsFrei;
     private int slotsReserviert;
     private String traeger;
     private String webLink;
@@ -43,7 +45,6 @@ public class Projekt {
         setHoechstAlter(hoechstAlter);
         setKosten(kosten);
         setSlotsGesamt(slotsGesamt);
-        setSlotsFrei(slotsGesamt - slotsReserviert);
         setSlotsReserviert(slotsReserviert);
         setTraeger(traeger);
         setWebLink(webLink);
@@ -121,14 +122,6 @@ public class Projekt {
         this.slotsGesamt = slotsGesamt;
     }
 
-    public int getSlotsFrei() {
-        return slotsFrei;
-    }
-
-    public void setSlotsFrei(int slotsFrei) {
-        this.slotsFrei = slotsFrei;
-    }
-
     public int getSlotsReserviert() {
         return slotsReserviert;
     }
@@ -173,12 +166,6 @@ public class Projekt {
         this.datumEnde = datumEnde;
     }
 
-    public void addAnmeldung(Teilnehmer teilnehmer) {
-        this.anmeldungen.add(teilnehmer);
-        this.setSlotsReserviert(this.slotsReserviert + 1);
-        this.setSlotsFrei(this.slotsFrei - 1);
-    }
-
     public List<Teilnehmer> getStornierteTeilnehmer() {
         return stornierteTeilnehmer;
     }
@@ -187,9 +174,31 @@ public class Projekt {
         this.stornierteTeilnehmer = stornierteTeilnehmer;
     }
 
-    public void addStornierterTeilnehmer(Teilnehmer stornierterTeilnehmer) {
-        this.stornierteTeilnehmer.add(stornierterTeilnehmer);
-        this.anmeldungen.remove(stornierterTeilnehmer);
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Transient
+    public int getSlotsFrei() {
+        return Math.max(0, this.slotsGesamt - this.slotsReserviert);
+    }
+
+    public void addAnmeldung(Teilnehmer teilnehmer) {
+        this.anmeldungen.add(teilnehmer);
+        setSlotsReserviert(this.slotsReserviert + 1);
+    }
+
+    /**
+     * @param zuStornierenderTeilnehmer
+     * @return true, if the Teilnehmer was actually registered for this
+     * Veranstaltung and could be cancelled
+     */
+    public boolean addStornierung(Teilnehmer zuStornierenderTeilnehmer) {
+        boolean teilnehmerWasRegistered =
+                this.anmeldungen.remove(zuStornierenderTeilnehmer);
+        if (teilnehmerWasRegistered)
+        {
+            this.stornierteTeilnehmer.add(zuStornierenderTeilnehmer);
+            setSlotsReserviert(this.slotsReserviert - 1);
+        }
+        return teilnehmerWasRegistered;
     }
 
     public boolean isTeilnehmerNotAlreadyAsignedToProjekt(Teilnehmer teilnehmer) {
@@ -197,7 +206,7 @@ public class Projekt {
     }
 
     public boolean hasProjektFreeSlots() {
-        return this.slotsFrei > 0;
+        return getSlotsFrei() > 0;
     }
 
 }

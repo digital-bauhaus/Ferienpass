@@ -4,11 +4,9 @@ package de.bauhaus.digital.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bauhaus.digital.FerienpassApplication;
 import de.bauhaus.digital.domain.*;
-import de.bauhaus.digital.repository.TeilnehmerRepositoryTest;
 import de.bauhaus.digital.transformation.AnmeldungJson;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
-import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +16,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -46,7 +43,7 @@ public class BackendControllerTest {
      ****************************/
     @Test
     public void addNewUserAndRetrieveItBack() {
-        Teilnehmer user = createUser();
+        Teilnehmer user = createSampleUser();
 
         Long userId = addUser(user);
 
@@ -57,7 +54,7 @@ public class BackendControllerTest {
 
     @Test
     public void addNewUserAddSeveralListItemsAndRemoveThemAgain() {
-        Teilnehmer user = createUser();
+        Teilnehmer user = createSampleUser();
 
         String allergy = "Arbeiten: Viele Aufgaben und viel reden \n"+
         "Freizeit: Urlaub und Spaß haben";
@@ -95,8 +92,8 @@ public class BackendControllerTest {
     public void addTwoUsersAndCheckWhetherAllUsersAreComplete() {
         int initialSize = getAllUsers().size();
 
-        Long userId = addUser(createUser());
-        Long userId2 = addUser(createUser());
+        Long userId = addUser(createSampleUser());
+        Long userId2 = addUser(createSampleUser());
 
         List<Teilnehmer> allUsers = getAllUsers();
 
@@ -110,7 +107,7 @@ public class BackendControllerTest {
 
     @Test
     public void isUserUpdatedCorrectly() {
-        Long userId = addUser(createUser());
+        Long userId = addUser(createSampleUser());
 
         Arzt arzt = new Arzt(
                 "Doktor Who",
@@ -208,7 +205,7 @@ public class BackendControllerTest {
 
     @Test
     public void isUserDeletedCorrectly() {
-        Long userId = addUser(createUser());
+        Long userId = addUser(createSampleUser());
 
         Teilnehmer responseUser = getUser(userId);
 
@@ -230,19 +227,19 @@ public class BackendControllerTest {
 
         // Zuerst fuer klare Verhältnisse sorgen und Seiteneffekte vermeiden!
         // Daher neue Projekte anlegen ...
-        Long pizzaBackenId = addProjekt(ProjektTest.createProjekt(
+        Long pizzaBackenId = addProjekt(createSampleProject(
                 "Pizza backen",
                 LocalDate.of(2018, 7, 12),
                 LocalDate.of(2018, 7, 13),
                 15,
                 3));
-        Long fussballId = addProjekt(ProjektTest.createProjekt(
+        Long fussballId = addProjekt(createSampleProject(
                 "Fussball",
                 LocalDate.of(2018, 8, 14),
                 LocalDate.of(2018, 8, 17),
                 10,
                 7));
-        Long golfSpielenId = addProjekt(ProjektTest.createProjekt(
+        Long golfSpielenId = addProjekt(createSampleProject(
                 "Golf spielen",
                 LocalDate.of(2018, 7, 2),
                 LocalDate.of(2018, 7, 2),
@@ -293,19 +290,19 @@ public class BackendControllerTest {
     public void pruefeRegistrierungProjekteBeiApiCallAnmeldungMicroservice() throws IOException {
         // Zuerst fuer klare Verhältnisse sorgen und Seiteneffekte vermeiden!
         // Daher neue Projekte anlegen ...
-        Long pizzaBackenId = addProjekt(ProjektTest.createProjekt(
+        Long pizzaBackenId = addProjekt(createSampleProject(
                 "Pizza backen",
                 LocalDate.of(2018, 7, 12),
                 LocalDate.of(2018, 7, 13),
                 8,
                 3));
-        Long fussballId = addProjekt(ProjektTest.createProjekt(
+        Long fussballId = addProjekt(createSampleProject(
                 "Fussball",
                 LocalDate.of(2018, 8, 14),
                 LocalDate.of(2018, 8, 17),
                 10,
                 7));
-        Long golfSpielenId = addProjekt(ProjektTest.createProjekt(
+        Long golfSpielenId = addProjekt(createSampleProject(
                 "Golf spielen",
                 LocalDate.of(2018, 7, 2),
                 LocalDate.of(2018, 7, 2),
@@ -535,7 +532,7 @@ public class BackendControllerTest {
      ****************************/
     @Test
     public void addNewProjectAndetrieveItBack() {
-        Projekt projekt = createSingleProject();
+        Projekt projekt = createSampleProject();
         Long projectID = addProjekt(projekt);
 
         Projekt responeProjekt = getProjekt(projectID);
@@ -554,9 +551,9 @@ public class BackendControllerTest {
 
     @Test
     public void addProjectAndUserAndAssignProjectToUserAndRetrieveAllProjectsForThisUser() {
-        Long projectID = addProjekt(createSingleProject());
+        Long projectID = addProjekt(createSampleProject());
 
-        Long userId = addUser(createUser());
+        Long userId = addUser(createSampleUser());
         List<Teilnehmer> allUsers = getAllUsers();
 
         assertThat(allUsers.get(allUsers.size()-1).getId(), is(userId));
@@ -571,42 +568,6 @@ public class BackendControllerTest {
         assertThat(responseProjekt.getAnmeldungen().get(0).getId(), is(responseUser.getId()));
     }
 
-    @Test
-    public void addProjectUsingParametersAndTestForSuccess() {
-        Projekt projekt = createSingleProject();
-        Long projectID =
-                given()
-                        .param("name", projekt.getName())
-                        .param("date", localDate2String(projekt.getDatum()))
-                        .param("endDate", localDate2String(projekt.getDatumEnde()))
-                        .param("minAge",projekt.getMindestAlter())
-                        .param("maxAge",projekt.getHoechstAlter())
-                        .param("price",projekt.getKosten())
-                        .param("slots",projekt.getSlotsGesamt())
-                        .param("slotsReserved",projekt.getSlotsReserviert())
-                        .param("traeger",projekt.getTraeger())
-                        .param("weblink",projekt.getWebLink())
-                .when()
-                .get(BASE_URL + "/createproject")
-                .then()
-                .statusCode(HttpStatus.SC_CREATED)
-                .assertThat()
-                .extract().as(Long.class);
-
-        Projekt responseProjekt = getProjekt(projectID);
-
-        assertThat(projectID, is(responseProjekt.getId()));
-        assertThat(responseProjekt.getName(), is(projekt.getName()));
-        assertThat(responseProjekt.getSlotsFrei(), is(projekt.getSlotsFrei()));
-        assertThat(responseProjekt.getKosten(), is(projekt.getKosten()));
-        assertThat(responseProjekt.getMindestAlter(), is(projekt.getMindestAlter()));
-        assertThat(responseProjekt.getHoechstAlter(), is(projekt.getHoechstAlter()));
-        assertThat(responseProjekt.getDatum(), is(projekt.getDatum()));
-        assertThat(responseProjekt.getSlotsGesamt(), is(projekt.getSlotsGesamt()));
-        assertThat(responseProjekt.getWebLink(), is(projekt.getWebLink()));
-        assertThat(responseProjekt.getAnmeldungen(), is(projekt.getAnmeldungen()));
-    }
-
     private String localDate2String(LocalDate datum) {
         return datum.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
@@ -614,7 +575,7 @@ public class BackendControllerTest {
     @Test
     public void addProjectAndSetItToInactive() {
         //Create a project
-        Projekt projekt = createSingleProject();
+        Projekt projekt = createSampleProject();
         Long projectID = addProjekt(projekt);
         assertThat(projekt.isAktiv(),is(true));
 
@@ -630,75 +591,9 @@ public class BackendControllerTest {
     }
 
     @Test
-    public void testProjectCanBeUpdated() {
-        //Create a project
-        Projekt projekt = createSingleProject();
-
-        // add project to database via API
-        Long projectID = addProjekt(projekt);
-
-        String name = "Neuer Name";
-        LocalDate date = LocalDate.now();
-        LocalDate endDate   = LocalDate.now();
-        int slotsTotal = 10;
-        int slotsReserved = 5;
-        int minAge = 1;
-        int maxAge = 5;
-        int price = 20;
-        String weblink = "www.test.de";
-        String sponsor = "Testsponsor";
-
-        // update Project
-        given()
-                .param("id", projectID)
-                .param("name", name)
-                .param("date", localDate2String(date))
-                .param("endDate", localDate2String(endDate))
-                .param("minAge",minAge)
-                .param("maxAge",maxAge)
-                .param("price",price)
-                .param("slots",slotsTotal)
-                .param("slotsReserved",slotsReserved)
-                .param("traeger",sponsor)
-                .param("weblink",weblink)
-            .when()
-                .put(BASE_URL + "/updateproject")
-            .then()
-                .statusCode(is(HttpStatus.SC_CREATED))
-                .assertThat();
-
-        // retrieve project again from database
-        Projekt responseProject = getProjekt(projectID);
-
-        // assert project was updated correctly
-        assertThat(responseProject.getName(), is(name));
-        // TODO date has to be checked too!
-        //assertThat(responseProject.getDatum(), is(date));
-        //assertThat(responseProject.getDatumEnde(), is(endDate));
-        assertThat(responseProject.getSlotsGesamt(), is(slotsTotal));
-        assertThat(responseProject.getSlotsReserviert(), is(slotsReserved));
-        assertThat(responseProject.getMindestAlter(), is(minAge));
-        assertThat(responseProject.getHoechstAlter(), is(maxAge));
-        assertThat(responseProject.getKosten(), is(price));
-        assertThat(responseProject.getWebLink(), is(weblink));
-        assertThat(responseProject.getTraeger(), is(sponsor));
-    }
-
-    private Projekt getProjekt(Long projectID) {
-        return given()
-                .pathParam("projekt_id", projectID)
-                .when()
-                .get(BASE_URL + "/project/{projekt_id}")
-                .then()
-                .statusCode(HttpStatus.SC_OK)
-                .assertThat()
-                .extract().as(Projekt.class);
-    }
-
-    @Test
     public void assignProjektToUserAndRetrieveAllProjectsForTheUsers() {
-        Long userId = addUser(createUser());
-        Long projectId = addProjekt(createSingleProject());
+        Long userId = addUser(createSampleUser());
+        Long projectId = addProjekt(createSampleProject());
 
         Boolean wasTeilnehmerAssignedToProjekt = assignUser2Projekt(projectId, userId);
         assertThat(wasTeilnehmerAssignedToProjekt, is(true));
@@ -721,18 +616,18 @@ public class BackendControllerTest {
 
         // number of registered Teilnehmer in all projects should be equal
         // to number of registered projects of all Teilnehmer
-        Projekt projekt1 = createSingleProject();
+        Projekt projekt1 = createSampleProject();
         Long projectID1 = addProjekt(projekt1);
         assertThat(projekt1.isAktiv(),is(true));
 
-        Projekt projekt2 = createSingleProject();
+        Projekt projekt2 = createSampleProject();
         Long projectID2 = addProjekt(projekt2);
         assertThat(projekt2.isAktiv(),is(true));
 
-        Teilnehmer user1 = createUser();
+        Teilnehmer user1 = createSampleUser();
         Long userId1 = addUser(user1);
 
-        Teilnehmer user2 = createUser();
+        Teilnehmer user2 = createSampleUser();
         Long userId2 = addUser(user2);
 
         allProjects = getAllProjects();
@@ -768,9 +663,9 @@ public class BackendControllerTest {
     @Test
     public void shouldAssignUserCorrectlyToProjekt() throws Exception {
         // Given
-        Long projectId = addProjekt(createSingleProject());
+        Long projectId = addProjekt(createSampleProject());
 
-        Teilnehmer newUser = createUser();
+        Teilnehmer newUser = createSampleUser();
         newUser.setVorname("Anton");
         newUser.setNachname("Tirol");
         Long userId = addUser(newUser);
@@ -792,8 +687,8 @@ public class BackendControllerTest {
     @Test
     public void shouldUnassignUserCorrectlyFromProjekt() throws Exception {
         // Given
-        Long userId = addUser(createUser());
-        Long projectId = addProjekt(createSingleProject());
+        Long userId = addUser(createSampleUser());
+        Long projectId = addProjekt(createSampleProject());
         assignUser2Projekt(projectId, userId);
 
         // When
@@ -807,8 +702,29 @@ public class BackendControllerTest {
     }
 
     @Test
+    public void shouldUpdateProjectCorrectly() {
+        Long projectId = addProjekt(createSampleProject());
+
+        Projekt projekt = getProjekt(projectId);
+        projekt.setName("Klettern am Berg");
+        projekt.setDatum(LocalDate.of(2019, 8,3));
+        projekt.setDatumEnde(LocalDate.of(2019, 9,2));
+        projekt.setSlotsReserviert(6);
+        projekt.setSlotsGesamt(25);
+
+
+        Projekt updatedProjekt = updateProjekt(projekt);
+
+        assertThat(updatedProjekt.getName(), is(projekt.getName()));
+        assertThat(updatedProjekt.getDatum(), is(projekt.getDatum()));
+        assertThat(updatedProjekt.getDatumEnde(), is(projekt.getDatumEnde()));
+        assertThat(updatedProjekt.getSlotsReserviert(), is(projekt.getSlotsReserviert()));
+        assertThat(updatedProjekt.getSlotsGesamt(), is(projekt.getSlotsGesamt()));
+    }
+
+    @Test
     public void shouldDeleteAddedProjectCorrectly() {
-        Long projectId = addProjekt(createSingleProject());
+        Long projectId = addProjekt(createSampleProject());
 
         Boolean isProjectDeleted = deleteProjekt(projectId);
 
@@ -895,16 +811,39 @@ public class BackendControllerTest {
                 .body().as(Long[].class));
     }
 
+    private Projekt getProjekt(Long projectID) {
+        return given()
+                .pathParam("projekt_id", projectID)
+                .when()
+                .get(BASE_URL + "/project/{projekt_id}")
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .assertThat()
+                .extract().as(Projekt.class);
+    }
+
     private Long addProjekt(Projekt projekt) {
         return given()
                     .body(projekt)
                     .contentType(ContentType.JSON)
                .when()
-                    .post(BASE_URL+"/addproject")
+                    .post(BASE_URL+"/projekt")
                .then()
                     .statusCode(is(HttpStatus.SC_CREATED))
                     .extract()
                         .body().as(Long.class);
+    }
+
+    private Projekt updateProjekt(Projekt projekt) {
+        return given()
+                    .body(projekt)
+                    .contentType(ContentType.JSON)
+                .when()
+                    .put(BASE_URL+"/projekt")
+                .then()
+                    .statusCode(is(HttpStatus.SC_OK))
+                    .extract()
+                    .body().as(Projekt.class);
     }
 
     private List<Projekt> getAllProjects() {

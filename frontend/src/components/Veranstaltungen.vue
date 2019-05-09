@@ -207,7 +207,6 @@ export default {
 
 }
 </script>
-<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

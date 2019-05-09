@@ -87,7 +87,10 @@ export default {
   name: 'Veranstaltung',
   data () {
     return {
-      project: [],
+      project: {
+          aktiv: true,
+          anmeldungen:[]
+      },
       errors: [],
       updateSuccess: false,
       popupClass: 'fadeOut'
@@ -108,54 +111,38 @@ export default {
   },
   methods: {
     createOrUpdateProject () {
-      var params = new URLSearchParams();
       var id = parseInt(this.$route.query.id);
-      var minAge = parseInt(this.project.mindestAlter);
-      var maxAge = parseInt(this.project.hoechstAlter);
-      var price = parseInt(this.project.kosten);
-      var slots = parseInt(this.project.slotsGesamt);
-      var slotsFree = parseInt(this.project.slotsFrei);
-      var slotsReserved = parseInt(this.project.slotsReserviert)
-      params.append('name', this.project.name);
-      params.append('date', this.project.datum);
-      params.append('endDate', this.project.datumEnde);
-      params.append('minAge', minAge);
-      params.append('maxAge', maxAge);
-      params.append('price', price);
-      params.append('slots', slots);
-      params.append('slotsFree', slotsFree);
-      params.append('slotsReserved', slotsReserved);
-      params.append('weblink', this.project.webLink);
-      params.append('traeger', this.project.traeger);
 
       if (this.id < 0) {
-        AXIOS.post('/createproject', params)
-        .then(response => {
-            this.popupClass = 'fadeIn';
-            var self = this;
-            setTimeout(function () {
-                self.popupClass = 'fadeOut';
-            }, 2000);
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
+          console.log("creating new project")
+
+          AXIOS.post('/projekt', this.project)
+              .then(response => {
+                  this.popupClass = 'fadeIn';
+                  var self = this;
+                  setTimeout(function () {
+                      self.popupClass = 'fadeOut';
+                  }, 2000);
+              })
+              .catch(e => {
+                  this.errors.push(e)
+              })
+
       } else {
-        params.append('id', id);
-        AXIOS.post('/updateproject', params)
-        .then(response => {
-            this.popupClass = 'fadeIn';
-            var self = this;
-            setTimeout(function () {
-                self.popupClass = 'fadeOut';
-            }, 2000);
-            })
-        .catch(e => {
-          this.errors.push(e)
-        })
+          console.log("updating existing project")
+          AXIOS.put('/projekt', this.project)
+              .then(response => {
+                  this.popupClass = 'fadeIn'
+                  var self = this;
+                  setTimeout(function () {
+                      self.popupClass = 'fadeOut';
+                  }, 2000);
+                  this.getProjectsOfUser()
+              })
+              .catch(e => {
+                  this.errors.push(e)
+              });
       }
-
-
     },
     kill (event) {
       event.target.parentElement.parentElement.remove();
