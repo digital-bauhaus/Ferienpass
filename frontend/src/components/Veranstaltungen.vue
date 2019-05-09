@@ -15,28 +15,19 @@
                   <th>Plätze frei / gesamt / [reserviert] </th>
                   <th>Bearbeiten</th>
                  </tr>
-                 <tr v-for="(allproject, index) of allprojects">
+                 <tr v-for="(project, index) of allprojects">
                  <!--<td v-on:click="teil($event)">{{allproject.name}}</td>-->
-                   <td>{{allproject.name}}</td>
-                   <td>{{allproject.datum}}</td>
-                   <td>{{allproject.slotsFrei}} / </nobr> {{allproject.slotsGesamt}} / </nobr> [{{allproject.slotsReserviert}}]</td>
-                   <td><nobr><span v-on:click="kill($event,allproject.id)" class="fakebutton"><a>löschen</a></span>
-                     <router-link :to="{path: '../VeranstaltungEdit', query: {id: allproject.id }}" class="fakebutton">Bearbeiten</router-link>
-                     <span class="fakebutton" v-on:click="exportPDF(index)"><a>PDF exportieren</a></span></nobr>
+                   <td>{{project.name}}</td>
+                   <td>{{project.datum}}</td>
+                   <td>{{project.slotsFrei}} / {{project.slotsGesamt}} / [{{project.slotsReserviert}}]</td>
+                   <td><nobr>
+                       <span v-on:click="deleteProject(project.id)" class="fakebutton">Löschen</span>
+                       <router-link :to="{path: '../VeranstaltungEdit', query: {id: project.id }}" class="fakebutton">Bearbeiten</router-link>
+                       <span class="fakebutton" v-on:click="exportPDF(index)"><a>PDF exportieren</a></span></nobr>
                    </td>
                  </tr>
                </table>
       </main>
-    <!-- The Modal -->
-    <div id="delete" class="modal">
-
-      <!-- Modal content -->
-      <div class="modal-content">
-        <h4>Sind sie sicher das Sie die Veranstaltung löschen wollen?</h4>
-        <div class="center"><button v-on:click="archiveProject(selectedID)">Bestätigen</button><button v-on:click="closeModal()">Abbrechen</button></div>
-      </div>
-
-    </div>
 
 
 	</html>
@@ -185,34 +176,33 @@ export default {
         }
       }
     },
-    kill (event, id) {
-      var modal = document.getElementById('delete');
-      this.selectedID = id;
-      modal.style.display = 'block';
-      /* event.target.parentElement.parentElement.parentElement.remove(); */
-    },
-    /* teil (event) {
-      var span = document.getElementsByClassName('close')[0];
-      event.target.parentElement.insertAdjacentHTML('afterend', '</table> <table><tr><th>Thorsten Koenig</th><th><button onclick="this.parentElement.parentElement.remove()">stornieren</button><th><button>als PDF exportieren</button></th></tr> </table>');
-      event.target.parentElement.insertAdjacentHTML('afterend', '</table> <table><tr><th>Marie Kohler</th><th><button onclick="this.parentElement.parentElement.remove()">stornieren</button><th><button>als PDF exportieren</button></th></tr> </table>');
-      event.target.parentElement.insertAdjacentHTML('afterend', '</table> <table><tr><th>Florian Keller</th><th><button onclick="this.parentElement.parentElement.remove()">stornieren</button><th><button>als PDF exportieren</button></th></tr> </table>');
-    }, */
-    closeModal () {
-      var modal = document.getElementById('delete');
-      modal.style.display = 'none';
-    },
-    archiveProject (id) {
-      var params = new URLSearchParams();
-      params.append('project_id', id);
-      AXIOS.post('/deleteproject', params)
-      .then(response => {
-        this.closeModal();
-        this.getProjects();
+    deleteProject(projectId) {
+
+      swal({
+          title: "Wirklich löschen?",
+          text: "Das Projekt wird vollständig gelöscht!",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
       })
-      .catch(e => {
-        this.errors.push(e)
-      })
-    }
+          .then((willDelete) => {
+              if (willDelete) {
+                  AXIOS.delete('/projekt/' + projectId)
+                      .then(response => {
+                          this.getProjects();
+                          swal("Projekt wurde gelöscht!", {
+                              icon: "success",
+                          });
+                      })
+                      .catch(e => {
+                          this.errors.push(e)
+                          swal("Da ist was schief gegangen :(");
+                      })
+              } else {
+                  //swal("Keine Bange, der Teilnehmer wurde NICHT gelöscht :)");
+              }
+          });
+      },
   }
 
 }

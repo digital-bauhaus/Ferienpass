@@ -18,7 +18,7 @@
       <template v-if="params.projekt">
         <span style="font-weight: bold;">{{ params.label }}</span>
         <ul class="meta-list">
-          <li>{{ params.projekt.date[2] }}.{{ params.projekt.date[1] }}.{{ params.projekt.date[0] }} - {{ params.projekt.endDate[2] }}.{{ params.projekt.endDate[1] }}.{{ params.projekt.endDate[0] }}</li>
+          <li>{{ dateRangeFormatted }}</li>
           <li v-if="params.projekt.minimumAge > 0">
             Ab {{ params.projekt.minimumAge }} Jahren</li>
           <li v-if="params.projekt.maximumAge > 0">
@@ -40,6 +40,20 @@ export default {
   methods: {
     onChecked (event) {
       this.$emit('change', event);
+    }
+  },
+  computed: {
+    dateRangeFormatted() {
+      return this.params.projekt.date.toLocaleDateString('de-DE', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit'
+          }) + " - " +
+              this.params.projekt.endDate.toLocaleDateString('de-DE', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit'
+              });
     }
   }
 };

@@ -10,14 +10,14 @@
     :data-zip-code="zipCode ? zipCode : ''"
   >
     <header>
-      <img src="../assets/logo.png" alt="Ferienpass Weimar" class="site-logo">
+      <img src="../assets/ferienpasslogo_ohne_hg.png" alt="Ferienpass Weimar" class="site-logo">
     </header>
 
     <h1>Ferienpass Weimar – Anmeldung</h1>
 
     <checkbox
       class="school-child-checkbox"
-      :params="{ 'label': 'Mein Kind geht zur Schule' }"
+      :params="{ 'label': 'Mein Kind geht zur Schule *' }"
       @change="onSchoolChildChange"
     />
     <!-- Grunddaten -->
@@ -50,7 +50,8 @@
       </h2>
 
       <div :hidden="!angebote.expandOnStart">
-        <p>Mein Kind möchte an folgenden Veranstaltungen teilnehmen:</p>
+        <p>Mein Kind möchte an folgenden Veranstaltungen teilnehmen:
+        <br />Hinweis: Grau hinterlegte Projekte sind ausgebucht oder können aufgrund der Altersbeschränkung nicht gewählt werden.</p>
         <component
           v-for="(projektParams, index) of alleAnmeldungProjekte" :key="index"
           :is="component_checkbox"
@@ -256,8 +257,8 @@ export default {
           name: 'projekt-id' + adminProjekt.id,
           registered: false,
           projekt: {
-            date: adminProjekt.datum,
-            endDate: adminProjekt.datumEnde,
+            date: new Date(adminProjekt.datum),
+            endDate: new Date(adminProjekt.datumEnde),
             id: adminProjekt.id,
             org: adminProjekt.traeger,
             minimumAge: adminProjekt.mindestAlter,
@@ -409,7 +410,7 @@ export default {
 <style>
 header {
   max-width: 100%;
-  background-color: rgb(0, 26, 125);
+  background-color: rgba(51, 122, 183, 1);
   text-align: center;
 }
 
