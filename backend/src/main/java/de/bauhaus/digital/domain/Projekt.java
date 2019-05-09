@@ -1,6 +1,6 @@
 package de.bauhaus.digital.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -175,6 +175,7 @@ public class Projekt {
     }
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Transient
     public int getSlotsFrei() {
         return Math.max(0, this.slotsGesamt - this.slotsReserviert);
     }
