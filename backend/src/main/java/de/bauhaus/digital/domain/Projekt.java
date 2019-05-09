@@ -1,5 +1,7 @@
 package de.bauhaus.digital.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -189,6 +191,7 @@ public class Projekt {
         return getSlotsFrei() > 0;
     }
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public int getSlotsFrei() {
         return Math.max(0, this.slotsGesamt - this.slotsReserviert);
     }
