@@ -291,9 +291,9 @@ public class BackendController {
         }
         project.setName(name);
 
-        String[] dateRaw = date.split(",");
+        String[] dateRaw = date.split("-");
         project.setDatum(LocalDate.of(Integer.valueOf(dateRaw[0]), Integer.valueOf(dateRaw[1]), Integer.valueOf(dateRaw[2])));
-        dateRaw = endDate.split(",");
+        dateRaw = endDate.split("-");
         project.setDatumEnde(LocalDate.of(Integer.valueOf(dateRaw[0]), Integer.valueOf(dateRaw[1]), Integer.valueOf(dateRaw[2])));
 
         project.setMindestAlter(minAge);
