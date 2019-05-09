@@ -4,11 +4,9 @@ package de.bauhaus.digital.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bauhaus.digital.FerienpassApplication;
 import de.bauhaus.digital.domain.*;
-import de.bauhaus.digital.repository.TeilnehmerRepositoryTest;
 import de.bauhaus.digital.transformation.AnmeldungJson;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
-import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +16,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -46,7 +43,7 @@ public class BackendControllerTest {
      ****************************/
     @Test
     public void addNewUserAndRetrieveItBack() {
-        Teilnehmer user = createUser();
+        Teilnehmer user = createSampleUser();
 
         Long userId = addUser(user);
 
@@ -57,7 +54,7 @@ public class BackendControllerTest {
 
     @Test
     public void addNewUserAddSeveralListItemsAndRemoveThemAgain() {
-        Teilnehmer user = createUser();
+        Teilnehmer user = createSampleUser();
 
         String allergy = "Arbeiten: Viele Aufgaben und viel reden \n"+
         "Freizeit: Urlaub und Spaß haben";
@@ -95,8 +92,8 @@ public class BackendControllerTest {
     public void addTwoUsersAndCheckWhetherAllUsersAreComplete() {
         int initialSize = getAllUsers().size();
 
-        Long userId = addUser(createUser());
-        Long userId2 = addUser(createUser());
+        Long userId = addUser(createSampleUser());
+        Long userId2 = addUser(createSampleUser());
 
         List<Teilnehmer> allUsers = getAllUsers();
 
@@ -110,7 +107,7 @@ public class BackendControllerTest {
 
     @Test
     public void isUserUpdatedCorrectly() {
-        Long userId = addUser(createUser());
+        Long userId = addUser(createSampleUser());
 
         Arzt arzt = new Arzt(
                 "Doktor Who",
@@ -208,7 +205,7 @@ public class BackendControllerTest {
 
     @Test
     public void isUserDeletedCorrectly() {
-        Long userId = addUser(createUser());
+        Long userId = addUser(createSampleUser());
 
         Teilnehmer responseUser = getUser(userId);
 
@@ -230,19 +227,19 @@ public class BackendControllerTest {
 
         // Zuerst fuer klare Verhältnisse sorgen und Seiteneffekte vermeiden!
         // Daher neue Projekte anlegen ...
-        Long pizzaBackenId = addProjekt(ProjektTest.createProjekt(
+        Long pizzaBackenId = addProjekt(createSampleProject(
                 "Pizza backen",
                 LocalDate.of(2018, 7, 12),
                 LocalDate.of(2018, 7, 13),
                 15,
                 3));
-        Long fussballId = addProjekt(ProjektTest.createProjekt(
+        Long fussballId = addProjekt(createSampleProject(
                 "Fussball",
                 LocalDate.of(2018, 8, 14),
                 LocalDate.of(2018, 8, 17),
                 10,
                 7));
-        Long golfSpielenId = addProjekt(ProjektTest.createProjekt(
+        Long golfSpielenId = addProjekt(createSampleProject(
                 "Golf spielen",
                 LocalDate.of(2018, 7, 2),
                 LocalDate.of(2018, 7, 2),
@@ -293,19 +290,19 @@ public class BackendControllerTest {
     public void pruefeRegistrierungProjekteBeiApiCallAnmeldungMicroservice() throws IOException {
         // Zuerst fuer klare Verhältnisse sorgen und Seiteneffekte vermeiden!
         // Daher neue Projekte anlegen ...
-        Long pizzaBackenId = addProjekt(ProjektTest.createProjekt(
+        Long pizzaBackenId = addProjekt(createSampleProject(
                 "Pizza backen",
                 LocalDate.of(2018, 7, 12),
                 LocalDate.of(2018, 7, 13),
                 8,
                 3));
-        Long fussballId = addProjekt(ProjektTest.createProjekt(
+        Long fussballId = addProjekt(createSampleProject(
                 "Fussball",
                 LocalDate.of(2018, 8, 14),
                 LocalDate.of(2018, 8, 17),
                 10,
                 7));
-        Long golfSpielenId = addProjekt(ProjektTest.createProjekt(
+        Long golfSpielenId = addProjekt(createSampleProject(
                 "Golf spielen",
                 LocalDate.of(2018, 7, 2),
                 LocalDate.of(2018, 7, 2),
@@ -535,7 +532,7 @@ public class BackendControllerTest {
      ****************************/
     @Test
     public void addNewProjectAndetrieveItBack() {
-        Projekt projekt = createSingleProject();
+        Projekt projekt = createSampleProject();
         Long projectID = addProjekt(projekt);
 
         Projekt responeProjekt = getProjekt(projectID);
@@ -554,9 +551,9 @@ public class BackendControllerTest {
 
     @Test
     public void addProjectAndUserAndAssignProjectToUserAndRetrieveAllProjectsForThisUser() {
-        Long projectID = addProjekt(createSingleProject());
+        Long projectID = addProjekt(createSampleProject());
 
-        Long userId = addUser(createUser());
+        Long userId = addUser(createSampleUser());
         List<Teilnehmer> allUsers = getAllUsers();
 
         assertThat(allUsers.get(allUsers.size()-1).getId(), is(userId));
@@ -573,7 +570,7 @@ public class BackendControllerTest {
 
     @Test
     public void addProjectUsingParametersAndTestForSuccess() {
-        Projekt projekt = createSingleProject();
+        Projekt projekt = createSampleProject();
         Long projectID =
                 given()
                         .param("name", projekt.getName())
@@ -614,7 +611,7 @@ public class BackendControllerTest {
     @Test
     public void addProjectAndSetItToInactive() {
         //Create a project
-        Projekt projekt = createSingleProject();
+        Projekt projekt = createSampleProject();
         Long projectID = addProjekt(projekt);
         assertThat(projekt.isAktiv(),is(true));
 
@@ -632,7 +629,7 @@ public class BackendControllerTest {
     @Test
     public void testProjectCanBeUpdated() {
         //Create a project
-        Projekt projekt = createSingleProject();
+        Projekt projekt = createSampleProject();
 
         // add project to database via API
         Long projectID = addProjekt(projekt);
@@ -697,8 +694,8 @@ public class BackendControllerTest {
 
     @Test
     public void assignProjektToUserAndRetrieveAllProjectsForTheUsers() {
-        Long userId = addUser(createUser());
-        Long projectId = addProjekt(createSingleProject());
+        Long userId = addUser(createSampleUser());
+        Long projectId = addProjekt(createSampleProject());
 
         Boolean wasTeilnehmerAssignedToProjekt = assignUser2Projekt(projectId, userId);
         assertThat(wasTeilnehmerAssignedToProjekt, is(true));
@@ -721,18 +718,18 @@ public class BackendControllerTest {
 
         // number of registered Teilnehmer in all projects should be equal
         // to number of registered projects of all Teilnehmer
-        Projekt projekt1 = createSingleProject();
+        Projekt projekt1 = createSampleProject();
         Long projectID1 = addProjekt(projekt1);
         assertThat(projekt1.isAktiv(),is(true));
 
-        Projekt projekt2 = createSingleProject();
+        Projekt projekt2 = createSampleProject();
         Long projectID2 = addProjekt(projekt2);
         assertThat(projekt2.isAktiv(),is(true));
 
-        Teilnehmer user1 = createUser();
+        Teilnehmer user1 = createSampleUser();
         Long userId1 = addUser(user1);
 
-        Teilnehmer user2 = createUser();
+        Teilnehmer user2 = createSampleUser();
         Long userId2 = addUser(user2);
 
         allProjects = getAllProjects();
@@ -768,9 +765,9 @@ public class BackendControllerTest {
     @Test
     public void shouldAssignUserCorrectlyToProjekt() throws Exception {
         // Given
-        Long projectId = addProjekt(createSingleProject());
+        Long projectId = addProjekt(createSampleProject());
 
-        Teilnehmer newUser = createUser();
+        Teilnehmer newUser = createSampleUser();
         newUser.setVorname("Anton");
         newUser.setNachname("Tirol");
         Long userId = addUser(newUser);
@@ -792,8 +789,8 @@ public class BackendControllerTest {
     @Test
     public void shouldUnassignUserCorrectlyFromProjekt() throws Exception {
         // Given
-        Long userId = addUser(createUser());
-        Long projectId = addProjekt(createSingleProject());
+        Long userId = addUser(createSampleUser());
+        Long projectId = addProjekt(createSampleProject());
         assignUser2Projekt(projectId, userId);
 
         // When
@@ -808,7 +805,7 @@ public class BackendControllerTest {
 
     @Test
     public void shouldDeleteAddedProjectCorrectly() {
-        Long projectId = addProjekt(createSingleProject());
+        Long projectId = addProjekt(createSampleProject());
 
         Boolean isProjectDeleted = deleteProjekt(projectId);
 

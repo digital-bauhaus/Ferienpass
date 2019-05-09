@@ -165,11 +165,6 @@ public class Projekt {
         this.datumEnde = datumEnde;
     }
 
-    public void addAnmeldung(Teilnehmer teilnehmer) {
-        this.anmeldungen.add(teilnehmer);
-        this.setSlotsReserviert(this.slotsReserviert + 1);
-    }
-
     public List<Teilnehmer> getStornierteTeilnehmer() {
         return stornierteTeilnehmer;
     }
@@ -178,9 +173,30 @@ public class Projekt {
         this.stornierteTeilnehmer = stornierteTeilnehmer;
     }
 
-    public void addStornierterTeilnehmer(Teilnehmer stornierterTeilnehmer) {
-        this.stornierteTeilnehmer.add(stornierterTeilnehmer);
-        this.anmeldungen.remove(stornierterTeilnehmer);
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    public int getSlotsFrei() {
+        return Math.max(0, this.slotsGesamt - this.slotsReserviert);
+    }
+
+    public void addAnmeldung(Teilnehmer teilnehmer) {
+        this.anmeldungen.add(teilnehmer);
+        setSlotsReserviert(this.slotsReserviert + 1);
+    }
+
+    /**
+     * @param zuStornierenderTeilnehmer
+     * @return true, if the Teilnehmer was actually registered for this
+     * Veranstaltung and could be cancelled
+     */
+    public boolean addStornierung(Teilnehmer zuStornierenderTeilnehmer) {
+        boolean teilnehmerWasRegistered =
+                this.anmeldungen.remove(zuStornierenderTeilnehmer);
+        if (teilnehmerWasRegistered)
+        {
+            this.stornierteTeilnehmer.add(zuStornierenderTeilnehmer);
+            setSlotsReserviert(this.slotsReserviert - 1);
+        }
+        return teilnehmerWasRegistered;
     }
 
     public boolean isTeilnehmerNotAlreadyAsignedToProjekt(Teilnehmer teilnehmer) {
@@ -189,11 +205,6 @@ public class Projekt {
 
     public boolean hasProjektFreeSlots() {
         return getSlotsFrei() > 0;
-    }
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    public int getSlotsFrei() {
-        return Math.max(0, this.slotsGesamt - this.slotsReserviert);
     }
 
 }

@@ -23,7 +23,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController()
@@ -192,7 +191,7 @@ public class BackendController {
             if (maybeTeilnehmer.isPresent()) {
 
                 Teilnehmer teilnehmer = maybeTeilnehmer.get();
-                projekt.addStornierterTeilnehmer(teilnehmer);
+                projekt.addStornierung(teilnehmer);
                 projektRepository.save(projekt);
                 LOG.info("Der Teilnehmer " + teilnehmer.getVorname() + " " + teilnehmer.getNachname() + " wurde aus dem folgenden Projekt abgemeldet: " + projekt.toString());
                 return true;

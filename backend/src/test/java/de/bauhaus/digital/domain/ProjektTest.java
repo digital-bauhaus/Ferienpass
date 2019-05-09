@@ -1,65 +1,71 @@
 package de.bauhaus.digital.domain;
 
+import de.bauhaus.digital.DomainFactory;
 import org.junit.Test;
 
-import java.time.LocalDate;
-
+import static de.bauhaus.digital.DomainFactory.createSampleProjectOfSlots;
+import static de.bauhaus.digital.DomainFactory.createSampleUser;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 public class ProjektTest {
 
-    @Test public void
-    when_adding_one_Teilnehmer_to_Projekt_slotsreserviert_should_decline_once() {
-        Projekt kinderuni = createProjekt("Kinderuni", LocalDate.of(2018, 7, 5), LocalDate.of(2018, 7, 5), 20, 10);
-        kinderuni.addAnmeldung(createUser("Müller", "Luis"));
+    @Test
+    public void project_with_20_totalSlots_has_20_freeSlots() {
+        Projekt project = createSampleProjectOfSlots(20, 0);
+        assertThat(project.getSlotsFrei(), is(20));
+    }
+
+    @Test
+    public void project_with_20_totalSlots_and_5_reservedSlots_has_15_freeSlots() {
+        Projekt project = createSampleProjectOfSlots(20, 5);
+        assertThat(project.getSlotsFrei(), is(15));
+    }
+
+    @Test
+    public void when_adding_one_teilnehmer_freeSlots_decreases_once() {
+        Projekt project = createSampleProjectOfSlots(20, 0);
+        int freeSlots = project.getSlotsFrei();
+        project.addAnmeldung(createSampleUser());
+        assertThat(project.getSlotsFrei(), is(freeSlots - 1));
+    }
+
+    @Test
+    public void when_adding_one_Teilnehmer_slotsReserviert_increases_once() {
+        Projekt kinderuni = createSampleProjectOfSlots(20, 10);
+        kinderuni.addAnmeldung(DomainFactory.createSampleUserOfName("Müller", "Luis"));
         assertThat(kinderuni.getSlotsReserviert(), is(11));
     }
 
-    @Test public void
-    when_adding_5_Teilnehmer_to_Projekt_slotsreserviert_should_decline_5_times() {
-        Projekt gartenParty = createProjekt("Gartenparty", LocalDate.of(2018, 6, 4), LocalDate.of(2018, 6, 6), 15, 3);
-        gartenParty.addAnmeldung(createUser("Schulze", "Max"));
-        gartenParty.addAnmeldung(createUser("Meier", "Moritz")  );
-        gartenParty.addAnmeldung(createUser("Schreiner", "Paul"));
-        gartenParty.addAnmeldung(createUser("Müller", "Pauline"));
-        gartenParty.addAnmeldung(createUser("Siegmund", "Peter"));
+    @Test
+    public void when_adding_5_Teilnehmer_slotsReserviert_increases_5_times() {
+        Projekt gartenParty = createSampleProjectOfSlots(15, 3);
+        gartenParty.addAnmeldung(DomainFactory.createSampleUserOfName("Schulze", "Max"));
+        gartenParty.addAnmeldung(DomainFactory.createSampleUserOfName("Meier", "Moritz")  );
+        gartenParty.addAnmeldung(DomainFactory.createSampleUserOfName("Schreiner", "Paul"));
+        gartenParty.addAnmeldung(DomainFactory.createSampleUserOfName("Müller", "Pauline"));
+        gartenParty.addAnmeldung(DomainFactory.createSampleUserOfName("Siegmund", "Peter"));
         assertThat(gartenParty.getSlotsReserviert(), is(8));
     }
 
-    public static Projekt createProjekt(String projektName, LocalDate datum,
-                                        LocalDate datumEnde, int slotsgesamt,
-                                        int slotsReserviert) {
-        return new Projekt(projektName, datum, datumEnde, 15, 20, 12,
-                slotsgesamt, slotsReserviert, "Sportjugend Weimar",
-                "www.google.com");
+    @Test
+    public void when_cancelling_one_Teilnehmer_slotsFree_increases(){
+        Projekt project = createSampleProjectOfSlots(20, 0);
+        Teilnehmer user = createSampleUser();
+        project.addAnmeldung(user);
+        int freeSlots = project.getSlotsFrei();
+        project.addStornierung(user);
+        assertThat(project.getSlotsFrei(), is(freeSlots + 1));
     }
 
-    public static Teilnehmer createUser(String name, String vorname) {
-        LocalDate registerDate = LocalDate.now();
-        Arzt arzt = new Arzt("Eich", "Route 1 Alabastia, 39829",
-                "555-6891");
-        Kontakt kontact = new Kontakt("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
-        String essenLimitierungen = "Laktoseintoleranz";
-        String krankheiten = "Grippe: Muss oft Husten Hustenbonbons";
-
-        String allergien = "Heuschnupfen: Nasenspray nur 2x am Tag";
-
-
-        Behinderung behinderung = new Behinderung();
-        behinderung.setRollstuhlNutzungNotwendig(true);
-        behinderung.setMerkzeichen_Taubblind_TBL(true);
-
-        String medikaments = "Nasenspray von Forte: 2x am Tag";
-
-        String hitzeempfindlichkeits = "grosse Hitze: eincremen";
-        String email = "myEmail@weimar.de";
-
-        Teilnehmer user = new Teilnehmer(vorname,name, LocalDate.of(2005,10,20),registerDate, "Bahnhofstraße 4", "Weimar", "99423", "03544444", "0453434", true, kontact,
-                true, false, false, "Seepferdchen", false, false, arzt,  allergien, essenLimitierungen, krankheiten, true, behinderung,hitzeempfindlichkeits,medikaments, email);
-        return user;
+    @Test
+    public void when_cancelling_one_Teilnehmer_slotsReserviert_decreases(){
+        Projekt project = createSampleProjectOfSlots(20, 0);
+        Teilnehmer user = createSampleUser();
+        project.addAnmeldung(user);
+        int reservedSlots = project.getSlotsReserviert();
+        project.addStornierung(user);
+        assertThat(project.getSlotsReserviert(), is(reservedSlots - 1));
     }
-
-
 
 }
