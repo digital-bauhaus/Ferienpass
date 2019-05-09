@@ -608,8 +608,7 @@ public class BackendControllerTest {
     }
 
     private String localDate2String(LocalDate datum) {
-        // TODO is this really correct?
-        return datum.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        return datum.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     @Test
@@ -633,7 +632,7 @@ public class BackendControllerTest {
     @Test
     public void testProjectCanBeUpdated() {
         //Create a project
-        Projekt projekt = teilnehmerRepositoryTest.createSingleProject();
+        Projekt projekt = createSingleProject();
 
         // add project to database via API
         Long projectID = addProjekt(projekt);
@@ -665,7 +664,7 @@ public class BackendControllerTest {
             .when()
                 .put(BASE_URL + "/updateproject")
             .then()
-                .statusCode(is(HttpStatus.SC_NO_CONTENT))
+                .statusCode(is(HttpStatus.SC_CREATED))
                 .assertThat();
 
         // retrieve project again from database

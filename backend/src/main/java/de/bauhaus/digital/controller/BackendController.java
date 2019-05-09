@@ -293,8 +293,10 @@ public class BackendController {
         }
         project.setName(name);
 
+        String[] dateRaw;
+
         try {
-            String[] dateRaw = date.split("-");
+            dateRaw = date.split("-");
             project.setDatum(LocalDate.of(Integer.valueOf(dateRaw[0]), Integer.valueOf(dateRaw[1]), Integer.valueOf(dateRaw[2])));
         } catch (DateTimeParseException e)
         {
@@ -324,7 +326,7 @@ public class BackendController {
     }
 
     private LocalDate dateString2LocalDate(@RequestParam String date) {
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     @RequestMapping(path = "/projekt/{projektId}", method = RequestMethod.PUT)
