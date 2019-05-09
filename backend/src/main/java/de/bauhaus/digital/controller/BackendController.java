@@ -3,6 +3,7 @@ package de.bauhaus.digital.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bauhaus.digital.domain.*;
 import de.bauhaus.digital.exception.ResourceNotFoundException;
+import de.bauhaus.digital.exception.UserNotFoundException;
 import de.bauhaus.digital.repository.ProjektRepository;
 import de.bauhaus.digital.repository.TeilnehmerRepository;
 import de.bauhaus.digital.transformation.AnmeldungJson;
@@ -20,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController()
 @RequestMapping("/api")
@@ -60,7 +62,12 @@ public class BackendController {
     @GetMapping(path = "/user/{id}")
     public @ResponseBody
     Teilnehmer getUserById(@PathVariable("id") long id) {
-        return teilnehmerRepository.findById(id).orElse(null);
+        Optional<Teilnehmer> optionalTeilnehmer = teilnehmerRepository.findById(id);
+        if(optionalTeilnehmer.isPresent()) {
+            return optionalTeilnehmer.get();
+        } else {
+            throw new UserNotFoundException("Teilnehmer mit der id " + id + " nicht gefunden.");
+        }
     }
 
     //Add a new user (Teilnehmer) based on a user object
@@ -77,7 +84,7 @@ public class BackendController {
     }
 
     @RequestMapping(path = "/user", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public Teilnehmer updateUser(@RequestBody Teilnehmer user) {
 
         return teilnehmerRepository.findById(user.getId()).map(teilnehmer2Update -> {
@@ -94,6 +101,7 @@ public class BackendController {
 
             teilnehmer2Update.setArzt(user.getArzt());
             teilnehmer2Update.setNotfallKontakt(user.getNotfallKontakt());
+            teilnehmer2Update.setLiegtBehinderungVor(user.isLiegtBehinderungVor());
             teilnehmer2Update.setBehinderung(user.getBehinderung());
 
             //Diverse
@@ -104,6 +112,7 @@ public class BackendController {
             teilnehmer2Update.setSchwimmAbzeichen(user.getSchwimmAbzeichen());
             teilnehmer2Update.setErlaubeMedikamentation(user.isErlaubeMedikamentation());
             teilnehmer2Update.setBezahlt(user.isBezahlt());
+            teilnehmer2Update.setEmail((user.getEmail()));
 
             //Limitations
             teilnehmer2Update.setKrankheiten(user.getKrankheiten());
@@ -113,7 +122,7 @@ public class BackendController {
             teilnehmer2Update.setEssenLimitierungen(user.getEssenLimitierungen());
 
             Teilnehmer savedTeilnehmer = teilnehmerRepository.save(teilnehmer2Update);
-            LOG.info("User with id " + user.getId() + " successfully updated");
+            LOG.info("User with id "+ user.getId() + " successfully updated");
             return savedTeilnehmer;
 
         }).orElseThrow(() -> new ResourceNotFoundException("User " + user.getId() + " not found"));
@@ -121,6 +130,13 @@ public class BackendController {
 
     }
 
+
+    @RequestMapping(path = "/user/{userId}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable("userId") long userId) {
+        teilnehmerRepository.deleteById(userId);
+        LOG.info("User with id "+ userId + " deleted");
+    }
 
     //Assign Project to user
     @RequestMapping(path = "/assignProject", method = RequestMethod.POST)
@@ -146,7 +162,7 @@ public class BackendController {
     }
 
     private Boolean assignUserToProjektWhenNotAlreadyAssigned(Teilnehmer teilnehmer, Projekt projekt) {
-        if (projekt.isTeilnehmerNotAlreadyAsignedToProjekt(teilnehmer)) {
+        if(projekt.isTeilnehmerNotAlreadyAsignedToProjekt(teilnehmer)) {
             projekt.addAnmeldung(teilnehmer);
             projektRepository.save(projekt);
             LOG.info("Successfully assigned project " + projekt.getName() + " to user " + teilnehmer.getNachname());
@@ -155,6 +171,7 @@ public class BackendController {
         }
         return true;
     }
+
 
 
     /*******************************************
@@ -174,9 +191,9 @@ public class BackendController {
         boolean oneOrMoreProjekteVoll = false;
 
         for (Project project : anmeldungJson.getProjects()) {
-            if (project.isRegistered()) {
+            if(project.isRegistered()) {
                 Projekt projekt = projektRepository.findById(project.getId().longValue()).orElse(null);
-                if (projekt.hasProjektFreeSlots()) {
+                if(projekt.hasProjektFreeSlots()) {
                     projekt.addAnmeldung(neuAngemeldeterTeilnehmer);
                 } else {
                     LOG.info("The Projekt " + projekt.getName() + " with Id " + projekt.getId() + " has no free Slots left!");
@@ -227,9 +244,9 @@ public class BackendController {
     List<Projekt> showProjectsOfUser(@RequestParam String vorname, @RequestParam String nachname) {
         LOG.info("GET called on /projectsof resource");
         List<Projekt> resultList = new ArrayList<>();
-        for (Projekt p : projektRepository.findAll()) {
-            for (Teilnehmer t : p.getAnmeldungen()) {
-                if (t.getVorname().equals(vorname) && t.getNachname().equals(nachname))
+        for (Projekt p:projektRepository.findAll()) {
+            for (Teilnehmer t: p.getAnmeldungen()) {
+                if(t.getVorname().equals(vorname) && t.getNachname().equals(nachname))
                     resultList.add(p);
             }
         }
@@ -244,8 +261,8 @@ public class BackendController {
         LOG.info("GET called on /projectsofid resource with userID: " + userID);
         List<Projekt> resultList = new ArrayList<>();
         for (Projekt projekt : projektRepository.findAll()) {
-            for (Teilnehmer teilnehmer : projekt.getAnmeldungen()) {
-                if (teilnehmer.getId() == userID)
+            for (Teilnehmer teilnehmer: projekt.getAnmeldungen()) {
+                if(teilnehmer.getId() == userID)
                     resultList.add(projekt);
             }
         }
@@ -288,11 +305,11 @@ public class BackendController {
         }
         if (slots < project.getSlotsGesamt() && slots < project.getSlotsGesamt() - project.getSlotsFrei()) {
             LOG.info("Could not update project, because there are already too many slots taken.");
-            return false;
+            return  false;
         }
         if (slotsReserved > project.getSlotsReserviert() && slotsReserved - project.getSlotsReserviert() > project.getSlotsFrei()) {
             LOG.info("Could not update project, because you want to reserve more slots than slots are free.");
-            return false;
+            return  false;
         }
         project.setName(name);
 
@@ -318,20 +335,37 @@ public class BackendController {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
+    @RequestMapping(path = "/projekt/{projekt_id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Boolean setProjectToInactive(@PathVariable("projekt_id") Long projekt_id) {
+
+        Optional<Projekt> maybeProjekt = projektRepository.findById(projekt_id);
+        if (maybeProjekt.isPresent()) {
+            Projekt projekt = maybeProjekt.get();
+            projekt.setAktiv(false);
+            projektRepository.save(projekt);
+            LOG.info(projekt.getName() + " with id " + projekt.getId() + " is set to inactive");
+            return true;
+        } else {
+            //TODO: Refactor to ProjectNotFoundException
+            return  false;
+        }
+    }
+
     // DELETE PROJECT
-    @RequestMapping(path = "/deleteproject")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    Boolean deleteProject(@RequestParam Long project_id) {
+    @RequestMapping(path = "/projekt/{projekt_id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Boolean deleteProject(@PathVariable("projekt_id") Long projekt_id) {
 
-        Projekt p = projektRepository.findById(project_id).orElse(null);
-        if (p == null)
+        Optional<Projekt> maybeProjekt = projektRepository.findById(projekt_id);
+        if (maybeProjekt.isPresent()) {
+            projektRepository.deleteById(projekt_id);
+            LOG.info("Projekt with id " + projekt_id + " has been deleted.");
+            return true;
+        } else {
+            //TODO: Refactor to ProjectNotFoundException
             return false;
-        p.setAktiv(false);
-        projektRepository.save(p);
-        LOG.info(p.toString() + " is set to inactive");
-
-        return true;
+        }
     }
 
 

@@ -621,16 +621,14 @@
                 "component": "TextField",
                 "params": {
                   "label": "Name",
-                  "name": "conditions__emergency-name",
-                  "required": true
+                  "name": "conditions__emergency-name"
                 }
               },
               {
                 "component": "TextField",
                 "params": {
                   "label": "Anschrift",
-                  "name": "conditions__emergency-address",
-                  "required": true
+                  "name": "conditions__emergency-address"
                 }
               },
               {
@@ -638,7 +636,7 @@
                 "params": {
                   "label": "Telefon",
                   "name": "conditions__emergency-phone-number",
-                  "required": true,
+                  "pattern": "^([+]*[0-9]+[0-9]*)([0-9 -]*[/]?[0-9 ]*)$",
                   "type": "tel"
                 }
               }
@@ -672,6 +670,7 @@
                   "label": "Telefon",
                   "name": "conditions__family-doctor-phone-number",
                   "required": false,
+                  "pattern": "^([+]*[0-9]+[0-9]*)([0-9 -]*[/]?[0-9 ]*)$",
                   "type": "tel"
                 }
               }
@@ -902,8 +901,9 @@
         {
           "component": "RadioGroup",
           "params": {
-            "title": "Mein Kind darf alleine heimgehen?",
+            "title": "Mein Kind darf alleine heimgehen? *",
             "name": "declaration__going-home-alone-allowed",
+            "required": true,
             "components": [
               {
                 "component": "RadioButton",
@@ -925,8 +925,9 @@
         {
           "component": "RadioGroup",
           "params": {
-            "title": "Mein Kind darf reiten?",
+            "title": "Mein Kind darf reiten? *",
             "name": "declaration__horse-riding-allowed",
+            "required": true,
             "components": [
               {
                 "component": "RadioButton",
@@ -948,8 +949,9 @@
         {
           "component": "RadioGroup",
           "params": {
-            "title": "Mein Kind darf schwimmen?",
+            "title": "Mein Kind darf schwimmen? *",
             "name": "declaration__swimming-allowed",
+            "required": true,
             "components": [
               {
                 "component": "RadioButton",
@@ -1032,8 +1034,9 @@
         {
           "component": "Checkbox",
           "params": {
-            "label": "Ich bestätige die Richtigkeit meiner Angaben. Wurden wissentlich falsche Angaben gemacht, darf die Organisation das angemeldete Kind von den Angeboten ausschließen.",
-            "name": "privacy-policy__confirmation"
+            "label": "Ich bestätige die Richtigkeit meiner Angaben. Wurden wissentlich falsche Angaben gemacht, darf die Organisation das angemeldete Kind von den Angeboten ausschließen. *",
+            "name": "privacy-policy__confirmation",
+            "required": true
           }
         }
       ]

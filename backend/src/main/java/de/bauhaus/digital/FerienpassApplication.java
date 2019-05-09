@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import java.time.LocalDate;
 
 @SpringBootApplication
-public class FerienpassAdminApplication implements CommandLineRunner {
+public class FerienpassApplication implements CommandLineRunner {
 
 	@Autowired
 	private TeilnehmerRepository teilnehmerRepository;
@@ -67,6 +67,7 @@ public class FerienpassAdminApplication implements CommandLineRunner {
 		String schwimmAbzeichen = "Seepferdchen";
 		String hitze = "Wärme: bis 25 Grad ist alles okay";
 		String medikamente = "Nasentropfen_ maximal 2x am Tag ein Schub";
+		String email = "myEmail@weimar.de";
 
 		Teilnehmer user = new Teilnehmer(
 				"Gary",
@@ -92,7 +93,8 @@ public class FerienpassAdminApplication implements CommandLineRunner {
 				true,
 				behinderung,
 				hitze,
-				medikamente);
+				medikamente,
+				email);
 
 		teilnehmerRepository.save(user);
 
@@ -113,7 +115,7 @@ public class FerienpassAdminApplication implements CommandLineRunner {
 
 
 	public static void main(String[] args) {
-		SpringApplication.run(FerienpassAdminApplication.class, args);
+		SpringApplication.run(FerienpassApplication.class, args);
 	}
 
 	// Enable CORS globally for requests from Anmeldung frontend in webpack dev-server mode
