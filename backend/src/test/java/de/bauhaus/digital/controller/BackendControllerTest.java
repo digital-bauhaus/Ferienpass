@@ -602,7 +602,7 @@ public class BackendControllerTest {
         Teilnehmer responseUser = getUser(userId);
 
         //Get all projects fo the userID
-        List<Projekt> projectsOfUserID = getAllProjekteWhereUserIsAssigned(responseUser);
+        List<Projekt> projectsOfUserID = getAllProjekteWhereUserIsAssigned(responseUser.getId());
         assertThat(projectsOfUserID.size(),is(1));
         assertThat(projectsOfUserID.get(0).getId(), is(projectId));
 
@@ -676,8 +676,7 @@ public class BackendControllerTest {
         // Then
         assertThat(isUserAssignedToProject,is(true));
 
-        Projekt projekt = getProjekt(projectId);
-        Teilnehmer teilnehmer = projekt.getAnmeldungen().get(0);
+        Teilnehmer teilnehmer = getAllAssignedUsersForGivenProject(projectId).get(0);
         assertThat(teilnehmer.getId(), is(userId));
 
         List<Projekt> projectsByFirstNameAndLastName = getAlleZugewiesenenProjekteByFirstNameAndLastName("Anton", "Tirol");
@@ -743,16 +742,30 @@ public class BackendControllerTest {
     }
 
 
-    private List<Projekt> getAllProjekteWhereUserIsAssigned(Teilnehmer responseUser) {
+    private List<Projekt> getAllProjekteWhereUserIsAssigned(Long userId) {
         return Arrays.asList(
                 given()
-                        .param("userID", responseUser.getId())
-                        .when()
-                        .get(BASE_URL+"/projectsofid")
-                        .then()
-                .statusCode(HttpStatus.SC_OK)
-                .assertThat()
-                .extract().as(Projekt[].class));
+                        .pathParam("userId", userId)
+                        .contentType(ContentType.JSON)
+                .when()
+                    .get(BASE_URL+"/user/{userId}/projekte")
+                .then()
+                    .statusCode(HttpStatus.SC_OK)
+                    .assertThat()
+                    .extract().as(Projekt[].class));
+    }
+
+    private List<Teilnehmer> getAllAssignedUsersForGivenProject(Long projectId) {
+        return Arrays.asList(
+                given()
+                    .pathParam("projektId", projectId)
+                    .contentType(ContentType.JSON)
+                .when()
+                    .get(BASE_URL+"/projekt/{projektId}/users")
+                .then()
+                    .statusCode(HttpStatus.SC_OK)
+                    .assertThat()
+                    .extract().as(Teilnehmer[].class));
     }
 
     private Long addUser(Teilnehmer teilnehmer) {

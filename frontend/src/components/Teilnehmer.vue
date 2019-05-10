@@ -54,7 +54,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>
 
-import { AXIOS } from './http-common';
+import { getUsers, getProjects, deleteUser } from './ferienpass-api';
 
 export default {
   name: 'Teilnehmer',
@@ -67,20 +67,8 @@ export default {
     };
   },
   created () {
-    AXIOS.get('/allusers')
-    .then(response => {
-      this.allusers = response.data
-    })
-    .catch(e => {
-      this.errors.push(e)
-    })
-    AXIOS.get('/allprojects')
-    .then(response => {
-      this.allAvailableProjects = response.data
-    })
-    .catch(e => {
-      this.errors.push(e)
-    })
+    this.getAllUsers()
+    getProjects().then(projects => this.allAvailableProjects = projects)
   },
   methods: {
     deleteUser(userId) {
@@ -94,30 +82,20 @@ export default {
       })
       .then((willDelete) => {
         if (willDelete) {
-          AXIOS.delete('/user/' + userId)
-            .then(response => {
-              this.retrieveAllUsersFromBackend()
-              swal("Teilnehmer wurde gelöscht!", {
-                icon: "success",
-              });
-            })
-            .catch(e => {
+          deleteUser(userId).then(response => {
+            this.getAllUsers()
+            swal("Teilnehmer wurde gelöscht!", {
+              icon: "success",
+            });
+          }).catch(e => {
               this.errors.push(e)
               swal("Da ist was schief gegangen :(");
             })
-        } else {
-          //swal("Keine Bange, der Teilnehmer wurde NICHT gelöscht :)");
         }
       });
     },
-    retrieveAllUsersFromBackend() {
-      AXIOS.get('/allusers')
-              .then(response => {
-                this.allusers = response.data
-              })
-              .catch(e => {
-                this.errors.push(e)
-              })
+    getAllUsers() {
+      getUsers().then(users => this.allusers = users)
     },
     sortTable (n) {
       var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;

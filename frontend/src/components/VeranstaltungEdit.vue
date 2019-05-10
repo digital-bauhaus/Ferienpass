@@ -81,12 +81,13 @@
 </template>
 
 <script>
-import { AXIOS } from './http-common';
+import {getProject, createProject, updateProject} from "./ferienpass-api";
 
 export default {
   name: 'Veranstaltung',
   data () {
     return {
+      id: parseInt(this.$route.query.id),
       project: {
           aktiv: true,
           anmeldungen:[]
@@ -97,53 +98,31 @@ export default {
     };
   },
   created () {
-    var id = parseInt(this.$route.query.id);
-    this.id = id;
-    if (id !== -1) {
-      AXIOS.get('/project/' + id)
-      .then(response => {
-        this.project = response.data
-      })
-      .catch(e => {
-        this.errors.push(e)
-      })
+    if (this.id !== -1) {
+        getProject(this.id).then(project => {
+            this.project = project;
+        })
     }
   },
   methods: {
     createOrUpdateProject () {
-      var id = parseInt(this.$route.query.id);
-
       if (this.id < 0) {
-          console.log("creating new project")
-
-          AXIOS.post('/projekt', this.project)
-              .then(response => {
-                  this.popupClass = 'fadeIn';
-                  var self = this;
-                  setTimeout(function () {
-                      self.popupClass = 'fadeOut';
-                  }, 2000);
-              })
-              .catch(e => {
-                  this.errors.push(e)
-              })
-
+          createProject(this.project).then(response => {
+              this.fadeInAndOutAfterTimeout()
+          })
       } else {
-          console.log("updating existing project")
-          AXIOS.put('/projekt', this.project)
-              .then(response => {
-                  this.popupClass = 'fadeIn'
-                  var self = this;
-                  setTimeout(function () {
-                      self.popupClass = 'fadeOut';
-                  }, 2000);
-                  this.getProjectsOfUser()
-              })
-              .catch(e => {
-                  this.errors.push(e)
-              });
+          updateProject(this.project).then(response => {
+             this.fadeInAndOutAfterTimeout()
+          })
       }
     },
+      fadeInAndOutAfterTimeout() {
+          this.popupClass = 'fadeIn'
+          var self = this;
+          setTimeout(function () {
+              self.popupClass = 'fadeOut';
+          }, 2000);
+      },
     kill (event) {
       event.target.parentElement.parentElement.remove();
     }

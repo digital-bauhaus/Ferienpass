@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { AXIOS } from './http-common';
+import { getProjects, deleteProject, getAllUsersAssignedToProject } from './ferienpass-api';
 import jsPDF from 'jspdf'
 
 export default {
@@ -51,13 +51,7 @@ export default {
   },
   methods: {
     getProjects () {
-      AXIOS.get('/allprojects')
-      .then(response => {
-        this.allprojects = response.data
-      })
-      .catch(e => {
-        this.errors.push(e)
-      })
+        getProjects().then(projects => this.allprojects = projects)
     },
     exportPDF (projectID) {
       /*eslint-disable */
@@ -77,13 +71,7 @@ export default {
       doc.text('Web Link: ' + this.allprojects[projectID].webLink, 20, y += deltaLine)
       doc.text('Projekt aktiv: ' + this.allprojects[projectID].aktiv, 20, y += deltaLine)
 
-      AXIOS.get('/projectRegistrations/' + this.allprojects[projectID].id)
-        .then(response => {
-          this.teilnehmerOfProject = response.data
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
+      getAllUsersAssignedToProject(this.allprojects[projectID].id).then(users => this.teilnehmerOfProject = users)
 
       for (let index = 0; index < this.teilnehmerOfProject.length; ++index) {
         doc.text('Angemeldete Person: ' + this.teilnehmerOfProject[index].name, 20, y += deltaLine)
@@ -185,23 +173,19 @@ export default {
           buttons: true,
           dangerMode: true,
       })
-          .then((willDelete) => {
-              if (willDelete) {
-                  AXIOS.delete('/projekt/' + projectId)
-                      .then(response => {
-                          this.getProjects();
-                          swal("Projekt wurde gelöscht!", {
-                              icon: "success",
-                          });
-                      })
-                      .catch(e => {
-                          this.errors.push(e)
-                          swal("Da ist was schief gegangen :(");
-                      })
-              } else {
-                  //swal("Keine Bange, der Teilnehmer wurde NICHT gelöscht :)");
-              }
-          });
+      .then((willDelete) => {
+          if (willDelete) {
+              deleteProject(projectId).then(response => {
+                  this.getProjects();
+                  swal("Projekt wurde gelöscht!", {
+                      icon: "success",
+                  });
+              }).catch(e => {
+                  this.errors.push(e)
+                  swal("Da ist was schief gegangen :(");
+              })
+          }
+      });
       },
   }
 

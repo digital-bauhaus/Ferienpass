@@ -232,16 +232,15 @@ public class BackendController {
         return resultList;
     }
 
-    // Retrieve all projects for a user's ID
-    @RequestMapping(path = "/projectsofid")
+    @RequestMapping(path = "/user/{userId}/projekte")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
-    List<Projekt> showProjectsOfUserById(@RequestParam Long userID) {
-        LOG.info("GET called on /projectsofid resource with userID: " + userID);
+    List<Projekt> getUsersProjects(@PathVariable("userId") Long userId) {
+        LOG.info("GET called on /user/" + userId + "/projekte");
         List<Projekt> resultList = new ArrayList<>();
         for (Projekt projekt : projektRepository.findAll()) {
             for (Teilnehmer teilnehmer: projekt.getAnmeldungen()) {
-                if(teilnehmer.getId() == userID)
+                if(teilnehmer.getId() == userId)
                     resultList.add(projekt);
             }
         }
@@ -314,25 +313,23 @@ public class BackendController {
         }
     }
 
-
-    // GET PROJECT INFORMATION BY ID
     @GetMapping(path = "/project/{projektId}")
     public @ResponseBody
     Projekt getProjectById(@PathVariable("projektId") Long projekt_id) {
         return projektRepository.findById(projekt_id).orElse(null);
     }
 
-    //Get all users (Teilnehmer) for a given project by ID
-    @GetMapping(path = "/projectRegistrations/{projektId}")
+    @GetMapping(path = "/projekt/{projektId}/users")
     public @ResponseBody
-    List<Teilnehmer> getRegisteredUsersByProjectId(@PathVariable("projektId") Long projekt_id) {
-        Projekt projekt = projektRepository.findById(projekt_id).orElse(null);
-        if (projekt == null) {
-            LOG.info("Did not found project for id: " + projekt_id);
-            return null;
+    List<Teilnehmer> getRegisteredUsersByProjectId(@PathVariable("projektId") Long projektId) {
+        Optional<Projekt> maybeProjekt = projektRepository.findById(projektId);
+        if (maybeProjekt.isPresent()) {
+            Projekt projekt = maybeProjekt.get();
+            LOG.info("Returning " + projekt.getAnmeldungen().size() + " registered participants for project " + projekt.getName());
+            return projekt.getAnmeldungen();
+        } else {
+            throw new ProjektNotFoundException("Projekt mit der id " + projektId + " wurde nicht gefunden.");
         }
-        LOG.info("Returning " + projekt.getAnmeldungen().size() + " registered participants for project " + projekt.getName());
-        return projekt.getAnmeldungen();
     }
 
 

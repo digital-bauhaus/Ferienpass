@@ -135,7 +135,7 @@
 </template>
 
 <script>
-import { AXIOS } from './http-common';
+import { getProjects, registerTeilnehmer} from "./ferienpass-api";
 import formDataJson from './../assets/form-data'
 
 export default {
@@ -238,16 +238,12 @@ export default {
       this.datenschutz = this.formData.sections[5];
     },
     retrieveAllAdminProjects () {
-      AXIOS.get('/allprojects')
-        .then(response => {
-          console.log('Retrieve projects from Admin-Microservice');
-          console.log(response);
-          this.alleAdminProjekte = response.data;
-          this.mappeAdminProjekteAufAnmeldungProjekte();
+        getProjects().then(projects => {
+            console.log('Retrieve projects from Admin-Microservice');
+            console.log(projects);
+            this.alleAdminProjekte = projects;
+            this.mappeAdminProjekteAufAnmeldungProjekte();
         })
-        .catch(error => {
-          console.error(error);
-        });
     },
     mappeAdminProjekteAufAnmeldungProjekte () {
       this.alleAdminProjekte.forEach(adminProjekt => {
@@ -300,29 +296,28 @@ export default {
       });
       jsonObject['projects'] = jsonProjects;
       console.log(jsonObject)
-      AXIOS.post('/register', jsonObject)
-        .then(response => {
-          console.log(response);
-          if (response) {
-            if (response.status === 201) {
-              // Admin-Backend successfully added new Teilnehmer
-              this.modalSuccess();
+
+        registerTeilnehmer(jsonObject).then(response => {
+            console.log(response);
+            if (response) {
+                if (response.status === 201) {
+                    // Admin-Backend successfully added new Teilnehmer
+                    this.modalSuccess();
+                }
             }
-          }
+        }).catch(error => {
+            console.error(error);
+            console.log('Error, HTTP-Status: ' + error.response.status);
+            if (error.response) {
+                if (error.response.status === 409) {
+                    // Admin-Backend said that one or more projectrs aren´t available
+                    // and gave a list of them back
+                    this.reservierteProjekte = error.response.data;
+                    this.disableProjectsWithoutFreeSlots();
+                    this.modalProjectOverbooked();
+                }
+            }
         })
-        .catch(error => {
-          console.error(error);
-          console.log('Error, HTTP-Status: ' + error.response.status);
-          if (error.response) {
-            if (error.response.status === 409) {
-              // Admin-Backend said that one or more projectrs aren´t available
-              // and gave a list of them back
-              this.reservierteProjekte = error.response.data;
-              this.disableProjectsWithoutFreeSlots();
-              this.modalProjectOverbooked();
-            }
-          }
-        });
     },
     getFormElements () {
       const form = document.querySelector('.form');
