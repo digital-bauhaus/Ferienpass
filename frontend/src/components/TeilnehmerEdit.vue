@@ -214,12 +214,13 @@
 </template>
 
 <script>
-import { AXIOS } from './http-common';
+import { getUser, updateUser, getUsersProjects, deleteUserFromProject, addUserToProject, getProjects } from './ferienpass-api';
 
 export default {
   name: 'Teilnehmer',
   data () {
     return {
+        id: parseInt(this.$route.query.id),
       user: [],
       projectsOfUser: [],
       allAvailableProjects: [],
@@ -238,104 +239,37 @@ export default {
   methods: {
     updateUser() {
       this.user.id = parseInt(this.$route.query.id);
-      AXIOS.put('/user', this.user)
-          .then(response => {
-              this.popupClass = 'fadeIn'
-              var self = this;
-              setTimeout(function () {
-                  self.popupClass = 'fadeOut';
-              }, 2000);
-          })
-          .catch(e => {
-              this.errors.push(e)
-          })
-    },
-    deleteListItem (id, typeList, itemPos) {
-    /* note that the numbers of variable typeList correspond to the index value of the enumeration ListType in the backend */
-      AXIOS.post('/deletelistitem', {
-        user_id: id,
-        type: typeList,
-        item: itemPos
-      })
-      .then(response => {
-        this.popupClass = 'fadeIn'
-        var self = this;
-        setTimeout(function () {
-          self.popupClass = 'fadeOut';
-        }, 2000);
-      })
-      .catch(e => {
-        this.errors.push(e)
+      updateUser(this.user).then(response => {
+          this.fadeInAndOutAfterTimeout()
       })
     },
     unassignFromProject (projectId, userId) {
-        AXIOS.delete('projekt/' + projectId + '/user/' + userId)
-            .then(response => {
-                this.popupClass = 'fadeIn';
-                var self = this;
-                setTimeout(function () {
-                    self.popupClass = 'fadeOut';
-                }, 2000);
-                this.getProjectsOfUser()
-            })
-            .catch(e => {
-                this.errors.push(e)
-            });
+        deleteUserFromProject(projectId, userId).then(response => {
+            this.fadeInAndOutAfterTimeout()
+            this.getProjectsOfUser()
+        })
     },
     assignToProject (projectId, userId) {
-        AXIOS.put('projekt/' + projectId + '/user/' + userId)
-            .then(response => {
-                this.popupClass = 'fadeIn'
-                var self = this;
-                setTimeout(function () {
-                    self.popupClass = 'fadeOut';
-                }, 2000);
-                this.getProjectsOfUser()
-            })
-            .catch(e => {
-                this.errors.push(e)
-            });
+        addUserToProject(projectId, userId).then(response => {
+            this.fadeInAndOutAfterTimeout()
+            this.getProjectsOfUser()
+        })
+    },
+    fadeInAndOutAfterTimeout() {
+        this.popupClass = 'fadeIn'
+        var self = this;
+        setTimeout(function () {
+            self.popupClass = 'fadeOut';
+        }, 2000);
     },
     getUserData () {
-      var id = parseInt(this.$route.query.id);
-      AXIOS.get('/user/' + id)
-        .then(response => {
-          this.user = response.data
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
+        getUser(this.id).then(user => this.user = user);
     },
     getAllProjects () {
-      AXIOS.get('/allprojects')
-        .then(response => {
-          this.allAvailableProjects = response.data
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
-      console.log(this.allRawProjects)
-      /* for (var i = 0; i < this.allRawProjects.length; i++) {
-        this.projectsOfUser.forEach(function (project) {
-          if (project.id === this.allAvailableProjects[i].id) {
-            this.allAvailableProjects[this.allAvailableProjects.length] = project
-          }
-        })
-      } */
+        getProjects().then(projects => this.allAvailableProjects = projects)
     },
     getProjectsOfUser () {
-      var id = parseInt(this.$route.query.id);
-      AXIOS.get('/projectsofid', {
-        params: {
-          userID: id
-        }
-      })
-        .then(response => {
-          this.projectsOfUser = response.data
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
+        getUsersProjects(this.id).then(projects => this.projectsOfUser = projects)
     }
   }
 }
