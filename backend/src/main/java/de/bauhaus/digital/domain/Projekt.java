@@ -1,29 +1,49 @@
 package de.bauhaus.digital.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 public class Projekt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long projekt_id;
+
+    @NotBlank
     private String name;
+
+    //@FutureOrPresent
     private LocalDate datum;
+
+    // TODO not before datum
+    //@FutureOrPresent
     private LocalDate datumEnde;
+
+    @PositiveOrZero
     private int mindestAlter;
+
+    @PositiveOrZero
     private int hoechstAlter;
-    //private String organisation;
+
+    @PositiveOrZero
     private int kosten;
+
+    @PositiveOrZero
     private int slotsGesamt;
+
+    @PositiveOrZero
     private int slotsReserviert;
+
     private String traeger;
+
     private String webLink;
+
     private boolean aktiv;
 
     @ManyToMany(cascade= CascadeType.ALL)

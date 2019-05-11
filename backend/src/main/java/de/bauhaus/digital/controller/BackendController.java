@@ -11,6 +11,7 @@ import de.bauhaus.digital.repository.TeilnehmerRepository;
 import de.bauhaus.digital.transformation.AnmeldungJson;
 import de.bauhaus.digital.transformation.AnmeldungToAdmin;
 import de.bauhaus.digital.transformation.Project;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -287,7 +288,7 @@ public class BackendController {
     @RequestMapping(path = "/projekt", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    Long addNewProject(@RequestBody Projekt projekt) {
+    Long addNewProject(@RequestBody @Valid Projekt projekt) {
 
         projektRepository.save(projekt);
 
@@ -299,7 +300,7 @@ public class BackendController {
     @RequestMapping(path = "/projekt", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
-    Projekt updateProject(@RequestBody Projekt projekt) {
+    Projekt updateProject(@RequestBody @Valid Projekt projekt) {
 
         Optional<Projekt> maybeProjekt = projektRepository.findById(projekt.getId());
         if (maybeProjekt.isPresent()) {
