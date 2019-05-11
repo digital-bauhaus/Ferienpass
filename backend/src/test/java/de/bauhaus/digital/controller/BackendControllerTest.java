@@ -730,6 +730,82 @@ public class BackendControllerTest {
         assertThat(isProjectDeleted, is(true));
     }
 
+    @Test
+    public void givenEndeDatumBeforeDatum_whenCreatingProjekt_thenBadRequest() {
+        Projekt projekt = createSampleProject();
+
+        projekt.setDatum(LocalDate.of(2019, 12, 5));
+        projekt.setDatumEnde(LocalDate.of(2019, 12, 4));
+
+        given()
+            .body(projekt)
+            .contentType(ContentType.JSON)
+        .when()
+            .post(BASE_URL+"/projekt")
+        .then()
+            .statusCode(HttpStatus.SC_BAD_REQUEST)
+            .body("errors", hasSize(1))
+            .body("errors[0].field", is("datumEnde"));
+    }
+
+    @Test
+    public void givenHoechstAlterSmallerThanMindestAlter_whenCreatingProjekt_thenBadRequest() {
+        Projekt projekt = createSampleProject();
+
+        projekt.setHoechstAlter(10);
+        projekt.setMindestAlter(11);
+
+        given()
+                .body(projekt)
+                .contentType(ContentType.JSON)
+            .when()
+                .post(BASE_URL+"/projekt")
+            .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .body("errors", hasSize(1))
+                .body("errors[0].field", is("hoechstAlter"));
+    }
+
+    @Test
+    public void givenMoreSlotsReservedThanTotalSlots_whenCreatingProjekt_thenBadRequest() {
+        Projekt projekt = createSampleProject();
+
+        projekt.setSlotsReserviert(10);
+        projekt.setSlotsGesamt(5);
+
+        given()
+                .body(projekt)
+                .contentType(ContentType.JSON)
+            .when()
+                .post(BASE_URL+"/projekt")
+                .then()
+            .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .body("errors", hasSize(1))
+                .body("errors[0].field", is("slotsReserviert"));
+    }
+
+    @Test
+    public void givenProjektWithOneTeilnehmer_whenUpdatingProjektWithZeroSlotsReserved_thenBadRequest() {
+        Long projectId = addProjekt(createSampleProject());
+        Long userId = addUser(createSampleUser());
+
+        assignUser2Projekt(projectId, userId);
+
+        Projekt projekt = getProjekt(projectId);
+
+        projekt.setSlotsReserviert(0);
+
+        given()
+                .body(projekt)
+                .contentType(ContentType.JSON)
+            .when()
+                .put(BASE_URL+"/projekt")
+            .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .body("errors", hasSize(1))
+                .body("errors[0].field", is("slotsReserviert"));
+    }
+
     private List<Projekt> getAlleZugewiesenenProjekteByFirstNameAndLastName(String vorname, String nachname) {
         return Arrays.asList(given()
                 .param("vorname",vorname)
