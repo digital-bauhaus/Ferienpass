@@ -3,8 +3,6 @@ package de.bauhaus.digital.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bauhaus.digital.domain.*;
 import de.bauhaus.digital.exception.ProjektNotFoundException;
-import de.bauhaus.digital.exception.BadRequestException;
-import de.bauhaus.digital.exception.ResourceNotFoundException;
 import de.bauhaus.digital.exception.UserNotFoundException;
 import de.bauhaus.digital.repository.ProjektRepository;
 import de.bauhaus.digital.repository.TeilnehmerRepository;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -128,7 +125,7 @@ public class BackendController {
             LOG.info("User with id "+ user.getId() + " successfully updated");
             return savedTeilnehmer;
 
-        }).orElseThrow(() -> new ResourceNotFoundException("User " + user.getId() + " not found"));
+        }).orElseThrow(() -> new UserNotFoundException("User " + user.getId() + " not found"));
 
 
     }
@@ -317,7 +314,12 @@ public class BackendController {
     @GetMapping(path = "/project/{projektId}")
     public @ResponseBody
     Projekt getProjectById(@PathVariable("projektId") Long projekt_id) {
-        return projektRepository.findById(projekt_id).orElse(null);
+        Optional<Projekt> maybeProjekt = projektRepository.findById(projekt_id);
+        if (maybeProjekt.isPresent()) {
+            return maybeProjekt.get();
+        } else {
+            throw new ProjektNotFoundException("Projekt mit der id " + projekt_id + " wurde nicht gefunden.");
+        }
     }
 
     @GetMapping(path = "/projekt/{projektId}/users")

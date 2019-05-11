@@ -41,6 +41,17 @@ public class BackendControllerTest {
     /****************************
      * Test user (Teilnehmer) API
      ****************************/
+
+    @Test
+    public void givenInvalidId_whenRequestingUser_thenNotFound() {
+        given()
+                .pathParam("id", -1)
+            .when()
+                .get(BASE_URL + "/user/{id}")
+            .then()
+                .statusCode(HttpStatus.SC_NOT_FOUND);
+    }
+
     @Test
     public void addNewUserAndRetrieveItBack() {
         Teilnehmer user = createSampleUser();
@@ -102,7 +113,6 @@ public class BackendControllerTest {
         long id2 = allUsers.get(initialSize+1).getId();
         assertThat(id1,is(userId));
         assertThat(id2,is(userId2));
-
     }
 
     @Test
@@ -530,6 +540,17 @@ public class BackendControllerTest {
     /****************************
      * Test project (Projekt) API
      ****************************/
+
+    @Test
+    public void givenInvalidId_whenRequestingProject_thenNotFound() {
+        given()
+                .pathParam("id", -1)
+            .when()
+                .get(BASE_URL + "/project/{id}")
+            .then()
+                .statusCode(HttpStatus.SC_NOT_FOUND);
+    }
+
     @Test
     public void addNewProjectAndetrieveItBack() {
         Projekt projekt = createSampleProject();
@@ -982,9 +1003,9 @@ public class BackendControllerTest {
     private Teilnehmer getUser(Long userId) {
         return given()
                 .pathParam("id", userId)
-                .when()
+            .when()
                 .get(BASE_URL + "/user/{id}")
-                .then()
+            .then()
                 .statusCode(HttpStatus.SC_OK)
                 .assertThat()
                 .extract().as(Teilnehmer.class);
