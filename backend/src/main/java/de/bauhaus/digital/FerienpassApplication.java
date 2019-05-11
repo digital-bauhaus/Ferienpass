@@ -34,8 +34,8 @@ public class FerienpassApplication implements CommandLineRunner {
 		createSampleProject(
 				"Bauspielplatz",
 				10,
-				LocalDate.of(2018, 8, 02),
-				LocalDate.of(2018, 8, 02),
+				LocalDate.of(2018, 8, 2),
+				LocalDate.of(2018, 8, 3),
 				"Nordlicht e.V.",
 				6,
 				80);

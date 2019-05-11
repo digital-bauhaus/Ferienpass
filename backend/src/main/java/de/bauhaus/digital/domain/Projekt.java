@@ -2,6 +2,7 @@ package de.bauhaus.digital.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import de.bauhaus.digital.validation.ProjektValidation;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,34 +11,32 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 
 @Entity
+@ProjektValidation
 public class Projekt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long projekt_id;
 
-    @NotBlank
+    @NotBlank(message = "Name darf nicht leer sein.")
     private String name;
 
-    //@FutureOrPresent
     private LocalDate datum;
 
-    // TODO not before datum
-    //@FutureOrPresent
     private LocalDate datumEnde;
 
-    @PositiveOrZero
+    @PositiveOrZero(message = "Mindestalter darf nicht < 0 sein.")
     private int mindestAlter;
 
-    @PositiveOrZero
+    @PositiveOrZero(message = "Höchstalter darf nicht < 0 sein.")
     private int hoechstAlter;
 
-    @PositiveOrZero
+    @PositiveOrZero(message = "Preis darf nicht < 0 sein.")
     private int kosten;
 
-    @PositiveOrZero
+    @PositiveOrZero(message = "Gesamtplätze dürfen nicht < 0 sein.")
     private int slotsGesamt;
 
-    @PositiveOrZero
+    @PositiveOrZero(message = "Reservierte Plätze dürfen nicht < 0 sein.")
     private int slotsReserviert;
 
     private String traeger;
