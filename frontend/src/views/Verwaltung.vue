@@ -1,25 +1,22 @@
 <template>
-    <html>
-    <nav>
-        <a href="/#/Veranstaltungen/">Alle Veranstaltungen</a>
-        <a href="/#/Veranstaltung/" >Veranstaltung erstellen </a>
-        <a href="/#/Teilnehmer/" >Alle Teilnehmer</a>
-    </nav>
+    <div>
+      <NavigationMenu/>
     <main>
       <div class="front">
       <div class="title">{{title}}</div><hr />
       <div class="subtitle">{{subtitle}}</div>
       </div>
     </main>
-    </html>
+    </div>
 </template>
 
 
 <script>
 
+import NavigationMenu from "../components/NavigationMenu";
 export default {
   name: 'Verwaltung',
-
+  components: {NavigationMenu},
   data () {
     return {
       title: 'Ferienpass Weimar',

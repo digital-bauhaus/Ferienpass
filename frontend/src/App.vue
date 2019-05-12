@@ -24,59 +24,6 @@
     color: #2c3e50;
   }
 
-  nav {
-    height: 100%;
-    width: 20%;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    background-color: #181819;
-    overflow-x: hidden;
-    padding-top: 60px;
-  }
-
-  nav a {
-    padding: 15px 15px 15px 32px;
-    text-decoration: none;
-    font-size: 14px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-    font-weight: bold;
-  }
-
-  nav a:hover {
-    color: #f1f1f1;
-    text-decoration: none;
-    background-color: #3a4372;
-    border-left: 3px solid #e2bf3d;
-    transition: .5s;
-  }
-
-  .selected {
-    background-color: #252626;
-    border-left: 3px solid #e2bf3d;
-  }
-
-  nav .searchbar {
-    position: absolute;
-    left: 10px; top: 10px; right: 20px;
-    width: 90%;
-    margin-bottom: 20px;
-    padding: 10px;
-    border-radius: 15px;
-    background-color: #4c4c4c;
-    color: white;
-    border: 0px solid black;
-  }
-
-  nav .searchbar:focus {
-
-    color: #4c4c4c;
-    background-color: #f7fcff;
-    transition: .5s;
-  }
-
   main {
     width: 80%;
     position: absolute;
@@ -183,39 +130,6 @@
     height: 100px;
   }
 
-  /* The Modal (background) */
-  .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  }
-
-  /* Modal Content/Box */
-  .modal-content {
-    background-color: #fefefe;
-    margin: 10% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;  /*Could be more or less, depending on screen size */
-    max-width: 1200px;
-  }
-  .center {
-    margin: auto;
-    width: 80%;
-    padding: 10px;
-    text-align: center;
-  }
-  .center button {
-    font-size: 20px;
-    margin: 0px 10px 0px
-  }
   th, td {
     min-width: 150px;
     padding: 10px 20px;
@@ -485,6 +399,9 @@
     width: 1px !important;
     overflow: hidden;
   }
+
+  .nobr { white-space: nowrap }
+
 </style>
 
 <style scoped>

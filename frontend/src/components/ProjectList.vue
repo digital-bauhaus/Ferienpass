@@ -1,59 +1,70 @@
 <template>
-	<html>
-      <nav>
-        <input type="text" class="searchbar" placeholder="Suche ...">
-        <a href="/#/Veranstaltungen/" class="selected">Alle Veranstaltungen</a>
-        <a href="/#/VeranstaltungEdit?id=-1" >Veranstaltung erstellen </a>
-        <a href="/#/Teilnehmer/" >Alle Teilnehmer</a>
-      </nav>
-      <main>
-        <h1>Veranstaltungsübersicht</h1>
-              <table v-if="allprojects && allprojects.length" id="myTable">
-                <tr>
-                  <th v-on:click="sortTable(0)" class="clickable">Veranstaltung</th>
-                  <th v-on:click="sortDate()" class="clickable">Datum</th>
-                  <th>Plätze frei / gesamt / [reserviert] </th>
-                  <th>Bearbeiten</th>
-                 </tr>
-                 <tr v-for="(project, index) of allprojects">
-                 <!--<td v-on:click="teil($event)">{{allproject.name}}</td>-->
-                   <td>{{project.name}}</td>
-                   <td>{{project.datum}}</td>
-                   <td>{{project.slotsFrei}} / {{project.slotsGesamt}} / [{{project.slotsReserviert}}]</td>
-                   <td><nobr>
-                       <span v-on:click="deleteProject(project.id)" class="fakebutton">Löschen</span>
-                       <router-link :to="{path: '../VeranstaltungEdit', query: {id: project.id }}" class="fakebutton">Bearbeiten</router-link>
-                       <span class="fakebutton" v-on:click="exportPDF(index)"><a>PDF exportieren</a></span></nobr>
-                   </td>
-                 </tr>
-               </table>
-      </main>
-
-
-	</html>
+  <table v-if="projects && projects.length" id="projectTable">
+    <tr>
+      <th v-on:click="sortTable(0)" class="clickable">Veranstaltung</th>
+      <th v-on:click="sortDate()" class="clickable">Datum</th>
+      <th>Plätze frei / gesamt / [reserviert]</th>
+      <th>Bearbeiten</th>
+    </tr>
+    <tr v-for="(project, index) of projects">
+      <td>{{project.name}}</td>
+      <td>{{project.datum}}</td>
+      <td>{{project.slotsFrei}} / {{project.slotsGesamt}} / [{{project.slotsReserviert}}]</td>
+      <td class="nobr">
+        <router-link :to="{path: '../VeranstaltungEdit', query: {id: project.id }}"
+                     class="fakebutton">Bearbeiten
+        </router-link>
+        <span class="fakebutton" v-on:click="exportPDF(index)"><a>PDF exportieren</a></span>
+        <span v-on:click="deleteProject(project.id)" class="fakebutton">Löschen</span>
+      </td>
+    </tr>
+  </table>
 </template>
 
 <script>
-import { getProjects, deleteProject, getAllUsersAssignedToProject } from './ferienpass-api';
+import { deleteProject, getAllUsersAssignedToProject } from '../modules/ferienpass-api';
 import jsPDF from 'jspdf'
 
 export default {
-  name: 'Veranstaltungen',
-  data () {
+  name: "ProjectList",
+  data() {
     return {
-      selectedID: 0,
-      allprojects: [],
       errors: []
     };
   },
-  created () {
-    this.getProjects()
+  props: {
+    projects: {
+      type: Array,
+      required: true
+    }
   },
   methods: {
-    getProjects () {
-        getProjects().then(projects => this.allprojects = projects)
+    deleteProject(projectId) {
+      this.$swal({
+        title: "Wirklich löschen?",
+        text: "Das Projekt wird vollständig gelöscht!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          this.errors = [];
+          deleteProject(projectId).then(response => {
+            this.$emit("project-deleted");
+            return this.$swal("Projekt wurde gelöscht!", {
+              icon: "success"
+            });
+          }).catch(e => {
+            this.errors.push(e);
+            return this.$swal("Da ist was schief gegangen :(", {
+              icon: "error"
+            });
+          })
+        }
+      });
     },
-    exportPDF (projectID) {
+    exportPDF(projectID) {
       /*eslint-disable */
       var doc = new jsPDF()
       /*eslint-enable */
@@ -63,25 +74,29 @@ export default {
       doc.text('Projektdaten', 20, y += deltaLine)
       doc.text('Name: ' + this.allprojects[projectID].name, 20, y += deltaLine)
       doc.text('Veranstaltungsdatum: ' + this.allprojects[projectID].datum, 20, y += deltaLine)
-      doc.text('Altersbeschränkung: ' + this.allprojects[projectID].mindestAlter, 20, y += deltaLine)
+      doc.text('Altersbeschränkung: ' + this.allprojects[projectID].mindestAlter, 20,
+          y += deltaLine)
       doc.text('Regulärer Preis: ' + this.allprojects[projectID].kosten, 20, y += deltaLine)
       doc.text('Freie Plätze: ' + this.allprojects[projectID].slotsFrei, 20, y += deltaLine)
-      doc.text('Belegte Plätze: ' + this.allprojects[projectID].slotsReserviert, 20, y += deltaLine)
+      doc.text('Belegte Plätze: ' + this.allprojects[projectID].slotsReserviert, 20,
+          y += deltaLine)
       doc.text('Plätze gesamt: ' + this.allprojects[projectID].slotsGesamt, 20, y += deltaLine)
       doc.text('Web Link: ' + this.allprojects[projectID].webLink, 20, y += deltaLine)
       doc.text('Projekt aktiv: ' + this.allprojects[projectID].aktiv, 20, y += deltaLine)
 
-      getAllUsersAssignedToProject(this.allprojects[projectID].id).then(users => this.teilnehmerOfProject = users)
+      getAllUsersAssignedToProject(this.allprojects[projectID].id).then(
+          users => this.teilnehmerOfProject = users)
 
       for (let index = 0; index < this.teilnehmerOfProject.length; ++index) {
-        doc.text('Angemeldete Person: ' + this.teilnehmerOfProject[index].name, 20, y += deltaLine)
+        doc.text('Angemeldete Person: ' + this.teilnehmerOfProject[index].name, 20,
+            y += deltaLine)
       }
       doc.save('projekt_' + projectID + '.pdf')
     },
-    sortTable (n) {
+    sortTable(n) {
       var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
       switchcount = 0;
-      table = document.getElementById('myTable');
+      table = document.getElementById('projectTable');
       switching = true;
       dir = 'asc';
       while (switching) {
@@ -117,10 +132,10 @@ export default {
         }
       }
     },
-    sortDate () {
+    sortDate() {
       var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
       switchcount = 0;
-      table = document.getElementById('myTable');
+      table = document.getElementById('projectTable');
       switching = true;
       dir = 'asc';
       while (switching) {
@@ -163,42 +178,11 @@ export default {
           }
         }
       }
-    },
-    deleteProject(projectId) {
-
-      swal({
-          title: "Wirklich löschen?",
-          text: "Das Projekt wird vollständig gelöscht!",
-          icon: "warning",
-          buttons: true,
-          dangerMode: true,
-      })
-      .then((willDelete) => {
-          if (willDelete) {
-              deleteProject(projectId).then(response => {
-                  this.getProjects();
-                  swal("Projekt wurde gelöscht!", {
-                      icon: "success",
-                  });
-              }).catch(e => {
-                  this.errors.push(e)
-                  swal("Da ist was schief gegangen :(");
-              })
-          }
-      });
-      },
+    }
   }
-
 }
 </script>
 
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.button {
-display: inline-block;
-float: left;
-}
 </style>
-

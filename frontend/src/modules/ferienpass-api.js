@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios/index'
 
 export const AXIOS = axios.create({
   baseURL: `/api`
@@ -71,6 +71,11 @@ export function getUsers() {
 export function getUsersProjects(userId) {
   console.log("Fetch projects of user with id " + userId);
   return AXIOS.get('/user/' + userId + '/projekte').then(response => response.data);
+}
+
+export function getUsersCancelledProjects(userId) {
+  console.log("Fetch cancelled projects of user with id " + userId);
+  return AXIOS.get('/user/' + userId + '/cancelledprojects').then(response => response.data);
 }
 
 export function updateUser(user) {

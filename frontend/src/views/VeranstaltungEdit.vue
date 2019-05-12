@@ -1,14 +1,8 @@
 <template>
   <div>
-    <nav>
-      <a href="/#/Veranstaltungen/">Alle Veranstaltungen</a>
-      <a href="/#/VeranstaltungEdit?id=-1" class="selected">Veranstaltung erstellen </a>
-      <a href="/#/Teilnehmer/">Alle Teilnehmer</a>
-    </nav>
-    <main>
+    <NavigationMenu/>
+    <main v-if="project">
       <h1>{{ titleText }}</h1>
-
-      <ErrorListBox v-if="errors.length" :errors="errors" :heading-text="errorHeadingText" class="error-list-box"/>
 
       <form method="post" v-on:submit.prevent="createOrUpdateProject">
         <table>
@@ -74,47 +68,55 @@
           </tr>
         </table>
       </form>
+      <ErrorListBox v-if="errorMessages.length" :errors="errorMessages" :heading-text="errorHeadingText" class="error-list-box"/>
+
+      <div v-if="!isNewProject">
+        <h2>Angemeldete Nutzer:</h2>
+        <UserList :users="project.anmeldungen" :show-projects="false" :allow-export-pdf="false" :allow-delete="false"/>
+      </div>
+
     </main>
     <div :class="popupClass">✔ Erfolgreich bearbeitet!</div>
   </div>
 </template>
 
 <script>
-import {getProject, createProject, updateProject} from "./ferienpass-api";
-import ErrorListBox from "./ErrorListBox";
+import {getProject, createProject, updateProject} from "../modules/ferienpass-api";
+import ErrorListBox from "../components/ErrorListBox";
+import NavigationMenu from "../components/NavigationMenu";
+import UserList from "../components/UserList";
 
 export default {
   name: 'Veranstaltung',
-  components: {ErrorListBox},
+  components: {UserList, NavigationMenu, ErrorListBox},
   data() {
     return {
+      errorMessages: [],
       id: parseInt(this.$route.query.id),
-      project: {
-        aktiv: true,
-        anmeldungen: []
-      },
-      errors: [],
-      updateSuccess: false,
+      project: null,
       popupClass: 'fadeOut'
     };
   },
   computed: {
+    isNewProject() {
+      return this.id < 0;
+    },
     titleText() {
-      if (this.id < 0) {
+      if (this.isNewProject) {
         return "Veranstaltung anlegen"
       } else {
         return "Veranstaltungsbearbeitung"
       }
     },
     submitButtonText() {
-      if (this.id < 0) {
+      if (this.isNewProject) {
         return "Anlegen"
       } else {
         return "Speichern"
       }
     },
     errorHeadingText() {
-      if (this.id < 0) {
+      if (this.isNewProject) {
         return "Anlegen nicht möglich. Bitte beheben Sie folgende Fehler:"
       } else {
         return "Speichern nicht möglich. Bitte beheben Sie folgende Fehler:"
@@ -122,23 +124,32 @@ export default {
     }
   },
   created() {
-    if (this.id !== -1) {
-      getProject(this.id).then(project => {
-        this.project = project;
-      })
+    if (this.isNewProject) {
+      this.project = {
+        aktiv: true,
+        anmeldungen: []
+      };
+    } else {
+      this.loadProjectData();
     }
   },
   methods: {
+    loadProjectData() {
+      this.errorMessages = [];
+      getProject(this.id).then(project => {
+        this.project = project;
+      }).catch(e => this.errorMessages.push(e.toString()));
+    },
     createOrUpdateProject() {
-      this.errors = [];
-      if (this.id < 0) {
+      this.errorMessages = [];
+      if (this.isNewProject) {
         createProject(this.project).then(response => {
           this.fadeInAndOutAfterTimeout()
-        }).catch(errorMessages => this.errors = errorMessages);
+        }).catch(errorMessages => this.errorMessages = errorMessages);
       } else {
         updateProject(this.project).then(response => {
           this.fadeInAndOutAfterTimeout()
-        }).catch(errorMessages => this.errors = errorMessages);
+        }).catch(errorMessages => this.errorMessages = errorMessages);
       }
     },
     fadeInAndOutAfterTimeout() {
@@ -147,9 +158,6 @@ export default {
       setTimeout(function () {
         self.popupClass = 'fadeOut';
       }, 2000);
-    },
-    kill(event) {
-      event.target.parentElement.parentElement.remove();
     }
   }
 }

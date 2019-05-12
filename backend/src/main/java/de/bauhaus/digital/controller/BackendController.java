@@ -17,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -246,8 +244,20 @@ public class BackendController {
         return resultList;
     }
 
-    private LocalDate dateString2LocalDate(@RequestParam String date) {
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    @RequestMapping(path = "/user/{userId}/cancelledprojects")
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    List<Projekt> getUsersCancelledProjects(@PathVariable("userId") Long userId) {
+        LOG.info("GET called on /user/" + userId + "/cancelledprojects");
+        List<Projekt> resultList = new ArrayList<>();
+        for (Projekt projekt : projektRepository.findAll()) {
+            for (Teilnehmer teilnehmer: projekt.getStornierteTeilnehmer()) {
+                if(teilnehmer.getId() == userId)
+                    resultList.add(projekt);
+            }
+        }
+        LOG.info("Returning list with size of " + resultList.size());
+        return resultList;
     }
 
     @RequestMapping(path = "/projekt/{projektId}", method = RequestMethod.PUT)

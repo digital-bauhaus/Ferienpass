@@ -1,13 +1,11 @@
 <template>
-  <div v-if="user">
-    <nav>
-      <a href="/#/Veranstaltungen/">Alle Veranstaltungen</a>
-      <a href="/#/VeranstaltungEdit?id=-1">Veranstaltung erstellen </a>
-      <a href="/#/Teilnehmer/" class="selected">Alle Teilnehmer</a>
-    </nav>
-    <main>
+  <div>
+    <NavigationMenu/>
+    <main v-if="user">
       <h1>Teilnehmerbearbeitung</h1>
+
       <form method="post" v-on:submit.prevent="updateUser">
+
         <h2>Allgemeine Informationen</h2>
         <table border="0">
           <tr>
@@ -42,6 +40,7 @@
             </td>
           </tr>
         </table>
+
         <br/>
         <hr/>
         <h2>Weitere Angaben:</h2>
@@ -72,6 +71,7 @@
                        class="regular-checkbox"></td>
           </tr>
         </table>
+
         <br/>
         <hr/>
         <h2>Notfallkontaktdaten</h2>
@@ -120,9 +120,10 @@
             </td>
           </tr>
         </table>
+
         <input type="submit" value="Änderung speichern">
       </form>
-      <ErrorListBox v-if="errors.length" :errors="errors" :heading-text="errorHeadingText" class="error-list-box"/>
+      <ErrorListBox v-if="errorMessages.length" :errors="errorMessages" :heading-text="errorHeadingText" class="error-list-box"/>
 
       <br/>
       <hr/>
@@ -157,21 +158,24 @@
             <td><textarea rows="4" cols="50" v-model="user.essenLimitierungen"/></td>
           </tr>
         </table>
-        <input type="submit" value="Änderung speichern">
-        <br/>
-      </form>
-      <ErrorListBox v-if="errors.length" :errors="errors" :heading-text="errorHeadingText" class="error-list-box"/>
 
+        <input type="submit" value="Änderung speichern">
+      </form>
+      <ErrorListBox v-if="errorMessages.length" :errors="errorMessages" :heading-text="errorHeadingText" class="error-list-box"/>
+
+      <br>
       <hr/>
       <form method="post" v-on:submit.prevent="updateUser">
+
         <h3>Behinderungen</h3>
-        <label for="checkBehinderung"><b>Behinderungsausweis liegt vor:</b><input v-model="user.liegtBehinderungVor"
-                                                                                  type="checkbox" id="checkBehinderung"
-                                                                                  class="regular-checkbox"></label> <br/>
+        <div>
+          <label for="checkBehinderung"><b>Behinderungsausweis liegt vor:</b></label>
+          <input v-model="user.liegtBehinderungVor" type="checkbox" id="checkBehinderung" class="regular-checkbox">
+        </div>
         <div v-if="user.liegtBehinderungVor">
           <table>
             <tr>
-              <th colspan="4">Art der Behinderung</th>
+              <th colspan="6">Art der Behinderung</th>
             </tr>
             <tr>
               <td><label for="checkBehinderungG">„G“ (erhebliche Gehbehinderung) </label></td>
@@ -208,14 +212,20 @@
               </td>
             </tr>
           </table>
-          <br/>
-          <label for="checkWertmarke"><b>Wertmarke vorhanden:</b><input v-model="user.behinderung.wertmarkeVorhanden"
-                                                                        type="checkbox" class="regular-checkbox"
-                                                                        id="checkWertmarke"></label> <br/>
-          <br/>
-          <label for="checkBegleitung"><b>Begleitung notwending:</b><input v-model="user.behinderung.begleitungNotwendig"
-                                                                           type="checkbox" class="regular-checkbox"
-                                                                           id="checkBegleitung"></label> <br/>
+          <br>
+          <div>
+            <label for="checkWertmarke"><b>Wertmarke vorhanden:</b></label>
+            <input v-model="user.behinderung.wertmarkeVorhanden"
+                   type="checkbox" class="regular-checkbox"
+                   id="checkWertmarke">
+          </div>
+          <br>
+          <div>
+            <label for="checkBegleitung"><b>Begleitung notwending:</b></label>
+            <input v-model="user.behinderung.begleitungNotwendig"
+                   type="checkbox" class="regular-checkbox"
+                   id="checkBegleitung">
+          </div>
           <div v-if="user.behinderung.begleitungNotwendig">
             <table>
               <tr>
@@ -243,30 +253,23 @@
           </div>
         </div>
         <br/>
-
-        <table>
-          <tr>
-            <th/>
-            <th/>
-          </tr>
-          <tr>
-            <td><label for="hinweiseUmgang">Hinweise zum Umgang mit Kind:</label></td>
-            <td><textarea id="hinweiseUmgang" rows="4" cols="50" v-model="user.behinderung.hinweiseZumUmgangMitDemKind"/>
-            </td>
-          </tr>
-        </table>
+        <div>
+          <label for="hinweiseZumUmgangMitDemKind"><b>Hinweise zum Umgang mit Kind:</b></label>
+          <textarea id="hinweiseZumUmgangMitDemKind" rows="4" cols="50" v-model="user.behinderung.hinweiseZumUmgangMitDemKind"/>
+        </div>
         <br/>
-        <label for="checkUnterstuetzungSucheBegleitpersonNotwendig"><b>Benötigt Unterstützung bei der Organisation der Begleitperson</b><input
-            v-model="user.behinderung.unterstuetzungSucheBegleitpersonNotwendig" type="checkbox"
-            id="checkUnterstuetzungSucheBegleitpersonNotwendig"></label> <br/>
+        <div>
+          <label for="checkUnterstuetzungSucheBegleitpersonNotwendig"><b>Benötigt Unterstützung bei der Organisation der Begleitperson</b></label>
+          <input v-model="user.behinderung.unterstuetzungSucheBegleitpersonNotwendig" type="checkbox"
+              id="checkUnterstuetzungSucheBegleitpersonNotwendig">
+        </div>
+        <br/>
         <div v-if="user.behinderung.unterstuetzungSucheBegleitpersonNotwendig">
           <table>
             <tr>
-              <th/>
-              <th/>
+              <th>Kontaktdaten des regulären Dienstes:</th>
             </tr>
             <tr>
-              <td><label for="behinderungKontaktdaten">Kontaktdaten des regulären Dienstes:</label></td>
               <td><textarea id="behinderungKontaktdaten" rows="4" cols="50"
                             v-model="user.behinderung.gewohnterBegleitpersonenDienstleister"/></td>
             </tr>
@@ -279,7 +282,7 @@
         <br/>
         <input type="submit" value="Änderung speichern">
       </form>
-      <ErrorListBox v-if="errors.length" :errors="errors" :heading-text="errorHeadingText" class="error-list-box"/>
+      <ErrorListBox v-if="errorMessages.length" :errors="errorMessages" :heading-text="errorHeadingText" class="error-list-box"/>
 
       <hr/>
       <h2>Angemeldete Projekte</h2>
@@ -292,40 +295,41 @@
           <tr v-for="(projekt, index) of projectsOfUser">
             <td><label> {{projekt.name}}</label></td>
             <td>
-              <button v-on:click="unassignFromProject(projekt.id,user.id)">Stornieren</button>
+              <button v-on:click="unassignFromProject(projekt.id, user.id)">Stornieren</button>
             </td>
           </tr>
         </table>
       </div>
 
       <h2>Stornierte Projekte</h2>
-      <div v-if="user.stornierteTeilnehmer">
+      <div v-if="cancelledProjectsOfUser">
         <table>
           <tr>
             <th>Name</th>
             <th>Aktivieren</th>
           </tr>
-          <tr v-for="(projekt, index) of user.angemeldeteProjekte">
+          <tr v-for="(projekt, index) of cancelledProjectsOfUser">
             <td><label>{{projekt.name}}</label></td>
             <td>
-              <button v-on:click="activateProject(user.id, projekt.id)">Reaktivieren</button>
+              <button v-on:click="reactivateProject(projekt.id, user.id)">Reaktivieren</button>
             </td>
           </tr>
         </table>
       </div>
+
       <br/>
       <hr/>
       <h2>Zu folgendem Projekt eintragen:</h2>
-      <div v-if="projectsOfUser">
+      <div v-if="availableProjects">
         <table>
           <tr>
             <th>Name</th>
             <th>Anmelden</th>
           </tr>
-          <tr v-for="(projekt, index) of allAvailableProjects">
+          <tr v-for="(projekt, index) of availableProjects">
             <td><label> {{projekt.name}}</label></td>
             <td>
-              <button v-on:click="assignToProject(projekt.id,user.id)">Eintragen</button>
+              <button v-on:click="assignToProject(projekt.id, user.id)">Eintragen</button>
             </td>
           </tr>
         </table>
@@ -344,78 +348,93 @@
     getUsersProjects,
     deleteUserFromProject,
     addUserToProject,
-    getProjects
-  } from './ferienpass-api';
-  import ErrorListBox from "./ErrorListBox";
+    getProjects, getUsersCancelledProjects
+  } from '../modules/ferienpass-api';
+import ErrorListBox from "../components/ErrorListBox";
+import NavigationMenu from "../components/NavigationMenu";
 
-  export default {
-    name: 'Teilnehmer',
-    components: {ErrorListBox},
-    data() {
-      return {
-        id: parseInt(this.$route.query.id),
-        user: null,
-        projectsOfUser: [],
-        allAvailableProjects: [],
-        allRawProjects: [],
-        canceldProjectsOfUser: [],
-        newBehinderung: [],
-        popupClass: 'fadeOut',
-        errors: []
-      };
+export default {
+  name: 'Teilnehmer',
+  components: {NavigationMenu, ErrorListBox},
+  data() {
+    return {
+      errorMessages: [],
+      loaded: false,
+      id: parseInt(this.$route.query.id),
+      user: null,
+      allProjects: [],
+      projectsOfUser: [],
+      cancelledProjectsOfUser: [],
+      popupClass: 'fadeOut'
+    };
+  },
+  computed: {
+    errorHeadingText() {
+      return "Speichern nicht möglich. Bitte beheben Sie folgende Fehler:"
     },
-    computed: {
-      errorHeadingText() {
-        if (this.id < 0) {
-          return "Anlegen nicht möglich. Bitte beheben Sie folgende Fehler:"
-        } else {
-          return "Speichern nicht möglich. Bitte beheben Sie folgende Fehler:"
-        }
-      }
+    availableProjects() {
+      return this.allProjects.filter(project => {
+        const isProjectOfUser = this.projectsOfUser.map(userProject => userProject.id).includes(project.id);
+        const isCancelledProjectOfuser = this.cancelledProjectsOfUser.map(userProject => userProject.id).includes(project.id);
+        return !isProjectOfUser && !isCancelledProjectOfuser;
+      })
+    }
+  },
+  created() {
+    const dataPromises = [];
+    dataPromises.push(this.loadUserData());
+    dataPromises.push(this.loadProjects());
+    dataPromises.push(this.loadProjectsOfUser());
+    dataPromises.push(this.loadCancelledProjectsOfUser());
+    Promise.all(dataPromises).then(response => this.loaded = true).catch(e => this.errorMessages.push(e.toString()));
+  },
+  methods: {
+    loadUserData() {
+      return getUser(this.id).then(user => this.user = user);
     },
-    created() {
-      this.getUserData();
-      this.getProjectsOfUser();
-      this.getAllProjects();
+    loadProjects() {
+      return getProjects().then(projects => this.allProjects = projects)
     },
-    methods: {
-      updateUser() {
-        this.errors = [];
-        updateUser(this.user).then(response => {
-          this.fadeInAndOutAfterTimeout()
-        }).catch(errorMessages => this.errors = errorMessages)
-      },
-      unassignFromProject(projectId, userId) {
-        deleteUserFromProject(projectId, userId).then(response => {
-          this.fadeInAndOutAfterTimeout();
-          this.getProjectsOfUser();
-        })
-      },
-      assignToProject(projectId, userId) {
-        addUserToProject(projectId, userId).then(response => {
-          this.fadeInAndOutAfterTimeout();
-          this.getProjectsOfUser();
-        })
-      },
-      fadeInAndOutAfterTimeout() {
-        this.popupClass = 'fadeIn';
-        var self = this;
-        setTimeout(function () {
-          self.popupClass = 'fadeOut';
-        }, 2000);
-      },
-      getUserData() {
-        getUser(this.id).then(user => this.user = user);
-      },
-      getAllProjects() {
-        getProjects().then(projects => this.allAvailableProjects = projects)
-      },
-      getProjectsOfUser() {
-        getUsersProjects(this.id).then(projects => this.projectsOfUser = projects)
-      }
+    loadProjectsOfUser() {
+      return getUsersProjects(this.id).then(projects => this.projectsOfUser = projects)
+    },
+    loadCancelledProjectsOfUser() {
+      return getUsersCancelledProjects(this.id).then(projects => this.cancelledProjectsOfUser = projects)
+    },
+    reloadProjectsOfUser() {
+      this.loadProjectsOfUser();
+      this.loadCancelledProjectsOfUser();
+    },
+    updateUser() {
+      this.errorMessages = [];
+      updateUser(this.user).then(response => {
+        this.fadeInAndOutAfterTimeout()
+      }).catch(errorMessages => this.errorMessages = errorMessages)
+    },
+    unassignFromProject(projectId, userId) {
+      deleteUserFromProject(projectId, userId).then(response => {
+        this.fadeInAndOutAfterTimeout();
+        this.reloadProjectsOfUser();
+      })
+    },
+    assignToProject(projectId, userId) {
+      addUserToProject(projectId, userId).then(response => {
+        this.fadeInAndOutAfterTimeout();
+        this.reloadProjectsOfUser();
+      })
+    },
+    reactivateProject(projectId, userId) {
+      this.assignToProject(projectId, userId);
+    },
+    fadeInAndOutAfterTimeout() {
+      this.popupClass = 'fadeIn';
+      var self = this;
+      setTimeout(function () {
+        self.popupClass = 'fadeOut';
+      }, 2000);
     }
   }
-
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

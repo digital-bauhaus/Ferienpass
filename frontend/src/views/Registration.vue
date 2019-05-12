@@ -135,8 +135,8 @@
 </template>
 
 <script>
-import { getProjects, registerTeilnehmer} from "./ferienpass-api";
-import formDataJson from './../assets/form-data'
+import { getProjects, registerTeilnehmer} from "../modules/ferienpass-api";
+import formDataJson from '../assets/form-data'
 
 export default {
   name: 'Registration',

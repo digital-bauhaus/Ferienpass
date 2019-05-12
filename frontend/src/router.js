@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Registration from '@/components/Registration';
-import Verwaltung from '@/components/Verwaltung'
-import Veranstaltungen from '@/components/Veranstaltungen'
-import Login from '@/components/Login'
-import Teilnehmer from '@/components/Teilnehmer'
-import VeranstaltungEdit from '@/components/VeranstaltungEdit'
-import TeilnehmerEdit from '@/components/TeilnehmerEdit'
+import Registration from "./views/Registration";
+import Login from "./views/Login";
+import Teilnehmer from "./views/Teilnehmer";
+import Verwaltung from "./views/Verwaltung";
+import Veranstaltungen from "./views/Veranstaltungen";
+import VeranstaltungEdit from "./views/VeranstaltungEdit";
+import TeilnehmerEdit from "./views/TeilnehmerEdit";
 
 Vue.use(Router)
 
