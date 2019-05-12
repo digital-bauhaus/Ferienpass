@@ -25,9 +25,9 @@
       <td>{{user.email}}</td>
       <td>{{user.geburtsdatum}}</td>
       <td class="nobr">
-        <router-link :to="{path: '../TeilnehmerEdit', query: {id: user.id }}" class="fakebutton">Bearbeiten</router-link>
-        <span class="fakebutton"><a>PDF</a></span>
-        <span class="fakebutton" v-on:click="deleteUser(user.id)">Teilnehmer löschen</span>
+        <router-link v-if="allowEdit" :to="{path: '../TeilnehmerEdit', query: {id: user.id }}" class="fakebutton">Bearbeiten</router-link>
+        <span v-if="allowExportPdf" class="fakebutton"><a>PDF</a></span>
+        <span v-if="allowDelete" class="fakebutton" v-on:click="deleteUser(user.id)">Teilnehmer löschen</span>
       </td>
     </tr>
   </table>
@@ -54,6 +54,21 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    allowEdit: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    allowExportPdf: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    allowDelete: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   created() {

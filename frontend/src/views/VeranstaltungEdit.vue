@@ -4,8 +4,6 @@
     <main>
       <h1>{{ titleText }}</h1>
 
-      <ErrorListBox v-if="errors.length" :errors="errors" :heading-text="errorHeadingText" class="error-list-box"/>
-
       <form method="post" v-on:submit.prevent="createOrUpdateProject">
         <table>
           <tr>
@@ -70,6 +68,13 @@
           </tr>
         </table>
       </form>
+      <ErrorListBox v-if="errors.length" :errors="errors" :heading-text="errorHeadingText" class="error-list-box"/>
+
+      <div v-if="!isNewEvent">
+        <h2>Angemeldete Nutzer:</h2>
+        <UserList :users="project.anmeldungen" :show-projects="false" :allow-export-pdf="false" :allow-delete="false"/>
+      </div>
+
     </main>
     <div :class="popupClass">✔ Erfolgreich bearbeitet!</div>
   </div>
@@ -79,10 +84,11 @@
 import {getProject, createProject, updateProject} from "../modules/ferienpass-api";
 import ErrorListBox from "../components/ErrorListBox";
 import NavigationMenu from "../components/NavigationMenu";
+import UserList from "../components/UserList";
 
 export default {
   name: 'Veranstaltung',
-  components: {NavigationMenu, ErrorListBox},
+  components: {UserList, NavigationMenu, ErrorListBox},
   data() {
     return {
       id: parseInt(this.$route.query.id),
@@ -96,22 +102,25 @@ export default {
     };
   },
   computed: {
+    isNewEvent() {
+      return this.id <= 0;
+    },
     titleText() {
-      if (this.id < 0) {
+      if (this.isNewEvent) {
         return "Veranstaltung anlegen"
       } else {
         return "Veranstaltungsbearbeitung"
       }
     },
     submitButtonText() {
-      if (this.id < 0) {
+      if (this.isNewEvent) {
         return "Anlegen"
       } else {
         return "Speichern"
       }
     },
     errorHeadingText() {
-      if (this.id < 0) {
+      if (this.isNewEvent) {
         return "Anlegen nicht möglich. Bitte beheben Sie folgende Fehler:"
       } else {
         return "Speichern nicht möglich. Bitte beheben Sie folgende Fehler:"
