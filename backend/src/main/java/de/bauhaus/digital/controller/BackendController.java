@@ -74,7 +74,7 @@ public class BackendController {
     @RequestMapping(path = "/adduser", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    Long addNewUser(@RequestBody Teilnehmer user) {
+    Long addNewUser(@RequestBody @Valid Teilnehmer user) {
 
         teilnehmerRepository.save(user);
 
@@ -85,7 +85,7 @@ public class BackendController {
 
     @RequestMapping(path = "/user", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public Teilnehmer updateUser(@RequestBody Teilnehmer user) {
+    public Teilnehmer updateUser(@RequestBody @Valid Teilnehmer user) {
 
         return teilnehmerRepository.findById(user.getId()).map(teilnehmer2Update -> {
 

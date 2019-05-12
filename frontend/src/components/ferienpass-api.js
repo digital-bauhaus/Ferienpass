@@ -75,7 +75,15 @@ export function getUsersProjects(userId) {
 
 export function updateUser(user) {
   console.log("updating existing user");
-  return AXIOS.put('/user', user);
+  return AXIOS.put('/user', user).then().catch(e => {
+    if(e.response.data.errors) {
+      // validation errors
+      return Promise.reject(e.response.data.errors.map(error => `${error.field}: ${error.defaultMessage}`));
+    } else {
+      // other errors
+      return Promise.reject([e.toString()]);
+    }
+  });
 }
 
 export function deleteUser(userId) {
