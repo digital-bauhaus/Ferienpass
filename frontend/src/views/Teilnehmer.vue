@@ -3,7 +3,7 @@
     <NavigationMenu/>
     <main>
       <h1>Teilnehmerübersicht</h1>
-      <UserList v-on:user-deleted="loadUsers" :users="users"/>
+      <UserList v-on:user-deleted="loadUsers" :users="users" :show-projects="true"/>
     </main>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
   data () {
     return {
       errors: [],
-      users: [],
+      users: []
     };
   },
   created () {

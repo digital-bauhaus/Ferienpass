@@ -3,7 +3,7 @@
     <tr>
       <th v-on:click="sortTable(0)" class="clickable">Status</th>
       <th v-on:click="sortTable(1)" class="clickable">Name</th>
-      <th>Projekte</th>
+      <th v-if="showProjects">Projekte</th>
       <th v-on:click="sortDate()" class="clickable">Buchung</th>
       <th>Addresse</th>
       <th>Telefon</th>
@@ -14,7 +14,11 @@
     <tr v-for="user of users">
       <td :id="user.bezahlt"><span :id="user.bezahlt">{{user.bezahlt}}</span></td>
       <td>{{user.nachname}}, {{user.vorname}}</td>
-      <td><div v-html="getProjectName(user.id)"></div></td>
+      <td v-if="showProjects && projectsLoaded">
+        <ul>
+          <li v-for="projectName of projectNamesByUserId[user.id]">{{ projectName }}</li>
+        </ul>
+      </td>
       <td>{{user.registrierungsdatum}}</td>
       <td>{{user.strasse}}, {{user.stadt}}</td>
       <td>{{user.telefon}}</td>
@@ -37,20 +41,47 @@ export default {
   data() {
     return {
       errors: [],
-      projectsOfUser: [],
-      allAvailableProjects: []
+      projectNamesByUserId: [],
+      projectsLoaded: false
     };
   },
   props: {
     users: {
       type: Array,
       required: true
+    },
+    showProjects: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   created() {
-    getProjects().then(projects => this.allAvailableProjects = projects)
+    if (this.showProjects)
+    {
+      this.loadProjectsOfUsers();
+    }
   },
   methods: {
+    loadProjectsOfUsers () {
+      this.errors = [];
+      // instead of one api-call per user, we request ALL projects and build a lookup-table ourselves
+      getProjects().then(projects => {
+        this.users.forEach(user =>  {
+          this.projectNamesByUserId[user.id] = this.findProjectNamesForUserId(projects, user.id);
+        });
+        this.projectsLoaded = true;
+      }).catch(e => this.errors.push(e));
+    },
+    findProjectNamesForUserId(projects, userId) {
+      let projectNames = [];
+      projects.forEach(project => {
+        if (project.anmeldungen.map(user => user.id).includes(userId)) {
+          projectNames.push(project.name)
+        }
+      });
+      return projectNames;
+    },
     deleteUser(userId) {
       this.$swal({
         title: "Wirklich löschen?",
@@ -185,6 +216,10 @@ export default {
 </script>
 
 <style scoped>
+
+ul {
+  margin-bottom: 0;
+}
 
 td:nth-child(1) {
   background-color: #fce553;
