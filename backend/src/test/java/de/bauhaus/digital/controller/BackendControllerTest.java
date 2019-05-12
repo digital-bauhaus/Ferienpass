@@ -41,6 +41,17 @@ public class BackendControllerTest {
     /****************************
      * Test user (Teilnehmer) API
      ****************************/
+
+    @Test
+    public void givenInvalidId_whenRequestingUser_thenNotFound() {
+        given()
+                .pathParam("id", -1)
+            .when()
+                .get(BASE_URL + "/user/{id}")
+            .then()
+                .statusCode(HttpStatus.SC_NOT_FOUND);
+    }
+
     @Test
     public void addNewUserAndRetrieveItBack() {
         Teilnehmer user = createSampleUser();
@@ -102,7 +113,6 @@ public class BackendControllerTest {
         long id2 = allUsers.get(initialSize+1).getId();
         assertThat(id1,is(userId));
         assertThat(id2,is(userId2));
-
     }
 
     @Test
@@ -530,6 +540,17 @@ public class BackendControllerTest {
     /****************************
      * Test project (Projekt) API
      ****************************/
+
+    @Test
+    public void givenInvalidId_whenRequestingProject_thenNotFound() {
+        given()
+                .pathParam("id", -1)
+            .when()
+                .get(BASE_URL + "/project/{id}")
+            .then()
+                .statusCode(HttpStatus.SC_NOT_FOUND);
+    }
+
     @Test
     public void addNewProjectAndetrieveItBack() {
         Projekt projekt = createSampleProject();
@@ -730,6 +751,82 @@ public class BackendControllerTest {
         assertThat(isProjectDeleted, is(true));
     }
 
+    @Test
+    public void givenEndeDatumBeforeDatum_whenCreatingProjekt_thenBadRequest() {
+        Projekt projekt = createSampleProject();
+
+        projekt.setDatum(LocalDate.of(2019, 12, 5));
+        projekt.setDatumEnde(LocalDate.of(2019, 12, 4));
+
+        given()
+            .body(projekt)
+            .contentType(ContentType.JSON)
+        .when()
+            .post(BASE_URL+"/projekt")
+        .then()
+            .statusCode(HttpStatus.SC_BAD_REQUEST)
+            .body("errors", hasSize(1))
+            .body("errors[0].field", is("datumEnde"));
+    }
+
+    @Test
+    public void givenHoechstAlterSmallerThanMindestAlter_whenCreatingProjekt_thenBadRequest() {
+        Projekt projekt = createSampleProject();
+
+        projekt.setHoechstAlter(10);
+        projekt.setMindestAlter(11);
+
+        given()
+                .body(projekt)
+                .contentType(ContentType.JSON)
+            .when()
+                .post(BASE_URL+"/projekt")
+            .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .body("errors", hasSize(1))
+                .body("errors[0].field", is("hoechstAlter"));
+    }
+
+    @Test
+    public void givenMoreSlotsReservedThanTotalSlots_whenCreatingProjekt_thenBadRequest() {
+        Projekt projekt = createSampleProject();
+
+        projekt.setSlotsReserviert(10);
+        projekt.setSlotsGesamt(5);
+
+        given()
+                .body(projekt)
+                .contentType(ContentType.JSON)
+            .when()
+                .post(BASE_URL+"/projekt")
+                .then()
+            .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .body("errors", hasSize(1))
+                .body("errors[0].field", is("slotsReserviert"));
+    }
+
+    @Test
+    public void givenProjektWithOneTeilnehmer_whenUpdatingProjektWithZeroSlotsReserved_thenBadRequest() {
+        Long projectId = addProjekt(createSampleProject());
+        Long userId = addUser(createSampleUser());
+
+        assignUser2Projekt(projectId, userId);
+
+        Projekt projekt = getProjekt(projectId);
+
+        projekt.setSlotsReserviert(0);
+
+        given()
+                .body(projekt)
+                .contentType(ContentType.JSON)
+            .when()
+                .put(BASE_URL+"/projekt")
+            .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .body("errors", hasSize(1))
+                .body("errors[0].field", is("slotsReserviert"));
+    }
+
     private List<Projekt> getAlleZugewiesenenProjekteByFirstNameAndLastName(String vorname, String nachname) {
         return Arrays.asList(given()
                 .param("vorname",vorname)
@@ -906,9 +1003,9 @@ public class BackendControllerTest {
     private Teilnehmer getUser(Long userId) {
         return given()
                 .pathParam("id", userId)
-                .when()
+            .when()
                 .get(BASE_URL + "/user/{id}")
-                .then()
+            .then()
                 .statusCode(HttpStatus.SC_OK)
                 .assertThat()
                 .extract().as(Teilnehmer.class);

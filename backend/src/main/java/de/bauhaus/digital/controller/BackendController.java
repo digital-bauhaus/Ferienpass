@@ -3,14 +3,13 @@ package de.bauhaus.digital.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bauhaus.digital.domain.*;
 import de.bauhaus.digital.exception.ProjektNotFoundException;
-import de.bauhaus.digital.exception.BadRequestException;
-import de.bauhaus.digital.exception.ResourceNotFoundException;
 import de.bauhaus.digital.exception.UserNotFoundException;
 import de.bauhaus.digital.repository.ProjektRepository;
 import de.bauhaus.digital.repository.TeilnehmerRepository;
 import de.bauhaus.digital.transformation.AnmeldungJson;
 import de.bauhaus.digital.transformation.AnmeldungToAdmin;
 import de.bauhaus.digital.transformation.Project;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +74,7 @@ public class BackendController {
     @RequestMapping(path = "/adduser", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    Long addNewUser(@RequestBody Teilnehmer user) {
+    Long addNewUser(@RequestBody @Valid Teilnehmer user) {
 
         teilnehmerRepository.save(user);
 
@@ -87,7 +85,7 @@ public class BackendController {
 
     @RequestMapping(path = "/user", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public Teilnehmer updateUser(@RequestBody Teilnehmer user) {
+    public Teilnehmer updateUser(@RequestBody @Valid Teilnehmer user) {
 
         return teilnehmerRepository.findById(user.getId()).map(teilnehmer2Update -> {
 
@@ -127,7 +125,7 @@ public class BackendController {
             LOG.info("User with id "+ user.getId() + " successfully updated");
             return savedTeilnehmer;
 
-        }).orElseThrow(() -> new ResourceNotFoundException("User " + user.getId() + " not found"));
+        }).orElseThrow(() -> new UserNotFoundException("User " + user.getId() + " not found"));
 
 
     }
@@ -287,7 +285,7 @@ public class BackendController {
     @RequestMapping(path = "/projekt", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    Long addNewProject(@RequestBody Projekt projekt) {
+    Long addNewProject(@RequestBody @Valid Projekt projekt) {
 
         projektRepository.save(projekt);
 
@@ -299,7 +297,7 @@ public class BackendController {
     @RequestMapping(path = "/projekt", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
-    Projekt updateProject(@RequestBody Projekt projekt) {
+    Projekt updateProject(@RequestBody @Valid Projekt projekt) {
 
         Optional<Projekt> maybeProjekt = projektRepository.findById(projekt.getId());
         if (maybeProjekt.isPresent()) {
@@ -316,7 +314,12 @@ public class BackendController {
     @GetMapping(path = "/project/{projektId}")
     public @ResponseBody
     Projekt getProjectById(@PathVariable("projektId") Long projekt_id) {
-        return projektRepository.findById(projekt_id).orElse(null);
+        Optional<Projekt> maybeProjekt = projektRepository.findById(projekt_id);
+        if (maybeProjekt.isPresent()) {
+            return maybeProjekt.get();
+        } else {
+            throw new ProjektNotFoundException("Projekt mit der id " + projekt_id + " wurde nicht gefunden.");
+        }
     }
 
     @GetMapping(path = "/projekt/{projektId}/users")

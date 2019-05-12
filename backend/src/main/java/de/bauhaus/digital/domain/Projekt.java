@@ -1,29 +1,51 @@
 package de.bauhaus.digital.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import de.bauhaus.digital.validation.ProjektValidation;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 @Entity
+@ProjektValidation
 public class Projekt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long projekt_id;
+
+    @NotBlank(message = "Name darf nicht leer sein.")
     private String name;
+
+    @NotNull(message = "Beginndatum muss angegeben werden.")
     private LocalDate datum;
+
+    @NotNull(message = "Beginndatum muss angegeben werden.")
     private LocalDate datumEnde;
+
+    @PositiveOrZero(message = "Mindestalter darf nicht < 0 sein.")
     private int mindestAlter;
+
+    @PositiveOrZero(message = "Höchstalter darf nicht < 0 sein.")
     private int hoechstAlter;
-    //private String organisation;
+
+    @PositiveOrZero(message = "Preis darf nicht < 0 sein.")
     private int kosten;
+
+    @PositiveOrZero(message = "Gesamtplätze dürfen nicht < 0 sein.")
     private int slotsGesamt;
+
+    @PositiveOrZero(message = "Reservierte Plätze dürfen nicht < 0 sein.")
     private int slotsReserviert;
+
     private String traeger;
+
     private String webLink;
+
     private boolean aktiv;
 
     @ManyToMany(cascade= CascadeType.ALL)

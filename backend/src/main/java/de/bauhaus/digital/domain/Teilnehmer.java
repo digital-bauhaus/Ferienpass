@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 
 @Entity
 @JsonIgnoreProperties(value= {"angemeldeteProjekte","stornierungen"})
@@ -14,35 +18,41 @@ public class Teilnehmer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull
+    private LocalDate registrierungsdatum = LocalDate.now();
+    private boolean bezahlt = false;
+    private boolean aktiv = true;
+
+    /* Grunddaten */
+
+    @NotBlank(message = "Vorname darf nicht leer sein.")
     private String vorname;
+    @NotBlank(message = "Nachname darf nicht leer sein.")
     private String nachname;
+
+    @NotNull(message = "Geburtsdatum muss angegeben werden.")
+    @Past(message = "Geburtsdatum muss in der Vergangenheit liegen.")
     private LocalDate geburtsdatum;
 
-    private LocalDate registrierungsdatum;
-
+    @NotBlank(message = "Straße darf nicht leer sein.")
     private String strasse;
+    @NotBlank(message = "Stadt darf nicht leer sein.")
     private String stadt;
+    @NotBlank(message = "Postleitzahl darf nicht leer sein.")
     private String postleitzahl;
-    private String telefon;
 
+    @NotBlank(message = "Telefonnummer darf nicht leer sein.")
+    private String telefon;
+    @NotBlank(message = "Email darf nicht leer sein.")
+    @Email(message = "Es muss eine gültige Email-Adresse angegeben werden.")
     private String email;
 
-    private String krankenkasse;
-    private boolean erlaubeMedikamentation;
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="kontakt_id")
-    private Kontakt notfallKontakt;
+    /* Allergien, Krankheiten */
 
-    private boolean darfAlleinNachHause;
-    private boolean darfReiten;
-    private boolean darfSchwimmen;
-    private String schwimmAbzeichen;
-    private boolean bezahlt;
-    private boolean aktiv;
-    private boolean darfBehandeltWerden;
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="arzt_id")
-    private Arzt arzt;
+    @NotBlank(message = "Krankenkasse darf nicht leer sein.")
+    private String krankenkasse;
+    private boolean erlaubeMedikamentation; // required
+    private boolean darfBehandeltWerden; // required
 
     private String allergien;
 
@@ -54,11 +64,29 @@ public class Teilnehmer {
 
     private String essenLimitierungen;
 
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="kontakt_id")
+    private Kontakt notfallKontakt;
+
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="arzt_id")
+    private Arzt arzt;
+
+    /* Behinderung */
+
     private boolean liegtBehinderungVor;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="behinderung_id")
     private Behinderung behinderung;
+
+    /* Erklaerung */
+
+    private boolean darfAlleinNachHause; // required
+    private boolean darfReiten; // required
+    private boolean darfSchwimmen; // required
+    private String schwimmAbzeichen;
+
 
     @Override
     public String toString() {
@@ -122,7 +150,6 @@ public class Teilnehmer {
         this.setKrankheiten(krankheiten);
         this.setLiegtBehinderungVor(beeintraechtigt);
         this.setBehinderung(behinderung);
-        this.setAktiv(true);
         this.setMedikamente(medikamente);
         this.setHitzeempfindlichkeiten(hitzempfindlichkeiten);
         this.setDarfBehandeltWerden(darfBehandeltWerden);
