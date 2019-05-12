@@ -1,48 +1,60 @@
 <template>
-  <table v-if="projects && projects.length" id="projectTable">
+  <table v-if="users && users.length" id="userTable">
     <tr>
-      <th v-on:click="sortTable(0)" class="clickable">Veranstaltung</th>
-      <th v-on:click="sortDate()" class="clickable">Datum</th>
-      <th>Plätze frei / gesamt / [reserviert]</th>
+      <th v-on:click="sortTable(0)" class="clickable">Status</th>
+      <th v-on:click="sortTable(1)" class="clickable">Name</th>
+      <th>Projekte</th>
+      <th v-on:click="sortDate()" class="clickable">Buchung</th>
+      <th>Addresse</th>
+      <th>Telefon</th>
+      <th>eMail</th>
+      <th>Geburtsdatum</th>
       <th>Bearbeiten</th>
     </tr>
-    <tr v-for="(project, index) of projects">
-      <td>{{project.name}}</td>
-      <td>{{project.datum}}</td>
-      <td>{{project.slotsFrei}} / {{project.slotsGesamt}} / [{{project.slotsReserviert}}]</td>
+    <tr v-for="user of users">
+      <td :id="user.bezahlt"><span :id="user.bezahlt">{{user.bezahlt}}</span></td>
+      <td>{{user.nachname}}, {{user.vorname}}</td>
+      <td><div v-html="getProjectName(user.id)"></div></td>
+      <td>{{user.registrierungsdatum}}</td>
+      <td>{{user.strasse}}, {{user.stadt}}</td>
+      <td>{{user.telefon}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.geburtsdatum}}</td>
       <td class="nobr">
-        <router-link :to="{path: '../VeranstaltungEdit', query: {id: project.id }}"
-                     class="fakebutton">Bearbeiten
-        </router-link>
-        <span class="fakebutton" v-on:click="exportPDF(index)"><a>PDF exportieren</a></span>
-        <span v-on:click="deleteProject(project.id)" class="fakebutton">Löschen</span>
+        <router-link :to="{path: '../TeilnehmerEdit', query: {id: user.id }}" class="fakebutton">Bearbeiten</router-link>
+        <span class="fakebutton"><a>PDF</a></span>
+        <span class="fakebutton" v-on:click="deleteUser(user.id)">Teilnehmer löschen</span>
       </td>
     </tr>
   </table>
 </template>
 
 <script>
-import { deleteProject, getAllUsersAssignedToProject } from '../modules/ferienpass-api';
-import jsPDF from 'jspdf'
+import { getProjects, deleteUser } from '../modules/ferienpass-api';
 
 export default {
-  name: "ProjectList",
+  name: "UserList",
   data() {
     return {
-      errors: []
+      errors: [],
+      projectsOfUser: [],
+      allAvailableProjects: []
     };
   },
   props: {
-    projects: {
+    users: {
       type: Array,
       required: true
     }
   },
+  created() {
+    getProjects().then(projects => this.allAvailableProjects = projects)
+  },
   methods: {
-    deleteProject(projectId) {
+    deleteUser(userId) {
       this.$swal({
         title: "Wirklich löschen?",
-        text: "Das Projekt wird vollständig gelöscht!",
+        text: "Der Teilnehmer wird vollständig gelöscht und die Daten sind verloren! Er muss sich über die Anmeldung wieder NEU anmelden!",
         icon: "warning",
         buttons: true,
         dangerMode: true,
@@ -50,53 +62,42 @@ export default {
       .then((willDelete) => {
         if (willDelete) {
           this.errors = [];
-          deleteProject(projectId).then(response => {
-            this.$emit("project-deleted");
-            return this.$swal("Projekt wurde gelöscht!", {
-              icon: "success"
+          deleteUser(userId).then(response => {
+            this.$emit("user-deleted");
+            return this.$swal("Teilnehmer wurde gelöscht!", {
+              icon: "success",
             });
           }).catch(e => {
             this.errors.push(e);
             return this.$swal("Da ist was schief gegangen :(", {
-              icon: "error"
+              icon: "error",
             });
           })
         }
       });
     },
-    exportPDF(projectID) {
-      /*eslint-disable */
-      var doc = new jsPDF()
-      /*eslint-enable */
-      /* var ta = document.getElementById(projectID) */
-      let y = 10
-      let deltaLine = 10
-      doc.text('Projektdaten', 20, y += deltaLine)
-      doc.text('Name: ' + this.allprojects[projectID].name, 20, y += deltaLine)
-      doc.text('Veranstaltungsdatum: ' + this.allprojects[projectID].datum, 20, y += deltaLine)
-      doc.text('Altersbeschränkung: ' + this.allprojects[projectID].mindestAlter, 20,
-          y += deltaLine)
-      doc.text('Regulärer Preis: ' + this.allprojects[projectID].kosten, 20, y += deltaLine)
-      doc.text('Freie Plätze: ' + this.allprojects[projectID].slotsFrei, 20, y += deltaLine)
-      doc.text('Belegte Plätze: ' + this.allprojects[projectID].slotsReserviert, 20,
-          y += deltaLine)
-      doc.text('Plätze gesamt: ' + this.allprojects[projectID].slotsGesamt, 20, y += deltaLine)
-      doc.text('Web Link: ' + this.allprojects[projectID].webLink, 20, y += deltaLine)
-      doc.text('Projekt aktiv: ' + this.allprojects[projectID].aktiv, 20, y += deltaLine)
-
-      getAllUsersAssignedToProject(this.allprojects[projectID].id).then(
-          users => this.teilnehmerOfProject = users)
-
-      for (let index = 0; index < this.teilnehmerOfProject.length; ++index) {
-        doc.text('Angemeldete Person: ' + this.teilnehmerOfProject[index].name, 20,
-            y += deltaLine)
-      }
-      doc.save('projekt_' + projectID + '.pdf')
+    getProjectName (userId) {
+      var result = '';
+      this.allAvailableProjects.forEach(function (project) {
+        project.anmeldungen.forEach(function (teilnehmer) {
+          if (userId === teilnehmer.id) {
+            result += project.name + ' '
+          }
+        })
+      });
+      return result
     },
-    sortTable(n) {
+    getProjectNames (projectList) {
+      var result = ''
+      projectList.forEach(function (project) {
+        result += '<div v-for=project in projectList>' + project.name + '</div>'
+      });
+      return result
+    },
+    sortTable (n) {
       var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
       switchcount = 0;
-      table = document.getElementById('projectTable');
+      table = document.getElementById('userTable');
       switching = true;
       dir = 'asc';
       while (switching) {
@@ -132,10 +133,10 @@ export default {
         }
       }
     },
-    sortDate() {
+    sortDate () {
       var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
       switchcount = 0;
-      table = document.getElementById('projectTable');
+      table = document.getElementById('userTable');
       switching = true;
       dir = 'asc';
       while (switching) {
@@ -145,12 +146,12 @@ export default {
         for (i = 1; i < (rows.length - 1); i++) {
           shouldSwitch = false;
 
-          var tmpx = rows[i].getElementsByTagName('TD')[1].innerHTML;
+          var tmpx = rows[i].getElementsByTagName('TD')[2].innerHTML;
           x = tmpx.toString();
           var patternx = /(\d{2})\.(\d{2})\.(\d{4})/;
           var dx = new Date(x.replace(patternx, '$3-$2-$1'));
 
-          var tmpy = rows[i + 1].getElementsByTagName('TD')[1].innerHTML;
+          var tmpy = rows[i + 1].getElementsByTagName('TD')[2].innerHTML;
           y = tmpy.toString();
           var patterny = /(\d{2})\.(\d{2})\.(\d{4})/;
           var dy = new Date(y.replace(patterny, '$3-$2-$1'));
@@ -184,5 +185,11 @@ export default {
 </script>
 
 <style scoped>
+
+td:nth-child(1) {
+  background-color: #fce553;
+  color: #fce553;
+  cursor: default;
+}
 
 </style>

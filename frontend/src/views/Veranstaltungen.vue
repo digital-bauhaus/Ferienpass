@@ -3,7 +3,7 @@
     <NavigationMenu/>
     <main>
       <h1>Veranstaltungsübersicht</h1>
-      <ProjectList v-on:event-deleted="getProjects" :projects="projects"/>
+      <ProjectList v-on:project-deleted="loadProjects" :projects="projects"/>
     </main>
 	</div>
 </template>
@@ -18,17 +18,16 @@ export default {
   components: {ProjectList, NavigationMenu},
   data () {
     return {
-      projects: [],
-      errors: []
+      errors: [],
+      projects: []
     };
   },
   created () {
-    this.getProjects()
+    this.loadProjects()
   },
   methods: {
-    getProjects () {
+    loadProjects () {
         this.errors = [];
-        this.allprojects = [];
         getProjects().then(projects => this.projects = projects).catch(e => this.errors.push(e));
     }
   }
@@ -39,9 +38,5 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.button {
-display: inline-block;
-float: left;
-}
 </style>
 

@@ -399,6 +399,9 @@
     width: 1px !important;
     overflow: hidden;
   }
+
+  .nobr { white-space: nowrap }
+
 </style>
 
 <style scoped>
