@@ -3,7 +3,7 @@
     <NavigationMenu/>
     <main>
       <h1>Veranstaltungsübersicht</h1>
-      <ProjectList :projects="projects"/>
+      <ProjectList v-on:event-deleted="getProjects" :projects="projects"/>
     </main>
 	</div>
 </template>

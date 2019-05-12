@@ -165,13 +165,15 @@ export default {
       .then((willDelete) => {
         if (willDelete) {
           deleteProject(projectId).then(response => {
-            this.getProjects();
-            this.$swal("Projekt wurde gelöscht!", {
-              icon: "success",
+            this.$emit("event-deleted");
+            return this.$swal("Projekt wurde gelöscht!", {
+              icon: "success"
             });
           }).catch(e => {
-            this.errors.push(e)
-            this.$swal("Da ist was schief gegangen :(");
+            this.errors.push(e);
+            return this.$swal("Da ist was schief gegangen :(", {
+              icon: "error"
+            });
           })
         }
       });
