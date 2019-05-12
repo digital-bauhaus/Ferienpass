@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="user">
     <nav>
       <a href="/#/Veranstaltungen/">Alle Veranstaltungen</a>
       <a href="/#/VeranstaltungEdit?id=-1">Veranstaltung erstellen </a>
@@ -354,7 +354,7 @@
     data() {
       return {
         id: parseInt(this.$route.query.id),
-        user: [],
+        user: null,
         projectsOfUser: [],
         allAvailableProjects: [],
         allRawProjects: [],
@@ -374,9 +374,9 @@
       }
     },
     created() {
-      this.getUserData()
-      this.getProjectsOfUser()
-      this.getAllProjects()
+      this.getUserData();
+      this.getProjectsOfUser();
+      this.getAllProjects();
     },
     methods: {
       updateUser() {
