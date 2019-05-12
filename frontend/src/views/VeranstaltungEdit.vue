@@ -1,10 +1,6 @@
 <template>
   <div>
-    <nav>
-      <a href="/#/Veranstaltungen/">Alle Veranstaltungen</a>
-      <a href="/#/VeranstaltungEdit?id=-1" class="selected">Veranstaltung erstellen </a>
-      <a href="/#/Teilnehmer/">Alle Teilnehmer</a>
-    </nav>
+    <NavigationMenu/>
     <main>
       <h1>{{ titleText }}</h1>
 
@@ -82,10 +78,11 @@
 <script>
 import {getProject, createProject, updateProject} from "../modules/ferienpass-api";
 import ErrorListBox from "../components/ErrorListBox";
+import NavigationMenu from "../components/NavigationMenu";
 
 export default {
   name: 'Veranstaltung',
-  components: {ErrorListBox},
+  components: {NavigationMenu, ErrorListBox},
   data() {
     return {
       id: parseInt(this.$route.query.id),

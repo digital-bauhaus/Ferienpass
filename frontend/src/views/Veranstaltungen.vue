@@ -1,11 +1,6 @@
 <template>
 	<div>
-      <nav>
-        <input type="text" class="searchbar" placeholder="Suche ...">
-        <a href="/#/Veranstaltungen/" class="selected">Alle Veranstaltungen</a>
-        <a href="/#/VeranstaltungEdit?id=-1" >Veranstaltung erstellen </a>
-        <a href="/#/Teilnehmer/" >Alle Teilnehmer</a>
-      </nav>
+    <NavigationMenu/>
       <main>
         <h1>Veranstaltungsübersicht</h1>
               <table v-if="allprojects && allprojects.length" id="myTable">
@@ -34,9 +29,11 @@
 <script>
 import { getProjects, deleteProject, getAllUsersAssignedToProject } from '../modules/ferienpass-api';
 import jsPDF from 'jspdf'
+import NavigationMenu from "../components/NavigationMenu";
 
 export default {
   name: 'Veranstaltungen',
+  components: {NavigationMenu},
   data () {
     return {
       selectedID: 0,

@@ -1,10 +1,6 @@
 <template>
   <div v-if="user">
-    <nav>
-      <a href="/#/Veranstaltungen/">Alle Veranstaltungen</a>
-      <a href="/#/VeranstaltungEdit?id=-1">Veranstaltung erstellen </a>
-      <a href="/#/Teilnehmer/" class="selected">Alle Teilnehmer</a>
-    </nav>
+    <NavigationMenu/>
     <main>
       <h1>Teilnehmerbearbeitung</h1>
       <form method="post" v-on:submit.prevent="updateUser">
@@ -347,10 +343,11 @@
     getProjects
   } from '../modules/ferienpass-api';
   import ErrorListBox from "../components/ErrorListBox";
+  import NavigationMenu from "../components/NavigationMenu";
 
   export default {
     name: 'Teilnehmer',
-    components: {ErrorListBox},
+    components: {NavigationMenu, ErrorListBox},
     data() {
       return {
         id: parseInt(this.$route.query.id),

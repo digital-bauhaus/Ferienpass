@@ -1,11 +1,6 @@
 <template>
   <div>
-    <nav>
-      <input type="text" class="searchbar" placeholder="Suche ...">
-      <a href="/#/Veranstaltungen/" >Alle Veranstaltungen</a>
-      <a href="/#/VeranstaltungEdit?id=-1" >Veranstaltung erstellen </a>
-      <a href="/#/Teilnehmer/" class="selected">Alle Teilnehmer</a>
-    </nav>
+    <NavigationMenu/>
     <main>
     <h1>Teilnehmerübersicht</h1>
 
@@ -54,9 +49,11 @@
 <script>
 
 import { getUsers, getProjects, deleteUser } from '../modules/ferienpass-api';
+import NavigationMenu from "../components/NavigationMenu";
 
 export default {
   name: 'Teilnehmer',
+  components: {NavigationMenu},
   data () {
     return {
       allusers: [],
