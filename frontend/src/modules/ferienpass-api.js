@@ -73,6 +73,11 @@ export function getUsersProjects(userId) {
   return AXIOS.get('/user/' + userId + '/projekte').then(response => response.data);
 }
 
+export function getUsersCancelledProjects(userId) {
+  console.log("Fetch cancelled projects of user with id " + userId);
+  return AXIOS.get('/user/' + userId + '/cancelledprojects').then(response => response.data);
+}
+
 export function updateUser(user) {
   console.log("updating existing user");
   return AXIOS.put('/user', user).then().catch(e => {

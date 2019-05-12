@@ -589,10 +589,6 @@ public class BackendControllerTest {
         assertThat(responseProjekt.getAnmeldungen().get(0).getId(), is(responseUser.getId()));
     }
 
-    private String localDate2String(LocalDate datum) {
-        return datum.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-    }
-
     @Test
     public void addProjectAndSetItToInactive() {
         //Create a project
@@ -622,11 +618,27 @@ public class BackendControllerTest {
         //Get the user again
         Teilnehmer responseUser = getUser(userId);
 
-        //Get all projects fo the userID
+        //Get all projects for the userID
         List<Projekt> projectsOfUserID = getAllProjekteWhereUserIsAssigned(responseUser.getId());
         assertThat(projectsOfUserID.size(),is(1));
         assertThat(projectsOfUserID.get(0).getId(), is(projectId));
+    }
 
+    @Test
+    public void unassignUserFromProjektAndRetrieveAllCancelledProjectsForTheUsers() {
+        Long userId = addUser(createSampleUser());
+        Long projectId = addProjekt(createSampleProject());
+        assignUser2Projekt(projectId, userId);
+
+        unassignUserFromProjekt(projectId, userId);
+
+        //Get the user again
+        Teilnehmer responseUser = getUser(userId);
+
+        //Get all cancelled projects for the userID
+        List<Projekt> cancelledProjectsOfUser = getAllProjekteWhereUserIsCancelled(responseUser.getId());
+        assertThat(cancelledProjectsOfUser.size(),is(1));
+        assertThat(cancelledProjectsOfUser.get(0).getId(), is(projectId));
     }
 
     @Test
@@ -850,6 +862,19 @@ public class BackendControllerTest {
                     .statusCode(HttpStatus.SC_OK)
                     .assertThat()
                     .extract().as(Projekt[].class));
+    }
+
+    private List<Projekt> getAllProjekteWhereUserIsCancelled(Long userId) {
+        return Arrays.asList(
+                given()
+                        .pathParam("userId", userId)
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .get(BASE_URL+"/user/{userId}/cancelledprojects")
+                    .then()
+                        .statusCode(HttpStatus.SC_OK)
+                        .assertThat()
+                        .extract().as(Projekt[].class));
     }
 
     private List<Teilnehmer> getAllAssignedUsersForGivenProject(Long projectId) {

@@ -202,7 +202,15 @@ public class Projekt {
         return Math.max(0, this.slotsGesamt - this.slotsReserviert);
     }
 
+    /**
+     * Register the user for this project. If the user was cancelled before,
+     * his cancellation is deleted.
+     * @param teilnehmer
+     */
     public void addAnmeldung(Teilnehmer teilnehmer) {
+        // Note: no check, we just remove the cancellation
+        this.stornierteTeilnehmer.remove(teilnehmer);
+
         this.anmeldungen.add(teilnehmer);
         setSlotsReserviert(this.slotsReserviert + 1);
     }

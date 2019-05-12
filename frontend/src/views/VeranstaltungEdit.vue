@@ -130,11 +130,11 @@ export default {
         anmeldungen: []
       };
     } else {
-      this.loadProject();
+      this.loadProjectData();
     }
   },
   methods: {
-    loadProject() {
+    loadProjectData() {
       this.errorMessages = [];
       getProject(this.id).then(project => {
         this.project = project;
