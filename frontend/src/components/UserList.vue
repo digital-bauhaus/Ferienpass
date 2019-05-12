@@ -122,24 +122,6 @@ export default {
         }
       });
     },
-    getProjectName (userId) {
-      var result = '';
-      this.allAvailableProjects.forEach(function (project) {
-        project.anmeldungen.forEach(function (teilnehmer) {
-          if (userId === teilnehmer.id) {
-            result += project.name + ' '
-          }
-        })
-      });
-      return result
-    },
-    getProjectNames (projectList) {
-      var result = ''
-      projectList.forEach(function (project) {
-        result += '<div v-for=project in projectList>' + project.name + '</div>'
-      });
-      return result
-    },
     sortTable (n) {
       var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
       switchcount = 0;

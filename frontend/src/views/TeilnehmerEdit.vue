@@ -1,7 +1,7 @@
 <template>
-  <div v-if="user">
+  <div>
     <NavigationMenu/>
-    <main>
+    <main v-if="user">
       <h1>Teilnehmerbearbeitung</h1>
       <form method="post" v-on:submit.prevent="updateUser">
         <h2>Allgemeine Informationen</h2>
@@ -118,7 +118,7 @@
         </table>
         <input type="submit" value="Änderung speichern">
       </form>
-      <ErrorListBox v-if="errors.length" :errors="errors" :heading-text="errorHeadingText" class="error-list-box"/>
+      <ErrorListBox v-if="errorMessages.length" :errors="errorMessages" :heading-text="errorHeadingText" class="error-list-box"/>
 
       <br/>
       <hr/>
@@ -156,7 +156,7 @@
         <input type="submit" value="Änderung speichern">
         <br/>
       </form>
-      <ErrorListBox v-if="errors.length" :errors="errors" :heading-text="errorHeadingText" class="error-list-box"/>
+      <ErrorListBox v-if="errorMessages.length" :errors="errorMessages" :heading-text="errorHeadingText" class="error-list-box"/>
 
       <hr/>
       <form method="post" v-on:submit.prevent="updateUser">
@@ -275,7 +275,7 @@
         <br/>
         <input type="submit" value="Änderung speichern">
       </form>
-      <ErrorListBox v-if="errors.length" :errors="errors" :heading-text="errorHeadingText" class="error-list-box"/>
+      <ErrorListBox v-if="errorMessages.length" :errors="errorMessages" :heading-text="errorHeadingText" class="error-list-box"/>
 
       <hr/>
       <h2>Angemeldete Projekte</h2>
@@ -350,6 +350,7 @@
     components: {NavigationMenu, ErrorListBox},
     data() {
       return {
+        errorMessages: [],
         id: parseInt(this.$route.query.id),
         user: null,
         projectsOfUser: [],
@@ -357,17 +358,12 @@
         allRawProjects: [],
         canceldProjectsOfUser: [],
         newBehinderung: [],
-        popupClass: 'fadeOut',
-        errors: []
+        popupClass: 'fadeOut'
       };
     },
     computed: {
       errorHeadingText() {
-        if (this.id < 0) {
-          return "Anlegen nicht möglich. Bitte beheben Sie folgende Fehler:"
-        } else {
-          return "Speichern nicht möglich. Bitte beheben Sie folgende Fehler:"
-        }
+        return "Speichern nicht möglich. Bitte beheben Sie folgende Fehler:"
       }
     },
     created() {
@@ -377,10 +373,10 @@
     },
     methods: {
       updateUser() {
-        this.errors = [];
+        this.errorMessages = [];
         updateUser(this.user).then(response => {
           this.fadeInAndOutAfterTimeout()
-        }).catch(errorMessages => this.errors = errorMessages)
+        }).catch(errorMessages => this.errorMessages = errorMessages)
       },
       unassignFromProject(projectId, userId) {
         deleteUserFromProject(projectId, userId).then(response => {
@@ -394,13 +390,6 @@
           this.getProjectsOfUser();
         })
       },
-      fadeInAndOutAfterTimeout() {
-        this.popupClass = 'fadeIn';
-        var self = this;
-        setTimeout(function () {
-          self.popupClass = 'fadeOut';
-        }, 2000);
-      },
       getUserData() {
         getUser(this.id).then(user => this.user = user);
       },
@@ -409,6 +398,13 @@
       },
       getProjectsOfUser() {
         getUsersProjects(this.id).then(projects => this.projectsOfUser = projects)
+      },
+      fadeInAndOutAfterTimeout() {
+        this.popupClass = 'fadeIn';
+        var self = this;
+        setTimeout(function () {
+          self.popupClass = 'fadeOut';
+        }, 2000);
       }
     }
   }
