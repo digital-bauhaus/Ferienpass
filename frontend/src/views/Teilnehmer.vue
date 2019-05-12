@@ -33,16 +33,6 @@
        </tr>
      </table>
     </main>
-    <!-- The Modal -->
-    <div id="delete" class="modal">
-
-      <!-- Modal content -->
-      <div class="modal-content">
-        <h4>Sind sie sicher das Sie den Teilnehmer stornieren wollen?</h4>
-        <div class="center"><button>Bestätigen</button><button v-on:click="closeModal()">Abbrechen</button></div>
-      </div>
-    </div>
-
   </div>
 </template>
 
@@ -179,22 +169,6 @@ export default {
         }
       }
     },
-    kill (event) {
-      var modal = document.getElementById('delete');
-      modal.style.display = 'block';
-    /* event.target.parentElement.parentElement.parentElement.remove(); */
-    },
-
-    closeModal () {
-      var modal = document.getElementById('delete');
-      modal.style.display = 'none';
-    },
-    computeAge (dateOfBirth, projectDate) {
-      var projectDateFormat = new Date(dateOfBirth)
-      var dateOfBirthFormat = new Date(projectDate)
-      var diff = projectDateFormat - dateOfBirthFormat
-      return diff
-    },
     getProjectName (userId) {
       var result = ''
       this.allAvailableProjects.forEach(function (project) {
@@ -203,14 +177,14 @@ export default {
             result += project.name + ' '
           }
         })
-      })
+      });
       return result
     },
     getProjectNames (projectList) {
       var result = ''
       projectList.forEach(function (project) {
         result += '<div v-for=project in projectList>' + project.name + '</div>'
-      })
+      });
       return result
     }
   }
@@ -226,11 +200,5 @@ td:nth-child(1) {
     color: #fce553;
     cursor: default;
 }
-#true {
-    background-color: #8eef8b;
-    color: #8eef8b;
-    cursor: default;
-}
-
 
 </style>
