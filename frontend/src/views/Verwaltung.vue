@@ -1,5 +1,5 @@
 <template>
-    <html>
+    <div>
     <nav>
         <a href="/#/Veranstaltungen/">Alle Veranstaltungen</a>
         <a href="/#/Veranstaltung/" >Veranstaltung erstellen </a>
@@ -11,7 +11,7 @@
       <div class="subtitle">{{subtitle}}</div>
       </div>
     </main>
-    </html>
+    </div>
 </template>
 
 

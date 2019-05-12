@@ -1,5 +1,5 @@
 <template>
-<html>
+<div>
     <div id="login">
     <h1>{{title}}</h1>
     <form >
@@ -8,7 +8,7 @@
       <button onclick="window.location.href='/#/Verwaltung'">einloggen</button>
     </form>
     </div>
-</html>
+</div>
 </template>
 
 

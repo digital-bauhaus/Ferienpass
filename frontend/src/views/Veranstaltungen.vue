@@ -1,5 +1,5 @@
 <template>
-	<html>
+	<div>
       <nav>
         <input type="text" class="searchbar" placeholder="Suche ...">
         <a href="/#/Veranstaltungen/" class="selected">Alle Veranstaltungen</a>
@@ -28,13 +28,11 @@
                  </tr>
                </table>
       </main>
-
-
-	</html>
+	</div>
 </template>
 
 <script>
-import { getProjects, deleteProject, getAllUsersAssignedToProject } from './ferienpass-api';
+import { getProjects, deleteProject, getAllUsersAssignedToProject } from '../modules/ferienpass-api';
 import jsPDF from 'jspdf'
 
 export default {

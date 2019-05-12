@@ -345,8 +345,8 @@
     deleteUserFromProject,
     addUserToProject,
     getProjects
-  } from './ferienpass-api';
-  import ErrorListBox from "./ErrorListBox";
+  } from '../modules/ferienpass-api';
+  import ErrorListBox from "../components/ErrorListBox";
 
   export default {
     name: 'Teilnehmer',

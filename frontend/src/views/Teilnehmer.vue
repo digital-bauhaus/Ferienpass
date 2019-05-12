@@ -1,10 +1,10 @@
 <template>
-  <html>
+  <div>
     <nav>
       <input type="text" class="searchbar" placeholder="Suche ...">
       <a href="/#/Veranstaltungen/" >Alle Veranstaltungen</a>
       <a href="/#/VeranstaltungEdit?id=-1" >Veranstaltung erstellen </a>
-      <a href="/#/Teilnehmer/"  class="selected">Alle Teilnehmer</a>
+      <a href="/#/Teilnehmer/" class="selected">Alle Teilnehmer</a>
     </nav>
     <main>
     <h1>Teilnehmerübersicht</h1>
@@ -48,13 +48,12 @@
       </div>
     </div>
 
-  </html>
+  </div>
 </template>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>
 
-import { getUsers, getProjects, deleteUser } from './ferienpass-api';
+import { getUsers, getProjects, deleteUser } from '../modules/ferienpass-api';
 
 export default {
   name: 'Teilnehmer',

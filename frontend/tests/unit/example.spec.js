@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import Verwaltung from '@/components/Verwaltung.vue'
+import Verwaltung from '@/views/Verwaltung.vue'
 
 describe('Verwaltung.vue', () => {
   it('renders props.msg when passed', () => {

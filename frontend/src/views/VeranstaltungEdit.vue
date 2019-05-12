@@ -80,8 +80,8 @@
 </template>
 
 <script>
-import {getProject, createProject, updateProject} from "./ferienpass-api";
-import ErrorListBox from "./ErrorListBox";
+import {getProject, createProject, updateProject} from "../modules/ferienpass-api";
+import ErrorListBox from "../components/ErrorListBox";
 
 export default {
   name: 'Veranstaltung',
