@@ -14,7 +14,7 @@ public class ProjektValidator implements ConstraintValidator<ProjektValidation, 
     public boolean isValid(Projekt value, ConstraintValidatorContext context) {
         boolean valid = true;
 
-        if (value.getDatumEnde().isBefore(value.getDatum())) {
+        if (value.getDatumEnde() != null && value.getDatumEnde().isBefore(value.getDatum())) {
             context.buildConstraintViolationWithTemplate("Enddatum darf nicht vor Beginndatum liegen.").addPropertyNode("datumEnde").addConstraintViolation();
             valid = false;
         }

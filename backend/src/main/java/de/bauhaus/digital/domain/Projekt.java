@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
 @Entity
@@ -20,8 +21,10 @@ public class Projekt {
     @NotBlank(message = "Name darf nicht leer sein.")
     private String name;
 
+    @NotNull(message = "Beginndatum muss angegeben werden.")
     private LocalDate datum;
 
+    @NotNull(message = "Beginndatum muss angegeben werden.")
     private LocalDate datumEnde;
 
     @PositiveOrZero(message = "Mindestalter darf nicht < 0 sein.")
