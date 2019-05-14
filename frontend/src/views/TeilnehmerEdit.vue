@@ -295,7 +295,7 @@
           <tr v-for="(projekt, index) of projectsOfUser">
             <td><label> {{projekt.name}}</label></td>
             <td>
-              <button v-on:click="unassignFromProject(projekt.id, user.id)">Stornieren</button>
+              <button type="button" v-on:click="unassignFromProject(projekt.id, user.id)">Stornieren</button>
             </td>
           </tr>
         </table>
@@ -311,7 +311,7 @@
           <tr v-for="(projekt, index) of cancelledProjectsOfUser">
             <td><label>{{projekt.name}}</label></td>
             <td>
-              <button v-on:click="reactivateProject(projekt.id, user.id)">Reaktivieren</button>
+              <button type="button" v-on:click="reactivateProject(projekt.id, user.id)">Reaktivieren</button>
             </td>
           </tr>
         </table>
@@ -329,7 +329,7 @@
           <tr v-for="(projekt, index) of availableProjects">
             <td><label> {{projekt.name}}</label></td>
             <td>
-              <button v-on:click="assignToProject(projekt.id, user.id)">Eintragen</button>
+              <button type="button" v-on:click="assignToProject(projekt.id, user.id)">Eintragen</button>
             </td>
           </tr>
         </table>

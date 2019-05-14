@@ -8,9 +8,12 @@ import Veranstaltungen from "./views/Veranstaltungen";
 import VeranstaltungEdit from "./views/VeranstaltungEdit";
 import TeilnehmerEdit from "./views/TeilnehmerEdit";
 
-Vue.use(Router)
+import store from './store'
 
-export default new Router({
+Vue.use(Router);
+
+const router = new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -25,27 +28,48 @@ export default new Router({
     {
       path: '/Teilnehmer',
       name: 'Teilnehmer',
-      component: Teilnehmer
+      component: Teilnehmer,
+      meta: { requiresAuth: true }
     },
     {
       path: '/Verwaltung',
       name: 'Verwaltung',
-      component: Verwaltung
+      component: Verwaltung,
+      meta: { requiresAuth: true }
     },
     {
       path: '/Veranstaltungen',
       name: 'Veranstaltungen',
-      component: Veranstaltungen
+      component: Veranstaltungen,
+      meta: { requiresAuth: true }
     },
     {
       path: '/VeranstaltungEdit',
       name: 'VeranstaltungEdit',
-      component: VeranstaltungEdit
+      component: VeranstaltungEdit,
+      meta: { requiresAuth: true }
     },
     {
       path: '/TeilnehmerEdit',
       name: 'TeilnehmerEdit',
-      component: TeilnehmerEdit
+      component: TeilnehmerEdit,
+      meta: { requiresAuth: true }
     }
   ]
-})
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.getters.isLoggedIn) {
+      next({
+        path: '/login'
+      })
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
+export default router;
