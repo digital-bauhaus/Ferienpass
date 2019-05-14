@@ -48,16 +48,16 @@ public class BackendController {
      ******************************************/
 
     //Retrieve all users in the data base
-    @RequestMapping(path = "/allusers")
+    @RequestMapping(path = "/users")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
-    List<Teilnehmer> showAllUsers() {
+    List<Teilnehmer> getUsers() {
         LOG.info("GET called on /allusers resource");
         return teilnehmerRepository.findAllUsers();
     }
 
     // GET USER INFORMATION BY ID
-    @GetMapping(path = "/user/{id}")
+    @GetMapping(path = "/users/{id}")
     public @ResponseBody
     Teilnehmer getUserById(@PathVariable("id") long id) {
         Optional<Teilnehmer> optionalTeilnehmer = teilnehmerRepository.findById(id);
@@ -69,10 +69,10 @@ public class BackendController {
     }
 
     //Add a new user (Teilnehmer) based on a user object
-    @RequestMapping(path = "/adduser", method = RequestMethod.POST)
+    @RequestMapping(path = "/users", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    Long addNewUser(@RequestBody @Valid Teilnehmer user) {
+    Long addUser(@RequestBody @Valid Teilnehmer user) {
 
         teilnehmerRepository.save(user);
 
@@ -81,7 +81,7 @@ public class BackendController {
         return user.getId();
     }
 
-    @RequestMapping(path = "/user", method = RequestMethod.PUT)
+    @RequestMapping(path = "/users", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public Teilnehmer updateUser(@RequestBody @Valid Teilnehmer user) {
 
@@ -129,18 +129,132 @@ public class BackendController {
     }
 
 
-    @RequestMapping(path = "/user/{userId}", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/users/{userId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable("userId") long userId) {
         teilnehmerRepository.deleteById(userId);
         LOG.info("User with id "+ userId + " deleted");
     }
 
-    //Assign Project to user
-    @RequestMapping(path = "/projekt/{projektId}/user/{userId}", method = RequestMethod.PUT)
+    @RequestMapping(path = "/users/{userId}/projects")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
-    Boolean assignProjectToUser(@PathVariable("projektId") Long projektId, @PathVariable("userId") Long userId) {
+    List<Projekt> getUsersProjects(@PathVariable("userId") Long userId) {
+        LOG.info("GET called on /user/" + userId + "/projekte");
+        List<Projekt> resultList = new ArrayList<>();
+        for (Projekt projekt : projektRepository.findAll()) {
+            for (Teilnehmer teilnehmer: projekt.getAnmeldungen()) {
+                if(teilnehmer.getId() == userId)
+                    resultList.add(projekt);
+            }
+        }
+        LOG.info("Returning list with size of " + resultList.size());
+        return resultList;
+    }
+
+    @RequestMapping(path = "/users/{userId}/cancelledprojects")
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    List<Projekt> getUsersCancelledProjects(@PathVariable("userId") Long userId) {
+        LOG.info("GET called on /user/" + userId + "/cancelledprojects");
+        List<Projekt> resultList = new ArrayList<>();
+        for (Projekt projekt : projektRepository.findAll()) {
+            for (Teilnehmer teilnehmer: projekt.getStornierteTeilnehmer()) {
+                if(teilnehmer.getId() == userId)
+                    resultList.add(projekt);
+            }
+        }
+        LOG.info("Returning list with size of " + resultList.size());
+        return resultList;
+    }
+
+
+    /*******************************************
+     * API for projects (Projekte) functionality
+     ******************************************/
+    //Retrieve all projects
+    @RequestMapping(path = "/projects", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    List<Projekt> getProjects() {
+        LOG.info("GET called on /projects resource");
+        return projektRepository.findAllProjects();
+    }
+
+    // DELETE PROJECT
+    @RequestMapping(path = "/projects/{projektId}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Boolean deleteProject(@PathVariable("projektId") Long projektId) {
+
+        Optional<Projekt> maybeProjekt = projektRepository.findById(projektId);
+        if (maybeProjekt.isPresent()) {
+            projektRepository.deleteById(projektId);
+            LOG.info("Projekt with id " + projektId + " has been deleted.");
+            return true;
+        } else {
+            throw new ProjektNotFoundException("Projekt mit der id " + projektId + " wurde nicht gefunden.");
+        }
+    }
+
+
+    @RequestMapping(path = "/projects", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Long addProject(@RequestBody @Valid Projekt projekt) {
+
+        projektRepository.save(projekt);
+
+        LOG.info(projekt.toString() + " successfully saved into DB");
+
+        return projekt.getId();
+    }
+
+    @RequestMapping(path = "/projects", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    Projekt updateProject(@RequestBody @Valid Projekt projekt) {
+
+        Optional<Projekt> maybeProjekt = projektRepository.findById(projekt.getId());
+        if (maybeProjekt.isPresent()) {
+            Projekt foundProjekt = maybeProjekt.get();
+            foundProjekt = projekt;
+            projektRepository.save(foundProjekt);
+            LOG.info("Projekt with id " + projekt.getId() + " successfully updated on DB.");
+            return foundProjekt;
+        } else {
+            throw new ProjektNotFoundException("Projekt mit der id " + projekt.getId() + " wurde nicht gefunden.");
+        }
+    }
+
+    @GetMapping(path = "/projects/{projektId}")
+    public @ResponseBody
+    Projekt getProjectById(@PathVariable("projektId") Long projekt_id) {
+        Optional<Projekt> maybeProjekt = projektRepository.findById(projekt_id);
+        if (maybeProjekt.isPresent()) {
+            return maybeProjekt.get();
+        } else {
+            throw new ProjektNotFoundException("Projekt mit der id " + projekt_id + " wurde nicht gefunden.");
+        }
+    }
+
+    @GetMapping(path = "/projects/{projektId}/users")
+    public @ResponseBody
+    List<Teilnehmer> getRegisteredUsersByProjectId(@PathVariable("projektId") Long projektId) {
+        Optional<Projekt> maybeProjekt = projektRepository.findById(projektId);
+        if (maybeProjekt.isPresent()) {
+            Projekt projekt = maybeProjekt.get();
+            LOG.info("Returning " + projekt.getAnmeldungen().size() + " registered participants for project " + projekt.getName());
+            return projekt.getAnmeldungen();
+        } else {
+            throw new ProjektNotFoundException("Projekt mit der id " + projektId + " wurde nicht gefunden.");
+        }
+    }
+
+    //Assign User To project
+    @RequestMapping(path = "/projects/{projektId}/users/{userId}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    Boolean assignUserToProject(@PathVariable("projektId") Long projektId, @PathVariable("userId") Long userId) {
 
         Optional<Projekt> maybeProjekt = projektRepository.findById(projektId);
         if (maybeProjekt.isPresent()) {
@@ -175,7 +289,7 @@ public class BackendController {
         return true;
     }
 
-    @RequestMapping(path = "/projekt/{projektId}/user/{userId}", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/projects/{projektId}/users/{userId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Boolean unassignUserFromProject(@PathVariable("projektId") Long projektId, @PathVariable("userId") Long userId) {
 
@@ -199,68 +313,8 @@ public class BackendController {
         }
     }
 
-
-    /*******************************************
-     * API for projects (Projekte) functionality
-     ******************************************/
-    //Retrieve all projects
-    @RequestMapping(path = "/allprojects", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody
-    List<Projekt> showAllProjects() {
-        LOG.info("GET called on /allprojects resource");
-        return projektRepository.findAllProjects();
-    }
-
-    // Retrieve all projects for a user's first and last name
-    @RequestMapping(path = "/projectsof")
-    @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody
-    List<Projekt> showProjectsOfUser(@RequestParam String vorname, @RequestParam String nachname) {
-        LOG.info("GET called on /projectsof resource");
-        List<Projekt> resultList = new ArrayList<>();
-        for (Projekt projekt : projektRepository.findAll()) {
-            for (Teilnehmer t: projekt.getAnmeldungen()) {
-                if(t.getVorname().equals(vorname) && t.getNachname().equals(nachname))
-                    resultList.add(projekt);
-            }
-        }
-        return resultList;
-    }
-
-    @RequestMapping(path = "/user/{userId}/projekte")
-    @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody
-    List<Projekt> getUsersProjects(@PathVariable("userId") Long userId) {
-        LOG.info("GET called on /user/" + userId + "/projekte");
-        List<Projekt> resultList = new ArrayList<>();
-        for (Projekt projekt : projektRepository.findAll()) {
-            for (Teilnehmer teilnehmer: projekt.getAnmeldungen()) {
-                if(teilnehmer.getId() == userId)
-                    resultList.add(projekt);
-            }
-        }
-        LOG.info("Returning list with size of " + resultList.size());
-        return resultList;
-    }
-
-    @RequestMapping(path = "/user/{userId}/cancelledprojects")
-    @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody
-    List<Projekt> getUsersCancelledProjects(@PathVariable("userId") Long userId) {
-        LOG.info("GET called on /user/" + userId + "/cancelledprojects");
-        List<Projekt> resultList = new ArrayList<>();
-        for (Projekt projekt : projektRepository.findAll()) {
-            for (Teilnehmer teilnehmer: projekt.getStornierteTeilnehmer()) {
-                if(teilnehmer.getId() == userId)
-                    resultList.add(projekt);
-            }
-        }
-        LOG.info("Returning list with size of " + resultList.size());
-        return resultList;
-    }
-
-    @RequestMapping(path = "/projekt/{projektId}", method = RequestMethod.PUT)
+    // TODO strange API, still needed?
+    @RequestMapping(path = "/projects/disable/{projektId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Boolean setProjectToInactive(@PathVariable("projektId") Long projektId) {
 
@@ -276,75 +330,22 @@ public class BackendController {
         }
     }
 
-    // DELETE PROJECT
-    @RequestMapping(path = "/projekt/{projektId}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody Boolean deleteProject(@PathVariable("projektId") Long projektId) {
-
-        Optional<Projekt> maybeProjekt = projektRepository.findById(projektId);
-        if (maybeProjekt.isPresent()) {
-            projektRepository.deleteById(projektId);
-            LOG.info("Projekt with id " + projektId + " has been deleted.");
-            return true;
-        } else {
-            throw new ProjektNotFoundException("Projekt mit der id " + projektId + " wurde nicht gefunden.");
-        }
-    }
-
-
-    @RequestMapping(path = "/projekt", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    Long addNewProject(@RequestBody @Valid Projekt projekt) {
-
-        projektRepository.save(projekt);
-
-        LOG.info(projekt.toString() + " successfully saved into DB");
-
-        return projekt.getId();
-    }
-
-    @RequestMapping(path = "/projekt", method = RequestMethod.PUT)
+    // TODO strange API, still needed?
+    // Retrieve all projects for a user's first and last name
+    @RequestMapping(path = "/projects/byusername")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
-    Projekt updateProject(@RequestBody @Valid Projekt projekt) {
-
-        Optional<Projekt> maybeProjekt = projektRepository.findById(projekt.getId());
-        if (maybeProjekt.isPresent()) {
-            Projekt foundProjekt = maybeProjekt.get();
-            foundProjekt = projekt;
-            projektRepository.save(foundProjekt);
-            LOG.info("Projekt with id " + projekt.getId() + " successfully updated on DB.");
-            return foundProjekt;
-        } else {
-            throw new ProjektNotFoundException("Projekt mit der id " + projekt.getId() + " wurde nicht gefunden.");
+    List<Projekt> getProjectsByUserName(@RequestParam String vorname, @RequestParam String nachname) {
+        LOG.info("GET called on /projects/byusername resource");
+        List<Projekt> resultList = new ArrayList<>();
+        for (Projekt projekt : projektRepository.findAll()) {
+            for (Teilnehmer t: projekt.getAnmeldungen()) {
+                if(t.getVorname().equals(vorname) && t.getNachname().equals(nachname))
+                    resultList.add(projekt);
+            }
         }
+        return resultList;
     }
-
-    @GetMapping(path = "/project/{projektId}")
-    public @ResponseBody
-    Projekt getProjectById(@PathVariable("projektId") Long projekt_id) {
-        Optional<Projekt> maybeProjekt = projektRepository.findById(projekt_id);
-        if (maybeProjekt.isPresent()) {
-            return maybeProjekt.get();
-        } else {
-            throw new ProjektNotFoundException("Projekt mit der id " + projekt_id + " wurde nicht gefunden.");
-        }
-    }
-
-    @GetMapping(path = "/projekt/{projektId}/users")
-    public @ResponseBody
-    List<Teilnehmer> getRegisteredUsersByProjectId(@PathVariable("projektId") Long projektId) {
-        Optional<Projekt> maybeProjekt = projektRepository.findById(projektId);
-        if (maybeProjekt.isPresent()) {
-            Projekt projekt = maybeProjekt.get();
-            LOG.info("Returning " + projekt.getAnmeldungen().size() + " registered participants for project " + projekt.getName());
-            return projekt.getAnmeldungen();
-        } else {
-            throw new ProjektNotFoundException("Projekt mit der id " + projektId + " wurde nicht gefunden.");
-        }
-    }
-
 
     /*******************************************
      * API for registering from Ferienpass-Anmeldung Microservice
