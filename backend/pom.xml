@@ -18,7 +18,6 @@
 		<java.version>1.8</java.version>
 		<rest-assured.version>3.3.0</rest-assured.version>
 		<postgresql.version>42.2.5</postgresql.version>
-		<google-collections.version>1.0</google-collections.version>
 		<springfox.version>2.9.2</springfox.version>
 	</properties>
 
@@ -66,10 +65,10 @@
 		</dependency>
 
 		<dependency>
-				<!-- Switch back from Spring Boot 2.x standard HikariCP to Tomcat JDBC,
-				configured later in Heroku (see https://stackoverflow.com/a/49970142/4964553) -->
-				<groupId>org.apache.tomcat</groupId>
-				<artifactId>tomcat-jdbc</artifactId>
+			<!-- Switch back from Spring Boot 2.x standard HikariCP to Tomcat JDBC,
+			configured later in Heroku (see https://stackoverflow.com/a/49970142/4964553) -->
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
 		</dependency>
 
 		<dependency>
@@ -79,11 +78,11 @@
 			<version>${postgresql.version}</version>
 		</dependency>
 
-    <dependency>
-      <!-- Starter for using Spring Security -->
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-security</artifactId>
-    </dependency>
+		<dependency>
+			<!-- Starter for using Spring Security -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
 		<dependency>
 			<!-- Testing (JUnit, AssertJ, Hamcrest, etc.) -->
@@ -92,11 +91,11 @@
 			<scope>test</scope>
 		</dependency>
 
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-test</artifactId>
-      <scope>test</scope>
-    </dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<!-- Ease the testing of REST-APIs -->
