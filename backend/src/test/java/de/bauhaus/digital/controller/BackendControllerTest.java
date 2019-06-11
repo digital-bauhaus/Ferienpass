@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
+import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -47,6 +48,25 @@ public class BackendControllerTest {
         authScheme.setUserName("test");
         authScheme.setPassword("foo");
         RestAssured.authentication = authScheme;
+    }
+
+    @Test
+    public void login_should_give_http_200_with_right_credentials() {
+
+        get(BASE_URL + "/login")
+        .then()
+            .statusCode(is(HttpStatus.SC_OK));
+    }
+
+    @Test
+    public void login_should_give_http_401_unauthorized_with_wrong_credentials() {
+
+        given()
+            .auth().basic("wrong", "creds")
+        .when()
+            .get(BASE_URL + "/login")
+        .then()
+            .statusCode(is(HttpStatus.SC_UNAUTHORIZED));
     }
 
     /****************************

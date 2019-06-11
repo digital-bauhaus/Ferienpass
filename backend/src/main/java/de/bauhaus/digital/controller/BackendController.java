@@ -31,16 +31,15 @@ public class BackendController {
     @Autowired
     private ProjektRepository projektRepository;
 
-
     /*************************************
-     * General API
+     * Login API
      *********************************/
 
-    @RequestMapping(path = "/hello")
+    @RequestMapping(path = "/login")
     public @ResponseBody
     String sayHello() {
-        LOG.info("GET called on /hello resource");
-        return "hello";
+        LOG.info("GET successfully called on /login resource");
+        return "You're successfully 'logged' in.";
     }
 
     /*******************************************

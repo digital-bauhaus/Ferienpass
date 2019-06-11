@@ -20,6 +20,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
             .authorizeRequests()
                 .mvcMatchers("/api/register").permitAll()
+                .mvcMatchers("/api/login").authenticated() // simple login endpoint
                 .mvcMatchers("/api/users").authenticated() // explicitly disallow users-resource
                 .mvcMatchers("/api/projects").permitAll()
                 .anyRequest().permitAll()
