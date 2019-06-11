@@ -25,7 +25,19 @@ Das vorliegende Projekt möchte die Ergebnisse des Studenten-Projektes, dass in 
 
 Die bisherige Microservice-Struktur wird zugunsten einer vereinfachten Weiterentwicklung und Wartung aufgegeben und in einen Mini-Monolithen bzw. Microlithen überführt.
 
-Dabei steht die Anmeldungsseite direkt auf der Startseite zur Verfügung (lokal http://localhost:8088/#/) , die Administrationsfunktionen liegen tiefer und finden sich ab http://localhost:8088/#/login
+Dabei steht die Anmeldungsseite direkt auf der Startseite zur Verfügung (lokal http://localhost:8088/) , die Administrationsfunktionen liegen tiefer und finden sich ab http://localhost:8088/login
+
+Der Login unter https://ferienpass.herokuapp.com/login ist nun abgesichert - die Credentials werden lokal über die [application.properties](backend/src/main/resources/application.properties) konfiguriert, im PR bzw. Produktivdeployment über Umgebungsvariablen in Heroku: 
+
+```
+# application.properties
+spring.security.user.name=test
+spring.security.user.password=foo
+
+# Heroku Environment Variables
+SPRING_SECURITY_USER_NAME=xyz
+SPRING_SECURITY_USER_PASSWORD=xyz
+```
 
 
 

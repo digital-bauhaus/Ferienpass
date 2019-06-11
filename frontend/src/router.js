@@ -17,44 +17,40 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'Anmeldung',
       component: Registration
     },
     {
       path: '/login',
-      name: 'Login',
       component: Login
     },
     {
       path: '/Teilnehmer',
-      name: 'Teilnehmer',
       component: Teilnehmer,
       meta: { requiresAuth: true }
     },
     {
       path: '/Verwaltung',
-      name: 'Verwaltung',
       component: Verwaltung,
       meta: { requiresAuth: true }
     },
     {
       path: '/Veranstaltungen',
-      name: 'Veranstaltungen',
       component: Veranstaltungen,
       meta: { requiresAuth: true }
     },
     {
       path: '/VeranstaltungEdit',
-      name: 'VeranstaltungEdit',
       component: VeranstaltungEdit,
       meta: { requiresAuth: true }
     },
     {
       path: '/TeilnehmerEdit',
-      name: 'TeilnehmerEdit',
       component: TeilnehmerEdit,
       meta: { requiresAuth: true }
-    }
+    },
+
+    // otherwise redirect to home
+    { path: '*', redirect: '/' }
   ]
 });
 
