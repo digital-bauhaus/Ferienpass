@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bauhaus.digital.FerienpassApplication;
 import de.bauhaus.digital.domain.*;
 import de.bauhaus.digital.transformation.AnmeldungJson;
+import io.restassured.RestAssured;
+import io.restassured.authentication.PreemptiveBasicAuthScheme;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +39,15 @@ public class BackendControllerTest {
     @Value("classpath:requests/anmeldung-post-data.json")
     private Resource anmeldungJsonFile;
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Before
+    public void init() {
+        // Init RestAssured with BasicAuth credentials once - so we don't need to do that on every RestAssured call
+        PreemptiveBasicAuthScheme authScheme = new PreemptiveBasicAuthScheme();
+        authScheme.setUserName("test");
+        authScheme.setPassword("foo");
+        RestAssured.authentication = authScheme;
+    }
 
     /****************************
      * Test user (Teilnehmer) API
@@ -891,14 +903,14 @@ public class BackendControllerTest {
 
     private Long addUser(Teilnehmer teilnehmer) {
         return given()
-                .body(teilnehmer)
-                .contentType(ContentType.JSON)
+                    .body(teilnehmer)
+                    .contentType(ContentType.JSON)
                 .when()
-                .post(BASE_URL + "/users")
+                    .post(BASE_URL + "/users")
                 .then()
-                .statusCode(is(HttpStatus.SC_CREATED))
-                .extract()
-                .body().as(Long.class);
+                    .statusCode(is(HttpStatus.SC_CREATED))
+                    .extract()
+                        .body().as(Long.class);
     }
 
     private void updateUser(Teilnehmer teilnehmer) {
