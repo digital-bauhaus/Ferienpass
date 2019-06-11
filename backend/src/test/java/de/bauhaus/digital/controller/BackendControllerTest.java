@@ -75,6 +75,20 @@ public class BackendControllerTest {
     }
 
     @Test
+    public void add_new_user_should_give_http_401_unauthorized_when_credentials_are_wrong() {
+        Teilnehmer user = createSampleUser();
+
+        given()
+            .auth().basic("wrong", "credentials")
+            .body(user)
+            .contentType(ContentType.JSON)
+        .when()
+            .post(BASE_URL + "/users")
+        .then()
+            .statusCode(is(HttpStatus.SC_UNAUTHORIZED));
+    }
+
+    @Test
     public void addNewUserAddSeveralListItemsAndRemoveThemAgain() {
         Teilnehmer user = createSampleUser();
 
