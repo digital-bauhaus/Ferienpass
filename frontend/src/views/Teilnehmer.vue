@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { getUsers } from '../modules/ferienpass-api';
+import api from '../modules/ferienpass-api';
 import NavigationMenu from "../components/NavigationMenu";
 import UserList from "../components/UserList";
 
@@ -28,7 +28,7 @@ export default {
   methods: {
     loadUsers() {
       this.errors = [];
-      getUsers().then(users => this.users = users).catch(e => this.errors.push(e));
+      api.getUsers().then(users => this.users = users).catch(e => this.errors.push(e));
     }
   }
 }

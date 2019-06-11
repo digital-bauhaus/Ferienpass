@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { getProjects } from '../modules/ferienpass-api';
+import api from '../modules/ferienpass-api';
 import NavigationMenu from "../components/NavigationMenu";
 import ProjectList from "../components/ProjectList";
 
@@ -28,7 +28,7 @@ export default {
   methods: {
     loadProjects () {
         this.errors = [];
-        getProjects().then(projects => this.projects = projects).catch(e => this.errors.push(e));
+        api.getProjects().then(projects => this.projects = projects).catch(e => this.errors.push(e));
     }
   }
 }

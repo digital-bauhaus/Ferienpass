@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import {getProject, createProject, updateProject} from "../modules/ferienpass-api";
+import api from "../modules/ferienpass-api";
 import ErrorListBox from "../components/ErrorListBox";
 import NavigationMenu from "../components/NavigationMenu";
 import UserList from "../components/UserList";
@@ -136,18 +136,18 @@ export default {
   methods: {
     loadProjectData() {
       this.errorMessages = [];
-      getProject(this.id).then(project => {
+      api.getProject(this.id).then(project => {
         this.project = project;
       }).catch(e => this.errorMessages.push(e.toString()));
     },
     createOrUpdateProject() {
       this.errorMessages = [];
       if (this.isNewProject) {
-        createProject(this.project).then(response => {
+        api.createProject(this.project).then(response => {
           this.fadeInAndOutAfterTimeout()
         }).catch(errorMessages => this.errorMessages = errorMessages);
       } else {
-        updateProject(this.project).then(response => {
+        api.updateProject(this.project).then(response => {
           this.fadeInAndOutAfterTimeout()
         }).catch(errorMessages => this.errorMessages = errorMessages);
       }

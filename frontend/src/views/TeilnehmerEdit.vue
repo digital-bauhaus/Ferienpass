@@ -342,14 +342,7 @@
 </template>
 
 <script>
-  import {
-    getUser,
-    updateUser,
-    getUsersProjects,
-    deleteUserFromProject,
-    addUserToProject,
-    getProjects, getUsersCancelledProjects
-  } from '../modules/ferienpass-api';
+import api from '../modules/ferienpass-api';
 import ErrorListBox from "../components/ErrorListBox";
 import NavigationMenu from "../components/NavigationMenu";
 
@@ -390,16 +383,16 @@ export default {
   },
   methods: {
     loadUserData() {
-      return getUser(this.id).then(user => this.user = user);
+      return api.getUser(this.id).then(user => this.user = user);
     },
     loadProjects() {
-      return getProjects().then(projects => this.allProjects = projects)
+      return api.getProjects().then(projects => this.allProjects = projects)
     },
     loadProjectsOfUser() {
-      return getUsersProjects(this.id).then(projects => this.projectsOfUser = projects)
+      return api.getUsersProjects(this.id).then(projects => this.projectsOfUser = projects)
     },
     loadCancelledProjectsOfUser() {
-      return getUsersCancelledProjects(this.id).then(projects => this.cancelledProjectsOfUser = projects)
+      return api.getUsersCancelledProjects(this.id).then(projects => this.cancelledProjectsOfUser = projects)
     },
     reloadProjectsOfUser() {
       this.loadProjectsOfUser();
@@ -407,18 +400,18 @@ export default {
     },
     updateUser() {
       this.errorMessages = [];
-      updateUser(this.user).then(response => {
+      api.updateUser(this.user).then(response => {
         this.fadeInAndOutAfterTimeout()
       }).catch(errorMessages => this.errorMessages = errorMessages)
     },
     unassignFromProject(projectId, userId) {
-      deleteUserFromProject(projectId, userId).then(response => {
+      api.deleteUserFromProject(projectId, userId).then(response => {
         this.fadeInAndOutAfterTimeout();
         this.reloadProjectsOfUser();
       })
     },
     assignToProject(projectId, userId) {
-      addUserToProject(projectId, userId).then(response => {
+      api.addUserToProject(projectId, userId).then(response => {
         this.fadeInAndOutAfterTimeout();
         this.reloadProjectsOfUser();
       })
