@@ -4,8 +4,9 @@ import {
 } from "./mutation-types";
 
 const mutations = {
-  [LOGIN_SUCCESS](state, { name }) {
-    state.user.name = name;
+  [LOGIN_SUCCESS](state, payload ) {
+    state.user.name = payload.name;
+    state.user.pass = payload.password;
     state.user.loggedIn = true;
   },
   [LOGIN_FAILED](state) {

@@ -7,15 +7,30 @@ import {
   LOGIN,
 } from "./action-types";
 
+import api from '../modules/ferienpass-api';
+
 const actions = {
-  async [LOGIN]({ commit }, { name, password }) {
-    if (name === "test" && password === "test") {
-      // TODO actually log in into application here!
-      return commit(LOGIN_SUCCESS, { name });
-    } else {
-      commit(LOGIN_FAILED);
-      return Promise.reject("Invalid credentials. Hint: Use 'test' for both...")
-    }
+  [LOGIN]({ commit }, { name, password }) {
+    return new Promise((resolve, reject) => {
+      console.log("Accessing backend with user: '" + name + ' and password ' + password);
+      api.login(name, password)
+          .then(response => {
+              console.log("Response: '" + response.data + "' with Statuscode " + response.status);
+              if(response.status == 200) {
+                console.log("Login successful");
+                commit(LOGIN_SUCCESS, {
+                  name: name,
+                  password: password
+                })
+              }
+              resolve(response)
+            })
+          .catch(error => {
+              console.log("Fehler: " + error)
+              commit(LOGIN_FAILED);
+              reject("Fehlerhafte Anmeldedaten (User und/oder Passwort)!");
+          })
+    })
   }
 };
 
