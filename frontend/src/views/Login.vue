@@ -2,25 +2,38 @@
   <div id="login">
     <h1>{{title}}</h1>
     <form>
-      <input type="text" name="Admin-Name" value="" placeholder="Admin"> <br/>
-      <input type="password" name="Passwort" value="" placeholder="Passwort"><br/>
-      <button v-on:click="login">einloggen</button>
+      <input type="text" name="Admin-Name" v-model="name" placeholder="Admin"> <br/>
+      <input type="password" name="Passwort" v-model="password" placeholder="Passwort"><br/>
+      <button type="button" v-on:click="doLogin">einloggen</button>
+      <ErrorListBox v-if="errors.length" heading-text="Login nicht möglich. Folgende Fehler sind aufgetreten: " :errors="errors"/>
     </form>
   </div>
 </template>
 
 
 <script>
+import {LOGIN} from "../store/action-types";
+import ErrorListBox from "../components/ErrorListBox";
+
 export default {
   name: 'Login',
+  components: {ErrorListBox},
   data() {
     return {
-      title: 'Ferienpass Weimar: Administration'
+      title: 'Ferienpass Weimar: Administration',
+      errors: [],
+      name: "",
+      password: ""
     }
   },
   methods: {
-    login() {
-      this.$router.push('/Verwaltung');
+    doLogin() {
+      this.errors = [];
+      this.$store.dispatch(LOGIN, { name: this.name, password: this.password })
+        .then(() => this.$router.push('/Verwaltung'))
+        .catch(e => {
+          this.errors.push(e)
+        });
     }
   }
 }

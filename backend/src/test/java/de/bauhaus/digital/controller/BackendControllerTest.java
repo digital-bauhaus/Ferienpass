@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bauhaus.digital.FerienpassApplication;
 import de.bauhaus.digital.domain.*;
 import de.bauhaus.digital.transformation.AnmeldungJson;
+import io.restassured.RestAssured;
+import io.restassured.authentication.PreemptiveBasicAuthScheme;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,9 +20,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -38,6 +41,34 @@ public class BackendControllerTest {
     private Resource anmeldungJsonFile;
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    @Before
+    public void init() {
+        // Init RestAssured with BasicAuth credentials once - so we don't need to do that on every RestAssured call
+        PreemptiveBasicAuthScheme authScheme = new PreemptiveBasicAuthScheme();
+        authScheme.setUserName("test");
+        authScheme.setPassword("foo");
+        RestAssured.authentication = authScheme;
+    }
+
+    @Test
+    public void login_should_give_http_200_with_right_credentials() {
+
+        get(BASE_URL + "/login")
+        .then()
+            .statusCode(is(HttpStatus.SC_OK));
+    }
+
+    @Test
+    public void login_should_give_http_401_unauthorized_with_wrong_credentials() {
+
+        given()
+            .auth().basic("wrong", "creds")
+        .when()
+            .get(BASE_URL + "/login")
+        .then()
+            .statusCode(is(HttpStatus.SC_UNAUTHORIZED));
+    }
+
     /****************************
      * Test user (Teilnehmer) API
      ****************************/
@@ -47,7 +78,7 @@ public class BackendControllerTest {
         given()
                 .pathParam("id", -1)
             .when()
-                .get(BASE_URL + "/user/{id}")
+                .get(BASE_URL + "/users/{id}")
             .then()
                 .statusCode(HttpStatus.SC_NOT_FOUND);
     }
@@ -61,6 +92,20 @@ public class BackendControllerTest {
         Teilnehmer responseUser = getUser(userId);
         assertThat(responseUser.getVorname(), is(user.getVorname()));
         assertThat(responseUser.getNachname(), is(user.getNachname()));
+    }
+
+    @Test
+    public void add_new_user_should_give_http_401_unauthorized_when_credentials_are_wrong() {
+        Teilnehmer user = createSampleUser();
+
+        given()
+            .auth().basic("wrong", "credentials")
+            .body(user)
+            .contentType(ContentType.JSON)
+        .when()
+            .post(BASE_URL + "/users")
+        .then()
+            .statusCode(is(HttpStatus.SC_UNAUTHORIZED));
     }
 
     @Test
@@ -546,7 +591,7 @@ public class BackendControllerTest {
         given()
                 .pathParam("id", -1)
             .when()
-                .get(BASE_URL + "/project/{id}")
+                .get(BASE_URL + "/projects/{id}")
             .then()
                 .statusCode(HttpStatus.SC_NOT_FOUND);
     }
@@ -774,7 +819,7 @@ public class BackendControllerTest {
             .body(projekt)
             .contentType(ContentType.JSON)
         .when()
-            .post(BASE_URL+"/projekt")
+            .post(BASE_URL+"/projects")
         .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .body("errors", hasSize(1))
@@ -792,7 +837,7 @@ public class BackendControllerTest {
                 .body(projekt)
                 .contentType(ContentType.JSON)
             .when()
-                .post(BASE_URL+"/projekt")
+                .post(BASE_URL+"/projects")
             .then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("errors", hasSize(1))
@@ -810,7 +855,7 @@ public class BackendControllerTest {
                 .body(projekt)
                 .contentType(ContentType.JSON)
             .when()
-                .post(BASE_URL+"/projekt")
+                .post(BASE_URL+"/projects")
                 .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("errors", hasSize(1))
@@ -832,7 +877,7 @@ public class BackendControllerTest {
                 .body(projekt)
                 .contentType(ContentType.JSON)
             .when()
-                .put(BASE_URL+"/projekt")
+                .put(BASE_URL+"/projects")
             .then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("errors", hasSize(1))
@@ -844,7 +889,7 @@ public class BackendControllerTest {
                 .param("vorname",vorname)
                 .param("nachname",nachname)
                 .when()
-                .get(BASE_URL+"/projectsof")
+                .get(BASE_URL+"/projects/byusername")
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .extract().as(Projekt[].class));
@@ -857,7 +902,7 @@ public class BackendControllerTest {
                         .pathParam("userId", userId)
                         .contentType(ContentType.JSON)
                 .when()
-                    .get(BASE_URL+"/user/{userId}/projekte")
+                    .get(BASE_URL+"/users/{userId}/projects")
                 .then()
                     .statusCode(HttpStatus.SC_OK)
                     .assertThat()
@@ -870,7 +915,7 @@ public class BackendControllerTest {
                         .pathParam("userId", userId)
                         .contentType(ContentType.JSON)
                     .when()
-                        .get(BASE_URL+"/user/{userId}/cancelledprojects")
+                        .get(BASE_URL+"/users/{userId}/cancelledprojects")
                     .then()
                         .statusCode(HttpStatus.SC_OK)
                         .assertThat()
@@ -883,7 +928,7 @@ public class BackendControllerTest {
                     .pathParam("projektId", projectId)
                     .contentType(ContentType.JSON)
                 .when()
-                    .get(BASE_URL+"/projekt/{projektId}/users")
+                    .get(BASE_URL+"/projects/{projektId}/users")
                 .then()
                     .statusCode(HttpStatus.SC_OK)
                     .assertThat()
@@ -892,14 +937,14 @@ public class BackendControllerTest {
 
     private Long addUser(Teilnehmer teilnehmer) {
         return given()
-                .body(teilnehmer)
-                .contentType(ContentType.JSON)
+                    .body(teilnehmer)
+                    .contentType(ContentType.JSON)
                 .when()
-                .post(BASE_URL + "/adduser")
+                    .post(BASE_URL + "/users")
                 .then()
-                .statusCode(is(HttpStatus.SC_CREATED))
-                .extract()
-                .body().as(Long.class);
+                    .statusCode(is(HttpStatus.SC_CREATED))
+                    .extract()
+                        .body().as(Long.class);
     }
 
     private void updateUser(Teilnehmer teilnehmer) {
@@ -907,7 +952,7 @@ public class BackendControllerTest {
             .body(teilnehmer)
             .contentType(ContentType.JSON)
         .when()
-            .put(BASE_URL + "/user")
+            .put(BASE_URL + "/users")
         .then()
             .statusCode(is(HttpStatus.SC_OK));
     }
@@ -917,7 +962,7 @@ public class BackendControllerTest {
                 .pathParam("userId", userId)
                 .contentType(ContentType.JSON)
         .when()
-                .delete(BASE_URL + "/user/{userId}")
+                .delete(BASE_URL + "/users/{userId}")
         .then()
                 .statusCode(is(HttpStatus.SC_NO_CONTENT));
     }
@@ -950,7 +995,7 @@ public class BackendControllerTest {
         return given()
                 .pathParam("projekt_id", projectID)
                 .when()
-                .get(BASE_URL + "/project/{projekt_id}")
+                .get(BASE_URL + "/projects/{projekt_id}")
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .assertThat()
@@ -962,7 +1007,7 @@ public class BackendControllerTest {
                     .body(projekt)
                     .contentType(ContentType.JSON)
                .when()
-                    .post(BASE_URL+"/projekt")
+                    .post(BASE_URL+"/projects")
                .then()
                     .statusCode(is(HttpStatus.SC_CREATED))
                     .extract()
@@ -974,7 +1019,7 @@ public class BackendControllerTest {
                     .body(projekt)
                     .contentType(ContentType.JSON)
                 .when()
-                    .put(BASE_URL+"/projekt")
+                    .put(BASE_URL+"/projects")
                 .then()
                     .statusCode(is(HttpStatus.SC_OK))
                     .extract()
@@ -985,7 +1030,7 @@ public class BackendControllerTest {
         return Arrays.asList(given()
                         .contentType(ContentType.JSON)
                         .when()
-                        .get(BASE_URL + "/allprojects")
+                        .get(BASE_URL + "/projects")
                         .then()
                         .statusCode(is(HttpStatus.SC_OK))
                         .extract()
@@ -995,7 +1040,7 @@ public class BackendControllerTest {
     private List<Teilnehmer> getAllUsers() {
         return Arrays.asList(given()
                 .when()
-                .get(BASE_URL + "/allusers")
+                .get(BASE_URL + "/users")
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .extract().as(Teilnehmer[].class));
@@ -1007,7 +1052,7 @@ public class BackendControllerTest {
                     .pathParam("userId", userId)
                     .contentType(ContentType.JSON)
                 .when()
-                    .put(BASE_URL + "/projekt/{projektId}/user/{userId}")
+                    .put(BASE_URL + "/projects/{projektId}/users/{userId}")
                 .then()
                     .statusCode(is(HttpStatus.SC_OK))
                     .extract().body().as(Boolean.class);
@@ -1019,7 +1064,7 @@ public class BackendControllerTest {
                     .pathParam("userId", userId)
                     .contentType(ContentType.JSON)
                 .when()
-                    .delete(BASE_URL + "/projekt/{projektId}/user/{userId}")
+                    .delete(BASE_URL + "/projects/{projektId}/users/{userId}")
                 .then()
                     .statusCode(is(HttpStatus.SC_OK))
                     .extract().body().as(Boolean.class);
@@ -1029,7 +1074,7 @@ public class BackendControllerTest {
         return given()
                 .pathParam("id", userId)
             .when()
-                .get(BASE_URL + "/user/{id}")
+                .get(BASE_URL + "/users/{id}")
             .then()
                 .statusCode(HttpStatus.SC_OK)
                 .assertThat()
@@ -1040,7 +1085,7 @@ public class BackendControllerTest {
             given()
                 .pathParam("id", userId)
                 .when()
-                .get(BASE_URL + "/user/{id}")
+                .get(BASE_URL + "/users/{id}")
                 .then()
                 .statusCode(HttpStatus.SC_NOT_FOUND);
     }
@@ -1050,7 +1095,7 @@ public class BackendControllerTest {
         return given()
                     .pathParam("projekt_id", projektId)
                 .when()
-                    .put(BASE_URL + "/projekt/{projekt_id}")
+                    .put(BASE_URL + "/projects/disable/{projekt_id}")
                 .then()
                     .assertThat()
                     .statusCode(HttpStatus.SC_OK)
@@ -1062,7 +1107,7 @@ public class BackendControllerTest {
                     .pathParam("projekt_id", projektId)
                     .contentType(ContentType.JSON)
                 .when()
-                    .delete(BASE_URL + "/projekt/{projekt_id}")
+                    .delete(BASE_URL + "/projects/{projekt_id}")
                 .then()
                     .statusCode(is(HttpStatus.SC_OK))
                     .extract().body().as(Boolean.class);

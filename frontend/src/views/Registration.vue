@@ -135,7 +135,7 @@
 </template>
 
 <script>
-import { getProjects, registerTeilnehmer} from "../modules/ferienpass-api";
+import api from "../modules/ferienpass-api";
 import formDataJson from '../assets/form-data'
 
 export default {
@@ -238,7 +238,7 @@ export default {
       this.datenschutz = this.formData.sections[5];
     },
     retrieveAllAdminProjects () {
-        getProjects().then(projects => {
+      api.getProjects().then(projects => {
             console.log('Retrieve projects from Admin-Microservice');
             console.log(projects);
             this.alleAdminProjekte = projects;
@@ -297,7 +297,7 @@ export default {
       jsonObject['projects'] = jsonProjects;
       console.log(jsonObject)
 
-        registerTeilnehmer(jsonObject).then(response => {
+      api.registerTeilnehmer(jsonObject).then(response => {
             console.log(response);
             if (response) {
                 if (response.status === 201) {

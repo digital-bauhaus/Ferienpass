@@ -18,93 +18,116 @@
 		<java.version>1.8</java.version>
 		<rest-assured.version>3.3.0</rest-assured.version>
 		<postgresql.version>42.2.5</postgresql.version>
-		<google-collections.version>1.0</google-collections.version>
 		<springfox.version>2.9.2</springfox.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
+			<!-- expose operational information about the running application -->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency>
+			<!-- Setup Spring Boot -->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
+			<!-- Automatically restart whenever files on the classpath change -->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<!-- JPA Data (Repositories, Entities, Hibernate, etc..) -->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
 		<dependency>
+			<!-- Automated JSON API documentation for API's built with Spring -->
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>${springfox.version}</version>
 		</dependency>
 
 		<dependency>
+			<!-- Generate beautiful documentation from a Swagger-compliant API. -->
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>${springfox.version}</version>
 		</dependency>
 
 		<dependency>
+			<!-- Light-weight in memory database -->
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
 
-        <!-- Switch back from Spring Boot 2.x standard HikariCP to Tomcat JDBC,
-        configured later in Heroku (see https://stackoverflow.com/a/49970142/4964553) -->
-        <dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-jdbc</artifactId>
-        </dependency>
-
-		<!-- PostgreSQL used in Staging and Production environment, e.g. on Heroku -->
 		<dependency>
+			<!-- Switch back from Spring Boot 2.x standard HikariCP to Tomcat JDBC,
+			configured later in Heroku (see https://stackoverflow.com/a/49970142/4964553) -->
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+		</dependency>
+
+		<dependency>
+			<!-- PostgreSQL used in Staging and Production environment, e.g. on Heroku -->
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>${postgresql.version}</version>
 		</dependency>
 
-		<!-- Testing -->
 		<dependency>
+			<!-- Starter for using Spring Security -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<!-- Testing (JUnit, AssertJ, Hamcrest, etc.) -->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<!-- Ease the testing of REST-APIs -->
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
 			<version>${rest-assured.version}</version>
 			<scope>test</scope>
 		</dependency>
-
-        <dependency>
-            <groupId>com.google.collections</groupId>
-            <artifactId>google-collections</artifactId>
-            <version>${google-collections.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>spring-mock-mvc</artifactId>
+			<version>${rest-assured.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
+			<!-- support for accessing parameter names -->
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-parameter-names</artifactId>
 		</dependency>
 		<dependency>
+			<!-- support for other new Java 8 datatypes outside of date/time (mainly Optional) -->
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jdk8</artifactId>
 		</dependency>
 		<dependency>
+			<!-- support for Java 8 date/time types -->
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
-    </dependencies>
+
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -113,30 +136,30 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy Vue.js frontend content</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>src/main/resources/public</outputDirectory>
-                            <overwrite>true</overwrite>
-                            <resources>
-                                <resource>
-                                    <directory>${project.parent.basedir}/frontend/target/dist</directory>
-                                    <includes>
-                                        <include>static/</include>
-                                        <include>index.html</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+						<execution>
+								<id>copy Vue.js frontend content</id>
+								<phase>generate-resources</phase>
+								<goals>
+										<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+										<outputDirectory>src/main/resources/public</outputDirectory>
+										<overwrite>true</overwrite>
+										<resources>
+												<resource>
+														<directory>${project.parent.basedir}/frontend/target/dist</directory>
+														<includes>
+																<include>static/</include>
+																<include>index.html</include>
+														</includes>
+												</resource>
+										</resources>
+								</configuration>
+						</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
