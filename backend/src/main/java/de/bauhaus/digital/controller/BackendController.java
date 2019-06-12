@@ -1,7 +1,15 @@
 package de.bauhaus.digital.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.bauhaus.digital.domain.*;
+import com.sendgrid.Method;
+import com.sendgrid.Request;
+import com.sendgrid.Response;
+import com.sendgrid.SendGrid;
+import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Content;
+import com.sendgrid.helpers.mail.objects.Email;
+import de.bauhaus.digital.domain.Projekt;
+import de.bauhaus.digital.domain.Teilnehmer;
 import de.bauhaus.digital.exception.ProjektNotFoundException;
 import de.bauhaus.digital.exception.UserNotFoundException;
 import de.bauhaus.digital.repository.ProjektRepository;
@@ -9,14 +17,18 @@ import de.bauhaus.digital.repository.TeilnehmerRepository;
 import de.bauhaus.digital.transformation.AnmeldungJson;
 import de.bauhaus.digital.transformation.AnmeldungToAdmin;
 import de.bauhaus.digital.transformation.Project;
-import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +42,9 @@ public class BackendController {
     private TeilnehmerRepository teilnehmerRepository;
     @Autowired
     private ProjektRepository projektRepository;
+
+    @Value(value = "classpath:mail/mailtext.txt")
+    private Resource mailtext;
 
     /*************************************
      * Login API
@@ -395,6 +410,37 @@ public class BackendController {
             }
         });
         return projekteOhneFreiSlots;
+    }
+
+    // FerienpassMail Handling
+
+    @RequestMapping(path = "/mail", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody void sendMail(@RequestBody Teilnehmer teilnehmer) throws IOException {
+
+        Mail mail = new Mail(
+                new Email("mail@ferienpass-weimar.de"),
+                "Ihre Anmeldung für den Ferienpass Weimar: Nur ein Schritt fehlt noch!",
+                new Email(teilnehmer.getEmail()),
+                new Content("text/plain", readMailText()));
+
+        Request sendgridRequest = new Request();
+        sendgridRequest.setMethod(Method.POST);
+        sendgridRequest.setEndpoint("mail/send");
+        sendgridRequest.setBody(mail.build());
+
+        SendGrid sendGrid = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+        Response sendgridResponse = sendGrid.api(sendgridRequest);
+
+        LOG.info("FerienpassMail send to " + teilnehmer.getEmail()
+                + " with StatusCode " + sendgridResponse.getStatusCode()
+                + " & Headers " + sendgridResponse.getHeaders()
+                + " & Body " + sendgridResponse.getBody());
+
+    }
+
+    protected String readMailText() throws IOException {
+        return new String(Files.readAllBytes(mailtext.getFile().toPath()));
     }
 
 }

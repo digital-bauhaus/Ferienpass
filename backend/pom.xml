@@ -19,6 +19,7 @@
 		<rest-assured.version>3.3.0</rest-assured.version>
 		<postgresql.version>42.2.5</postgresql.version>
 		<springfox.version>2.9.2</springfox.version>
+		<sendgrid-java.version>4.4.1</sendgrid-java.version>
 	</properties>
 
 	<dependencies>
@@ -62,6 +63,13 @@
 			<!-- Light-weight in memory database -->
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+		</dependency>
+
+		<!-- Sending Java over Heroku Addon Sendgrid-->
+		<dependency>
+			<groupId>com.sendgrid</groupId>
+			<artifactId>sendgrid-java</artifactId>
+			<version>${sendgrid-java.version}</version>
 		</dependency>
 
 		<dependency>

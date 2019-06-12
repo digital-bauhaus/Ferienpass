@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/digital-bauhaus/Ferienpass/badge.svg?branch=master)](https://coveralls.io/github/digital-bauhaus/Ferienpass?branch=master)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/digital-bauhaus/Ferienpass-Anmeldung/blob/master/LICENSE)
 
-### Historie
+## Historie
 
 Dieses Projekt führt im Rahmen eines Hackatons die Ergebnisse eines Studentenprojekts weiter. Das Projekt fand innerhalb eines Projektseminars an der [Bauhaus-Universität Weimar](https://www.uni-weimar.de/de/medien/professuren/intelligente-softwaresysteme/) von 2017-10 bis 2018-04 statt. Das Ziel war die Digitalisierung des Anmeldeprozesses für Kinder der Stadt Weimar in Thüringen für Sommerferien-Aktivitäten im Rahmen des gemeinnützigen [Ferienpass-Projektes](http://www.ferienpass-weimar.de/).
 
@@ -20,12 +20,11 @@ https://github.com/digital-bauhaus/Ferienpass-Admin
 Das vorliegende Projekt möchte die Ergebnisse des Studenten-Projektes, dass in einer Alpha-Phase 2018 getestet wurde, nun produktionsreif machen und in 2019 den Kindern zur Verfügung stellen.
 
 
+## Nutzung
 
-### Aufbau
+Die Anmeldungsseite steht direkt auf der Startseite zur Verfügung (lokal http://localhost:8088/) , die Administrationsfunktionen liegen tiefer und finden sich ab http://localhost:8088/login
 
-Die bisherige Microservice-Struktur wird zugunsten einer vereinfachten Weiterentwicklung und Wartung aufgegeben und in einen Mini-Monolithen bzw. Microlithen überführt.
-
-Dabei steht die Anmeldungsseite direkt auf der Startseite zur Verfügung (lokal http://localhost:8088/) , die Administrationsfunktionen liegen tiefer und finden sich ab http://localhost:8088/login
+#### Login
 
 Der Login unter https://ferienpass.herokuapp.com/login ist nun abgesichert - die Credentials werden lokal über die [application.properties](backend/src/main/resources/application.properties) konfiguriert, im PR bzw. Produktivdeployment über Umgebungsvariablen in Heroku: 
 
@@ -38,6 +37,23 @@ spring.security.user.password=foo
 SPRING_SECURITY_USER_NAME=xyz
 SPRING_SECURITY_USER_PASSWORD=xyz
 ```
+
+#### Bestätigungsmails
+
+Die Mails für die erfolgreiche Anmeldung werden nun mit Hilfe des [Heroku-Addons Sendgrid](https://elements.heroku.com/addons/sendgrid) verschickt. Im genutzten Free-Tier sind 12.000 freie Mails inbegriffen pro Monat.
+
+Der Test dafür benötigt lokal eine manuell zu setzende Umgebungsvariable `SENDGRID_API_KEY=korrekterKey` mit dem korrekten Key (den Key am besten aus der Heroku-Configvar beziehen!) - z.B. innerhalb der Run Configurations der IDE.
+
+Innerhalb von TravisCI wird auch die Environment Variable benötigt. 
+
+Der Inhalt der Mail wird über die Datei [mailtext.txt](backend/src/main/resources/mail/mailtext.txt) beschrieben.
+
+
+# Contribute
+
+## Aufbau
+
+Die bisherige Microservice-Struktur wird zugunsten einer vereinfachten Weiterentwicklung und Wartung aufgegeben und in einen Mini-Monolithen bzw. Microlithen überführt.
 
 
 
@@ -69,7 +85,7 @@ SPRING_SECURITY_USER_PASSWORD=xyz
             |                           |
             +---------------------------+
 
-### Prerequisites
+## Prerequisites
 
 * Maven
 * Java

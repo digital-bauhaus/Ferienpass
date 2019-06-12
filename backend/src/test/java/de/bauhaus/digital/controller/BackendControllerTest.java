@@ -13,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
@@ -36,6 +37,9 @@ import static de.bauhaus.digital.DomainFactory.*;
 )
 public class BackendControllerTest {
     private static final String BASE_URL = "http://localhost:8089/api";
+
+    @Autowired
+    private BackendController backendController;
 
     @Value("classpath:requests/anmeldung-post-data.json")
     private Resource anmeldungJsonFile;
@@ -67,6 +71,30 @@ public class BackendControllerTest {
             .get(BASE_URL + "/login")
         .then()
             .statusCode(is(HttpStatus.SC_UNAUTHORIZED));
+    }
+
+    @Test
+    public void should_be_able_to_read_mail_text() throws IOException {
+        String mailText = backendController.readMailText();
+
+        assertThat(mailText, containsString("Das Ferienpass-Team Weimar"));
+    }
+
+    @Test
+    public void sending_email_works() {
+
+        // Please set SENDGRID_API_KEY=SG.xyz (see Heroku Config Vars!)
+
+        Teilnehmer teilnehmer = createSampleUser();
+        teilnehmer.setEmail("jonas.hecht+ferienpasstest@gmail.com");
+
+        given()
+            .body(teilnehmer)
+            .contentType(ContentType.JSON)
+        .when()
+            .post(BASE_URL + "/mail/")
+        .then()
+            .statusCode(HttpStatus.SC_CREATED);
     }
 
     /****************************
