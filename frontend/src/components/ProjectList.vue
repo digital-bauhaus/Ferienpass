@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { deleteProject, getAllUsersAssignedToProject } from '../modules/ferienpass-api';
+import api from '../modules/ferienpass-api';
 import jsPDF from 'jspdf'
 
 export default {
@@ -50,7 +50,7 @@ export default {
       .then((willDelete) => {
         if (willDelete) {
           this.errors = [];
-          deleteProject(projectId).then(response => {
+          api.deleteProject(projectId).then(response => {
             this.$emit("project-deleted");
             return this.$swal("Projekt wurde gelöscht!", {
               icon: "success"
@@ -84,7 +84,7 @@ export default {
       doc.text('Web Link: ' + this.allprojects[projectID].webLink, 20, y += deltaLine)
       doc.text('Projekt aktiv: ' + this.allprojects[projectID].aktiv, 20, y += deltaLine)
 
-      getAllUsersAssignedToProject(this.allprojects[projectID].id).then(
+      api.getAllUsersAssignedToProject(this.allprojects[projectID].id).then(
           users => this.teilnehmerOfProject = users)
 
       for (let index = 0; index < this.teilnehmerOfProject.length; ++index) {

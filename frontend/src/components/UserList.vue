@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { getProjects, deleteUser } from '../modules/ferienpass-api';
+import api from '../modules/ferienpass-api';
 
 export default {
   name: "UserList",
@@ -81,7 +81,7 @@ export default {
     loadProjectsOfUsers () {
       this.errors = [];
       // instead of one api-call per user, we request ALL projects and build a lookup-table ourselves
-      getProjects().then(projects => {
+      api.getProjects().then(projects => {
         this.users.forEach(user =>  {
           this.projectNamesByUserId[user.id] = this.findProjectNamesForUserId(projects, user.id);
         });
@@ -108,7 +108,7 @@ export default {
       .then((willDelete) => {
         if (willDelete) {
           this.errors = [];
-          deleteUser(userId).then(response => {
+          api.deleteUser(userId).then(response => {
             this.$emit("user-deleted");
             return this.$swal("Teilnehmer wurde gelöscht!", {
               icon: "success",
