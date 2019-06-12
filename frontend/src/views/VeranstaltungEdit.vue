@@ -75,6 +75,11 @@
         <UserList :users="project.anmeldungen" :show-projects="false" :allow-export-pdf="false" :allow-delete="false"/>
       </div>
 
+      <div v-if="!isNewProject">
+        <h2>Stornierte Nutzer:</h2>
+        <UserList :users="project.stornierteTeilnehmer" :show-projects="false" :allow-export-pdf="false" :allow-delete="false"/>
+      </div>
+
     </main>
     <div :class="popupClass">✔ Erfolgreich bearbeitet!</div>
   </div>
@@ -127,7 +132,8 @@ export default {
     if (this.isNewProject) {
       this.project = {
         aktiv: true,
-        anmeldungen: []
+        anmeldungen: [],
+        stornierteTeilnehmer: []
       };
     } else {
       this.loadProjectData();
