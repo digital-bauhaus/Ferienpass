@@ -24,11 +24,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -440,7 +441,7 @@ public class BackendController {
     }
 
     protected String readMailText() throws IOException {
-        return new String(Files.readAllBytes(mailtext.getFile().toPath()));
+        return StreamUtils.copyToString(mailtext.getInputStream(), Charset.defaultCharset());
     }
 
 }
