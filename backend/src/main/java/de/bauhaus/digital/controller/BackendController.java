@@ -396,6 +396,7 @@ public class BackendController {
         }
 
         Teilnehmer savedTeilnehmer = teilnehmerRepository.save(neuAngemeldeterTeilnehmer);
+        sendMail(savedTeilnehmer);
 
         LOG.info("Successfully saved new Teilnehmer " + neuAngemeldeterTeilnehmer.toString() + " into Admin-Backend-DB");
 
@@ -432,10 +433,9 @@ public class BackendController {
         SendGrid sendGrid = new SendGrid(System.getenv("SENDGRID_API_KEY"));
         Response sendgridResponse = sendGrid.api(sendgridRequest);
 
-        LOG.info("FerienpassMail send to " + teilnehmer.getEmail()
+        LOG.info("AnmeldebestaetigungsMail send to " + teilnehmer.getEmail()
                 + " with StatusCode " + sendgridResponse.getStatusCode()
-                + " & Headers " + sendgridResponse.getHeaders()
-                + " & Body " + sendgridResponse.getBody());
+                + " & Headers " + sendgridResponse.getHeaders());
 
     }
 
