@@ -21,6 +21,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .mvcMatchers("/api/register").permitAll()
                 .mvcMatchers("/api/login").authenticated() // simple login endpoint
+                .mvcMatchers("/api/mail").authenticated() // we should secure our mail endpoint also
                 .mvcMatchers("/api/users").authenticated() // explicitly disallow users-resource
                 .mvcMatchers("/api/projects").permitAll()
                 .anyRequest().permitAll()
