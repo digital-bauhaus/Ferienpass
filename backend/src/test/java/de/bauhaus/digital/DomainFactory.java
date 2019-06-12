@@ -11,12 +11,13 @@ public class DomainFactory {
                 1), LocalDate.of(2018, 7, 3), 10, 5, "Sportjugend Weimar", 15, 20);
     }
 
-    public static Projekt createSampleProjectOfSlots(int slotsGesamt,
-                                                     int slotsReserviert)
-    {
-        return createSampleProject("Schwimmem im See", LocalDate.of(2018, 7,
-                1), LocalDate.of(2018, 7, 3), slotsGesamt,
-            slotsReserviert);
+    public static Projekt createSampleProjectOfSlots(int slotsGesamt, int slotsReserviert) {
+        return createSampleProject(
+                "Schwimmem im See",
+                LocalDate.of(2018, 7,1),
+                LocalDate.of(2018, 7, 3),
+                slotsGesamt,
+                slotsReserviert);
     }
 
     public static Projekt createSampleProject(String projektName,
