@@ -74,7 +74,7 @@ export default {
     return AXIOS.get('/users/' + userId).then(response => response.data);
   },
   getUsers() {
-    console.log("The user " + store.getters.userName + ' and password ' + store.getters.userPass)
+    console.log("Get all users from backend")
     return AXIOS
         .get('/users',
             { auth: {

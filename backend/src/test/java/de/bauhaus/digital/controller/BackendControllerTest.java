@@ -807,6 +807,36 @@ public class BackendControllerTest {
     }
 
     @Test
+    public void should_be_able_to_delete_Teilnehmer_if_was_assigned_to_Projekt() throws Exception {
+        // Given
+        Long userId = addUser(createSampleUser());
+        Long projectId = addProjekt(createSampleProject());
+        assignUser2Projekt(projectId, userId);
+
+        // When
+        deleteUser(userId);
+
+        // Then
+        // pass :)
+    }
+
+    @Test
+    public void should_be_able_to_delete_Teilnehmer_if_was_storniert_on_Projekt() throws Exception {
+        // Given
+        Long userId = addUser(createSampleUser());
+        Long projectId = addProjekt(createSampleProject());
+        assignUser2Projekt(projectId, userId);
+        Boolean isUserUnassignedFromProject = unassignUserFromProjekt(projectId, userId);
+        assertThat(isUserUnassignedFromProject, is(true));
+
+        // When
+        deleteUser(userId);
+
+        // Then
+        // pass :)
+    }
+
+    @Test
     public void shouldUpdateProjectCorrectly() {
         Long projectId = addProjekt(createSampleProject());
 

@@ -153,6 +153,10 @@ public class BackendController {
     @RequestMapping(path = "/users/{userId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable("userId") long userId) {
+        // Before we delete the Teilnehmer, we need to delete every Projekt assignement
+        // otherwise we will run into https://github.com/digital-bauhaus/Ferienpass/issues/71
+        getUsersProjects(userId).stream().forEach(projekt -> projekt.deleteTeilnehmerVonAllenProjekten(getUserById(userId)));
+
         teilnehmerRepository.deleteById(userId);
         LOG.info("User with id "+ userId + " deleted");
     }
@@ -161,10 +165,14 @@ public class BackendController {
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     List<Projekt> getUsersProjects(@PathVariable("userId") Long userId) {
-        LOG.info("GET called on /user/" + userId + "/projekte");
+        LOG.info("GET called on /user/" + userId + "/projects");
         List<Projekt> resultList = new ArrayList<>();
         for (Projekt projekt : projektRepository.findAll()) {
             for (Teilnehmer teilnehmer: projekt.getAnmeldungen()) {
+                if(teilnehmer.getId() == userId)
+                    resultList.add(projekt);
+            }
+            for (Teilnehmer teilnehmer: projekt.getStornierteTeilnehmer()) {
                 if(teilnehmer.getId() == userId)
                     resultList.add(projekt);
             }

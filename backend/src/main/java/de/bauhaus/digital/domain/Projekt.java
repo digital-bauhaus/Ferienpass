@@ -231,6 +231,16 @@ public class Projekt {
         return teilnehmerWasRegistered;
     }
 
+    public boolean deleteTeilnehmerVonAllenProjekten(Teilnehmer zuLoeschenderTeilnehmer) {
+        boolean warAngemeldet = this.anmeldungen.remove(zuLoeschenderTeilnehmer);
+        boolean warStorniert = this.stornierteTeilnehmer.remove(zuLoeschenderTeilnehmer);
+        return warAngemeldetUndOderStorniert(warAngemeldet, warStorniert);
+    }
+
+    private boolean warAngemeldetUndOderStorniert(boolean warAngemeldet, boolean warStorniert) {
+        return warAngemeldet || warStorniert;
+    }
+
     public boolean isTeilnehmerNotAlreadyAsignedToProjekt(Teilnehmer teilnehmer) {
         return !this.anmeldungen.contains(teilnehmer);
     }
