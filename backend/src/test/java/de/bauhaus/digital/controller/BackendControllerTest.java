@@ -86,7 +86,7 @@ public class BackendControllerTest {
         // Please set SENDGRID_API_KEY=SG.xyz (see Heroku Config Vars!)
 
         Teilnehmer teilnehmer = createSampleUser();
-        teilnehmer.setEmail("jonas.hecht+ferienpasstest@gmail.com");
+        teilnehmer.setEmail("ferienpasstest@gmail.com");
 
         given()
             .body(teilnehmer)
