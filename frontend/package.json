@@ -42,7 +42,9 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "vue/valid-v-model": "warn"
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }

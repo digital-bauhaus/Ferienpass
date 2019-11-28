@@ -6,7 +6,7 @@
       <th>Plätze frei / gesamt / [reserviert]</th>
       <th>Bearbeiten</th>
     </tr>
-    <tr v-for="(project, index) of projects">
+    <tr v-for="(project, index) of projects" :key="project.id">
       <td>{{project.name}}</td>
       <td>{{project.datum}}</td>
       <td>{{project.slotsFrei}} / {{project.slotsGesamt}} / [{{project.slotsReserviert}}]</td>
@@ -50,7 +50,7 @@ export default {
       .then((willDelete) => {
         if (willDelete) {
           this.errors = [];
-          api.deleteProject(projectId).then(response => {
+          api.deleteProject(projectId).then(() => {
             this.$emit("project-deleted");
             return this.$swal("Projekt wurde gelöscht!", {
               icon: "success"

@@ -11,12 +11,12 @@
       <th>Geburtsdatum</th>
       <th>Bearbeiten</th>
     </tr>
-    <tr v-for="user of users">
+    <tr v-for="user of users" :key="user.id">
       <td :id="user.bezahlt"><span :id="user.bezahlt">{{user.bezahlt}}</span></td>
       <td>{{user.nachname}}, {{user.vorname}}</td>
       <td v-if="showProjects && projectsLoaded">
         <ul>
-          <li v-for="projectName of projectNamesByUserId[user.id]">{{ projectName }}</li>
+          <li v-for="projectName of projectNamesByUserId[user.id]" :key="projectName">{{ projectName }}</li>
         </ul>
       </td>
       <td>{{user.registrierungsdatum}}</td>
@@ -108,7 +108,7 @@ export default {
       .then((willDelete) => {
         if (willDelete) {
           this.errors = [];
-          api.deleteUser(userId).then(response => {
+          api.deleteUser(userId).then(() => {
             this.$emit("user-deleted");
             return this.$swal("Teilnehmer wurde gelöscht!", {
               icon: "success",

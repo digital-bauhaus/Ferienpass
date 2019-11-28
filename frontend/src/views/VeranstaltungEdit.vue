@@ -149,11 +149,11 @@ export default {
     createOrUpdateProject() {
       this.errorMessages = [];
       if (this.isNewProject) {
-        api.createProject(this.project).then(response => {
+        api.createProject(this.project).then(() => {
           this.fadeInAndOutAfterTimeout()
         }).catch(errorMessages => this.errorMessages = errorMessages);
       } else {
-        api.updateProject(this.project).then(response => {
+        api.updateProject(this.project).then(() => {
           this.fadeInAndOutAfterTimeout()
         }).catch(errorMessages => this.errorMessages = errorMessages);
       }

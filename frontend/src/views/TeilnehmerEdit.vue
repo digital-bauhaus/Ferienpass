@@ -292,7 +292,7 @@
             <th>Name</th>
             <th>Stornieren</th>
           </tr>
-          <tr v-for="(projekt, index) of projectsOfUser">
+          <tr v-for="projekt of projectsOfUser" :key="projekt.id">
             <td><label> {{projekt.name}}</label></td>
             <td>
               <button type="button" v-on:click="unassignFromProject(projekt.id, user.id)">Stornieren</button>
@@ -308,7 +308,7 @@
             <th>Name</th>
             <th>Aktivieren</th>
           </tr>
-          <tr v-for="(projekt, index) of cancelledProjectsOfUser">
+          <tr v-for="projekt of cancelledProjectsOfUser" :key="projekt.id">
             <td><label>{{projekt.name}}</label></td>
             <td>
               <button type="button" v-on:click="reactivateProject(projekt.id, user.id)">Reaktivieren</button>
@@ -326,7 +326,7 @@
             <th>Name</th>
             <th>Anmelden</th>
           </tr>
-          <tr v-for="(projekt, index) of availableProjects">
+          <tr v-for="projekt of availableProjects" :key="projekt.id">
             <td><label> {{projekt.name}}</label></td>
             <td>
               <button type="button" v-on:click="assignToProject(projekt.id, user.id)">Eintragen</button>
@@ -379,7 +379,7 @@ export default {
     dataPromises.push(this.loadProjects());
     dataPromises.push(this.loadProjectsOfUser());
     dataPromises.push(this.loadCancelledProjectsOfUser());
-    Promise.all(dataPromises).then(response => this.loaded = true).catch(e => this.errorMessages.push(e.toString()));
+    Promise.all(dataPromises).then(() => this.loaded = true).catch(e => this.errorMessages.push(e.toString()));
   },
   methods: {
     loadUserData() {
@@ -400,18 +400,18 @@ export default {
     },
     updateUser() {
       this.errorMessages = [];
-      api.updateUser(this.user).then(response => {
+      api.updateUser(this.user).then(() => {
         this.fadeInAndOutAfterTimeout()
       }).catch(errorMessages => this.errorMessages = errorMessages)
     },
     unassignFromProject(projectId, userId) {
-      api.deleteUserFromProject(projectId, userId).then(response => {
+      api.deleteUserFromProject(projectId, userId).then(() => {
         this.fadeInAndOutAfterTimeout();
         this.reloadProjectsOfUser();
       })
     },
     assignToProject(projectId, userId) {
-      api.addUserToProject(projectId, userId).then(response => {
+      api.addUserToProject(projectId, userId).then(() => {
         this.fadeInAndOutAfterTimeout();
         this.reloadProjectsOfUser();
       })
