@@ -15,7 +15,7 @@
 <script>
 export default {
   name: 'TextArea',
-  props: ['params']
+  props: ['params'],
 };
 </script>
 

@@ -6,12 +6,12 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:vue/recommended',
-    // '@vue/airbnb',
+    '@vue/airbnb',
   ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'vue/valid-v-model': 'warn'
+    'vue/valid-v-model': 'warn',
   },
   parserOptions: {
     parser: 'babel-eslint',

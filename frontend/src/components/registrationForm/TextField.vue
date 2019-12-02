@@ -34,8 +34,8 @@ export default {
     },
     onEnter() {
       this.$emit('enter');
-    }
-  }
+    },
+  },
 };
 </script>
 

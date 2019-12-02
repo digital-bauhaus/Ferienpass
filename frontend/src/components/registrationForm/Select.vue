@@ -41,8 +41,8 @@ export default {
         const registrationData = this.$root.$children[0].$children[0].$data;
         registrationData[event.target.name] = event.target.value;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

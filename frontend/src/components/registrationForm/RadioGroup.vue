@@ -26,9 +26,9 @@ import RadioButton from './RadioButton';
 export default {
   name: 'RadioGroup',
   components: {
-    RadioButton
+    RadioButton,
   },
-  props: ['params']
+  props: ['params'],
 };
 </script>
 

@@ -13,7 +13,7 @@
 <script>
 export default {
   name: 'ParagraphList',
-  props: ['params']
+  props: ['params'],
 };
 </script>
 

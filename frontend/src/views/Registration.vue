@@ -304,8 +304,8 @@
 </template>
 
 <script>
-import api from "../modules/ferienpass-api";
-import formDataJson from '../assets/form-data'
+import api from '../modules/ferienpass-api';
+import formDataJson from '../assets/form-data';
 
 export default {
   name: 'Registration',
@@ -326,21 +326,21 @@ export default {
       component_checkbox: 'Checkbox',
       alleAdminProjekte: [],
       alleAnmeldungProjekte: [],
-      reservierteProjekte: []
+      reservierteProjekte: [],
     };
   },
   computed: {
     age() {
       if (
-        this['base__birthdate-day'] &&
-        this['base__birthdate-month'] &&
-        this['base__birthdate-year']
+        this['base__birthdate-day']
+        && this['base__birthdate-month']
+        && this['base__birthdate-year']
       ) {
         const day = parseInt(this['base__birthdate-day']);
         const month = parseInt(this['base__birthdate-month']);
         const year = parseInt(this['base__birthdate-year']);
 
-        if ([day, month, year].every(el => typeof el === 'number' && el % 1 === 0)) {
+        if ([day, month, year].every((el) => typeof el === 'number' && el % 1 === 0)) {
           const birthdate = new Date(year, month - 1, day);
           const today = new Date();
 
@@ -366,7 +366,7 @@ export default {
       }
 
       return null;
-    }
+    },
   },
   created() {
     this.fetchFormData();
@@ -393,14 +393,14 @@ export default {
     modalSuccess() {
       this.$swal('Geschafft!',
         'Deine Anmeldung war erfolgreich!\n Sie erhalten eine eMail mit der Zahlungsaufforderung.',
-        'success')
+        'success');
     },
     modalProjectOverbooked() {
-      this.$swal('Oh nein!', 'Eines der Angebote ist leider schon belegt!', 'warning')
+      this.$swal('Oh nein!', 'Eines der Angebote ist leider schon belegt!', 'warning');
     },
     fetchFormData() {
       this.formData = formDataJson;
-      console.log("formData fetched!");
+      console.log('formData fetched!');
       this.grunddaten = this.formData.sections[0];
       this.angebote = this.formData.sections[1];
       this.allergienkrankheiten = this.formData.sections[2];
@@ -409,19 +409,19 @@ export default {
       this.datenschutz = this.formData.sections[5];
     },
     retrieveAllAdminProjects() {
-      api.getProjects().then(projects => {
+      api.getProjects().then((projects) => {
         console.log('Retrieve projects from Admin-Microservice');
         console.log(projects);
         this.alleAdminProjekte = projects;
         this.mappeAdminProjekteAufAnmeldungProjekte();
-      })
+      });
     },
     mappeAdminProjekteAufAnmeldungProjekte() {
-      this.alleAdminProjekte.forEach(adminProjekt => {
-        console.log(adminProjekt)
-        var projektParam = {
+      this.alleAdminProjekte.forEach((adminProjekt) => {
+        console.log(adminProjekt);
+        const projektParam = {
           label: adminProjekt.name,
-          name: 'projekt-id' + adminProjekt.id,
+          name: `projekt-id${adminProjekt.id}`,
           registered: false,
           projekt: {
             date: new Date(adminProjekt.datum),
@@ -429,13 +429,13 @@ export default {
             id: adminProjekt.id,
             org: adminProjekt.traeger,
             minimumAge: adminProjekt.mindestAlter,
-            maximumAge: adminProjekt.hoechstAlter
-          }
-        }
+            maximumAge: adminProjekt.hoechstAlter,
+          },
+        };
         this.alleAnmeldungProjekte.push(projektParam);
       });
-      console.log('Map Admin projects to Anmeldung projects')
-      console.log(this.alleAnmeldungProjekte)
+      console.log('Map Admin projects to Anmeldung projects');
+      console.log(this.alleAnmeldungProjekte);
     },
     preventAccidentalSubmit(event) {
       if (['textarea', 'submit'].includes(event.target.type)) {
@@ -448,27 +448,27 @@ export default {
       event.preventDefault();
 
       const form = event.target;
-      let jsonObject = {};
-      let jsonProjects = [];
-      for (var i = 0; i < this.alleAnmeldungProjekte.length; i++) {
-        let jsonProject = {};
-        jsonProject['id'] = this.alleAnmeldungProjekte[i].projekt.id;
-        jsonProject['name'] = this.alleAnmeldungProjekte[i].label;
-        jsonProject['registered'] = this.alleAnmeldungProjekte[i].registered;
+      const jsonObject = {};
+      const jsonProjects = [];
+      for (let i = 0; i < this.alleAnmeldungProjekte.length; i++) {
+        const jsonProject = {};
+        jsonProject.id = this.alleAnmeldungProjekte[i].projekt.id;
+        jsonProject.name = this.alleAnmeldungProjekte[i].label;
+        jsonProject.registered = this.alleAnmeldungProjekte[i].registered;
         jsonProjects.push(jsonProject);
       }
 
       console.log(jsonProjects);
 
-      Array.prototype.slice.call(form.elements).forEach(element => {
+      Array.prototype.slice.call(form.elements).forEach((element) => {
         if (element.name && element.type !== 'submit') {
           jsonObject[element.name] = element.type === 'checkbox' ? element.checked : element.value;
         }
       });
-      jsonObject['projects'] = jsonProjects;
-      console.log(jsonObject)
+      jsonObject.projects = jsonProjects;
+      console.log(jsonObject);
 
-      api.registerTeilnehmer(jsonObject).then(response => {
+      api.registerTeilnehmer(jsonObject).then((response) => {
         console.log(response);
         if (response) {
           if (response.status === 201) {
@@ -476,9 +476,9 @@ export default {
             this.modalSuccess();
           }
         }
-      }).catch(error => {
+      }).catch((error) => {
         console.error(error);
-        console.log('Error, HTTP-Status: ' + error.response.status);
+        console.log(`Error, HTTP-Status: ${error.response.status}`);
         if (error.response) {
           if (error.response.status === 409) {
             // Admin-Backend said that one or more projectrs aren´t available
@@ -488,7 +488,7 @@ export default {
             this.modalProjectOverbooked();
           }
         }
-      })
+      });
     },
     getFormElements() {
       const form = document.querySelector('.form');
@@ -509,7 +509,7 @@ export default {
       }
     },
     enableFormElements(formElements) {
-      formElements.forEach(element => {
+      formElements.forEach((element) => {
         if (element.hasAttribute('data-newly-disabled')) {
           element.removeAttribute('data-newly-disabled');
           element.removeAttribute('disabled');
@@ -517,7 +517,7 @@ export default {
       });
     },
     disableFormElements(formElements, exceptions = []) {
-      formElements.forEach(element => {
+      formElements.forEach((element) => {
         if (!exceptions.includes(element) && element.type !== 'button' && !element.disabled) {
           element.setAttribute('data-newly-disabled', null);
           element.setAttribute('disabled', null);
@@ -535,9 +535,9 @@ export default {
     },
     disableUnavailableProjectsIfToYoungOrOld(age) {
       const projectControls = Array.prototype.slice.call(
-        document.querySelectorAll('[name^="projekt-id"]')
+        document.querySelectorAll('[name^="projekt-id"]'),
       );
-      projectControls.forEach(projectControl => {
+      projectControls.forEach((projectControl) => {
         projectControl.removeAttribute('disabled');
         const minimumAge = parseInt(projectControl.dataset.minimumAge);
         const maximumAge = parseInt(projectControl.dataset.maximumAge);
@@ -547,29 +547,29 @@ export default {
       });
     },
     disableProjectsWithoutFreeSlots() {
-      var projectControls = Array.prototype.slice.call(
-        document.querySelectorAll('[name^="projekt-id"]')
+      const projectControls = Array.prototype.slice.call(
+        document.querySelectorAll('[name^="projekt-id"]'),
       );
       for (var i = 0; i < this.reservierteProjekte.length; i++) {
-        projectControls.forEach(projectControl => {
-          var checkBoxId = parseInt(projectControl.dataset.id);
+        projectControls.forEach((projectControl) => {
+          const checkBoxId = parseInt(projectControl.dataset.id);
           if (this.reservierteProjekte[i] === checkBoxId) {
             projectControl.setAttribute('disabled', null);
             projectControl.checked = false;
             this.unregisterProject(checkBoxId);
           }
-        })
+        });
       }
     },
     unregisterProject(projectId) {
-      for (var j = 0; j < this.alleAnmeldungProjekte.length; j++) {
+      for (let j = 0; j < this.alleAnmeldungProjekte.length; j++) {
         if (projectId === this.alleAnmeldungProjekte[j].projekt.id) {
-          console.log('unregistering ' + this.alleAnmeldungProjekte[j].label)
+          console.log(`unregistering ${this.alleAnmeldungProjekte[j].label}`);
           this.alleAnmeldungProjekte[j].registered = false;
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

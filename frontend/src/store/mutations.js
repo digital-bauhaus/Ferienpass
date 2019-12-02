@@ -1,7 +1,7 @@
 import {
   LOGIN_FAILED,
-  LOGIN_SUCCESS
-} from "./mutation-types";
+  LOGIN_SUCCESS,
+} from './mutation-types';
 
 const mutations = {
   [LOGIN_SUCCESS](state, payload) {
@@ -10,7 +10,7 @@ const mutations = {
     state.user.loggedIn = true;
   },
   [LOGIN_FAILED](state) {
-    state.user.name = "";
+    state.user.name = '';
     state.user.loggedIn = false;
   },
 };

@@ -12,6 +12,6 @@
 <script>
 export default {
   name: 'OrderedList',
-  props: ['params']
+  props: ['params'],
 };
 </script>

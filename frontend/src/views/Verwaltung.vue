@@ -18,7 +18,7 @@
 
 <script>
 
-import NavigationMenu from "../components/NavigationMenu";
+import NavigationMenu from '../components/NavigationMenu';
 
 export default {
   name: 'Verwaltung',
@@ -26,10 +26,10 @@ export default {
   data() {
     return {
       title: 'Ferienpass Weimar',
-      subtitle: 'Administration'
-    }
-  }
-}
+      subtitle: 'Administration',
+    };
+  },
+};
 </script>
 
 
@@ -73,4 +73,3 @@ export default {
 }
 
 </style>
-

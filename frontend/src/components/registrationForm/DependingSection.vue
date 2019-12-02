@@ -26,13 +26,13 @@ export default {
   props: ['params'],
   data() {
     return {
-      checked: undefined
+      checked: undefined,
     };
   },
   methods: {
     updateChecked(event) {
       this.checked = event.target.checked;
-    }
-  }
+    },
+  },
 };
 </script>

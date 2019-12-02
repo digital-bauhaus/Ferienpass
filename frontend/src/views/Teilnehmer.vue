@@ -14,8 +14,8 @@
 
 <script>
 import api from '../modules/ferienpass-api';
-import NavigationMenu from "../components/NavigationMenu";
-import UserList from "../components/UserList";
+import NavigationMenu from '../components/NavigationMenu';
+import UserList from '../components/UserList';
 
 export default {
   name: 'Teilnehmer',
@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       errors: [],
-      users: []
+      users: [],
     };
   },
   created() {
@@ -32,10 +32,10 @@ export default {
   methods: {
     loadUsers() {
       this.errors = [];
-      api.getUsers().then(users => this.users = users).catch(e => this.errors.push(e));
-    }
-  }
-}
+      api.getUsers().then((users) => this.users = users).catch((e) => this.errors.push(e));
+    },
+  },
+};
 </script>
 
 

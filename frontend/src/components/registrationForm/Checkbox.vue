@@ -39,23 +39,23 @@ export default {
   props: ['params'],
   computed: {
     dateRangeFormatted() {
-      return this.params.projekt.date.toLocaleDateString('de-DE', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        }) + " - " +
+      return `${this.params.projekt.date.toLocaleDateString('de-DE', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      })} - ${
         this.params.projekt.endDate.toLocaleDateString('de-DE', {
           year: 'numeric',
           month: '2-digit',
-          day: '2-digit'
-        });
-    }
+          day: '2-digit',
+        })}`;
+    },
   },
   methods: {
     onChecked(event) {
       this.$emit('change', event);
-    }
-  }
+    },
+  },
 };
 </script>
 

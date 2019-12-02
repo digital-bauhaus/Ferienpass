@@ -19,7 +19,7 @@
 <script>
 export default {
   name: 'RadioButton',
-  props: ['params', 'name']
+  props: ['params', 'name'],
 };
 </script>
 

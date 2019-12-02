@@ -697,8 +697,8 @@
 
 <script>
 import api from '../modules/ferienpass-api';
-import ErrorListBox from "../components/ErrorListBox";
-import NavigationMenu from "../components/NavigationMenu";
+import ErrorListBox from '../components/ErrorListBox';
+import NavigationMenu from '../components/NavigationMenu';
 
 export default {
   name: 'Teilnehmer',
@@ -712,22 +712,24 @@ export default {
       allProjects: [],
       projectsOfUser: [],
       cancelledProjectsOfUser: [],
-      popupClass: 'fadeOut'
+      popupClass: 'fadeOut',
     };
   },
   computed: {
     errorHeadingText() {
-      return "Speichern nicht möglich. Bitte beheben Sie folgende Fehler:"
+      return 'Speichern nicht möglich. Bitte beheben Sie folgende Fehler:';
     },
     availableProjects() {
-      return this.allProjects.filter(project => {
-        const isProjectOfUser = this.projectsOfUser.map(userProject => userProject.id).includes(
-          project.id);
+      return this.allProjects.filter((project) => {
+        const isProjectOfUser = this.projectsOfUser.map((userProject) => userProject.id).includes(
+          project.id,
+        );
         const isCancelledProjectOfuser = this.cancelledProjectsOfUser.map(
-          userProject => userProject.id).includes(project.id);
+          (userProject) => userProject.id,
+        ).includes(project.id);
         return !isProjectOfUser && !isCancelledProjectOfuser;
-      })
-    }
+      });
+    },
   },
   created() {
     const dataPromises = [];
@@ -736,21 +738,23 @@ export default {
     dataPromises.push(this.loadProjectsOfUser());
     dataPromises.push(this.loadCancelledProjectsOfUser());
     Promise.all(dataPromises).then(() => this.loaded = true).catch(
-      e => this.errorMessages.push(e.toString()));
+      (e) => this.errorMessages.push(e.toString()),
+    );
   },
   methods: {
     loadUserData() {
-      return api.getUser(this.id).then(user => this.user = user);
+      return api.getUser(this.id).then((user) => this.user = user);
     },
     loadProjects() {
-      return api.getProjects().then(projects => this.allProjects = projects)
+      return api.getProjects().then((projects) => this.allProjects = projects);
     },
     loadProjectsOfUser() {
-      return api.getUsersProjects(this.id).then(projects => this.projectsOfUser = projects)
+      return api.getUsersProjects(this.id).then((projects) => this.projectsOfUser = projects);
     },
     loadCancelledProjectsOfUser() {
       return api.getUsersCancelledProjects(this.id).then(
-        projects => this.cancelledProjectsOfUser = projects)
+        (projects) => this.cancelledProjectsOfUser = projects,
+      );
     },
     reloadProjectsOfUser() {
       this.loadProjectsOfUser();
@@ -759,33 +763,33 @@ export default {
     updateUser() {
       this.errorMessages = [];
       api.updateUser(this.user).then(() => {
-        this.fadeInAndOutAfterTimeout()
-      }).catch(errorMessages => this.errorMessages = errorMessages)
+        this.fadeInAndOutAfterTimeout();
+      }).catch((errorMessages) => this.errorMessages = errorMessages);
     },
     unassignFromProject(projectId, userId) {
       api.deleteUserFromProject(projectId, userId).then(() => {
         this.fadeInAndOutAfterTimeout();
         this.reloadProjectsOfUser();
-      })
+      });
     },
     assignToProject(projectId, userId) {
       api.addUserToProject(projectId, userId).then(() => {
         this.fadeInAndOutAfterTimeout();
         this.reloadProjectsOfUser();
-      })
+      });
     },
     reactivateProject(projectId, userId) {
       this.assignToProject(projectId, userId);
     },
     fadeInAndOutAfterTimeout() {
       this.popupClass = 'fadeIn';
-      var self = this;
-      setTimeout(function () {
+      const self = this;
+      setTimeout(() => {
         self.popupClass = 'fadeOut';
       }, 2000);
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -999,4 +1003,3 @@ th, td {
 }
 
 </style>
-

@@ -47,79 +47,81 @@
 </template>
 
 <script>
+import jsPDF from 'jspdf';
 import api from '../modules/ferienpass-api';
-import jsPDF from 'jspdf'
 
 export default {
-  name: "ProjectList",
+  name: 'ProjectList',
   props: {
     projects: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      errors: []
+      errors: [],
     };
   },
   methods: {
     deleteProject(projectId) {
       this.$swal({
-        title: "Wirklich löschen?",
-        text: "Das Projekt wird vollständig gelöscht!",
-        icon: "warning",
+        title: 'Wirklich löschen?',
+        text: 'Das Projekt wird vollständig gelöscht!',
+        icon: 'warning',
         buttons: true,
         dangerMode: true,
       })
-      .then((willDelete) => {
-        if (willDelete) {
-          this.errors = [];
-          api.deleteProject(projectId).then(() => {
-            this.$emit("project-deleted");
-            return this.$swal("Projekt wurde gelöscht!", {
-              icon: "success"
+        .then((willDelete) => {
+          if (willDelete) {
+            this.errors = [];
+            api.deleteProject(projectId).then(() => {
+              this.$emit('project-deleted');
+              return this.$swal('Projekt wurde gelöscht!', {
+                icon: 'success',
+              });
+            }).catch((e) => {
+              this.errors.push(e);
+              return this.$swal('Da ist was schief gegangen :(', {
+                icon: 'error',
+              });
             });
-          }).catch(e => {
-            this.errors.push(e);
-            return this.$swal("Da ist was schief gegangen :(", {
-              icon: "error"
-            });
-          })
-        }
-      });
+          }
+        });
     },
     exportPDF(projectID) {
       /*eslint-disable */
       var doc = new jsPDF()
-      /*eslint-enable */
+      /* eslint-enable */
       /* var ta = document.getElementById(projectID) */
-      let y = 10
-      let deltaLine = 10
-      doc.text('Projektdaten', 20, y += deltaLine)
-      doc.text('Name: ' + this.allprojects[projectID].name, 20, y += deltaLine)
-      doc.text('Veranstaltungsdatum: ' + this.allprojects[projectID].datum, 20, y += deltaLine)
-      doc.text('Altersbeschränkung: ' + this.allprojects[projectID].mindestAlter, 20,
-        y += deltaLine)
-      doc.text('Regulärer Preis: ' + this.allprojects[projectID].kosten, 20, y += deltaLine)
-      doc.text('Freie Plätze: ' + this.allprojects[projectID].slotsFrei, 20, y += deltaLine)
-      doc.text('Belegte Plätze: ' + this.allprojects[projectID].slotsReserviert, 20,
-        y += deltaLine)
-      doc.text('Plätze gesamt: ' + this.allprojects[projectID].slotsGesamt, 20, y += deltaLine)
-      doc.text('Web Link: ' + this.allprojects[projectID].webLink, 20, y += deltaLine)
-      doc.text('Projekt aktiv: ' + this.allprojects[projectID].aktiv, 20, y += deltaLine)
+      let y = 10;
+      const deltaLine = 10;
+      doc.text('Projektdaten', 20, y += deltaLine);
+      doc.text(`Name: ${this.allprojects[projectID].name}`, 20, y += deltaLine);
+      doc.text(`Veranstaltungsdatum: ${this.allprojects[projectID].datum}`, 20, y += deltaLine);
+      doc.text(`Altersbeschränkung: ${this.allprojects[projectID].mindestAlter}`, 20,
+        y += deltaLine);
+      doc.text(`Regulärer Preis: ${this.allprojects[projectID].kosten}`, 20, y += deltaLine);
+      doc.text(`Freie Plätze: ${this.allprojects[projectID].slotsFrei}`, 20, y += deltaLine);
+      doc.text(`Belegte Plätze: ${this.allprojects[projectID].slotsReserviert}`, 20,
+        y += deltaLine);
+      doc.text(`Plätze gesamt: ${this.allprojects[projectID].slotsGesamt}`, 20, y += deltaLine);
+      doc.text(`Web Link: ${this.allprojects[projectID].webLink}`, 20, y += deltaLine);
+      doc.text(`Projekt aktiv: ${this.allprojects[projectID].aktiv}`, 20, y += deltaLine);
 
       api.getAllUsersAssignedToProject(this.allprojects[projectID].id).then(
-        users => this.teilnehmerOfProject = users)
+        (users) => this.teilnehmerOfProject = users,
+      );
 
       for (let index = 0; index < this.teilnehmerOfProject.length; ++index) {
-        doc.text('Angemeldete Person: ' + this.teilnehmerOfProject[index].name, 20,
-          y += deltaLine)
+        doc.text(`Angemeldete Person: ${this.teilnehmerOfProject[index].name}`, 20,
+          y += deltaLine);
       }
-      doc.save('projekt_' + projectID + '.pdf')
+      doc.save(`projekt_${projectID}.pdf`);
     },
     sortTable(n) {
-      var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
+      let table; let rows; let switching; let i; let x; let y; let shouldSwitch; let dir; let
+        switchcount;
       switchcount = 0;
       table = document.getElementById('projectTable');
       switching = true;
@@ -149,16 +151,15 @@ export default {
           rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
           switching = true;
           switchcount++;
-        } else {
-          if (switchcount === 0 && dir === 'asc') {
-            dir = 'desc';
-            switching = true;
-          }
+        } else if (switchcount === 0 && dir === 'asc') {
+          dir = 'desc';
+          switching = true;
         }
       }
     },
     sortDate() {
-      var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
+      let table; let rows; let switching; let i; let x; let y; let shouldSwitch; let dir; let
+        switchcount;
       switchcount = 0;
       table = document.getElementById('projectTable');
       switching = true;
@@ -170,15 +171,15 @@ export default {
         for (i = 1; i < (rows.length - 1); i++) {
           shouldSwitch = false;
 
-          var tmpx = rows[i].getElementsByTagName('TD')[1].innerHTML;
+          const tmpx = rows[i].getElementsByTagName('TD')[1].innerHTML;
           x = tmpx.toString();
-          var patternx = /(\d{2})\.(\d{2})\.(\d{4})/;
-          var dx = new Date(x.replace(patternx, '$3-$2-$1'));
+          const patternx = /(\d{2})\.(\d{2})\.(\d{4})/;
+          const dx = new Date(x.replace(patternx, '$3-$2-$1'));
 
-          var tmpy = rows[i + 1].getElementsByTagName('TD')[1].innerHTML;
+          const tmpy = rows[i + 1].getElementsByTagName('TD')[1].innerHTML;
           y = tmpy.toString();
-          var patterny = /(\d{2})\.(\d{2})\.(\d{4})/;
-          var dy = new Date(y.replace(patterny, '$3-$2-$1'));
+          const patterny = /(\d{2})\.(\d{2})\.(\d{4})/;
+          const dy = new Date(y.replace(patterny, '$3-$2-$1'));
 
           if (dir === 'asc') {
             if (dx > dy) {
@@ -196,16 +197,14 @@ export default {
           rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
           switching = true;
           switchcount++;
-        } else {
-          if (switchcount === 0 && dir === 'asc') {
-            dir = 'desc';
-            switching = true;
-          }
+        } else if (switchcount === 0 && dir === 'asc') {
+          dir = 'desc';
+          switching = true;
         }
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

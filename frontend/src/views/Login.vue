@@ -31,8 +31,8 @@
 
 
 <script>
-import { LOGIN } from "../store/action-types";
-import ErrorListBox from "../components/ErrorListBox";
+import { LOGIN } from '../store/action-types';
+import ErrorListBox from '../components/ErrorListBox';
 
 export default {
   name: 'Login',
@@ -41,21 +41,21 @@ export default {
     return {
       title: 'Ferienpass Weimar: Administration',
       errors: [],
-      name: "",
-      password: ""
-    }
+      name: '',
+      password: '',
+    };
   },
   methods: {
     doLogin() {
       this.errors = [];
       this.$store.dispatch(LOGIN, { name: this.name, password: this.password })
-      .then(() => this.$router.push('/Verwaltung'))
-      .catch(e => {
-        this.errors.push(e)
-      });
-    }
-  }
-}
+        .then(() => this.$router.push('/Verwaltung'))
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
+  },
+};
 </script>
 
 
@@ -111,4 +111,3 @@ h1 {
 }
 
 </style>
-

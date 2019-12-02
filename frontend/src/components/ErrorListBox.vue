@@ -14,18 +14,18 @@
 
 <script>
 export default {
-  name: "ErrorListBox",
+  name: 'ErrorListBox',
   props: {
     headingText: {
       type: String,
-      required: true
+      required: true,
     },
     errors: {
       type: Array,
-      required: true
-    }
-  }
-}
+      required: true,
+    },
+  },
+};
 </script>
 
 <style scoped>

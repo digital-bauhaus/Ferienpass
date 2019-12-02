@@ -80,38 +80,38 @@
 import api from '../modules/ferienpass-api';
 
 export default {
-  name: "UserList",
+  name: 'UserList',
   props: {
     users: {
       type: Array,
-      required: true
+      required: true,
     },
     showProjects: {
       type: Boolean,
       required: false,
-      default: false
+      default: false,
     },
     allowEdit: {
       type: Boolean,
       required: false,
-      default: true
+      default: true,
     },
     allowExportPdf: {
       type: Boolean,
       required: false,
-      default: true
+      default: true,
     },
     allowDelete: {
       type: Boolean,
       required: false,
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
       errors: [],
       projectNamesByUserId: [],
-      projectsLoaded: false
+      projectsLoaded: false,
     };
   },
   created() {
@@ -123,49 +123,50 @@ export default {
     loadProjectsOfUsers() {
       this.errors = [];
       // instead of one api-call per user, we request ALL projects and build a lookup-table ourselves
-      api.getProjects().then(projects => {
-        this.users.forEach(user => {
+      api.getProjects().then((projects) => {
+        this.users.forEach((user) => {
           this.projectNamesByUserId[user.id] = this.findProjectNamesForUserId(projects, user.id);
         });
         this.projectsLoaded = true;
-      }).catch(e => this.errors.push(e));
+      }).catch((e) => this.errors.push(e));
     },
     findProjectNamesForUserId(projects, userId) {
-      let projectNames = [];
-      projects.forEach(project => {
-        if (project.anmeldungen.map(user => user.id).includes(userId)) {
-          projectNames.push(project.name)
+      const projectNames = [];
+      projects.forEach((project) => {
+        if (project.anmeldungen.map((user) => user.id).includes(userId)) {
+          projectNames.push(project.name);
         }
       });
       return projectNames;
     },
     deleteUser(userId) {
       this.$swal({
-        title: "Wirklich löschen?",
-        text: "Der Teilnehmer wird vollständig gelöscht und die Daten sind verloren! Er muss sich über die Anmeldung wieder NEU anmelden!",
-        icon: "warning",
+        title: 'Wirklich löschen?',
+        text: 'Der Teilnehmer wird vollständig gelöscht und die Daten sind verloren! Er muss sich über die Anmeldung wieder NEU anmelden!',
+        icon: 'warning',
         buttons: true,
         dangerMode: true,
       })
-      .then((willDelete) => {
-        if (willDelete) {
-          this.errors = [];
-          api.deleteUser(userId).then(() => {
-            this.$emit("user-deleted");
-            return this.$swal("Teilnehmer wurde gelöscht!", {
-              icon: "success",
+        .then((willDelete) => {
+          if (willDelete) {
+            this.errors = [];
+            api.deleteUser(userId).then(() => {
+              this.$emit('user-deleted');
+              return this.$swal('Teilnehmer wurde gelöscht!', {
+                icon: 'success',
+              });
+            }).catch((e) => {
+              this.errors.push(e);
+              return this.$swal('Da ist was schief gegangen :(', {
+                icon: 'error',
+              });
             });
-          }).catch(e => {
-            this.errors.push(e);
-            return this.$swal("Da ist was schief gegangen :(", {
-              icon: "error",
-            });
-          })
-        }
-      });
+          }
+        });
     },
     sortTable(n) {
-      var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
+      let table; let rows; let switching; let i; let x; let y; let shouldSwitch; let dir; let
+        switchcount;
       switchcount = 0;
       table = document.getElementById('userTable');
       switching = true;
@@ -195,16 +196,15 @@ export default {
           rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
           switching = true;
           switchcount++;
-        } else {
-          if (switchcount === 0 && dir === 'asc') {
-            dir = 'desc';
-            switching = true;
-          }
+        } else if (switchcount === 0 && dir === 'asc') {
+          dir = 'desc';
+          switching = true;
         }
       }
     },
     sortDate() {
-      var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
+      let table; let rows; let switching; let i; let x; let y; let shouldSwitch; let dir; let
+        switchcount;
       switchcount = 0;
       table = document.getElementById('userTable');
       switching = true;
@@ -216,15 +216,15 @@ export default {
         for (i = 1; i < (rows.length - 1); i++) {
           shouldSwitch = false;
 
-          var tmpx = rows[i].getElementsByTagName('TD')[2].innerHTML;
+          const tmpx = rows[i].getElementsByTagName('TD')[2].innerHTML;
           x = tmpx.toString();
-          var patternx = /(\d{2})\.(\d{2})\.(\d{4})/;
-          var dx = new Date(x.replace(patternx, '$3-$2-$1'));
+          const patternx = /(\d{2})\.(\d{2})\.(\d{4})/;
+          const dx = new Date(x.replace(patternx, '$3-$2-$1'));
 
-          var tmpy = rows[i + 1].getElementsByTagName('TD')[2].innerHTML;
+          const tmpy = rows[i + 1].getElementsByTagName('TD')[2].innerHTML;
           y = tmpy.toString();
-          var patterny = /(\d{2})\.(\d{2})\.(\d{4})/;
-          var dy = new Date(y.replace(patterny, '$3-$2-$1'));
+          const patterny = /(\d{2})\.(\d{2})\.(\d{4})/;
+          const dy = new Date(y.replace(patterny, '$3-$2-$1'));
 
           if (dir === 'asc') {
             if (dx > dy) {
@@ -242,16 +242,14 @@ export default {
           rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
           switching = true;
           switchcount++;
-        } else {
-          if (switchcount === 0 && dir === 'asc') {
-            dir = 'desc';
-            switching = true;
-          }
+        } else if (switchcount === 0 && dir === 'asc') {
+          dir = 'desc';
+          switching = true;
         }
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

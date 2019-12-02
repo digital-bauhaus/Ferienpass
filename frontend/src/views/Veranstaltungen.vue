@@ -13,8 +13,8 @@
 
 <script>
 import api from '../modules/ferienpass-api';
-import NavigationMenu from "../components/NavigationMenu";
-import ProjectList from "../components/ProjectList";
+import NavigationMenu from '../components/NavigationMenu';
+import ProjectList from '../components/ProjectList';
 
 export default {
   name: 'Veranstaltungen',
@@ -22,19 +22,19 @@ export default {
   data() {
     return {
       errors: [],
-      projects: []
+      projects: [],
     };
   },
   created() {
-    this.loadProjects()
+    this.loadProjects();
   },
   methods: {
     loadProjects() {
       this.errors = [];
-      api.getProjects().then(projects => this.projects = projects).catch(e => this.errors.push(e));
-    }
-  }
-}
+      api.getProjects().then((projects) => this.projects = projects).catch((e) => this.errors.push(e));
+    },
+  },
+};
 </script>
 
 
@@ -49,4 +49,3 @@ main {
 }
 
 </style>
-

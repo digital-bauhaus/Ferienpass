@@ -164,10 +164,10 @@
 </template>
 
 <script>
-import api from "../modules/ferienpass-api";
-import ErrorListBox from "../components/ErrorListBox";
-import NavigationMenu from "../components/NavigationMenu";
-import UserList from "../components/UserList";
+import api from '../modules/ferienpass-api';
+import ErrorListBox from '../components/ErrorListBox';
+import NavigationMenu from '../components/NavigationMenu';
+import UserList from '../components/UserList';
 
 export default {
   name: 'Veranstaltung',
@@ -177,7 +177,7 @@ export default {
       errorMessages: [],
       id: parseInt(this.$route.query.id),
       project: null,
-      popupClass: 'fadeOut'
+      popupClass: 'fadeOut',
     };
   },
   computed: {
@@ -186,32 +186,29 @@ export default {
     },
     titleText() {
       if (this.isNewProject) {
-        return "Veranstaltung anlegen"
-      } else {
-        return "Veranstaltungsbearbeitung"
+        return 'Veranstaltung anlegen';
       }
+      return 'Veranstaltungsbearbeitung';
     },
     submitButtonText() {
       if (this.isNewProject) {
-        return "Anlegen"
-      } else {
-        return "Speichern"
+        return 'Anlegen';
       }
+      return 'Speichern';
     },
     errorHeadingText() {
       if (this.isNewProject) {
-        return "Anlegen nicht möglich. Bitte beheben Sie folgende Fehler:"
-      } else {
-        return "Speichern nicht möglich. Bitte beheben Sie folgende Fehler:"
+        return 'Anlegen nicht möglich. Bitte beheben Sie folgende Fehler:';
       }
-    }
+      return 'Speichern nicht möglich. Bitte beheben Sie folgende Fehler:';
+    },
   },
   created() {
     if (this.isNewProject) {
       this.project = {
         aktiv: true,
         anmeldungen: [],
-        stornierteTeilnehmer: []
+        stornierteTeilnehmer: [],
       };
     } else {
       this.loadProjectData();
@@ -220,31 +217,31 @@ export default {
   methods: {
     loadProjectData() {
       this.errorMessages = [];
-      api.getProject(this.id).then(project => {
+      api.getProject(this.id).then((project) => {
         this.project = project;
-      }).catch(e => this.errorMessages.push(e.toString()));
+      }).catch((e) => this.errorMessages.push(e.toString()));
     },
     createOrUpdateProject() {
       this.errorMessages = [];
       if (this.isNewProject) {
         api.createProject(this.project).then(() => {
-          this.fadeInAndOutAfterTimeout()
-        }).catch(errorMessages => this.errorMessages = errorMessages);
+          this.fadeInAndOutAfterTimeout();
+        }).catch((errorMessages) => this.errorMessages = errorMessages);
       } else {
         api.updateProject(this.project).then(() => {
-          this.fadeInAndOutAfterTimeout()
-        }).catch(errorMessages => this.errorMessages = errorMessages);
+          this.fadeInAndOutAfterTimeout();
+        }).catch((errorMessages) => this.errorMessages = errorMessages);
       }
     },
     fadeInAndOutAfterTimeout() {
       this.popupClass = 'fadeIn';
-      var self = this;
-      setTimeout(function () {
+      const self = this;
+      setTimeout(() => {
         self.popupClass = 'fadeOut';
       }, 2000);
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 
@@ -354,4 +351,3 @@ th, td {
 }
 
 </style>
-

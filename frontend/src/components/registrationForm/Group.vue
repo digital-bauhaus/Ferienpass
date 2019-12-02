@@ -25,7 +25,7 @@
 <script>
 export default {
   name: 'Group',
-  props: ['params']
+  props: ['params'],
 };
 </script>
 
@@ -47,4 +47,3 @@ export default {
   margin-bottom: 0.75rem;
 }
 </style>
-

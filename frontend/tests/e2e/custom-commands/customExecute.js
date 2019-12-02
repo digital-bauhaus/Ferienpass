@@ -22,7 +22,7 @@ exports.command = function command(data) {
   //
   this.execute(
     // The function argument is converted to a string and sent to the browser
-    argData => argData,
+    (argData) => argData,
 
     // The arguments for the function to be sent to the browser are specified in this array
     [data],

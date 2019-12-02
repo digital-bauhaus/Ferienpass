@@ -78,20 +78,20 @@ import TextField from './TextField';
 export default {
   name: 'DynamicList',
   components: {
-    TextField
+    TextField,
   },
   props: ['params'],
   data() {
     return {
       newItem: '',
       feedback: '',
-      listItems: []
+      listItems: [],
     };
   },
   computed: {
     inputIsEmpty() {
       return this.newItem.trim() === '';
-    }
+    },
   },
   methods: {
     updateValue(event) {
@@ -111,8 +111,8 @@ export default {
       this.listItems.splice(index, 1);
       document.querySelector(`#${this.toIdentifier(this.params.title)}-label`).focus();
       this.feedback = `${item} entfernt.`;
-    }
-  }
+    },
+  },
 };
 </script>
 

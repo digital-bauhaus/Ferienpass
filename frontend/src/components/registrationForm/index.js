@@ -21,5 +21,5 @@ export {
   RadioGroup,
   Select,
   TextArea,
-  TextField
+  TextField,
 };
