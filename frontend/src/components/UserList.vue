@@ -115,17 +115,16 @@ export default {
     };
   },
   created() {
-    if (this.showProjects)
-    {
+    if (this.showProjects) {
       this.loadProjectsOfUsers();
     }
   },
   methods: {
-    loadProjectsOfUsers () {
+    loadProjectsOfUsers() {
       this.errors = [];
       // instead of one api-call per user, we request ALL projects and build a lookup-table ourselves
       api.getProjects().then(projects => {
-        this.users.forEach(user =>  {
+        this.users.forEach(user => {
           this.projectNamesByUserId[user.id] = this.findProjectNamesForUserId(projects, user.id);
         });
         this.projectsLoaded = true;
@@ -165,7 +164,7 @@ export default {
         }
       });
     },
-    sortTable (n) {
+    sortTable(n) {
       var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
       switchcount = 0;
       table = document.getElementById('userTable');
@@ -204,7 +203,7 @@ export default {
         }
       }
     },
-    sortDate () {
+    sortDate() {
       var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount;
       switchcount = 0;
       table = document.getElementById('userTable');

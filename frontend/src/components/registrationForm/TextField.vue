@@ -24,7 +24,7 @@ export default {
   name: 'TextField',
   props: ['params', 'value'],
   methods: {
-    onInput (event) {
+    onInput(event) {
       this.$emit('input', event);
 
       if (this.params.storeValue) {
@@ -32,7 +32,7 @@ export default {
         registrationData[event.target.name] = event.target.value;
       }
     },
-    onEnter () {
+    onEnter() {
       this.$emit('enter');
     }
   }

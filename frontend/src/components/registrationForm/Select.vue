@@ -34,7 +34,7 @@ export default {
   name: 'Select',
   props: ['params'],
   methods: {
-    onInput (event) {
+    onInput(event) {
       this.$emit('input', event);
 
       if (this.params.storeValue) {

@@ -171,7 +171,7 @@ import UserList from "../components/UserList";
 
 export default {
   name: 'Veranstaltung',
-  components: {UserList, NavigationMenu, ErrorListBox},
+  components: { UserList, NavigationMenu, ErrorListBox },
   data() {
     return {
       errorMessages: [],
@@ -250,8 +250,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .error-list-box {
-    margin: 20px;
-  }
+.error-list-box {
+  margin: 20px;
+}
 </style>
 

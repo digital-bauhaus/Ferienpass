@@ -40,19 +40,19 @@ export default {
   computed: {
     dateRangeFormatted() {
       return this.params.projekt.date.toLocaleDateString('de-DE', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit'
-          }) + " - " +
-              this.params.projekt.endDate.toLocaleDateString('de-DE', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit'
-              });
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }) + " - " +
+        this.params.projekt.endDate.toLocaleDateString('de-DE', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        });
     }
   },
   methods: {
-    onChecked (event) {
+    onChecked(event) {
       this.$emit('change', event);
     }
   }

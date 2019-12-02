@@ -81,7 +81,7 @@ export default {
     TextField
   },
   props: ['params'],
-  data () {
+  data() {
     return {
       newItem: '',
       feedback: '',
@@ -89,25 +89,25 @@ export default {
     };
   },
   computed: {
-    inputIsEmpty () {
+    inputIsEmpty() {
       return this.newItem.trim() === '';
     }
   },
   methods: {
-    updateValue (event) {
+    updateValue(event) {
       this.newItem = event.target.value;
     },
-    handleEnter () {
+    handleEnter() {
       if (!this.inputIsEmpty) {
         this.add();
       }
     },
-    add () {
+    add() {
       this.listItems.push(this.newItem);
       this.feedback = `${this.newItem} hinzugefügt.`;
       this.newItem = '';
     },
-    remove (index, item) {
+    remove(index, item) {
       this.listItems.splice(index, 1);
       document.querySelector(`#${this.toIdentifier(this.params.title)}-label`).focus();
       this.feedback = `${item} entfernt.`;

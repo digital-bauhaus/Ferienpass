@@ -24,13 +24,13 @@
 export default {
   name: 'DependingSection',
   props: ['params'],
-  data () {
+  data() {
     return {
       checked: undefined
     };
   },
   methods: {
-    updateChecked (event) {
+    updateChecked(event) {
       this.checked = event.target.checked;
     }
   }

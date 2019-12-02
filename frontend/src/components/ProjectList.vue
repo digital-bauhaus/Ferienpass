@@ -100,21 +100,21 @@ export default {
       doc.text('Name: ' + this.allprojects[projectID].name, 20, y += deltaLine)
       doc.text('Veranstaltungsdatum: ' + this.allprojects[projectID].datum, 20, y += deltaLine)
       doc.text('Altersbeschränkung: ' + this.allprojects[projectID].mindestAlter, 20,
-          y += deltaLine)
+        y += deltaLine)
       doc.text('Regulärer Preis: ' + this.allprojects[projectID].kosten, 20, y += deltaLine)
       doc.text('Freie Plätze: ' + this.allprojects[projectID].slotsFrei, 20, y += deltaLine)
       doc.text('Belegte Plätze: ' + this.allprojects[projectID].slotsReserviert, 20,
-          y += deltaLine)
+        y += deltaLine)
       doc.text('Plätze gesamt: ' + this.allprojects[projectID].slotsGesamt, 20, y += deltaLine)
       doc.text('Web Link: ' + this.allprojects[projectID].webLink, 20, y += deltaLine)
       doc.text('Projekt aktiv: ' + this.allprojects[projectID].aktiv, 20, y += deltaLine)
 
       api.getAllUsersAssignedToProject(this.allprojects[projectID].id).then(
-          users => this.teilnehmerOfProject = users)
+        users => this.teilnehmerOfProject = users)
 
       for (let index = 0; index < this.teilnehmerOfProject.length; ++index) {
         doc.text('Angemeldete Person: ' + this.teilnehmerOfProject[index].name, 20,
-            y += deltaLine)
+          y += deltaLine)
       }
       doc.save('projekt_' + projectID + '.pdf')
     },

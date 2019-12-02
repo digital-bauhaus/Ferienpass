@@ -105,7 +105,8 @@
       <div :hidden="!angebote.expandOnStart">
         <p>
           Mein Kind möchte an folgenden Veranstaltungen teilnehmen:
-          <br>Hinweis: Grau hinterlegte Projekte sind ausgebucht oder können aufgrund der Altersbeschränkung nicht gewählt werden.
+          <br>Hinweis: Grau hinterlegte Projekte sind ausgebucht oder können aufgrund der
+          Altersbeschränkung nicht gewählt werden.
         </p>
         <component
           :is="component_checkbox"
@@ -308,7 +309,7 @@ import formDataJson from '../assets/form-data'
 
 export default {
   name: 'Registration',
-  data () {
+  data() {
     return {
       formData: null,
       initiallyDisabled: false,
@@ -329,7 +330,7 @@ export default {
     };
   },
   computed: {
-    age () {
+    age() {
       if (
         this['base__birthdate-day'] &&
         this['base__birthdate-month'] &&
@@ -356,7 +357,7 @@ export default {
 
       return null;
     },
-    zipCode () {
+    zipCode() {
       if (this['base__zip-code']) {
         const value = parseInt(this['base__zip-code']);
         if (typeof value === 'number' && value % 1 === 0) {
@@ -367,11 +368,11 @@ export default {
       return null;
     }
   },
-  created () {
+  created() {
     this.fetchFormData();
     this.retrieveAllAdminProjects();
   },
-  updated () {
+  updated() {
     this.$nextTick(function () {
       if (this.formData && !this.initiallyDisabled) {
         const checkbox = document.querySelector('.school-child-checkbox > input');
@@ -382,20 +383,22 @@ export default {
     });
   },
   methods: {
-    projectChecked (index) {
+    projectChecked(index) {
       console.log(this.alleAnmeldungProjekte[index].registered);
       console.log(index);
       this.alleAnmeldungProjekte[index].registered = !this.alleAnmeldungProjekte[index].registered;
       console.log(this.alleAnmeldungProjekte[index].registered);
       console.log(this.alleAnmeldungProjekte);
     },
-    modalSuccess () {
-      this.$swal('Geschafft!', 'Deine Anmeldung war erfolgreich!\n Sie erhalten eine eMail mit der Zahlungsaufforderung.', 'success')
+    modalSuccess() {
+      this.$swal('Geschafft!',
+        'Deine Anmeldung war erfolgreich!\n Sie erhalten eine eMail mit der Zahlungsaufforderung.',
+        'success')
     },
-    modalProjectOverbooked () {
+    modalProjectOverbooked() {
       this.$swal('Oh nein!', 'Eines der Angebote ist leider schon belegt!', 'warning')
     },
-    fetchFormData () {
+    fetchFormData() {
       this.formData = formDataJson;
       console.log("formData fetched!");
       this.grunddaten = this.formData.sections[0];
@@ -405,15 +408,15 @@ export default {
       this.erklaerung = this.formData.sections[4];
       this.datenschutz = this.formData.sections[5];
     },
-    retrieveAllAdminProjects () {
+    retrieveAllAdminProjects() {
       api.getProjects().then(projects => {
-            console.log('Retrieve projects from Admin-Microservice');
-            console.log(projects);
-            this.alleAdminProjekte = projects;
-            this.mappeAdminProjekteAufAnmeldungProjekte();
-        })
+        console.log('Retrieve projects from Admin-Microservice');
+        console.log(projects);
+        this.alleAdminProjekte = projects;
+        this.mappeAdminProjekteAufAnmeldungProjekte();
+      })
     },
-    mappeAdminProjekteAufAnmeldungProjekte () {
+    mappeAdminProjekteAufAnmeldungProjekte() {
       this.alleAdminProjekte.forEach(adminProjekt => {
         console.log(adminProjekt)
         var projektParam = {
@@ -434,14 +437,14 @@ export default {
       console.log('Map Admin projects to Anmeldung projects')
       console.log(this.alleAnmeldungProjekte)
     },
-    preventAccidentalSubmit (event) {
+    preventAccidentalSubmit(event) {
       if (['textarea', 'submit'].includes(event.target.type)) {
         return;
       }
 
       event.preventDefault();
     },
-    delegatePost (event) {
+    delegatePost(event) {
       event.preventDefault();
 
       const form = event.target;
@@ -466,28 +469,28 @@ export default {
       console.log(jsonObject)
 
       api.registerTeilnehmer(jsonObject).then(response => {
-            console.log(response);
-            if (response) {
-                if (response.status === 201) {
-                    // Admin-Backend successfully added new Teilnehmer
-                    this.modalSuccess();
-                }
-            }
-        }).catch(error => {
-            console.error(error);
-            console.log('Error, HTTP-Status: ' + error.response.status);
-            if (error.response) {
-                if (error.response.status === 409) {
-                    // Admin-Backend said that one or more projectrs aren´t available
-                    // and gave a list of them back
-                    this.reservierteProjekte = error.response.data;
-                    this.disableProjectsWithoutFreeSlots();
-                    this.modalProjectOverbooked();
-                }
-            }
-        })
+        console.log(response);
+        if (response) {
+          if (response.status === 201) {
+            // Admin-Backend successfully added new Teilnehmer
+            this.modalSuccess();
+          }
+        }
+      }).catch(error => {
+        console.error(error);
+        console.log('Error, HTTP-Status: ' + error.response.status);
+        if (error.response) {
+          if (error.response.status === 409) {
+            // Admin-Backend said that one or more projectrs aren´t available
+            // and gave a list of them back
+            this.reservierteProjekte = error.response.data;
+            this.disableProjectsWithoutFreeSlots();
+            this.modalProjectOverbooked();
+          }
+        }
+      })
     },
-    getFormElements () {
+    getFormElements() {
       const form = document.querySelector('.form');
 
       if (form) {
@@ -496,7 +499,7 @@ export default {
 
       return null;
     },
-    onSchoolChildChange (event) {
+    onSchoolChildChange(event) {
       const formElements = this.getFormElements();
 
       if (event.currentTarget.checked) {
@@ -505,7 +508,7 @@ export default {
         this.disableFormElements(formElements, [event.currentTarget]);
       }
     },
-    enableFormElements (formElements) {
+    enableFormElements(formElements) {
       formElements.forEach(element => {
         if (element.hasAttribute('data-newly-disabled')) {
           element.removeAttribute('data-newly-disabled');
@@ -513,7 +516,7 @@ export default {
         }
       });
     },
-    disableFormElements (formElements, exceptions = []) {
+    disableFormElements(formElements, exceptions = []) {
       formElements.forEach(element => {
         if (!exceptions.includes(element) && element.type !== 'button' && !element.disabled) {
           element.setAttribute('data-newly-disabled', null);
@@ -521,7 +524,7 @@ export default {
         }
       });
     },
-    toggleSectionExpanded (event) {
+    toggleSectionExpanded(event) {
       const button = event.currentTarget;
       const expanded = button.getAttribute('aria-expanded') === 'true' || false;
       button.setAttribute('aria-expanded', !expanded);
@@ -530,7 +533,7 @@ export default {
       const targetSection = heading.nextElementSibling;
       targetSection.hidden = expanded;
     },
-    disableUnavailableProjectsIfToYoungOrOld (age) {
+    disableUnavailableProjectsIfToYoungOrOld(age) {
       const projectControls = Array.prototype.slice.call(
         document.querySelectorAll('[name^="projekt-id"]')
       );
@@ -543,7 +546,7 @@ export default {
         }
       });
     },
-    disableProjectsWithoutFreeSlots () {
+    disableProjectsWithoutFreeSlots() {
       var projectControls = Array.prototype.slice.call(
         document.querySelectorAll('[name^="projekt-id"]')
       );
@@ -558,7 +561,7 @@ export default {
         })
       }
     },
-    unregisterProject (projectId) {
+    unregisterProject(projectId) {
       for (var j = 0; j < this.alleAnmeldungProjekte.length; j++) {
         if (projectId === this.alleAnmeldungProjekte[j].projekt.id) {
           console.log('unregistering ' + this.alleAnmeldungProjekte[j].label)

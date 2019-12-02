@@ -165,7 +165,10 @@
                 class="regular-checkbox"
               >
             </td>
-            <td><label for="checkBehandlung">Behandlungserlaubnis bei Erkrankungen und Unfällen</label></td>
+            <td>
+              <label for="checkBehandlung">Behandlungserlaubnis bei Erkrankungen und
+                Unfällen</label>
+            </td>
             <td>
               <input
                 id="checkBehandlung"
@@ -397,7 +400,9 @@
                   class="regular-checkbox"
                 >
               </td>
-              <td><label for="checkBehinderungaG">„aG“ (außergewöhnliche Gehbehinderung) </label></td>
+              <td>
+                <label for="checkBehinderungaG">„aG“ (außergewöhnliche Gehbehinderung) </label>
+              </td>
               <td>
                 <input
                   id="checkBehinderungaG"
@@ -426,7 +431,10 @@
                   class="regular-checkbox"
                 >
               </td>
-              <td><label for="checkBehinderungB">„B“ (Berechtigung zur Mitnahme einer Begleitperson) </label></td>
+              <td>
+                <label for="checkBehinderungB">„B“ (Berechtigung zur Mitnahme einer
+                  Begleitperson) </label>
+              </td>
               <td>
                 <input
                   id="checkBehinderungB"
@@ -558,7 +566,8 @@
         </div>
         <br>
         <div>
-          <label for="checkUnterstuetzungSucheBegleitpersonNotwendig"><b>Benötigt Unterstützung bei der Organisation der Begleitperson</b></label>
+          <label for="checkUnterstuetzungSucheBegleitpersonNotwendig"><b>Benötigt Unterstützung bei
+            der Organisation der Begleitperson</b></label>
           <input
             id="checkUnterstuetzungSucheBegleitpersonNotwendig"
             v-model="user.behinderung.unterstuetzungSucheBegleitpersonNotwendig"
@@ -693,7 +702,7 @@ import NavigationMenu from "../components/NavigationMenu";
 
 export default {
   name: 'Teilnehmer',
-  components: {NavigationMenu, ErrorListBox},
+  components: { NavigationMenu, ErrorListBox },
   data() {
     return {
       errorMessages: [],
@@ -712,8 +721,10 @@ export default {
     },
     availableProjects() {
       return this.allProjects.filter(project => {
-        const isProjectOfUser = this.projectsOfUser.map(userProject => userProject.id).includes(project.id);
-        const isCancelledProjectOfuser = this.cancelledProjectsOfUser.map(userProject => userProject.id).includes(project.id);
+        const isProjectOfUser = this.projectsOfUser.map(userProject => userProject.id).includes(
+          project.id);
+        const isCancelledProjectOfuser = this.cancelledProjectsOfUser.map(
+          userProject => userProject.id).includes(project.id);
         return !isProjectOfUser && !isCancelledProjectOfuser;
       })
     }
@@ -724,7 +735,8 @@ export default {
     dataPromises.push(this.loadProjects());
     dataPromises.push(this.loadProjectsOfUser());
     dataPromises.push(this.loadCancelledProjectsOfUser());
-    Promise.all(dataPromises).then(() => this.loaded = true).catch(e => this.errorMessages.push(e.toString()));
+    Promise.all(dataPromises).then(() => this.loaded = true).catch(
+      e => this.errorMessages.push(e.toString()));
   },
   methods: {
     loadUserData() {
@@ -737,7 +749,8 @@ export default {
       return api.getUsersProjects(this.id).then(projects => this.projectsOfUser = projects)
     },
     loadCancelledProjectsOfUser() {
-      return api.getUsersCancelledProjects(this.id).then(projects => this.cancelledProjectsOfUser = projects)
+      return api.getUsersCancelledProjects(this.id).then(
+        projects => this.cancelledProjectsOfUser = projects)
     },
     reloadProjectsOfUser() {
       this.loadProjectsOfUser();
@@ -790,85 +803,87 @@ export default {
 
 
 .regular-checkbox {
-	-webkit-appearance: none;
-    background-color: #fafafa;
-	border: 1px solid #cacece;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
-	padding: 9px;
-	border-radius: 3px;
-	display: inline-block;
-	position: relative;
-	z-index: +1;
+  -webkit-appearance: none;
+  background-color: #fafafa;
+  border: 1px solid #cacece;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+  padding: 9px;
+  border-radius: 3px;
+  display: inline-block;
+  position: relative;
+  z-index: +1;
 }
+
 .regular-checkbox:active, .regular-checkbox:checked:active {
-	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .regular-checkbox:checked {
-	background-color: #e9ecee;
-	border: 1px solid #adb8c0;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
-	color: #99a1a7;
+  background-color: #e9ecee;
+  border: 1px solid #adb8c0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05), inset 15px 10px -12px rgba(255, 255, 255, 0.1);
+  color: #99a1a7;
 }
 
 .regular-checkbox:checked:after {
-	content: '14';
-	font-size: 14px;
-	position: absolute;
-	top: 0px;
-	left: 3px;
-	color: #99a1a7;
+  content: '14';
+  font-size: 14px;
+  position: absolute;
+  top: 0px;
+  left: 3px;
+  color: #99a1a7;
 }
+
 input[type=checkbox] {
-    position: relative;
-    visibility: hidden;
-    cursor: pointer;
+  position: relative;
+  visibility: hidden;
+  cursor: pointer;
 }
 
 input[type=checkbox]:after {
-    display: block;
-    content: "Nein";
-    position: absolute;
-    top: 0;
-    visibility: visible;
-    height: 30px;
-    line-height: 30px;
-    width: 40px;
-    text-align: center;
-    border-radius: 4px;
-    background: #FF7256;
-    color: #000000;
-    font-weight: 400;
-    cursor: pointer;
-    font-size: medium;
+  display: block;
+  content: "Nein";
+  position: absolute;
+  top: 0;
+  visibility: visible;
+  height: 30px;
+  line-height: 30px;
+  width: 40px;
+  text-align: center;
+  border-radius: 4px;
+  background: #FF7256;
+  color: #000000;
+  font-weight: 400;
+  cursor: pointer;
+  font-size: medium;
 }
 
 input[type=checkbox]:checked:after {
-    content: "Ja";
-    background: #76EE00;
-    position: absolute;
-    top: 0;
-    visibility: visible;
-    height: 30px;
-    line-height: 30px;
-    width: 40px;
-    text-align: center;
-    border-radius: 4px;
-    font-weight: 400;
-    color: #000000;
-    cursor: pointer;
-    font-size: large;
+  content: "Ja";
+  background: #76EE00;
+  position: absolute;
+  top: 0;
+  visibility: visible;
+  height: 30px;
+  line-height: 30px;
+  width: 40px;
+  text-align: center;
+  border-radius: 4px;
+  font-weight: 400;
+  color: #000000;
+  cursor: pointer;
+  font-size: large;
 }
 
 textarea {
-  background-image:linear-gradient(
-     hsl(190,10%,98%), hsl(190,40%,74%)
+  background-image: linear-gradient(
+    hsl(190, 10%, 98%), hsl(190, 40%, 74%)
   );
-  padding:1ex;
-  font-size:1em;
+  padding: 1ex;
+  font-size: 1em;
   border-radius: 8px;
-  box-sizing:border-box;
-  color:black;
+  box-sizing: border-box;
+  color: black;
 }
 
 button {
@@ -876,7 +891,7 @@ button {
   background: #CD853F;
   color: #FFFFFF;
   font-size: medium;
-  width:100px;
+  width: 100px;
 }
 
 </style>

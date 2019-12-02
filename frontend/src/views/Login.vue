@@ -31,12 +31,12 @@
 
 
 <script>
-import {LOGIN} from "../store/action-types";
+import { LOGIN } from "../store/action-types";
 import ErrorListBox from "../components/ErrorListBox";
 
 export default {
   name: 'Login',
-  components: {ErrorListBox},
+  components: { ErrorListBox },
   data() {
     return {
       title: 'Ferienpass Weimar: Administration',
@@ -49,10 +49,10 @@ export default {
     doLogin() {
       this.errors = [];
       this.$store.dispatch(LOGIN, { name: this.name, password: this.password })
-        .then(() => this.$router.push('/Verwaltung'))
-        .catch(e => {
-          this.errors.push(e)
-        });
+      .then(() => this.$router.push('/Verwaltung'))
+      .catch(e => {
+        this.errors.push(e)
+      });
     }
   }
 }
@@ -62,53 +62,53 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-  h1 {
-    text-align: center;
-  }
+h1 {
+  text-align: center;
+}
 
-  #login {
-    position: absolute;
-    width: 450px;
-    height: 400px;
-    margin: auto;
-    padding: 30px;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    border: 2px solid #383754;
-    border-radius: 10px;
+#login {
+  position: absolute;
+  width: 450px;
+  height: 400px;
+  margin: auto;
+  padding: 30px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border: 2px solid #383754;
+  border-radius: 10px;
 
-  }
+}
 
-  #login form label {
-    margin: 0px;
-    float: left;
-    display: block;
-  }
+#login form label {
+  margin: 0px;
+  float: left;
+  display: block;
+}
 
-  #login form button {
-    background-color: #383754;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    font-size: 16px;
-    margin: auto;
-  }
+#login form button {
+  background-color: #383754;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 16px;
+  margin: auto;
+}
 
-  #login form input {
-    font-size: 20px;
-    width: 60%;
-    margin: auto;
-    height: 30px;
-    margin-bottom: 5px;
-    display: block;
-    border: 1px solid #181819;
-    border-radius: 5px;
-  }
+#login form input {
+  font-size: 20px;
+  width: 60%;
+  margin: auto;
+  height: 30px;
+  margin-bottom: 5px;
+  display: block;
+  border: 1px solid #181819;
+  border-radius: 5px;
+}
 
 </style>
 

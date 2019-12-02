@@ -18,20 +18,20 @@ import ProjectList from "../components/ProjectList";
 
 export default {
   name: 'Veranstaltungen',
-  components: {ProjectList, NavigationMenu},
-  data () {
+  components: { ProjectList, NavigationMenu },
+  data() {
     return {
       errors: [],
       projects: []
     };
   },
-  created () {
+  created() {
     this.loadProjects()
   },
   methods: {
-    loadProjects () {
-        this.errors = [];
-        api.getProjects().then(projects => this.projects = projects).catch(e => this.errors.push(e));
+    loadProjects() {
+      this.errors = [];
+      api.getProjects().then(projects => this.projects = projects).catch(e => this.errors.push(e));
     }
   }
 }

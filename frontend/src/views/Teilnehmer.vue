@@ -19,14 +19,14 @@ import UserList from "../components/UserList";
 
 export default {
   name: 'Teilnehmer',
-  components: {UserList, NavigationMenu},
-  data () {
+  components: { UserList, NavigationMenu },
+  data() {
     return {
       errors: [],
       users: []
     };
   },
-  created () {
+  created() {
     this.loadUsers();
   },
   methods: {

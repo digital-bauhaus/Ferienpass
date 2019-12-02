@@ -5,7 +5,8 @@
       <div class="front">
         <div class="title">
           {{ title }}
-        </div><hr>
+        </div>
+        <hr>
         <div class="subtitle">
           {{ subtitle }}
         </div>
@@ -18,10 +19,11 @@
 <script>
 
 import NavigationMenu from "../components/NavigationMenu";
+
 export default {
   name: 'Verwaltung',
-  components: {NavigationMenu},
-  data () {
+  components: { NavigationMenu },
+  data() {
     return {
       title: 'Ferienpass Weimar',
       subtitle: 'Administration'
