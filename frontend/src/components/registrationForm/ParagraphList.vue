@@ -1,6 +1,10 @@
 <template>
   <ul class="paragraph-list">
-    <li class="paragraph-list__item" v-for="(entry, index) of params.entries" :key="index">
+    <li
+      v-for="(entry, index) of params.entries"
+      :key="index"
+      class="paragraph-list__item"
+    >
       {{ entry }}
     </li>
   </ul>

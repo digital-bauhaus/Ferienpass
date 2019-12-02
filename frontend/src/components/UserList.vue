@@ -1,33 +1,76 @@
 <template>
-  <table v-if="users && users.length" id="userTable">
+  <table
+    v-if="users && users.length"
+    id="userTable"
+  >
     <tr>
-      <th v-on:click="sortTable(0)" class="clickable">Status</th>
-      <th v-on:click="sortTable(1)" class="clickable">Name</th>
-      <th v-if="showProjects">Projekte</th>
-      <th v-on:click="sortDate()" class="clickable">Buchung</th>
+      <th
+        class="clickable"
+        @click="sortTable(0)"
+      >
+        Status
+      </th>
+      <th
+        class="clickable"
+        @click="sortTable(1)"
+      >
+        Name
+      </th>
+      <th v-if="showProjects">
+        Projekte
+      </th>
+      <th
+        class="clickable"
+        @click="sortDate()"
+      >
+        Buchung
+      </th>
       <th>Addresse</th>
       <th>Telefon</th>
       <th>eMail</th>
       <th>Geburtsdatum</th>
       <th>Bearbeiten</th>
     </tr>
-    <tr v-for="user of users" :key="user.id">
-      <td :id="user.bezahlt"><span :id="user.bezahlt">{{user.bezahlt}}</span></td>
-      <td>{{user.nachname}}, {{user.vorname}}</td>
+    <tr
+      v-for="user of users"
+      :key="user.id"
+    >
+      <td :id="user.bezahlt">
+        <span :id="user.bezahlt">{{ user.bezahlt }}</span>
+      </td>
+      <td>{{ user.nachname }}, {{ user.vorname }}</td>
       <td v-if="showProjects && projectsLoaded">
         <ul>
-          <li v-for="projectName of projectNamesByUserId[user.id]" :key="projectName">{{ projectName }}</li>
+          <li
+            v-for="projectName of projectNamesByUserId[user.id]"
+            :key="projectName"
+          >
+            {{ projectName }}
+          </li>
         </ul>
       </td>
-      <td>{{user.registrierungsdatum}}</td>
-      <td>{{user.strasse}}, {{user.stadt}}</td>
-      <td>{{user.telefon}}</td>
-      <td>{{user.email}}</td>
-      <td>{{user.geburtsdatum}}</td>
+      <td>{{ user.registrierungsdatum }}</td>
+      <td>{{ user.strasse }}, {{ user.stadt }}</td>
+      <td>{{ user.telefon }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.geburtsdatum }}</td>
       <td class="nobr">
-        <router-link v-if="allowEdit" :to="{path: '../TeilnehmerEdit', query: {id: user.id }}" class="fakebutton">Bearbeiten</router-link>
-        <span v-if="allowExportPdf" class="fakebutton"><a>PDF</a></span>
-        <span v-if="allowDelete" class="fakebutton" v-on:click="deleteUser(user.id)">Teilnehmer löschen</span>
+        <router-link
+          v-if="allowEdit"
+          :to="{path: '../TeilnehmerEdit', query: {id: user.id }}"
+          class="fakebutton"
+        >
+          Bearbeiten
+        </router-link>
+        <span
+          v-if="allowExportPdf"
+          class="fakebutton"
+        ><a>PDF</a></span>
+        <span
+          v-if="allowDelete"
+          class="fakebutton"
+          @click="deleteUser(user.id)"
+        >Teilnehmer löschen</span>
       </td>
     </tr>
   </table>
@@ -38,13 +81,6 @@ import api from '../modules/ferienpass-api';
 
 export default {
   name: "UserList",
-  data() {
-    return {
-      errors: [],
-      projectNamesByUserId: [],
-      projectsLoaded: false
-    };
-  },
   props: {
     users: {
       type: Array,
@@ -70,6 +106,13 @@ export default {
       required: false,
       default: true
     }
+  },
+  data() {
+    return {
+      errors: [],
+      projectNamesByUserId: [],
+      projectsLoaded: false
+    };
   },
   created() {
     if (this.showProjects)

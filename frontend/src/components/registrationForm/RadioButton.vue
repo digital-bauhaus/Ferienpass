@@ -8,7 +8,7 @@
       :value="params.value ? params.value : toIdentifier(params.label)"
     >
 
-    <span class="radio-button__tick"></span>
+    <span class="radio-button__tick" />
 
     <span class="radio-button__label">
       {{ params.label }}

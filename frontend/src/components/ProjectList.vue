@@ -1,21 +1,46 @@
 <template>
-  <table v-if="projects && projects.length" id="projectTable">
+  <table
+    v-if="projects && projects.length"
+    id="projectTable"
+  >
     <tr>
-      <th v-on:click="sortTable(0)" class="clickable">Veranstaltung</th>
-      <th v-on:click="sortDate()" class="clickable">Datum</th>
+      <th
+        class="clickable"
+        @click="sortTable(0)"
+      >
+        Veranstaltung
+      </th>
+      <th
+        class="clickable"
+        @click="sortDate()"
+      >
+        Datum
+      </th>
       <th>Plätze frei / gesamt / [reserviert]</th>
       <th>Bearbeiten</th>
     </tr>
-    <tr v-for="(project, index) of projects" :key="project.id">
-      <td>{{project.name}}</td>
-      <td>{{project.datum}}</td>
-      <td>{{project.slotsFrei}} / {{project.slotsGesamt}} / [{{project.slotsReserviert}}]</td>
+    <tr
+      v-for="(project, index) of projects"
+      :key="project.id"
+    >
+      <td>{{ project.name }}</td>
+      <td>{{ project.datum }}</td>
+      <td>{{ project.slotsFrei }} / {{ project.slotsGesamt }} / [{{ project.slotsReserviert }}]</td>
       <td class="nobr">
-        <router-link :to="{path: '../VeranstaltungEdit', query: {id: project.id }}"
-                     class="fakebutton">Bearbeiten
+        <router-link
+          :to="{path: '../VeranstaltungEdit', query: {id: project.id }}"
+          class="fakebutton"
+        >
+          Bearbeiten
         </router-link>
-        <span class="fakebutton" v-on:click="exportPDF(index)"><a>PDF exportieren</a></span>
-        <span v-on:click="deleteProject(project.id)" class="fakebutton">Löschen</span>
+        <span
+          class="fakebutton"
+          @click="exportPDF(index)"
+        ><a>PDF exportieren</a></span>
+        <span
+          class="fakebutton"
+          @click="deleteProject(project.id)"
+        >Löschen</span>
       </td>
     </tr>
   </table>
@@ -27,16 +52,16 @@ import jsPDF from 'jspdf'
 
 export default {
   name: "ProjectList",
-  data() {
-    return {
-      errors: []
-    };
-  },
   props: {
     projects: {
       type: Array,
       required: true
     }
+  },
+  data() {
+    return {
+      errors: []
+    };
   },
   methods: {
     deleteProject(projectId) {

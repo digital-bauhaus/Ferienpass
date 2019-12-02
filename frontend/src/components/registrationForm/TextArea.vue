@@ -8,7 +8,7 @@
       class="text-area__control"
       :name="params.name"
       rows="4"
-    ></textarea>
+    />
   </label>
 </template>
 

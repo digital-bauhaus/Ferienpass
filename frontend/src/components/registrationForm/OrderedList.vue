@@ -1,6 +1,9 @@
 <template>
   <ol>
-    <li v-for="(entry, index) of params.entries" :key="index">
+    <li
+      v-for="(entry, index) of params.entries"
+      :key="index"
+    >
       {{ entry }}
     </li>
   </ol>

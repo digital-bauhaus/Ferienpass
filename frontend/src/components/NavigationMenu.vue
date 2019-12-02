@@ -1,9 +1,15 @@
 <template>
   <nav>
     <!--<input type="text" class="searchbar" placeholder="Suche ...">-->
-    <router-link :to="{ path: '/Veranstaltungen' }">Alle Veranstaltungen</router-link>
-    <router-link :to="{ path: '/VeranstaltungEdit', query: { id: '-1' } }">Veranstaltung erstellen</router-link>
-    <router-link :to="{ path: '/Teilnehmer' }">Alle Teilnehmer</router-link>
+    <router-link :to="{ path: '/Veranstaltungen' }">
+      Alle Veranstaltungen
+    </router-link>
+    <router-link :to="{ path: '/VeranstaltungEdit', query: { id: '-1' } }">
+      Veranstaltung erstellen
+    </router-link>
+    <router-link :to="{ path: '/Teilnehmer' }">
+      Alle Teilnehmer
+    </router-link>
   </nav>
 </template>
 

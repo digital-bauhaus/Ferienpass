@@ -1,16 +1,20 @@
 <template>
   <form
     v-if="formData"
-    @keydown.enter="preventAccidentalSubmit"
-    @submit="delegatePost"
     class="form"
     action="/api/register"
     method="post"
     :data-age="age ? age : ''"
     :data-zip-code="zipCode ? zipCode : ''"
+    @keydown.enter="preventAccidentalSubmit"
+    @submit="delegatePost"
   >
     <header>
-      <img src="../assets/ferienpasslogo_ohne_hg.png" alt="Ferienpass Weimar" class="site-logo">
+      <img
+        src="../assets/ferienpasslogo_ohne_hg.png"
+        alt="Ferienpass Weimar"
+        class="site-logo"
+      >
     </header>
 
     <h1>Ferienpass Weimar – Anmeldung</h1>
@@ -21,116 +25,280 @@
       @change="onSchoolChildChange"
     />
     <!-- Grunddaten -->
-    <section v-model="grunddaten" class="form-section" :aria-labelledby="`${toIdentifier(grunddaten.title)}`">
-      <h2 class="form-section__title" :id="`${toIdentifier(grunddaten.title)}`">
-        <button type="button" :aria-expanded="grunddaten.expandOnStart" @click="toggleSectionExpanded">
+    <section
+      v-model="grunddaten"
+      class="form-section"
+      :aria-labelledby="`${toIdentifier(grunddaten.title)}`"
+    >
+      <h2
+        :id="`${toIdentifier(grunddaten.title)}`"
+        class="form-section__title"
+      >
+        <button
+          type="button"
+          :aria-expanded="grunddaten.expandOnStart"
+          @click="toggleSectionExpanded"
+        >
           Grunddaten
           <!-- Small triangle to switch section view -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" role="img" aria-hidden="true" focusable="false" class="triangle">
-            <path d="m0,0l0,18 15.588,-9 Z" fill="#000"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            role="img"
+            aria-hidden="true"
+            focusable="false"
+            class="triangle"
+          >
+            <path
+              d="m0,0l0,18 15.588,-9 Z"
+              fill="#000"
+            />
           </svg>
         </button>
       </h2>
 
       <div :hidden="!grunddaten.expandOnStart">
-        <component v-for="(component, index) of grunddaten.components" :key="index" :is="component.component" :params="component.params"/>
+        <component
+          :is="component.component"
+          v-for="(component, index) of grunddaten.components"
+          :key="index"
+          :params="component.params"
+        />
       </div>
     </section>
 
     <!-- Angebote -->
-    <section v-model="angebote" class="form-section" :aria-labelledby="`${toIdentifier(angebote.title)}`">
-      <h2 class="form-section__title" :id="`${toIdentifier(angebote.title)}`">
-        <button type="button" :aria-expanded="angebote.expandOnStart" @click="toggleSectionExpanded">
+    <section
+      v-model="angebote"
+      class="form-section"
+      :aria-labelledby="`${toIdentifier(angebote.title)}`"
+    >
+      <h2
+        :id="`${toIdentifier(angebote.title)}`"
+        class="form-section__title"
+      >
+        <button
+          type="button"
+          :aria-expanded="angebote.expandOnStart"
+          @click="toggleSectionExpanded"
+        >
           Angebote
           <!-- Small triangle to switch section view -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" role="img" aria-hidden="true" focusable="false" class="triangle">
-            <path d="m0,0l0,18 15.588,-9 Z" fill="#000"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            role="img"
+            aria-hidden="true"
+            focusable="false"
+            class="triangle"
+          >
+            <path
+              d="m0,0l0,18 15.588,-9 Z"
+              fill="#000"
+            />
           </svg>
         </button>
       </h2>
 
       <div :hidden="!angebote.expandOnStart">
-        <p>Mein Kind möchte an folgenden Veranstaltungen teilnehmen:
-        <br />Hinweis: Grau hinterlegte Projekte sind ausgebucht oder können aufgrund der Altersbeschränkung nicht gewählt werden.</p>
+        <p>
+          Mein Kind möchte an folgenden Veranstaltungen teilnehmen:
+          <br>Hinweis: Grau hinterlegte Projekte sind ausgebucht oder können aufgrund der Altersbeschränkung nicht gewählt werden.
+        </p>
         <component
-          v-for="(projektParams, index) of alleAnmeldungProjekte" :key="index"
           :is="component_checkbox"
+          v-for="(projektParams, index) of alleAnmeldungProjekte"
+          :key="index"
           :params="projektParams"
-          v-on:change="projectChecked(index)"
+          @change="projectChecked(index)"
         />
-
       </div>
     </section>
 
     <!-- Allergien, Krankheiten, … -->
-    <section v-model="allergienkrankheiten" class="form-section" :aria-labelledby="`${toIdentifier(allergienkrankheiten.title)}`">
-      <h2 class="form-section__title" :id="`${toIdentifier(allergienkrankheiten.title)}`">
-        <button type="button" :aria-expanded="allergienkrankheiten.expandOnStart" @click="toggleSectionExpanded">
+    <section
+      v-model="allergienkrankheiten"
+      class="form-section"
+      :aria-labelledby="`${toIdentifier(allergienkrankheiten.title)}`"
+    >
+      <h2
+        :id="`${toIdentifier(allergienkrankheiten.title)}`"
+        class="form-section__title"
+      >
+        <button
+          type="button"
+          :aria-expanded="allergienkrankheiten.expandOnStart"
+          @click="toggleSectionExpanded"
+        >
           Allergien, Krankheiten, …
           <!-- Small triangle to switch section view -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" role="img" aria-hidden="true" focusable="false" class="triangle">
-            <path d="m0,0l0,18 15.588,-9 Z" fill="#000"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            role="img"
+            aria-hidden="true"
+            focusable="false"
+            class="triangle"
+          >
+            <path
+              d="m0,0l0,18 15.588,-9 Z"
+              fill="#000"
+            />
           </svg>
         </button>
       </h2>
 
       <div :hidden="!allergienkrankheiten.expandOnStart">
-        <component v-for="(component, index) of allergienkrankheiten.components" :key="index" :is="component.component" :params="component.params"/>
+        <component
+          :is="component.component"
+          v-for="(component, index) of allergienkrankheiten.components"
+          :key="index"
+          :params="component.params"
+        />
       </div>
     </section>
 
     <!-- Angaben bei Behinderung -->
-    <section v-model="behinderung" class="form-section" :aria-labelledby="`${toIdentifier(behinderung.title)}`">
-      <h2 class="form-section__title" :id="`${toIdentifier(behinderung.title)}`">
-        <button type="button" :aria-expanded="behinderung.expandOnStart" @click="toggleSectionExpanded">
+    <section
+      v-model="behinderung"
+      class="form-section"
+      :aria-labelledby="`${toIdentifier(behinderung.title)}`"
+    >
+      <h2
+        :id="`${toIdentifier(behinderung.title)}`"
+        class="form-section__title"
+      >
+        <button
+          type="button"
+          :aria-expanded="behinderung.expandOnStart"
+          @click="toggleSectionExpanded"
+        >
           Angaben bei Behinderung
           <!-- Small triangle to switch section view -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" role="img" aria-hidden="true" focusable="false" class="triangle">
-            <path d="m0,0l0,18 15.588,-9 Z" fill="#000"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            role="img"
+            aria-hidden="true"
+            focusable="false"
+            class="triangle"
+          >
+            <path
+              d="m0,0l0,18 15.588,-9 Z"
+              fill="#000"
+            />
           </svg>
         </button>
       </h2>
 
       <div :hidden="!behinderung.expandOnStart">
-        <component v-for="(component, index) of behinderung.components" :key="index" :is="component.component" :params="component.params"/>
+        <component
+          :is="component.component"
+          v-for="(component, index) of behinderung.components"
+          :key="index"
+          :params="component.params"
+        />
       </div>
     </section>
 
     <!-- Erklärung -->
-    <section v-model="erklaerung" class="form-section" :aria-labelledby="`${toIdentifier(erklaerung.title)}`">
-      <h2 class="form-section__title" :id="`${toIdentifier(erklaerung.title)}`">
-        <button type="button" :aria-expanded="erklaerung.expandOnStart" @click="toggleSectionExpanded">
+    <section
+      v-model="erklaerung"
+      class="form-section"
+      :aria-labelledby="`${toIdentifier(erklaerung.title)}`"
+    >
+      <h2
+        :id="`${toIdentifier(erklaerung.title)}`"
+        class="form-section__title"
+      >
+        <button
+          type="button"
+          :aria-expanded="erklaerung.expandOnStart"
+          @click="toggleSectionExpanded"
+        >
           Erklärung
           <!-- Small triangle to switch section view -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" role="img" aria-hidden="true" focusable="false" class="triangle">
-            <path d="m0,0l0,18 15.588,-9 Z" fill="#000"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            role="img"
+            aria-hidden="true"
+            focusable="false"
+            class="triangle"
+          >
+            <path
+              d="m0,0l0,18 15.588,-9 Z"
+              fill="#000"
+            />
           </svg>
         </button>
       </h2>
 
       <div :hidden="!erklaerung.expandOnStart">
-        <component v-for="(component, index) of erklaerung.components" :key="index" :is="component.component" :params="component.params"/>
+        <component
+          :is="component.component"
+          v-for="(component, index) of erklaerung.components"
+          :key="index"
+          :params="component.params"
+        />
       </div>
     </section>
 
     <!-- Datenschutzerklärung -->
-    <section v-model="datenschutz" class="form-section" :aria-labelledby="`${toIdentifier(datenschutz.title)}`">
-      <h2 class="form-section__title" :id="`${toIdentifier(datenschutz.title)}`">
-        <button type="button" :aria-expanded="datenschutz.expandOnStart" @click="toggleSectionExpanded">
+    <section
+      v-model="datenschutz"
+      class="form-section"
+      :aria-labelledby="`${toIdentifier(datenschutz.title)}`"
+    >
+      <h2
+        :id="`${toIdentifier(datenschutz.title)}`"
+        class="form-section__title"
+      >
+        <button
+          type="button"
+          :aria-expanded="datenschutz.expandOnStart"
+          @click="toggleSectionExpanded"
+        >
           Datenschutzerklärung
           <!-- Small triangle to switch section view -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" role="img" aria-hidden="true" focusable="false" class="triangle">
-            <path d="m0,0l0,18 15.588,-9 Z" fill="#000"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            role="img"
+            aria-hidden="true"
+            focusable="false"
+            class="triangle"
+          >
+            <path
+              d="m0,0l0,18 15.588,-9 Z"
+              fill="#000"
+            />
           </svg>
         </button>
       </h2>
 
       <div :hidden="!datenschutz.expandOnStart">
-        <component v-for="(component, index) of datenschutz.components" :key="index" :is="component.component" :params="component.params"/>
+        <component
+          :is="component.component"
+          v-for="(component, index) of datenschutz.components"
+          :key="index"
+          :params="component.params"
+        />
       </div>
     </section>
 
-    <input class="button button--wide" type="submit" name="Submit" value="Absenden">
+    <input
+      class="button button--wide"
+      type="submit"
+      name="Submit"
+      value="Absenden"
+    >
   </form>
 </template>
 

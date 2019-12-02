@@ -1,9 +1,13 @@
 <template>
   <div>
-    <NavigationMenu/>
+    <NavigationMenu />
     <main>
       <h1>Teilnehmerübersicht</h1>
-      <UserList v-on:user-deleted="loadUsers" :users="users" :show-projects="true"/>
+      <UserList
+        :users="users"
+        :show-projects="true"
+        @user-deleted="loadUsers"
+      />
     </main>
   </div>
 </template>

@@ -1,11 +1,14 @@
 <template>
-	<div>
-    <NavigationMenu/>
+  <div>
+    <NavigationMenu />
     <main>
       <h1>Veranstaltungsübersicht</h1>
-      <ProjectList v-on:project-deleted="loadProjects" :projects="projects"/>
+      <ProjectList
+        :projects="projects"
+        @project-deleted="loadProjects"
+      />
     </main>
-	</div>
+  </div>
 </template>
 
 <script>

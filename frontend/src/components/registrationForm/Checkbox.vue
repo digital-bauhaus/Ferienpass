@@ -12,7 +12,7 @@
       @change="onChecked"
     >
 
-    <span class="checkbox__tick"></span>
+    <span class="checkbox__tick" />
 
     <span class="checkbox__label">
       <template v-if="params.projekt">
@@ -22,7 +22,7 @@
           <li v-if="params.projekt.minimumAge > 0">
             Ab {{ params.projekt.minimumAge }} Jahren</li>
           <li v-if="params.projekt.maximumAge > 0">
-            Bis {{ params.projekt.maximumAge}} Jahre</li>
+            Bis {{ params.projekt.maximumAge }} Jahre</li>
           <li>{{ params.projekt.org }}</li>
         </ul>
       </template>
@@ -37,11 +37,6 @@
 export default {
   name: 'Checkbox',
   props: ['params'],
-  methods: {
-    onChecked (event) {
-      this.$emit('change', event);
-    }
-  },
   computed: {
     dateRangeFormatted() {
       return this.params.projekt.date.toLocaleDateString('de-DE', {
@@ -54,6 +49,11 @@ export default {
                   month: '2-digit',
                   day: '2-digit'
               });
+    }
+  },
+  methods: {
+    onChecked (event) {
+      this.$emit('change', event);
     }
   }
 };

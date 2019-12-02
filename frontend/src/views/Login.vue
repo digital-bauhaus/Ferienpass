@@ -1,11 +1,30 @@
 <template>
   <div id="login">
-    <h1>{{title}}</h1>
+    <h1>{{ title }}</h1>
     <form>
-      <input type="text" name="Admin-Name" v-model="name" placeholder="Admin"> <br/>
-      <input type="password" name="Passwort" v-model="password" placeholder="Passwort"><br/>
-      <button type="button" v-on:click="doLogin">einloggen</button>
-      <ErrorListBox v-if="errors.length" heading-text="Login nicht möglich. Folgende Fehler sind aufgetreten: " :errors="errors"/>
+      <input
+        v-model="name"
+        type="text"
+        name="Admin-Name"
+        placeholder="Admin"
+      > <br>
+      <input
+        v-model="password"
+        type="password"
+        name="Passwort"
+        placeholder="Passwort"
+      ><br>
+      <button
+        type="button"
+        @click="doLogin"
+      >
+        einloggen
+      </button>
+      <ErrorListBox
+        v-if="errors.length"
+        heading-text="Login nicht möglich. Folgende Fehler sind aufgetreten: "
+        :errors="errors"
+      />
     </form>
   </div>
 </template>

@@ -2,7 +2,12 @@
   <div class="error-list-box-container">
     <b>{{ headingText }}</b>
     <ul>
-      <li v-for="error in errors" :key="error">{{ error }}</li>
+      <li
+        v-for="error in errors"
+        :key="error"
+      >
+        {{ error }}
+      </li>
     </ul>
   </div>
 </template>

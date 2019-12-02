@@ -1,14 +1,29 @@
 <template>
-  <div class="dynamic-list" :aria-labelledby="`${toIdentifier(params.title)}-label`">
-    <h3 class="dynamic-list__title" :id="`${toIdentifier(params.title)}-label`" tabindex="-1">
+  <div
+    class="dynamic-list"
+    :aria-labelledby="`${toIdentifier(params.title)}-label`"
+  >
+    <h3
+      :id="`${toIdentifier(params.title)}-label`"
+      class="dynamic-list__title"
+      tabindex="-1"
+    >
       {{ params.title }}
     </h3>
 
     <ul class="dynamic-list__items">
-      <li class="list-item" v-for="(item, index) of listItems" :key="index">
+      <li
+        v-for="(item, index) of listItems"
+        :key="index"
+        class="list-item"
+      >
         <span class="list-item__content">
           {{ item }}
-          <input type="hidden" :name="`${params.name}-${index}`" :value="item" />
+          <input
+            type="hidden"
+            :name="`${params.name}-${index}`"
+            :value="item"
+          >
         </span>
 
         <button
@@ -37,12 +52,21 @@
         />
       </div>
 
-      <button class="button add-item__control" type="button" :disabled="inputIsEmpty" @click="add">
+      <button
+        class="button add-item__control"
+        type="button"
+        :disabled="inputIsEmpty"
+        @click="add"
+      >
         Hinzufügen
       </button>
     </div>
 
-    <div class="visually-hidden" role="status" aria-live="polite">
+    <div
+      class="visually-hidden"
+      role="status"
+      aria-live="polite"
+    >
       {{ feedback }}
     </div>
   </div>

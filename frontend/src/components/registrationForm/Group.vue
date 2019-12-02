@@ -1,17 +1,21 @@
 <template>
   <div
     class="group"
-    :role="params.role ?  params.role : 'group'"
+    :role="params.role ? params.role : 'group'"
     :aria-labelledby="`${toIdentifier(params.title)}-label`"
   >
-    <h3 :class="`group__title ${params.hideTitle ? 'visually-hidden' : ''}`" :id="`${toIdentifier(params.title)}-label`">
+    <h3
+      :id="`${toIdentifier(params.title)}-label`"
+      :class="`group__title ${params.hideTitle ? 'visually-hidden' : ''}`"
+    >
       {{ params.title }}
     </h3>
 
     <div :class="`group__body ${params.horizontal ? 'group__body--horizontal' : ''}`">
       <component
-        v-for="(component, index) of params.components" :key="index"
         :is="component.component"
+        v-for="(component, index) of params.components"
+        :key="index"
         :params="component.params"
       />
     </div>

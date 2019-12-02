@@ -5,14 +5,15 @@
     :aria-labelledby="`${toIdentifier(params.title)}-label`"
   >
     <h3
-      :class="`radio-group__title ${params.hideTitle ? 'visually-hidden' : ''}`"
       :id="`${toIdentifier(params.title)}-label`"
+      :class="`radio-group__title ${params.hideTitle ? 'visually-hidden' : ''}`"
     >
       {{ params.title }}
     </h3>
 
     <radio-button
-      v-for="(component, index) of params.components" :key="index"
+      v-for="(component, index) of params.components"
+      :key="index"
       :params="component.params"
       :name="params.name"
     />
@@ -24,10 +25,10 @@ import RadioButton from './RadioButton';
 
 export default {
   name: 'RadioGroup',
-  props: ['params'],
   components: {
     RadioButton
-  }
+  },
+  props: ['params']
 };
 </script>
 

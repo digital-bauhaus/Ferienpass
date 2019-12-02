@@ -1,13 +1,17 @@
 <template>
-    <div>
-      <NavigationMenu/>
+  <div>
+    <NavigationMenu />
     <main>
       <div class="front">
-      <div class="title">{{title}}</div><hr />
-      <div class="subtitle">{{subtitle}}</div>
+        <div class="title">
+          {{ title }}
+        </div><hr>
+        <div class="subtitle">
+          {{ subtitle }}
+        </div>
       </div>
     </main>
-    </div>
+  </div>
 </template>
 
 

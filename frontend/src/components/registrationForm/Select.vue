@@ -1,6 +1,6 @@
 <template>
   <label
-     :class="`select ${params.required ? 'required' : ''}`"
+    :class="`select ${params.required ? 'required' : ''}`"
   >
     <span :class="`select__label ${params.hideLabel ? 'visually-hidden' : ''}`">
       {{ params.label }}
@@ -14,7 +14,8 @@
       @input="onInput"
     >
       <option
-        v-for="(option, index) of params.options" :key="index"
+        v-for="(option, index) of params.options"
+        :key="index"
         :selected="index === 0"
         :disabled="index === 0"
         :value="option.value"
@@ -23,7 +24,7 @@
       </option>
     </select>
 
-    <span class="select__open-indicator"></span>
+    <span class="select__open-indicator" />
 
   </label>
 </template>
