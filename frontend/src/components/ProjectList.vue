@@ -210,4 +210,58 @@ export default {
 
 <style scoped>
 
+table {
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  border-radius: 15px;
+  border: 0px;
+}
+
+th {
+  background: #333435;
+  color: white;
+  font-weight: bold;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:after {
+  font-weight: normal;
+  position: relative;
+  left: 5px;
+  content: '▼';
+}
+
+td, th {
+  min-width: 150px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  text-align: left;
+  border: 0px;
+}
+
+tr:nth-child(even) {
+  background: #eee;
+}
+
+.fakebutton {
+  color: black;
+  background: lightgrey;
+  border-radius: 7px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.fakebutton:hover {
+  text-decoration: none;
+  background: #3a4372;
+  color: white;
+  transition: .10s;
+}
+
 </style>

@@ -1,7 +1,7 @@
 <template>
   <form
     v-if="formData"
-    class="form"
+    class="form page-content"
     action="/api/register"
     method="post"
     :data-age="age ? age : ''"
@@ -574,6 +574,13 @@ export default {
 </script>
 
 <style>
+
+.page-content {
+  width: 80%;
+  max-width: 1000px;
+  margin: 3rem auto;
+}
+
 header {
   max-width: 100%;
   background-color: rgba(51, 122, 183, 1);

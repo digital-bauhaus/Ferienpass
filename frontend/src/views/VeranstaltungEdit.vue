@@ -250,8 +250,108 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+main {
+  width: 80%;
+  position: absolute;
+  right: 0px;
+  height: 100%;
+}
+
+main form {
+  margin: auto;
+  top: 40px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 90%;
+}
+
+main form .caption {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+main form input[type=text] {
+  font-size: 16px;
+  width: 200;
+  height: 30px;
+  margin-bottom: 0px;
+  display: block;
+  background-color: #FAEBD7;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+
+main form label {
+  margin: 5px;
+  float: left;
+  display: block;
+}
+
+main h2 {
+  margin: 20px;
+}
+
+main h1 {
+  margin: 20px;
+}
+
+input[type=submit] {
+  margin: 20px;
+  background-color: #84845e;
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+}
+
 .error-list-box {
   margin: 20px;
 }
+
+th, td {
+  min-width: 150px;
+  padding: 10px 20px;
+}
+
+.fadeIn {
+  text-align: center;
+  vertical-align: middle;
+  line-height: 90px;
+  color: white;
+  display: block;
+  background-color: #6bbc6b;
+  position: fixed;
+  bottom: 20px;
+  right: -10px;
+  overflow-x: hidden;
+  transition: .5s;
+  width: 200px;
+  height: 100px;
+  border-radius: 10px;
+}
+
+.fadeOut {
+  text-align: center;
+  vertical-align: middle;
+  line-height: 90px;
+  color: #6bbc6b;
+  display: box;
+  background-color: #6bbc6b;
+  position: fixed;
+  bottom: 20px;
+  right: -10px;
+  overflow-x: hidden;
+  transition: .5s;
+  width: 0px;
+  height: 100px;
+}
+
 </style>
 
