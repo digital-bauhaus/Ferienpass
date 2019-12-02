@@ -7,7 +7,7 @@ import {
   LOGIN,
 } from './action-types';
 
-import api from '../modules/ferienpass-api';
+import api from '@/modules/ferienpass-api';
 
 const actions = {
   [LOGIN]({ commit }, { name, password }) {
@@ -22,6 +22,7 @@ const actions = {
               name,
               password,
             });
+            api.setAuthentication(name, password);
           }
           resolve(response);
         })
@@ -29,6 +30,7 @@ const actions = {
           console.log(`Fehler: ${error}`);
           commit(LOGIN_FAILED);
           reject('Fehlerhafte Anmeldedaten (User und/oder Passwort)!');
+          api.setAuthentication('', '');
         });
     });
   },

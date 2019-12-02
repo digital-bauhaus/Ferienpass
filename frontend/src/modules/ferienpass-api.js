@@ -1,11 +1,20 @@
 import axios from 'axios/index';
-import store from '../store';
 
 export const AXIOS = axios.create({
   baseURL: '/api',
 });
 
+const auth = {
+  username: '',
+  password: '',
+};
+
 export default {
+
+  setAuthentication(username, password) {
+    auth.username = username;
+    auth.password = password;
+  },
 
   // Login API
   login(user, password) {
@@ -78,10 +87,7 @@ export default {
     return AXIOS
       .get('/users',
         {
-          auth: {
-            username: store.getters.userName,
-            password: store.getters.userPass,
-          },
+          auth,
         })
       .then((response) => response.data);
   },
@@ -90,10 +96,7 @@ export default {
     return AXIOS
       .get(`/users/${userId}/projects`,
         {
-          auth: {
-            username: store.getters.userName,
-            password: store.getters.userPass,
-          },
+          auth,
         })
       .then((response) => response.data);
   },
@@ -102,10 +105,7 @@ export default {
     return AXIOS
       .get(`/users/${userId}/cancelledprojects`,
         {
-          auth: {
-            username: store.getters.userName,
-            password: store.getters.userPass,
-          },
+          auth,
         })
       .then((response) => response.data);
   },
@@ -114,10 +114,7 @@ export default {
     return AXIOS
       .put('/users', user,
         {
-          auth: {
-            username: store.getters.userName,
-            password: store.getters.userPass,
-          },
+          auth,
         })
       .then().catch((e) => {
         if (e.response.data.errors) {
@@ -134,10 +131,7 @@ export default {
     console.log('Deleting existing user');
     return AXIOS.delete(`/users/${userId}`,
       {
-        auth: {
-          username: store.getters.userName,
-          password: store.getters.userPass,
-        },
+        auth,
       });
   },
   deleteUserFromProject(projectId, userId) {
