@@ -696,9 +696,9 @@
 </template>
 
 <script>
-import api from '../modules/ferienpass-api';
-import ErrorListBox from '../components/ErrorListBox';
-import NavigationMenu from '../components/NavigationMenu';
+import api from '@/modules/ferienpass-api';
+import ErrorListBox from '@/components/ErrorListBox.vue';
+import NavigationMenu from '@/components/NavigationMenu.vue';
 
 export default {
   name: 'Teilnehmer',
@@ -707,7 +707,7 @@ export default {
     return {
       errorMessages: [],
       loaded: false,
-      id: parseInt(this.$route.query.id),
+      id: parseInt(this.$route.query.id, 10),
       user: null,
       allProjects: [],
       projectsOfUser: [],
@@ -737,23 +737,23 @@ export default {
     dataPromises.push(this.loadProjects());
     dataPromises.push(this.loadProjectsOfUser());
     dataPromises.push(this.loadCancelledProjectsOfUser());
-    Promise.all(dataPromises).then(() => this.loaded = true).catch(
+    Promise.all(dataPromises).then(() => { this.loaded = true; }).catch(
       (e) => this.errorMessages.push(e.toString()),
     );
   },
   methods: {
     loadUserData() {
-      return api.getUser(this.id).then((user) => this.user = user);
+      return api.getUser(this.id).then((user) => { this.user = user; });
     },
     loadProjects() {
-      return api.getProjects().then((projects) => this.allProjects = projects);
+      return api.getProjects().then((projects) => { this.allProjects = projects; });
     },
     loadProjectsOfUser() {
-      return api.getUsersProjects(this.id).then((projects) => this.projectsOfUser = projects);
+      return api.getUsersProjects(this.id).then((projects) => { this.projectsOfUser = projects; });
     },
     loadCancelledProjectsOfUser() {
       return api.getUsersCancelledProjects(this.id).then(
-        (projects) => this.cancelledProjectsOfUser = projects,
+        (projects) => { this.cancelledProjectsOfUser = projects; },
       );
     },
     reloadProjectsOfUser() {
@@ -764,7 +764,7 @@ export default {
       this.errorMessages = [];
       api.updateUser(this.user).then(() => {
         this.fadeInAndOutAfterTimeout();
-      }).catch((errorMessages) => this.errorMessages = errorMessages);
+      }).catch((errorMessages) => { this.errorMessages = errorMessages; });
     },
     unassignFromProject(projectId, userId) {
       api.deleteUserFromProject(projectId, userId).then(() => {
@@ -818,7 +818,7 @@ main form .caption {
 
 main form input[type=text] {
   font-size: 16px;
-  width: 200;
+  width: 200px;
   height: 30px;
   margin-bottom: 0px;
   display: block;
@@ -863,7 +863,7 @@ input[type=checkbox] {
 }
 
 .limit {
-  display: -block;
+  display: block;
   background-color: #e5d8ae;
   padding: 5px;
   border-radius: 5px;
@@ -891,7 +891,9 @@ input[type=checkbox] {
 .regular-checkbox:checked {
   background-color: #e9ecee;
   border: 1px solid #adb8c0;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05), inset 15px 10px -12px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05),
+    inset 15px 10px -12px rgba(255, 255, 255, 0.1);
   color: #99a1a7;
 }
 
@@ -991,7 +993,7 @@ th, td {
   vertical-align: middle;
   line-height: 90px;
   color: #6bbc6b;
-  display: box;
+  display: block;
   background-color: #6bbc6b;
   position: fixed;
   bottom: 20px;

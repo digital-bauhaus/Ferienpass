@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import api from '../modules/ferienpass-api';
-import NavigationMenu from '../components/NavigationMenu';
-import ProjectList from '../components/ProjectList';
+import api from '@/modules/ferienpass-api';
+import NavigationMenu from '@/components/NavigationMenu.vue';
+import ProjectList from '@/components/ProjectList.vue';
 
 export default {
   name: 'Veranstaltungen',
@@ -31,7 +31,8 @@ export default {
   methods: {
     loadProjects() {
       this.errors = [];
-      api.getProjects().then((projects) => this.projects = projects).catch((e) => this.errors.push(e));
+      api.getProjects().then((projects) => { this.projects = projects; })
+        .catch((e) => this.errors.push(e));
     },
   },
 };

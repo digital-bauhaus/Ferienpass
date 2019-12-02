@@ -1,14 +1,14 @@
-import Checkbox from './Checkbox';
-import DependingSection from './DependingSection';
-import DynamicList from './DynamicList';
-import Group from './Group';
-import ParagraphList from './ParagraphList';
-import OrderedList from './OrderedList';
-import RadioButton from './RadioButton';
-import RadioGroup from './RadioGroup';
-import Select from './Select';
-import TextArea from './TextArea';
-import TextField from './TextField';
+import Checkbox from './Checkbox.vue';
+import DependingSection from './DependingSection.vue';
+import DynamicList from './DynamicList.vue';
+import Group from './Group.vue';
+import ParagraphList from './ParagraphList.vue';
+import OrderedList from './OrderedList.vue';
+import RadioButton from './RadioButton.vue';
+import RadioGroup from './RadioGroup.vue';
+import Select from './Select.vue';
+import TextArea from './TextArea.vue';
+import TextField from './TextField.vue';
 
 export {
   Checkbox,

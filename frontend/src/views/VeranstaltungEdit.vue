@@ -164,10 +164,10 @@
 </template>
 
 <script>
-import api from '../modules/ferienpass-api';
-import ErrorListBox from '../components/ErrorListBox';
-import NavigationMenu from '../components/NavigationMenu';
-import UserList from '../components/UserList';
+import api from '@/modules/ferienpass-api';
+import ErrorListBox from '@/components/ErrorListBox.vue';
+import NavigationMenu from '@/components/NavigationMenu.vue';
+import UserList from '@/components/UserList.vue';
 
 export default {
   name: 'Veranstaltung',
@@ -175,7 +175,7 @@ export default {
   data() {
     return {
       errorMessages: [],
-      id: parseInt(this.$route.query.id),
+      id: parseInt(this.$route.query.id, 10),
       project: null,
       popupClass: 'fadeOut',
     };
@@ -226,11 +226,11 @@ export default {
       if (this.isNewProject) {
         api.createProject(this.project).then(() => {
           this.fadeInAndOutAfterTimeout();
-        }).catch((errorMessages) => this.errorMessages = errorMessages);
+        }).catch((errorMessages) => { this.errorMessages = errorMessages; });
       } else {
         api.updateProject(this.project).then(() => {
           this.fadeInAndOutAfterTimeout();
-        }).catch((errorMessages) => this.errorMessages = errorMessages);
+        }).catch((errorMessages) => { this.errorMessages = errorMessages; });
       }
     },
     fadeInAndOutAfterTimeout() {

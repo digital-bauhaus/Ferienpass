@@ -31,8 +31,8 @@
 
 
 <script>
-import { LOGIN } from '../store/action-types';
-import ErrorListBox from '../components/ErrorListBox';
+import { LOGIN } from '@/store/action-types';
+import ErrorListBox from '@/components/ErrorListBox.vue';
 
 export default {
   name: 'Login',

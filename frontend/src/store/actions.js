@@ -16,7 +16,7 @@ const actions = {
       api.login(name, password)
         .then((response) => {
           console.log(`Response: '${response.data}' with Statuscode ${response.status}`);
-          if (response.status == 200) {
+          if (response.status === 200) {
             console.log('Login successful');
             commit(LOGIN_SUCCESS, {
               name,

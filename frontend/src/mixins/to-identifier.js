@@ -1,4 +1,4 @@
-export const toIdentifier = {
+const toIdentifier = {
   methods: {
     toIdentifier(value) {
       return value
@@ -12,3 +12,5 @@ export const toIdentifier = {
     },
   },
 };
+
+export default toIdentifier;

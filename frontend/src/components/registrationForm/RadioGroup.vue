@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import RadioButton from './RadioButton';
+import RadioButton from './RadioButton.vue';
 
 export default {
   name: 'RadioGroup',

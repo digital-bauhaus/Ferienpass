@@ -10,6 +10,7 @@
  *
  */
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 const assert = require('assert');
 
 module.exports = class {

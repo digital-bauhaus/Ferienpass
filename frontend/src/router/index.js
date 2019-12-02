@@ -1,14 +1,14 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Registration from '../views/Registration';
-import Login from '../views/Login';
-import Teilnehmer from '../views/Teilnehmer';
-import Verwaltung from '../views/Verwaltung';
-import Veranstaltungen from '../views/Veranstaltungen';
-import VeranstaltungEdit from '../views/VeranstaltungEdit';
-import TeilnehmerEdit from '../views/TeilnehmerEdit';
+import Registration from '@/views/Registration.vue';
+import Login from '@/views/Login.vue';
+import Teilnehmer from '@/views/Teilnehmer.vue';
+import Verwaltung from '@/views/Verwaltung.vue';
+import Veranstaltungen from '@/views/Veranstaltungen.vue';
+import VeranstaltungEdit from '@/views/VeranstaltungEdit.vue';
+import TeilnehmerEdit from '@/views/TeilnehmerEdit.vue';
 
-import store from '../store';
+import store from '@/store';
 
 Vue.use(VueRouter);
 

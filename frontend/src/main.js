@@ -2,13 +2,11 @@ import Vue from 'vue';
 import VueSwal from 'vue-swal';
 import App from './App.vue';
 import router from './router';
-import { toIdentifier } from './mixins/to-identifier';
+import toIdentifier from './mixins/to-identifier';
 import * as formComponents from './components/registrationForm';
 import store from './store';
 
-for (const component of formComponents) {
-  Vue.component(formComponents[component].name, formComponents[component]);
-}
+Object.values(formComponents).forEach((component) => Vue.component(component.name, component));
 
 Vue.config.productionTip = false;
 

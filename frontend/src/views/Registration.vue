@@ -304,8 +304,8 @@
 </template>
 
 <script>
-import api from '../modules/ferienpass-api';
-import formDataJson from '../assets/form-data';
+import api from '@/modules/ferienpass-api';
+import formDataJson from '@/assets/form-data.json';
 
 export default {
   name: 'Registration',
@@ -336,9 +336,9 @@ export default {
         && this['base__birthdate-month']
         && this['base__birthdate-year']
       ) {
-        const day = parseInt(this['base__birthdate-day']);
-        const month = parseInt(this['base__birthdate-month']);
-        const year = parseInt(this['base__birthdate-year']);
+        const day = parseInt(this['base__birthdate-day'], 10);
+        const month = parseInt(this['base__birthdate-month'], 10);
+        const year = parseInt(this['base__birthdate-year'], 10);
 
         if ([day, month, year].every((el) => typeof el === 'number' && el % 1 === 0)) {
           const birthdate = new Date(year, month - 1, day);
@@ -347,7 +347,7 @@ export default {
           let age = today.getFullYear() - birthdate.getFullYear();
           const m = today.getMonth() - birthdate.getMonth();
           if (m < 0 || (m === 0 && today.getDate() < birthdate.getDate())) {
-            age--;
+            age -= 1;
           }
 
           this.disableUnavailableProjectsIfToYoungOrOld(age);
@@ -359,7 +359,7 @@ export default {
     },
     zipCode() {
       if (this['base__zip-code']) {
-        const value = parseInt(this['base__zip-code']);
+        const value = parseInt(this['base__zip-code'], 10);
         if (typeof value === 'number' && value % 1 === 0) {
           return value;
         }
@@ -450,7 +450,7 @@ export default {
       const form = event.target;
       const jsonObject = {};
       const jsonProjects = [];
-      for (let i = 0; i < this.alleAnmeldungProjekte.length; i++) {
+      for (let i = 0; i < this.alleAnmeldungProjekte.length; i += 1) {
         const jsonProject = {};
         jsonProject.id = this.alleAnmeldungProjekte[i].projekt.id;
         jsonProject.name = this.alleAnmeldungProjekte[i].label;
@@ -539,8 +539,8 @@ export default {
       );
       projectControls.forEach((projectControl) => {
         projectControl.removeAttribute('disabled');
-        const minimumAge = parseInt(projectControl.dataset.minimumAge);
-        const maximumAge = parseInt(projectControl.dataset.maximumAge);
+        const minimumAge = parseInt(projectControl.dataset.minimumAge, 10);
+        const maximumAge = parseInt(projectControl.dataset.maximumAge, 10);
         if (age < minimumAge || age > maximumAge) {
           projectControl.setAttribute('disabled', null);
         }
@@ -550,19 +550,20 @@ export default {
       const projectControls = Array.prototype.slice.call(
         document.querySelectorAll('[name^="projekt-id"]'),
       );
-      for (var i = 0; i < this.reservierteProjekte.length; i++) {
+      for (let i = 0; i < this.reservierteProjekte.length; i += 1) {
         projectControls.forEach((projectControl) => {
-          const checkBoxId = parseInt(projectControl.dataset.id);
+          const checkBoxId = parseInt(projectControl.dataset.id, 10);
           if (this.reservierteProjekte[i] === checkBoxId) {
             projectControl.setAttribute('disabled', null);
-            projectControl.checked = false;
+            // eslint-disable-next-line no-param-reassign
+            projectControl.checked = false; // TODO check eslint-problem
             this.unregisterProject(checkBoxId);
           }
         });
       }
     },
     unregisterProject(projectId) {
-      for (let j = 0; j < this.alleAnmeldungProjekte.length; j++) {
+      for (let j = 0; j < this.alleAnmeldungProjekte.length; j += 1) {
         if (projectId === this.alleAnmeldungProjekte[j].projekt.id) {
           console.log(`unregistering ${this.alleAnmeldungProjekte[j].label}`);
           this.alleAnmeldungProjekte[j].registered = false;

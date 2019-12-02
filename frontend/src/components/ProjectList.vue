@@ -110,27 +110,26 @@ export default {
       doc.text(`Projekt aktiv: ${this.allprojects[projectID].aktiv}`, 20, y += deltaLine);
 
       api.getAllUsersAssignedToProject(this.allprojects[projectID].id).then(
-        (users) => this.teilnehmerOfProject = users,
+        (users) => { this.teilnehmerOfProject = users; },
       );
 
-      for (let index = 0; index < this.teilnehmerOfProject.length; ++index) {
+      for (let index = 0; index < this.teilnehmerOfProject.length; index += 1) {
         doc.text(`Angemeldete Person: ${this.teilnehmerOfProject[index].name}`, 20,
           y += deltaLine);
       }
       doc.save(`projekt_${projectID}.pdf`);
     },
     sortTable(n) {
-      let table; let rows; let switching; let i; let x; let y; let shouldSwitch; let dir; let
-        switchcount;
-      switchcount = 0;
-      table = document.getElementById('projectTable');
-      switching = true;
-      dir = 'asc';
+      let rows; let i; let x; let y; let shouldSwitch;
+      let switchcount = 0;
+      const table = document.getElementById('projectTable');
+      let switching = true;
+      let dir = 'asc';
       while (switching) {
         switching = false;
         rows = table.getElementsByTagName('TR');
 
-        for (i = 1; i < (rows.length - 1); i++) {
+        for (i = 1; i < (rows.length - 1); i += 1) {
           shouldSwitch = false;
           x = rows[i].getElementsByTagName('TD')[n];
           y = rows[i + 1].getElementsByTagName('TD')[n];
@@ -150,7 +149,7 @@ export default {
         if (shouldSwitch) {
           rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
           switching = true;
-          switchcount++;
+          switchcount += 1;
         } else if (switchcount === 0 && dir === 'asc') {
           dir = 'desc';
           switching = true;
@@ -158,17 +157,16 @@ export default {
       }
     },
     sortDate() {
-      let table; let rows; let switching; let i; let x; let y; let shouldSwitch; let dir; let
-        switchcount;
-      switchcount = 0;
-      table = document.getElementById('projectTable');
-      switching = true;
-      dir = 'asc';
+      let rows; let i; let x; let y; let shouldSwitch;
+      let switchcount = 0;
+      const table = document.getElementById('projectTable');
+      let switching = true;
+      let dir = 'asc';
       while (switching) {
         switching = false;
         rows = table.getElementsByTagName('TR');
 
-        for (i = 1; i < (rows.length - 1); i++) {
+        for (i = 1; i < (rows.length - 1); i += 1) {
           shouldSwitch = false;
 
           const tmpx = rows[i].getElementsByTagName('TD')[1].innerHTML;
@@ -196,7 +194,7 @@ export default {
         if (shouldSwitch) {
           rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
           switching = true;
-          switchcount++;
+          switchcount += 1;
         } else if (switchcount === 0 && dir === 'asc') {
           dir = 'desc';
           switching = true;

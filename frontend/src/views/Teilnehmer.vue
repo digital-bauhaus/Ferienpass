@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import api from '../modules/ferienpass-api';
-import NavigationMenu from '../components/NavigationMenu';
-import UserList from '../components/UserList';
+import api from '@/modules/ferienpass-api';
+import NavigationMenu from '@/components/NavigationMenu.vue';
+import UserList from '@/components/UserList.vue';
 
 export default {
   name: 'Teilnehmer',
@@ -32,7 +32,7 @@ export default {
   methods: {
     loadUsers() {
       this.errors = [];
-      api.getUsers().then((users) => this.users = users).catch((e) => this.errors.push(e));
+      api.getUsers().then((users) => { this.users = users; }).catch((e) => this.errors.push(e));
     },
   },
 };
