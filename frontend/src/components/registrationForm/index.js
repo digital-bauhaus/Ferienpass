@@ -2,8 +2,9 @@ import Checkbox from './Checkbox.vue';
 import DependingSection from './DependingSection.vue';
 import DynamicList from './DynamicList.vue';
 import Group from './Group.vue';
-import ParagraphList from './ParagraphList.vue';
 import OrderedList from './OrderedList.vue';
+import ParagraphList from './ParagraphList.vue';
+import ParagraphWithHtml from './ParagraphWithHtml.vue';
 import RadioButton from './RadioButton.vue';
 import RadioGroup from './RadioGroup.vue';
 import Select from './Select.vue';
@@ -16,6 +17,7 @@ export {
   DynamicList,
   Group,
   ParagraphList,
+  ParagraphWithHtml,
   OrderedList,
   RadioButton,
   RadioGroup,
