@@ -25,7 +25,7 @@
             <td>
               <input
                 id="date"
-                v-model="project.datum"
+                v-model="displayDatum"
                 type="text"
                 placeholder="Datum (TT.MM.JJJ)"
               >
@@ -36,7 +36,7 @@
             <td>
               <input
                 id="endDate"
-                v-model="project.datumEnde"
+                v-model="displayDatumEnde"
                 type="text"
                 placeholder="Datum (TT.MM.JJJ)"
               >
@@ -164,6 +164,7 @@
 </template>
 
 <script>
+import * as moment from 'moment';
 import api from '@/modules/ferienpass-api';
 import ErrorListBox from '@/components/ErrorListBox.vue';
 import NavigationMenu from '@/components/NavigationMenu.vue';
@@ -175,6 +176,8 @@ export default {
   data() {
     return {
       errorMessages: [],
+      displayDatum: '',
+      displayDatumEnde: '',
       id: parseInt(this.$route.query.id, 10),
       project: null,
       popupClass: 'fadeOut',
@@ -219,18 +222,36 @@ export default {
       this.errorMessages = [];
       api.getProject(this.id).then((project) => {
         this.project = project;
+        this.displayDatum = moment(this.project.datum).format('DD.MM.YYYY');
+        this.displayDatumEnde = moment(this.project.datumEnde).format('DD.MM.YYYY');
       }).catch((e) => this.errorMessages.push(e.toString()));
     },
     createOrUpdateProject() {
       this.errorMessages = [];
-      if (this.isNewProject) {
-        api.createProject(this.project).then(() => {
-          this.fadeInAndOutAfterTimeout();
-        }).catch((errorMessages) => { this.errorMessages = errorMessages; });
-      } else {
-        api.updateProject(this.project).then(() => {
-          this.fadeInAndOutAfterTimeout();
-        }).catch((errorMessages) => { this.errorMessages = errorMessages; });
+
+      // parse dates
+      const parsedDatum = moment(this.displayDatum, 'DD.MM.YYYY', true);
+      if (!parsedDatum.isValid()) {
+        this.errorMessages.push('Ungültiges Datumsformat für Beginndatum');
+      }
+      const parsedDatumEnde = moment(this.displayDatumEnde, 'DD.MM.YYYY', true);
+      if (!parsedDatumEnde.isValid()) {
+        this.errorMessages.push('Ungültiges Datumsformat für Enddatum');
+      }
+
+      if (parsedDatum.isValid() && parsedDatumEnde.isValid()) {
+        this.project.datum = parsedDatum.toDate();
+        this.project.datumEnde = parsedDatumEnde.toDate();
+
+        if (this.isNewProject) {
+          api.createProject(this.project).then(() => {
+            this.fadeInAndOutAfterTimeout();
+          }).catch((errorMessages) => { this.errorMessages = errorMessages; });
+        } else {
+          api.updateProject(this.project).then(() => {
+            this.fadeInAndOutAfterTimeout();
+          }).catch((errorMessages) => { this.errorMessages = errorMessages; });
+        }
       }
     },
     fadeInAndOutAfterTimeout() {
