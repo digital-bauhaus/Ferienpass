@@ -411,6 +411,12 @@
       "title": "Angaben bei Behinderung",
       "components": [
         {
+          "component": "ParagraphWithHtml",
+          "params": {
+            "html": "Im Ferienpass sollen möglichst alle Kinder, egal ob mit oder ohne Behinderung, die Möglichkeit für tolle Ferien geboten bekommen. Leider sind nicht alle Angebote des Ferienpasses für alle Kinder mit körperlichen oder geistigen Einschränkungen geeignet. Sorgeberechtigte prüfen, ob das Angebot und die räumlichen Gegebenheiten den Fähigkeiten des Kindes entsprechen. Ein Elterngespräch zur Abklärung räumlicher Voraussetzung ist unbedingt zu empfehlen.<br><br>Bitte kontaktieren Sie uns direkt, wenn Ihr Kind eine Begleitung benötigt und Sie dafür finanzielle Unterstützung beantragen möchten."
+          }
+        },
+        {
           "component": "DependingSection",
           "params": {
             "title": "Beeinträchtigung",
