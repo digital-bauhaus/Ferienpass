@@ -773,14 +773,6 @@
               "Alle personenbezogenen Daten werden nach Ablauf eines Jahres gelöscht."
             ]
           }
-        },
-        {
-          "component": "Checkbox",
-          "params": {
-            "label": "Ich bestätige die Richtigkeit meiner Angaben. Wurden wissentlich falsche Angaben gemacht, darf die Organisation das angemeldete Kind von den Angeboten ausschließen. *",
-            "name": "privacy-policy__confirmation",
-            "required": true
-          }
         }
       ]
     }

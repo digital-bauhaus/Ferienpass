@@ -301,6 +301,8 @@
       </div>
     </section>
 
+    <Checkbox :params="getConfirmationCheckboxParams"/>
+
     <input
       class="button button--wide"
       type="submit"
@@ -313,9 +315,11 @@
 <script>
 import api from '@/modules/ferienpass-api';
 import formDataJson from '@/assets/form-data.json';
+import Checkbox from '@/components/registrationForm/Checkbox.vue';
 
 export default {
   name: 'Registration',
+  components: { Checkbox },
   data() {
     return {
       formData: null,
@@ -373,6 +377,13 @@ export default {
       }
 
       return null;
+    },
+    getConfirmationCheckboxParams() {
+      return {
+        label: 'Ich bestätige die Richtigkeit meiner Angaben. Wurden wissentlich falsche Angaben gemacht, darf die Organisation das angemeldete Kind von den Angeboten ausschließen. *',
+        name: 'base__confirmation',
+        required: true,
+      };
     },
   },
   created() {

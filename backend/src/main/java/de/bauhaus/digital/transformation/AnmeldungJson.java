@@ -86,7 +86,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "declaration__horse-riding-allowed",
         "declaration__swimming-allowed",
         "declaration__swimming-badge",
-        "privacy-policy__confirmation"
+        "base__confirmation"
 })
 public class AnmeldungJson {
 
@@ -236,8 +236,8 @@ public class AnmeldungJson {
     private String declarationSwimmingAllowed;
     @JsonProperty("declaration__swimming-badge")
     private String declarationSwimmingBadge;
-    @JsonProperty("privacy-policy__confirmation")
-    private Boolean privacyPolicyConfirmation;
+    @JsonProperty("base__confirmation")
+    private Boolean baseConfirmation;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -971,14 +971,14 @@ public class AnmeldungJson {
         this.declarationSwimmingBadge = declarationSwimmingBadge;
     }
 
-    @JsonProperty("privacy-policy__confirmation")
-    public Boolean getPrivacyPolicyConfirmation() {
-        return privacyPolicyConfirmation;
+    @JsonProperty("base__confirmation")
+    public Boolean getBaseConfirmation() {
+        return baseConfirmation;
     }
 
-    @JsonProperty("privacy-policy__confirmation")
-    public void setPrivacyPolicyConfirmation(Boolean privacyPolicyConfirmation) {
-        this.privacyPolicyConfirmation = privacyPolicyConfirmation;
+    @JsonProperty("base__confirmation")
+    public void setBaseConfirmation(Boolean baseConfirmation) {
+        this.baseConfirmation = baseConfirmation;
     }
 
     @JsonAnyGetter

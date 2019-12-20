@@ -88,5 +88,5 @@
   "declaration__horse-riding-allowed": "no",
   "declaration__swimming-allowed": "no",
   "declaration__swimming-badge": " Seepferdchen",
-  "privacy-policy__confirmation": true
+  "base__confirmation": true
 }
