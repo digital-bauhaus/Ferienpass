@@ -575,11 +575,19 @@
                             }
                           },
                           {
+                            "component": "Checkbox",
+                            "params": {
+                              "label": "Sinneswahrnehmung",
+                              "name": "disabilities__affected-senses-precheck"
+                            }
+                          },
+                          {
                             "component": "DynamicList",
                             "params": {
                               "title": "Sinneswahrnehmung",
                               "name": "disabilities__affected-senses",
                               "emptyMessage": "Beeinträchtigte Sinneswahrnehmungen angeben",
+                              "hideTitle": true,
                               "textField": {
                                 "component": "TextField",
                                 "params": {

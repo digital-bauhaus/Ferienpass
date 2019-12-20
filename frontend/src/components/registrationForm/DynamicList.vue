@@ -5,7 +5,7 @@
   >
     <h3
       :id="`${toIdentifier(params.title)}-label`"
-      class="dynamic-list__title"
+      :class="`dynamic-list__title ${params.hideTitle ? 'visually-hidden' : ''}`"
       tabindex="-1"
     >
       {{ params.title }}
