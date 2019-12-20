@@ -26,6 +26,10 @@
           <li>{{ params.projekt.org }}</li>
         </ul>
       </template>
+      <template v-else-if="params.htmllabel">
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <span v-html="params.htmllabel" />
+      </template>
       <template v-else>
         {{ params.label }}
       </template>
