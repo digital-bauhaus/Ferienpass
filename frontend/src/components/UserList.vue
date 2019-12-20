@@ -63,10 +63,6 @@
           Bearbeiten
         </router-link>
         <span
-          v-if="allowExportPdf"
-          class="fakebutton"
-        ><a>PDF</a></span>
-        <span
           v-if="allowDelete"
           class="fakebutton"
           @click="deleteUser(user.id)"
@@ -92,11 +88,6 @@ export default {
       default: false,
     },
     allowEdit: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-    allowExportPdf: {
       type: Boolean,
       required: false,
       default: true,

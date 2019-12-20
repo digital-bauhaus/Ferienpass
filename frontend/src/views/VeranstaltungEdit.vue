@@ -142,7 +142,6 @@
         <UserList
           :users="project.anmeldungen"
           :show-projects="false"
-          :allow-export-pdf="false"
           :allow-delete="false"
         />
       </div>
@@ -152,7 +151,6 @@
         <UserList
           :users="project.stornierteTeilnehmer"
           :show-projects="false"
-          :allow-export-pdf="false"
           :allow-delete="false"
         />
       </div>
