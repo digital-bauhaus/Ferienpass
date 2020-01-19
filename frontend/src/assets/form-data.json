@@ -721,12 +721,6 @@
           }
         },
         {
-          "component": "ParagraphWithHtml",
-          "params": {
-            "html": "<b>Wir bitten die Eltern bzw. Erziehungsberechtigten folgende Erklärung zu unterschreiben</b>:"
-          }
-        },
-        {
           "component": "OrderedList",
           "params": {
             "title": "Wir bitten die Eltern bzw. Erziehungsberechtigten folgende Erklärung zu unterschreiben:",
@@ -739,18 +733,6 @@
               "Hiermit gebe ich mein Einverständnis, dass mein Kind zum Zwecke der Veröffentlichung und der Dokumentation im Rahmen des Ferienpasses gefilmt und fotografiert werden darf. Die Fotos dürfen auf der Internetseite des Ferienpasses und im Ferienpass-Heft verwendet werden.",
               "Die Datenschutzerklärung habe ich zur Kenntnis genommen."
             ]
-          }
-        },
-        {
-          "component": "ParagraphWithHtml",
-          "params": {
-            "html": "Die Anmeldung zu den Aktionen ist verbindlich. Bitte geben Sie dieses vierseitige Formular vollständig ausgefüllt und unterschrieben im Kinderbüro ab. Der ausstehende Betrag ist bei der Anmeldung im Kinderbüro Weimar zu entrichten. Daraufhin erhalten Sie einen Stempel im Ferienpass, der bei den Aktionen vorgezeigt werden muss."
-          }
-        },
-        {
-          "component": "ParagraphWithHtml",
-          "params": {
-            "html": "Das Kinderbüro finden Sie im mon ami am Goetheplatz: <br>Kinderbüro Weimar, Goetheplatz, 99423 Weimar, Telefon: 0 36 43 / 49 49 90"
           }
         },
         {
