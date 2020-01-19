@@ -245,7 +245,7 @@
           "params": {
             "title": "Medikamente",
             "name": "conditions__medication",
-            "emptyMessage": "Vom Kind einzunehmende Medikamente hier eintragen.",
+            "emptyMessage": "Mein Kind nimmt folgende Medikamente ein:",
             "textField": {
               "component": "TextField",
               "params": {
@@ -304,8 +304,9 @@
         {
           "component": "RadioGroup",
           "params": {
-            "title": "Behandlungserlaubnis bei Erkrankungen und Unfällen",
+            "title": "Behandlungserlaubnis bei Erkrankungen und Unfällen *",
             "name": "conditions__child-treatment-allowed",
+            "required": true,
             "components": [
               {
                 "component": "RadioButton",
@@ -333,8 +334,7 @@
                 "component": "TextField",
                 "params": {
                   "label": "Name",
-                  "name": "conditions__health-insurance",
-                  "required": true
+                  "name": "conditions__health-insurance"
                 }
               }
             ]
@@ -365,7 +365,8 @@
                   "label": "Telefon",
                   "name": "conditions__emergency-phone-number",
                   "pattern": "^([+]*[0-9]+[0-9]*)([0-9 -]*[/]?[0-9 ]*)$",
-                  "type": "tel"
+                  "type": "tel",
+                  "required": true
                 }
               }
             ]
