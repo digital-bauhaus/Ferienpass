@@ -738,7 +738,7 @@
         {
           "component": "ParagraphWithHtml",
           "params": {
-            "html": "<b>Stornierungsregelung</b>: Nach der Bezahlung entstehen Stornierungskosten. Bei Stornierung einer Aktion bis einer Woche vor der Veranstaltung werden 50% der Kosten berechnet. Ab einer Woche vor der Veranstaltung werden 100% berechnet. Die Stornierungskosten können umgangen werden, wenn ein anderes Kind für den freien Platz benannt wird."
+            "html": "<b>Stornierungsregelung</b>: Nach der Bezahlung entstehen Stornierungskosten. Bei Stornierung einer Aktion bis einer Woche vor der Veranstaltung werden 50% der Kosten berechnet. Ab einer Woche vor der Veranstaltung werden 100% berechnet. Die Stornierungskosten können umgangen werden, wenn ein anderes Kind für den freien Platz benannt wird. Nehmen Sie für die Stornierung Kontakt mit uns auf: <a href=\"mailto:ferienpass@stadtweimar.de\">ferienpass@stadtweimar.de</a> "
           }
         }
       ]
