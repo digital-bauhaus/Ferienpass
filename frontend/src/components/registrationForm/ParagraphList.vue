@@ -5,7 +5,8 @@
       :key="index"
       class="paragraph-list__item"
     >
-      {{ entry }}
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <span v-html="entry" />
     </li>
   </ul>
 </template>
