@@ -5,7 +5,10 @@
       align-v="center"
     >
       <b-col>
-        <b-card bg-variant="light">
+        <b-card
+          :title="title"
+          bg-variant="light"
+        >
           <b-form @submit="onSubmit">
             <b-form-group
               id="login-name-group"
@@ -16,7 +19,7 @@
             >
               <b-form-input
                 id="login-name-value"
-                v-model.trim="name"
+                v-model.trim="form.name"
                 required
                 placeholder="Bitte Name eingeben"
               />
@@ -30,7 +33,7 @@
             >
               <b-form-input
                 id="login-password"
-                v-model.trim="password"
+                v-model.trim="form.password"
                 type="password"
                 required
                 placeholder="Bitte Passwort eingeben"
@@ -44,8 +47,9 @@
             </b-button>
           </b-form>
         </b-card>
-        <ErrorListBox
-          v-if="errors.length"
+
+        <ErrorAlert
+          v-if="showErrorAlert"
           heading-text="Login nicht möglich. Folgende Fehler sind aufgetreten: "
           :errors="errors"
         />
@@ -57,23 +61,30 @@
 
 <script>
 import { LOGIN } from '@/store/action-types';
-import ErrorListBox from '@/components/ErrorListBox.vue';
+import ErrorAlert from '@/components/ErrorAlert.vue';
 
 export default {
   name: 'Login',
-  components: { ErrorListBox },
+  components: { ErrorAlert },
   data() {
     return {
       title: 'Ferienpass Weimar: Administration',
       errors: [],
-      name: '',
-      password: '',
+      form: {
+        name: '',
+        password: '',
+      },
     };
+  },
+  computed: {
+    showErrorAlert() {
+      return this.errors.length > 0;
+    },
   },
   methods: {
     onSubmit() {
       this.errors = [];
-      this.$store.dispatch(LOGIN, { name: this.name, password: this.password })
+      this.$store.dispatch(LOGIN, { name: this.form.name, password: this.form.password })
         .then(() => this.$router.push('/Verwaltung'))
         .catch((e) => {
           this.errors.push(e);
