@@ -1,3 +1,5 @@
+import api from '@/modules/ferienpass-api';
+
 import {
   LOGIN_SUCCESS,
   LOGIN_FAILED,
@@ -6,8 +8,6 @@ import {
 import {
   LOGIN,
 } from './action-types';
-
-import api from '@/modules/ferienpass-api';
 
 const actions = {
   [LOGIN]({ commit }, { name, password }) {
