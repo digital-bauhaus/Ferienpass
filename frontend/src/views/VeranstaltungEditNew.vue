@@ -169,10 +169,8 @@ import NavigationMenu from '@/components/NavBar.vue';
 import UserList from '@/components/UserList.vue';
 
 export default {
-  name: 'VeranstaltungEdit',
-  components: {
-    UserList, NavigationMenu, ErrorListBox
-  },
+  name: 'VeranstaltungEditNew',
+  components: { UserList, NavigationMenu, ErrorListBox },
   data() {
     return {
       errorMessages: [],
