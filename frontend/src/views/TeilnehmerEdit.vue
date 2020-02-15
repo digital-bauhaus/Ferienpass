@@ -698,7 +698,7 @@
 <script>
 import api from '@/modules/ferienpass-api';
 import ErrorListBox from '@/components/ErrorListBox.vue';
-import NavigationMenu from '@/components/NavigationMenu.vue';
+import NavigationMenu from '@/components/NavBar.vue';
 
 export default {
   name: 'Teilnehmer',

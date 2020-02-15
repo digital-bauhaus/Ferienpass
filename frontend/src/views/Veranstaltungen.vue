@@ -13,7 +13,7 @@
 
 <script>
 import api from '@/modules/ferienpass-api';
-import NavigationMenu from '@/components/NavigationMenu.vue';
+import NavigationMenu from '@/components/NavBar.vue';
 import ProjectList from '@/components/ProjectList.vue';
 
 export default {

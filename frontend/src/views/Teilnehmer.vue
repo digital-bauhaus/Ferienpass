@@ -14,7 +14,7 @@
 
 <script>
 import api from '@/modules/ferienpass-api';
-import NavigationMenu from '@/components/NavigationMenu.vue';
+import NavigationMenu from '@/components/NavBar.vue';
 import UserList from '@/components/UserList.vue';
 
 export default {

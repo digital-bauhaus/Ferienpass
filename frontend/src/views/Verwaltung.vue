@@ -18,7 +18,7 @@
 
 <script>
 
-import NavigationMenu from '@/components/NavigationMenu.vue';
+import NavigationMenu from '@/components/NavBar.vue';
 
 export default {
   name: 'Verwaltung',
