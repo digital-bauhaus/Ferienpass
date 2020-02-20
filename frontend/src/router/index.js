@@ -7,6 +7,7 @@ import Verwaltung from '@/views/Verwaltung.vue';
 import Veranstaltungen from '@/views/Veranstaltungen.vue';
 import VeranstaltungEdit from '@/views/VeranstaltungEdit.vue';
 import TeilnehmerEdit from '@/views/TeilnehmerEdit.vue';
+import VeranstaltungEditNew from '@/views/VeranstaltungEditNew.vue';
 
 import store from '@/store';
 
@@ -39,6 +40,11 @@ const routes = [
   {
     path: '/VeranstaltungEdit',
     component: VeranstaltungEdit,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/VeranstaltungEditNew',
+    component: VeranstaltungEditNew,
     meta: { requiresAuth: true },
   },
   {

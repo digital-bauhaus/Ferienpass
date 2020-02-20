@@ -3,7 +3,9 @@
     <div>
       Title
     </div>
-    <b-form @submit="onSubmit">
+    <b-form
+      @submit="onSubmit"
+    >
       <b-form-group
         id="veranstaltung-name-group"
         label-for="veranstaltung-name-value"
@@ -44,6 +46,68 @@
           type="date"
         />
       </b-form-group>
+
+      <b-form-group
+        id="veranstaltung-slotstotal-group"
+        label-for="veranstaltung-slotstotal-value"
+        label="Plätze (gesamt)"
+      >
+        <b-form-input
+          id="veranstaltung-slotstotal-value"
+          v-model.trim="veranstaltung.slotsGesamt"
+          required
+          placeholder="Plätze"
+          type="number"
+        />
+      </b-form-group>
+
+      <b-form-group
+        id="veranstaltung-slotsreserved-group"
+        label-for="veranstaltung-slotsreserved-value"
+        label="Plätze (reserviert)"
+      >
+        <b-form-input
+          id="veranstaltung-slotsreserved-value"
+          v-model.trim="veranstaltung.slotsReserviert"
+          placeholder="Reservierte Plätze"
+          type="number"
+        />
+      </b-form-group>
+
+      <b-form-group
+        id="veranstaltung-minage-group"
+        label-for="veranstaltung-minage-value"
+        label="Mindestalter"
+      >
+        <b-form-input
+          id="veranstaltung-minage-value"
+          v-model.trim="veranstaltung.mindestAlter"
+          required
+          placeholder="Altersbegrenzung"
+          type="number"
+        />
+      </b-form-group>
+
+      <b-form-group
+        id="veranstaltung-maxage-group"
+        label-for="veranstaltung-maxage-value"
+        label="Höchstalter"
+      >
+        <b-form-input
+          id="veranstaltung-maxage-value"
+          v-model.trim="veranstaltung.hoechstAlter"
+          required
+          placeholder="Altersbegrenzung"
+          type="number"
+        />
+      </b-form-group>
+
+      <b-button
+        type="submit"
+        variant="primary"
+      >
+        Anlegen
+      </b-button>
     </b-form>
   </div>
 </template>
@@ -59,7 +123,6 @@ export default {
   },
   methods: {
     onSubmit() {
-
     },
   },
 };

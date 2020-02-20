@@ -15,13 +15,28 @@
       is-nav
     >
       <b-navbar-nav>
-        <b-nav-item active-class="active" :to="{ path: '/Veranstaltungen' }">
+        <b-nav-item
+          active-class="active"
+          :to="{ path: '/Veranstaltungen' }"
+        >
           Alle Veranstaltungen
         </b-nav-item>
-        <b-nav-item active-class="active" :to="{ path: '/VeranstaltungEdit', query: { id: '-1' } }">
+        <b-nav-item
+          active-class="active"
+          :to="{ path: '/VeranstaltungEdit', query: { id: '-1' } }"
+        >
           Veranstaltung erstellen
         </b-nav-item>
-        <b-nav-item active-class="active" :to="{ path: '/Teilnehmer' }">
+        <b-nav-item
+          active-class="active"
+          :to="{ path: '/VeranstaltungEditNew', query: { id: '-1' } }"
+        >
+          Veranstaltung NEU
+        </b-nav-item>
+        <b-nav-item
+          active-class="active"
+          :to="{ path: '/Teilnehmer' }"
+        >
           Alle Teilnehmer
         </b-nav-item>
       </b-navbar-nav>

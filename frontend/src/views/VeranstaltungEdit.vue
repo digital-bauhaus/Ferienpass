@@ -171,7 +171,7 @@ import UserList from '@/components/UserList.vue';
 export default {
   name: 'VeranstaltungEdit',
   components: {
-    UserList, NavigationMenu, ErrorListBox
+    UserList, NavigationMenu, ErrorListBox,
   },
   data() {
     return {
