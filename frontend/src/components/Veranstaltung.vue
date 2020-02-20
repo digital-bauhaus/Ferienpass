@@ -4,6 +4,8 @@
       Title
     </div>
     <b-form
+      novalidate
+      :validated="showValidationStatus"
       @submit="onSubmit"
     >
       <b-form-group
@@ -121,8 +123,14 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      showValidationStatus: false,
+    };
+  },
   methods: {
     onSubmit() {
+      this.showValidationStatus = true;
     },
   },
 };
