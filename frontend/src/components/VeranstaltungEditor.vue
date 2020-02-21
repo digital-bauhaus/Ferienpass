@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div>
-      Title
-    </div>
+    <h1>
+      {{ titleText }}
+    </h1>
     <b-form
+      ref="form"
       novalidate
       :validated="showValidationStatus"
       @submit="onSubmit"
@@ -108,29 +109,110 @@
         type="submit"
         variant="primary"
       >
-        Anlegen
+        {{ submitButtonText }}
       </b-button>
     </b-form>
+
+    <b-alert
+      class="fixed-bottom w-50 mx-auto"
+      :show="dismissCountDown"
+      dismissible
+      variant="success"
+      @dismissed="dismissCountDown=0"
+      @dismiss-count-down="dismissCountDown = $event"
+    >
+      {{ successText }}
+    </b-alert>
+
   </div>
 </template>
 
 <script>
+import api from '@/modules/ferienpass-api';
+
 export default {
   name: 'Veranstaltung',
   props: {
-    veranstaltung: {
-      type: Object,
+    veranstaltungId: {
+      type: Number,
       required: true,
     },
   },
   data() {
     return {
+      veranstaltung: {},
       showValidationStatus: false,
+      errorMessages: [],
+      dismissCountDown: 0,
     };
+  },
+  computed: {
+    isNewProject() {
+      return this.veranstaltungId <= 0;
+    },
+    titleText() {
+      if (this.isNewProject) {
+        return 'Veranstaltung anlegen';
+      }
+      return 'Veranstaltungsbearbeitung';
+    },
+    submitButtonText() {
+      if (this.isNewProject) {
+        return 'Anlegen';
+      }
+      return 'Speichern';
+    },
+    successText() {
+      if (this.isNewProject) {
+        return 'Veranstaltung erfolgreich angelegt.';
+      }
+      return 'Veranstaltung erfolgreich gespeichert.';
+    },
+    errorHeadingText() {
+      if (this.isNewProject) {
+        return 'Anlegen nicht möglich. Bitte beheben Sie folgende Fehler:';
+      }
+      return 'Speichern nicht möglich. Bitte beheben Sie folgende Fehler:';
+    },
+  },
+  created() {
+    if (this.isNewProject) {
+      // TODO check why?
+      this.veranstaltung = {
+        aktiv: true,
+        anmeldungen: [],
+        stornierteTeilnehmer: [],
+      };
+    } else {
+      this.loadProjectData();
+    }
   },
   methods: {
     onSubmit() {
       this.showValidationStatus = true;
+      if (this.$refs.form.checkValidity()) {
+        this.createOrUpdateProject();
+      } else {
+        this.$refs.form.reportValidity();
+      }
+    },
+    loadProjectData() {
+      this.errorMessages = [];
+      api.getProject(this.veranstaltungId).then((project) => {
+        this.veranstaltung = project;
+      }).catch((e) => this.errorMessages.push(e.toString()));
+    },
+    createOrUpdateProject() {
+      this.errorMessages = [];
+      if (this.isNewProject) {
+        api.createProject(this.veranstaltung).then(() => {
+          this.dismissCountDown = 5;
+        }).catch((errorMessages) => { this.errorMessages = errorMessages; });
+      } else {
+        api.updateProject(this.veranstaltung).then(() => {
+          this.dismissCountDown = 5;
+        }).catch((errorMessages) => { this.errorMessages = errorMessages; });
+      }
     },
   },
 };

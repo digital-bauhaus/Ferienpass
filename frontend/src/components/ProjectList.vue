@@ -33,6 +33,12 @@
         >
           Bearbeiten
         </router-link>
+        <router-link
+          :to="{path: '../VeranstaltungEditNew', query: {id: project.id }}"
+          class="fakebutton"
+        >
+          Bearbeiten NEU
+        </router-link>
         <span
           class="fakebutton"
           @click="exportPDF(index)"
