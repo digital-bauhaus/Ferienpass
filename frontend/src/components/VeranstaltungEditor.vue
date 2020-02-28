@@ -3,6 +3,13 @@
     <h1>
       {{ titleText }}
     </h1>
+
+    <ErrorAlert
+      v-if="showErrorAlert"
+      :heading-text=errorHeadingText
+      :errors="errorMessages"
+    />
+
     <b-form
       ref="form"
       novalidate
@@ -141,9 +148,11 @@
 
 <script>
 import api from '@/modules/ferienpass-api';
+import ErrorAlert from '@/components/ErrorAlert.vue';
 
 export default {
   name: 'Veranstaltung',
+  components: { ErrorAlert },
   props: {
     veranstaltungId: {
       type: Number,
@@ -159,6 +168,9 @@ export default {
     };
   },
   computed: {
+    showErrorAlert() {
+      return this.errorMessages.length > 0;
+    },
     isNewProject() {
       return this.veranstaltungId <= 0;
     },

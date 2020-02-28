@@ -9,7 +9,16 @@
           :title="title"
           bg-variant="light"
         >
-          <b-form @submit="onSubmit">
+          <ErrorAlert
+            v-if="showErrorAlert"
+            heading-text="Login nicht möglich. Folgende Fehler sind aufgetreten: "
+            :errors="errorMessages"
+          />
+
+          <b-form
+            ref="form"
+            @submit="onSubmit"
+          >
             <b-form-group
               id="login-name-group"
               horizontal
@@ -47,12 +56,6 @@
             </b-button>
           </b-form>
         </b-card>
-
-        <ErrorAlert
-          v-if="showErrorAlert"
-          heading-text="Login nicht möglich. Folgende Fehler sind aufgetreten: "
-          :errors="errors"
-        />
       </b-col>
     </b-row>
   </b-container>
@@ -69,7 +72,7 @@ export default {
   data() {
     return {
       title: 'Ferienpass Weimar: Administration',
-      errors: [],
+      errorMessages: [],
       form: {
         name: '',
         password: '',
@@ -78,16 +81,16 @@ export default {
   },
   computed: {
     showErrorAlert() {
-      return this.errors.length > 0;
+      return this.errorMessages.length > 0;
     },
   },
   methods: {
     onSubmit() {
-      this.errors = [];
+      this.errorMessages = [];
       this.$store.dispatch(LOGIN, { name: this.form.name, password: this.form.password })
         .then(() => this.$router.push('/Verwaltung'))
         .catch((e) => {
-          this.errors.push(e);
+          this.errorMessages.push(e);
         });
     },
   },
