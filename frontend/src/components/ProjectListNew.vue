@@ -3,6 +3,7 @@
     striped
     hover
     outlined
+    :responsive="true"
     primary-key="id"
     :items="projects"
     :fields="fields"
