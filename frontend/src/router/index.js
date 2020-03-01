@@ -8,6 +8,7 @@ import Veranstaltungen from '@/views/Veranstaltungen.vue';
 import VeranstaltungEdit from '@/views/VeranstaltungEdit.vue';
 import TeilnehmerEdit from '@/views/TeilnehmerEdit.vue';
 import VeranstaltungEditNew from '@/views/VeranstaltungEditNew.vue';
+import VeranstaltungenNew from '@/views/VeranstaltungenNew.vue';
 
 import store from '@/store';
 
@@ -35,6 +36,11 @@ const routes = [
   {
     path: '/Veranstaltungen',
     component: Veranstaltungen,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/VeranstaltungenNew',
+    component: VeranstaltungenNew,
     meta: { requiresAuth: true },
   },
   {
