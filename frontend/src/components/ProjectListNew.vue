@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import dayjs, { SHORT_DATE_FORMAT } from '../modules/dayjs';
 import api from '../modules/ferienpass-api';
 
 export default {
@@ -44,8 +45,12 @@ export default {
       errors: [],
       fields: [
         { key: 'name', label: 'Name', sortable: true },
-        { key: 'datum', label: 'Von', sortable: true },
-        { key: 'datumEnde', label: 'Bis', sortable: true },
+        {
+          key: 'datum', label: 'Von', sortable: true, formatter: 'formatDate',
+        },
+        {
+          key: 'datumEnde', label: 'Bis', sortable: true, formatter: 'formatDate',
+        },
         { key: 'slotsFrei', label: '#Frei', sortable: true },
         { key: 'slotsGesamt', label: '#Gesamt', sortable: true },
         { key: 'slotsReserviert', label: '#Reserviert', sortable: true },
@@ -56,6 +61,9 @@ export default {
     };
   },
   methods: {
+    formatDate(stringDate) {
+      return dayjs(stringDate).format(SHORT_DATE_FORMAT);
+    },
     deleteProject(projectId) {
       this.$swal({
         title: 'Wirklich löschen?',
