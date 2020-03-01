@@ -11,12 +11,15 @@
     <template v-slot:cell(actions)="row">
       <b-button
         size="sm"
+        class="m-1"
         :to="{path: '../VeranstaltungEdit', query: {id: row.item.id }}"
       >
         Bearbeiten
       </b-button>
       <b-button
         size="sm"
+        class="m-1"
+        variant="danger"
         @click="deleteProject(row.item.id)"
       >
         Löschen
@@ -51,9 +54,6 @@ export default {
         { key: 'actions', label: 'Aktionen', sortable: false },
       ],
     };
-  },
-  mounted() {
-    console.log(this.projects);
   },
   methods: {
     deleteProject(projectId) {
