@@ -1,7 +1,7 @@
 <template>
   <b-container class="vh-100">
     <b-row
-      class="vh-100"
+      class="h-100"
       align-v="center"
     >
       <b-col>
