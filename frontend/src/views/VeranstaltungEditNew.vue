@@ -15,6 +15,24 @@
         :submit-button-text="submitButtonText"
         @submit="createOrUpdateProject"
       />
+      <div v-if="!isNewProject">
+        <h2>Angemeldete Nutzer:</h2>
+        <UserList
+          :users="veranstaltung.anmeldungen"
+          :show-projects="false"
+          :allow-delete="false"
+        />
+      </div>
+
+      <div v-if="!isNewProject">
+        <h2>Stornierte Nutzer:</h2>
+        <UserList
+          :users="veranstaltung.stornierteTeilnehmer"
+          :show-projects="false"
+          :allow-delete="false"
+        />
+      </div>
+
       <b-alert
         class="fixed-bottom w-50 mx-auto"
         :show="successAutomaticDismissCountDown"
@@ -34,10 +52,13 @@ import NavigationMenu from '@/components/NavBar.vue';
 import Veranstaltung from '@/components/VeranstaltungEditor.vue';
 import api from '@/modules/ferienpass-api';
 import ErrorAlert from '@/components/ErrorAlert.vue';
+import UserList from '@/components/UserList.vue';
 
 export default {
   name: 'VeranstaltungEditNew',
-  components: { Veranstaltung, NavigationMenu, ErrorAlert },
+  components: {
+    Veranstaltung, NavigationMenu, ErrorAlert, UserList,
+  },
   data() {
     return {
       veranstaltung: {
