@@ -3,7 +3,7 @@
     <NavigationMenu />
     <b-container>
       <h1>Veranstaltungsübersicht</h1>
-      <ProjectListNew
+      <ProjectList
         :projects="projects"
         @project-deleted="loadProjects"
       />
@@ -14,11 +14,11 @@
 <script>
 import api from '@/modules/ferienpass-api';
 import NavigationMenu from '@/components/NavBar.vue';
-import ProjectListNew from '@/components/ProjectListNew.vue';
+import ProjectList from '@/components/ProjectList.vue';
 
 export default {
-  name: 'VeranstaltungenNew',
-  components: { ProjectListNew, NavigationMenu },
+  name: 'Projects',
+  components: { ProjectList, NavigationMenu },
   data() {
     return {
       errors: [],

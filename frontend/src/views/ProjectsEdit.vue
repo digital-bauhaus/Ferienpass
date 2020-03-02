@@ -10,7 +10,7 @@
         :heading-text="serverErrorHeadingText"
         :errors="serverErrorMessages"
       />
-      <Veranstaltung
+      <ProjectEditor
         v-model="veranstaltung"
         :submit-button-text="submitButtonText"
         @submit="createOrUpdateProject"
@@ -49,15 +49,15 @@
 
 <script>
 import NavigationMenu from '@/components/NavBar.vue';
-import Veranstaltung from '@/components/VeranstaltungEditor.vue';
+import ProjectEditor from '@/components/ProjectEditor.vue';
 import api from '@/modules/ferienpass-api';
 import ErrorAlert from '@/components/ErrorAlert.vue';
 import UserList from '@/components/UserList.vue';
 
 export default {
-  name: 'VeranstaltungEditNew',
+  name: 'ProjectsEdit',
   components: {
-    Veranstaltung, NavigationMenu, ErrorAlert, UserList,
+    ProjectEditor, NavigationMenu, ErrorAlert, UserList,
   },
   data() {
     return {
@@ -82,7 +82,7 @@ export default {
       if (this.isNewProject) {
         return 'Veranstaltung anlegen';
       }
-      return 'Veranstaltungsbearbeitung';
+      return 'Veranstaltung bearbeiten';
     },
     submitButtonText() {
       if (this.isNewProject) {

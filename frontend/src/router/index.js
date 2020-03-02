@@ -4,11 +4,9 @@ import Registration from '@/views/Registration.vue';
 import Login from '@/views/Login.vue';
 import Teilnehmer from '@/views/Teilnehmer.vue';
 import Verwaltung from '@/views/Verwaltung.vue';
-import Veranstaltungen from '@/views/Veranstaltungen.vue';
-import VeranstaltungEdit from '@/views/VeranstaltungEdit.vue';
+import Projects from '@/views/Projects.vue';
+import ProjectsEdit from '@/views/ProjectsEdit.vue';
 import TeilnehmerEdit from '@/views/TeilnehmerEdit.vue';
-import VeranstaltungEditNew from '@/views/VeranstaltungEditNew.vue';
-import VeranstaltungenNew from '@/views/VeranstaltungenNew.vue';
 
 import store from '@/store';
 
@@ -34,23 +32,13 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/Veranstaltungen',
-    component: Veranstaltungen,
+    path: '/Projects',
+    component: Projects,
     meta: { requiresAuth: true },
   },
   {
-    path: '/VeranstaltungenNew',
-    component: VeranstaltungenNew,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/VeranstaltungEdit',
-    component: VeranstaltungEdit,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/VeranstaltungEditNew',
-    component: VeranstaltungEditNew,
+    path: '/ProjectsEdit',
+    component: ProjectsEdit,
     meta: { requiresAuth: true },
   },
   {

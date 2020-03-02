@@ -17,27 +17,15 @@
       <b-navbar-nav>
         <b-nav-item
           active-class="active"
-          :to="{ path: '/Veranstaltungen' }"
+          :to="{ path: '/Projects' }"
         >
           Alle Veranstaltungen
         </b-nav-item>
         <b-nav-item
           active-class="active"
-          :to="{ path: '/VeranstaltungenNew' }"
-        >
-          Alle Veranstaltungen NEU
-        </b-nav-item>
-        <b-nav-item
-          active-class="active"
-          :to="{ path: '/VeranstaltungEdit', query: { id: '-1' } }"
+          :to="{ path: '/ProjectsEdit', query: { id: '-1' } }"
         >
           Veranstaltung erstellen
-        </b-nav-item>
-        <b-nav-item
-          active-class="active"
-          :to="{ path: '/VeranstaltungEditNew', query: { id: '-1' } }"
-        >
-          Veranstaltung NEU
         </b-nav-item>
         <b-nav-item
           active-class="active"

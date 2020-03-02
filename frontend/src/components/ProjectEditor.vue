@@ -138,7 +138,7 @@
 <script>
 
 export default {
-  name: 'Veranstaltung',
+  name: 'ProjectEditor',
   props: {
     value: {
       type: Object,
