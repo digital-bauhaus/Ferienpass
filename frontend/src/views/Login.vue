@@ -12,7 +12,7 @@
           <ErrorAlert
             v-if="showErrorAlert"
             heading-text="Login nicht möglich. Folgende Fehler sind aufgetreten: "
-            :errors="errorMessages"
+            :errors="serverErrorMessages"
           />
 
           <b-form
@@ -72,7 +72,7 @@ export default {
   data() {
     return {
       title: 'Ferienpass Weimar: Administration',
-      errorMessages: [],
+      serverErrorMessages: [],
       form: {
         name: '',
         password: '',
@@ -81,21 +81,21 @@ export default {
   },
   computed: {
     showErrorAlert() {
-      return this.errorMessages.length > 0;
+      return this.serverErrorMessages.length > 0;
     },
   },
   methods: {
     onSubmit() {
-      this.errorMessages = [];
+      this.serverErrorMessages = [];
       this.$store.dispatch(LOGIN, { name: this.form.name, password: this.form.password })
         .then(() => this.$router.push('/Verwaltung'))
         .catch((e) => {
-          this.errorMessages.push(e);
+          this.serverErrorMessages.push(e);
         });
     },
   },
 };
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped>
 </style>

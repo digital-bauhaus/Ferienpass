@@ -11,14 +11,15 @@
         :errors="serverErrorMessages"
       />
       <ProjectEditor
-        v-model="veranstaltung"
+        v-model="project"
         :submit-button-text="submitButtonText"
         @submit="createOrUpdateProject"
       />
+
       <div v-if="!isNewProject">
         <h2>Angemeldete Nutzer:</h2>
         <UserList
-          :users="veranstaltung.anmeldungen"
+          :users="project.anmeldungen"
           :show-projects="false"
           :allow-delete="false"
         />
@@ -27,7 +28,7 @@
       <div v-if="!isNewProject">
         <h2>Stornierte Nutzer:</h2>
         <UserList
-          :users="veranstaltung.stornierteTeilnehmer"
+          :users="project.stornierteTeilnehmer"
           :show-projects="false"
           :allow-delete="false"
         />
@@ -61,7 +62,7 @@ export default {
   },
   data() {
     return {
-      veranstaltung: {
+      project: {
         /* TODO these have to be default values on the server model */
         aktiv: true,
         anmeldungen: [],
@@ -72,11 +73,11 @@ export default {
     };
   },
   computed: {
-    veranstaltungId() {
+    projectId() {
       return parseInt(this.$route.query.id, 10);
     },
     isNewProject() {
-      return this.veranstaltungId <= 0;
+      return this.projectId <= 0;
     },
     titleText() {
       if (this.isNewProject) {
@@ -114,21 +115,24 @@ export default {
   methods: {
     loadProjectData() {
       this.serverErrorMessages = [];
-      api.getProject(this.veranstaltungId).then((project) => {
-        this.veranstaltung = project;
+      api.getProject(this.projectId).then((project) => {
+        this.project = project;
       }).catch((e) => this.serverErrorMessages.push(e.toString()));
     },
     createOrUpdateProject() {
       this.serverErrorMessages = [];
       if (this.isNewProject) {
-        api.createProject(this.veranstaltung).then(() => {
-          this.successAutomaticDismissCountDown = 5;
+        api.createProject(this.project).then(() => {
+          this.showSuccessInfo();
         }).catch((errorMessages) => { this.serverErrorMessages = errorMessages; });
       } else {
-        api.updateProject(this.veranstaltung).then(() => {
-          this.successAutomaticDismissCountDown = 5;
+        api.updateProject(this.project).then(() => {
+          this.showSuccessInfo();
         }).catch((errorMessages) => { this.serverErrorMessages = errorMessages; });
       }
+    },
+    showSuccessInfo() {
+      this.successAutomaticDismissCountDown = 5;
     },
   },
 };

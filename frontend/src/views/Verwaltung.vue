@@ -3,7 +3,7 @@
     <NavigationMenu />
     <b-container
       fluid
-      class="verwaltung--container"
+      class="verwaltung__container"
     >
       <b-row
         align-v="center"
@@ -13,7 +13,7 @@
           <h1 class="text-center">
             {{ title }}
           </h1>
-          <hr class="verwaltung--divider">
+          <hr class="verwaltung__divider">
           <h2 class="text-center text-secondary">
             {{ subtitle }}
           </h2>
@@ -40,11 +40,9 @@ export default {
 };
 </script>
 
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.verwaltung--container {
+.verwaltung__container {
   position: absolute;
   top: 0;
   right: 0;
@@ -52,9 +50,9 @@ export default {
   left: 0;
 }
 
-.verwaltung--divider {
+.verwaltung__divider {
   border-top: 2px solid #2c3e50;
-  width: 60%;
+  width: 40%;
 }
 
 </style>

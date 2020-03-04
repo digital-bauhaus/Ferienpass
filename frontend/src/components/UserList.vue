@@ -62,6 +62,13 @@
         >
           Bearbeiten
         </router-link>
+        <router-link
+          v-if="allowEdit"
+          :to="{path: '../UserEdit', query: {id: user.id }}"
+          class="fakebutton"
+        >
+          Bearbeiten NEU
+        </router-link>
         <span
           v-if="allowDelete"
           class="fakebutton"

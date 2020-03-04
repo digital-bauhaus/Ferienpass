@@ -7,7 +7,7 @@ import Verwaltung from '@/views/Verwaltung.vue';
 import Projects from '@/views/Projects.vue';
 import ProjectsEdit from '@/views/ProjectsEdit.vue';
 import TeilnehmerEdit from '@/views/TeilnehmerEdit.vue';
-
+import UserEdit from '@/views/UserEdit.vue';
 import store from '@/store';
 
 Vue.use(VueRouter);
@@ -44,6 +44,11 @@ const routes = [
   {
     path: '/TeilnehmerEdit',
     component: TeilnehmerEdit,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/UserEdit',
+    component: UserEdit,
     meta: { requiresAuth: true },
   },
 
