@@ -8,12 +8,12 @@
     <b-form-row>
       <b-col sm="12">
         <b-form-group
-          id="veranstaltung-name-group"
-          label-for="veranstaltung-name-value"
+          id="project-name-group"
+          label-for="project-name-value"
           label="Name"
         >
           <b-form-input
-            id="veranstaltung-name-value"
+            id="project-name-value"
             required
             trim
             placeholder="Name der Veranstaltung"
@@ -25,12 +25,12 @@
 
       <b-col sm="6">
         <b-form-group
-          id="veranstaltung-begindate-group"
-          label-for="veranstaltung-begindate-value"
+          id="project-beginDate-group"
+          label-for="project-beginDate-value"
           label="Beginndatum"
         >
           <b-form-input
-            id="veranstaltung-begindate-value"
+            id="project-beginDate-value"
             type="date"
             required
             placeholder="Datum (TT.MM.JJJ)"
@@ -41,12 +41,12 @@
       </b-col>
       <b-col sm="6">
         <b-form-group
-          id="veranstaltung-enddate-group"
-          label-for="veranstaltung-enddate-value"
+          id="project-endDate-group"
+          label-for="project-endDate-value"
           label="Enddatum"
         >
           <b-form-input
-            id="veranstaltung-enddate-value"
+            id="project-endDate-value"
             type="date"
             placeholder="Datum (TT.MM.JJJ)"
             required
@@ -58,12 +58,12 @@
 
       <b-col sm="6">
         <b-form-group
-          id="veranstaltung-slotstotal-group"
-          label-for="veranstaltung-slotstotal-value"
+          id="project-slotsTotal-group"
+          label-for="project-slotsTotal-value"
           label="Plätze (gesamt)"
         >
           <b-form-input
-            id="veranstaltung-slotstotal-value"
+            id="project-slotsTotal-value"
             type="number"
             required
             trim
@@ -75,12 +75,12 @@
       </b-col>
       <b-col sm="6">
         <b-form-group
-          id="veranstaltung-slotsreserved-group"
-          label-for="veranstaltung-slotsreserved-value"
+          id="project-slotsReserved-group"
+          label-for="project-slotsReserved-value"
           label="Plätze (reserviert)"
         >
           <b-form-input
-            id="veranstaltung-slotsreserved-value"
+            id="project-slotsReserved-value"
             type="number"
             trim
             placeholder="Reservierte Plätze"
@@ -92,12 +92,12 @@
 
       <b-col sm="6">
         <b-form-group
-          id="veranstaltung-minage-group"
-          label-for="veranstaltung-minage-value"
+          id="project-minAge-group"
+          label-for="project-minAge-value"
           label="Mindestalter"
         >
           <b-form-input
-            id="veranstaltung-minage-value"
+            id="project-minAge-value"
             type="number"
             required
             trim
@@ -109,12 +109,12 @@
       </b-col>
       <b-col sm="6">
         <b-form-group
-          id="veranstaltung-maxage-group"
-          label-for="veranstaltung-maxage-value"
+          id="project-maxAge-group"
+          label-for="project-maxAge-value"
           label="Höchstalter"
         >
           <b-form-input
-            id="veranstaltung-maxage-value"
+            id="project-maxAge-value"
             type="number"
             required
             trim

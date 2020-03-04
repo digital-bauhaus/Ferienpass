@@ -5,8 +5,23 @@
     :validated="showValidationStatus"
     @submit="onSubmit"
   >
-    <b-form-row />
-
+    <BaseSection
+      :familiy-name="value.nachname"
+      :first-name="value.vorname"
+      :birth-date="value.geburtsdatum"
+      :street="value.strasse"
+      :street-number="TODO"
+      :zip-code="value.postleitzahl"
+      :city="value.stadt"
+      :phone="value.telefon"
+      :email="value.email"
+    />
+    <MandatorySection />
+    <HealthSection />
+    <DisabilitySection />
+    <ProjectSelectionSection />
+    <PrivacyPolicySection />
+    <ParticipationConditionSection />
     <b-button
       type="submit"
       variant="primary"
@@ -18,8 +33,25 @@
 
 <script>
 
+import BaseSection from '@/components/userEditor/BaseSection.vue';
+import MandatorySection from '@/components/userEditor/MandatorySection.vue';
+import HealthSection from '@/components/userEditor/HealthSection.vue';
+import DisabilitySection from '@/components/userEditor/DisabilitySection.vue';
+import PrivacyPolicySection from '@/components/userEditor/PrivacyPolicySection.vue';
+import ProjectSelectionSection from '@/components/userEditor/ProjectSelectionSection.vue';
+import ParticipationConditionSection from '@/components/userEditor/ParticipationConditionSection.vue';
+
 export default {
   name: 'UserEditor',
+  components: {
+    ParticipationConditionSection,
+    ProjectSelectionSection,
+    PrivacyPolicySection,
+    DisabilitySection,
+    HealthSection,
+    MandatorySection,
+    BaseSection,
+  },
   props: {
     value: {
       type: Object,
