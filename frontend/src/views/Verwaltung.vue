@@ -1,36 +1,29 @@
 <template>
-  <div>
-    <NavigationMenu />
-    <b-container
-      fluid
-      class="verwaltung__container"
+  <CenteredLayout class="verwaltung">
+    <b-row
+      align-v="center"
+      class="h-100"
     >
-      <b-row
-        align-v="center"
-        class="h-100"
-      >
-        <b-col>
-          <h1 class="text-center">
-            {{ title }}
-          </h1>
-          <hr class="verwaltung__divider">
-          <h2 class="text-center text-secondary">
-            {{ subtitle }}
-          </h2>
-        </b-col>
-      </b-row>
-    </b-container>
-  </div>
+      <b-col>
+        <h1 class="text-center">
+          {{ title }}
+        </h1>
+        <hr class="verwaltung__divider">
+        <h2 class="text-center text-secondary">
+          {{ subtitle }}
+        </h2>
+      </b-col>
+    </b-row>
+  </CenteredLayout>
 </template>
 
 
 <script>
-
-import NavigationMenu from '@/components/NavBar.vue';
+import CenteredLayout from '@/views/layouts/CenteredLayout.vue';
 
 export default {
   name: 'Verwaltung',
-  components: { NavigationMenu },
+  components: { CenteredLayout },
   data() {
     return {
       title: 'Ferienpass Weimar',
@@ -41,14 +34,6 @@ export default {
 </script>
 
 <style scoped>
-
-.verwaltung__container {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
 
 .verwaltung__divider {
   border-top: 2px solid #2c3e50;

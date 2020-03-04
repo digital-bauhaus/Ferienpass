@@ -1,43 +1,40 @@
 <template>
-  <div>
-    <NavigationMenu />
-    <b-container>
-      <h1>
-        {{ titleText }}
-      </h1>
-      <ErrorAlert
-        v-if="showServerErrorAlert"
-        :heading-text="serverErrorHeadingText"
-        :errors="serverErrorMessages"
-      />
-      <UserEditor
-        v-model="user"
-        :submit-button-text="submitButtonText"
-        @submit="updateUser"
-      />
-      <b-alert
-        class="fixed-bottom w-50 mx-auto"
-        :show="successAutomaticDismissCountDown"
-        dismissible
-        variant="success"
-        @dismissed="successAutomaticDismissCountDown=0"
-        @dismiss-count-down="successAutomaticDismissCountDown = $event"
-      >
-        {{ successText }}
-      </b-alert>
-    </b-container>
-  </div>
+  <BaseLayout class="user-edit">
+    <h1>
+      {{ titleText }}
+    </h1>
+    <ErrorAlert
+      v-if="showServerErrorAlert"
+      :heading-text="serverErrorHeadingText"
+      :errors="serverErrorMessages"
+    />
+    <UserEditor
+      v-model="user"
+      :submit-button-text="submitButtonText"
+      @submit="updateUser"
+    />
+    <b-alert
+      class="fixed-bottom w-50 mx-auto"
+      :show="successAutomaticDismissCountDown"
+      dismissible
+      variant="success"
+      @dismissed="successAutomaticDismissCountDown=0"
+      @dismiss-count-down="successAutomaticDismissCountDown = $event"
+    >
+      {{ successText }}
+    </b-alert>
+  </BaseLayout>
 </template>
 
 <script>
 import api from '@/modules/ferienpass-api';
 import ErrorAlert from '@/components/ErrorAlert.vue';
-import NavigationMenu from '@/components/NavBar.vue';
 import UserEditor from '@/components/UserEditor.vue';
+import BaseLayout from '@/views/layouts/BaseLayout.vue';
 
 export default {
   name: 'UserEdit',
-  components: { UserEditor, NavigationMenu, ErrorAlert },
+  components: { BaseLayout, UserEditor, ErrorAlert },
   data() {
     return {
       user: {},
@@ -89,4 +86,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

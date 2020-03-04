@@ -1,64 +1,64 @@
 <template>
-  <div>
-    <NavigationMenu />
-    <b-container>
-      <h1>
-        {{ titleText }}
-      </h1>
-      <ErrorAlert
-        v-if="showServerErrorAlert"
-        :heading-text="serverErrorHeadingText"
-        :errors="serverErrorMessages"
+  <BaseLayout class="projects-edit">
+    <h1>
+      {{ titleText }}
+    </h1>
+    <ErrorAlert
+      v-if="showServerErrorAlert"
+      :heading-text="serverErrorHeadingText"
+      :errors="serverErrorMessages"
+    />
+    <ProjectEditor
+      v-model="project"
+      :submit-button-text="submitButtonText"
+      @submit="createOrUpdateProject"
+    />
+
+    <div v-if="!isNewProject">
+      <h2>Angemeldete Nutzer:</h2>
+      <UserList
+        :users="project.anmeldungen"
+        :show-projects="false"
+        :allow-delete="false"
       />
-      <ProjectEditor
-        v-model="project"
-        :submit-button-text="submitButtonText"
-        @submit="createOrUpdateProject"
+    </div>
+
+    <div v-if="!isNewProject">
+      <h2>Stornierte Nutzer:</h2>
+      <UserList
+        :users="project.stornierteTeilnehmer"
+        :show-projects="false"
+        :allow-delete="false"
       />
+    </div>
 
-      <div v-if="!isNewProject">
-        <h2>Angemeldete Nutzer:</h2>
-        <UserList
-          :users="project.anmeldungen"
-          :show-projects="false"
-          :allow-delete="false"
-        />
-      </div>
-
-      <div v-if="!isNewProject">
-        <h2>Stornierte Nutzer:</h2>
-        <UserList
-          :users="project.stornierteTeilnehmer"
-          :show-projects="false"
-          :allow-delete="false"
-        />
-      </div>
-
-      <b-alert
-        class="fixed-bottom w-50 mx-auto"
-        :show="successAutomaticDismissCountDown"
-        dismissible
-        variant="success"
-        @dismissed="successAutomaticDismissCountDown=0"
-        @dismiss-count-down="successAutomaticDismissCountDown = $event"
-      >
-        {{ successText }}
-      </b-alert>
-    </b-container>
-  </div>
+    <b-alert
+      class="fixed-bottom w-50 mx-auto"
+      :show="successAutomaticDismissCountDown"
+      dismissible
+      variant="success"
+      @dismissed="successAutomaticDismissCountDown=0"
+      @dismiss-count-down="successAutomaticDismissCountDown = $event"
+    >
+      {{ successText }}
+    </b-alert>
+  </BaseLayout>
 </template>
 
 <script>
-import NavigationMenu from '@/components/NavBar.vue';
 import ProjectEditor from '@/components/ProjectEditor.vue';
 import api from '@/modules/ferienpass-api';
 import ErrorAlert from '@/components/ErrorAlert.vue';
 import UserList from '@/components/UserList.vue';
+import BaseLayout from '@/views/layouts/BaseLayout.vue';
 
 export default {
   name: 'ProjectsEdit',
   components: {
-    ProjectEditor, NavigationMenu, ErrorAlert, UserList,
+    BaseLayout,
+    ProjectEditor,
+    ErrorAlert,
+    UserList,
   },
   data() {
     return {
@@ -139,4 +139,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

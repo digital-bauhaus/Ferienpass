@@ -1,24 +1,21 @@
 <template>
-  <div>
-    <NavigationMenu />
-    <b-container>
-      <h1>Veranstaltungsübersicht</h1>
-      <ProjectList
-        :projects="projects"
-        @project-deleted="loadProjects"
-      />
-    </b-container>
-  </div>
+  <BaseLayout class="projects">
+    <h1>Veranstaltungsübersicht</h1>
+    <ProjectList
+      :projects="projects"
+      @project-deleted="loadProjects"
+    />
+  </BaseLayout>
 </template>
 
 <script>
 import api from '@/modules/ferienpass-api';
-import NavigationMenu from '@/components/NavBar.vue';
 import ProjectList from '@/components/ProjectList.vue';
+import BaseLayout from '@/views/layouts/BaseLayout.vue';
 
 export default {
   name: 'Projects',
-  components: { ProjectList, NavigationMenu },
+  components: { BaseLayout, ProjectList },
   data() {
     return {
       errors: [],

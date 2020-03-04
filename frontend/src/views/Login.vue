@@ -1,5 +1,5 @@
 <template>
-  <b-container class="vh-100">
+  <b-container class="login vh-100">
     <b-row
       class="h-100"
       align-v="center"
@@ -98,4 +98,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>
