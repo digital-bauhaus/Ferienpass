@@ -1,10 +1,10 @@
 <template>
-  <div>DisabilitySection</div>
+  <div>Teilnahmebedingungen</div>
 </template>
 
 <script>
 export default {
-  name: 'DisabilitySection',
+  name: 'Teilnahmebedingungen',
 };
 </script>
 

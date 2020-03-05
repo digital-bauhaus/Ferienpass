@@ -1,115 +1,116 @@
 <template>
   <div>
+    <h2>Grunddaten</h2>
     <b-form-group
-      id="base-familyName-group"
-      label-for="base-familyName-value"
+      id="grunddaten-nachname-group"
+      label-for="grunddaten-nachname-value"
       label="Familienname"
     >
       <b-form-input
-        id="base-familyName-value"
+        id="grunddaten-nachname-value"
         required
         trim
-        :value="familyName"
-        @update="$emit('update:familyName', $event)"
+        :value="nachname"
+        @update="$emit('update:nachname', $event)"
       />
     </b-form-group>
 
     <b-form-group
-      id="base-firstName-group"
-      label-for="base-firstName-value"
+      id="grunddaten-vorname-group"
+      label-for="grunddaten-vorname-value"
       label="Vorname meines Kindes"
     >
       <b-form-input
-        id="base-firstName-value"
+        id="grunddaten-vorname-value"
         required
         trim
-        :value="firstName"
-        @update="$emit('update:firstName', $event)"
+        :value="vorname"
+        @update="$emit('update:vorname', $event)"
       />
     </b-form-group>
 
     <div>
-      TODO: BIRTHDATE
+      TODO: geburtsdatum
     </div>
 
     <b-form-group
-      id="base-street-group"
-      label-for="base-street-value"
+      id="grunddaten-strasse-group"
+      label-for="grunddaten-strasse-value"
       label="Straße"
     >
       <b-form-input
-        id="base-street-value"
+        id="grunddaten-strasse-value"
         required
         trim
-        :value="street"
-        @update="$emit('update:street', $event)"
+        :value="strasse"
+        @update="$emit('update:strasse', $event)"
       />
     </b-form-group>
 
     <b-form-group
-      id="base-streetNumber-group"
-      label-for="base-streetNumber-value"
+      id="grunddaten-hausNummer-group"
+      label-for="grunddaten-hausNummer-value"
       label="Hausnummer"
     >
       <b-form-input
-        id="base-streetNumber-value"
+        id="grunddaten-hausNummer-value"
         required
         trim
-        :value="streetNumber"
-        @update="$emit('update:streetNumber', $event)"
+        :value="hausNummer"
+        @update="$emit('update:hausNummer', $event)"
       />
     </b-form-group>
 
     <b-form-group
-      id="base-zipCode-group"
-      label-for="base-zipCode-value"
+      id="grunddaten-postleitzahl-group"
+      label-for="grunddaten-postleitzahl-value"
       label="Postleitzahl"
     >
       <b-form-input
-        id="base-zipCode-value"
+        id="grunddaten-postleitzahl-value"
         required
         trim
-        :value="zipCode"
-        @update="$emit('update:zipCode', $event)"
+        :value="postleitzahl"
+        @update="$emit('update:postleitzahl', $event)"
       />
     </b-form-group>
 
     <b-form-group
-      id="base-city-group"
-      label-for="base-city-value"
+      id="grunddaten-stadt-group"
+      label-for="grunddaten-stadt-value"
       label="Wohnort"
     >
       <b-form-input
-        id="base-city-value"
+        id="grunddaten-stadt-value"
         required
         trim
-        :value="city"
-        @update="$emit('update:city', $event)"
+        :value="stadt"
+        @update="$emit('update:stadt', $event)"
       />
     </b-form-group>
 
     <b-form-group
-      id="base-phone-group"
-      label-for="base-phone-value"
+      id="grunddaten-telefon-group"
+      label-for="grunddaten-telefon-value"
       label="Telefon"
     >
       <b-form-input
-        id="base-phone-value"
+        id="grunddaten-telefon-value"
         type="tel"
         required
         trim
-        :value="phone"
-        @update="$emit('update:phone', $event)"
+        :value="telefon"
+        @update="$emit('update:telefon', $event)"
       />
     </b-form-group>
 
     <b-form-group
-      id="base-email-group"
-      label-for="base-email-value"
+      id="grunddaten-email-group"
+      label-for="grunddaten-email-value"
       label="eMail"
     >
       <b-form-input
-        id="base-email-value"
+        id="grunddaten-email-value"
         type="email"
         required
         trim
@@ -122,37 +123,37 @@
 
 <script>
 export default {
-  name: 'BaseSection',
+  name: 'Grunddaten',
   props: {
-    familyName: {
+    nachname: {
       type: String,
       required: true,
     },
-    firstName: {
+    vorname: {
       type: String,
       required: true,
     },
-    birthDate: {
+    geburtsdatum: {
       type: String,
       required: true,
     },
-    street: {
+    strasse: {
       type: String,
       required: true,
     },
-    streetNumber: {
+    hausNummer: {
       type: String,
       required: true,
     },
-    zipCode: {
+    postleitzahl: {
       type: String,
       required: true,
     },
-    city: {
+    stadt: {
       type: String,
       required: true,
     },
-    phone: {
+    telefon: {
       type: String,
       required: true,
     },

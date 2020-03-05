@@ -6,32 +6,33 @@
     :validated="showValidationStatus"
     @submit="onSubmit"
   >
-    <BaseSection
-      :family-name="value.nachname"
-      :first-name="value.vorname"
-      :birth-date="value.geburtsdatum"
-      :street="value.strasse"
-      :street-number="TODO"
-      :zip-code="value.postleitzahl"
-      :city="value.stadt"
-      :phone="value.telefon"
+    <Grunddaten
+      :nachname="value.nachname"
+      :vorname="value.vorname"
+      :geburtsdatum="value.geburtsdatum"
+      :strasse="value.strasse"
+      :haus-nummer="TODO"
+      :postleitzahl="value.postleitzahl"
+      :stadt="value.stadt"
+      :telefon="value.telefon"
       :email="value.email"
-      @update:familyName="updateValue('nachname', $event)"
-      @update:firstName="updateValue('vorname', $event)"
-      @update:birthDate="updateValue('geburtsdatum', $event)"
-      @update:street="updateValue('strasse', $event)"
-      @update:streetNumber="updateValue('TODO', $event)"
-      @update:zipCode="updateValue('postleitzahl', $event)"
-      @update:city="updateValue('stadt', $event)"
-      @update:phone="updateValue('telefon', $event)"
+      @update:nachname="updateValue('nachname', $event)"
+      @update:vorname="updateValue('vorname', $event)"
+      @update:geburtsdatum="updateValue('geburtsdatum', $event)"
+      @update:strasse="updateValue('strasse', $event)"
+      @update:hausNummer="updateValue('TODO', $event)"
+      @update:postleitzahl="updateValue('postleitzahl', $event)"
+      @update:stadt="updateValue('stadt', $event)"
+      @update:telefon="updateValue('telefon', $event)"
       @update:email="updateValue('email', $event)"
     />
-    <MandatorySection />
-    <HealthSection />
-    <DisabilitySection />
-    <ProjectSelectionSection />
-    <PrivacyPolicySection />
-    <ParticipationConditionSection />
+
+    <Pflichtangaben />
+    <Gesundheit />
+    <Behinderung />
+    <Angebote />
+    <Datenschutz />
+    <Teilnahmebedingungen />
     <b-button
       type="submit"
       variant="primary"
@@ -43,24 +44,24 @@
 
 <script>
 
-import BaseSection from '@/components/userEditor/BaseSection.vue';
-import MandatorySection from '@/components/userEditor/MandatorySection.vue';
-import HealthSection from '@/components/userEditor/HealthSection.vue';
-import DisabilitySection from '@/components/userEditor/DisabilitySection.vue';
-import PrivacyPolicySection from '@/components/userEditor/PrivacyPolicySection.vue';
-import ProjectSelectionSection from '@/components/userEditor/ProjectSelectionSection.vue';
-import ParticipationConditionSection from '@/components/userEditor/ParticipationConditionSection.vue';
+import Grunddaten from '@/components/userEditor/Grunddaten.vue';
+import Pflichtangaben from '@/components/userEditor/Pflichtangaben.vue';
+import Gesundheit from '@/components/userEditor/Gesundheit.vue';
+import Behinderung from '@/components/userEditor/Behinderung.vue';
+import Datenschutz from '@/components/userEditor/Datenschutz.vue';
+import Angebote from '@/components/userEditor/Angebote.vue';
+import Teilnahmebedingungen from '@/components/userEditor/Teilnahmebedingungen.vue';
 
 export default {
   name: 'UserEditor',
   components: {
-    ParticipationConditionSection,
-    ProjectSelectionSection,
-    PrivacyPolicySection,
-    DisabilitySection,
-    HealthSection,
-    MandatorySection,
-    BaseSection,
+    Teilnahmebedingungen,
+    Angebote,
+    Datenschutz,
+    Behinderung,
+    Gesundheit,
+    Pflichtangaben,
+    Grunddaten,
   },
   props: {
     value: {

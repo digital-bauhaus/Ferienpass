@@ -1,10 +1,10 @@
 <template>
-  <div>HealthSection</div>
+  <h2>Datenschutzerklärung</h2>
 </template>
 
 <script>
 export default {
-  name: 'HealthSection',
+  name: 'Datenschutz',
 };
 </script>
 

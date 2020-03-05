@@ -1,10 +1,10 @@
 <template>
-  <div>ProjectSelectionSection</div>
+  <h2>Angaben bei Behinderung</h2>
 </template>
 
 <script>
 export default {
-  name: 'ProjectSelectionSection',
+  name: 'Behinderung',
 };
 </script>
 

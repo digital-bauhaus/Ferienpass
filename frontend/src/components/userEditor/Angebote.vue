@@ -1,10 +1,10 @@
 <template>
-  <div>ParticipationConditionSection</div>
+  <div>Angebote</div>
 </template>
 
 <script>
 export default {
-  name: 'ParticipationConditionSection',
+  name: 'Angebote',
 };
 </script>
 

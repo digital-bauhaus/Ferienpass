@@ -1,10 +1,10 @@
 <template>
-  <div>PrivacyPolicySection</div>
+  <h2>Allergien, Krankheiten, ...</h2>
 </template>
 
 <script>
 export default {
-  name: 'PrivacyPolicySection',
+  name: 'Gesundheit',
 };
 </script>
 
