@@ -1,5 +1,5 @@
 <template>
-  <div>Teilnahmebedingungen</div>
+  <h2>Teilnahmebedingungen</h2>
 </template>
 
 <script>

@@ -11,7 +11,7 @@
       :vorname="value.vorname"
       :geburtsdatum="value.geburtsdatum"
       :strasse="value.strasse"
-      :haus-nummer="TODO"
+      :haus-nummer="'TODO'"
       :postleitzahl="value.postleitzahl"
       :stadt="value.stadt"
       :telefon="value.telefon"
@@ -27,7 +27,18 @@
       @update:email="updateValue('email', $event)"
     />
 
-    <Pflichtangaben />
+    <Pflichtangaben
+      :darf-behandelt-werden="value.darfBehandeltWerden"
+      :darf-allein-nach-hause="value.darfAlleinNachHause"
+      :darf-reiten="value.darfReiten"
+      :darf-schwimmen="value.darfSchwimmen"
+      :schwimm-abzeichen="value.schwimmAbzeichen"
+      @update:darfBehandeltWerden="updateValue('darfBehandeltWerden', $event)"
+      @update:darfAlleinNachHause="updateValue('darfAlleinNachHause', $event)"
+      @update:darfReiten="updateValue('darfReiten', $event)"
+      @update:darfSchwimmen="updateValue('darfSchwimmen', $event)"
+      @update:schwimmAbzeichen="updateValue('schwimmAbzeichen', $event)"
+    />
     <Gesundheit />
     <Behinderung />
     <Angebote />
@@ -85,7 +96,6 @@ export default {
   },
   methods: {
     updateValue(propName, newValue) {
-      console.log('foo');
       this.$emit('input', {
         ...this.value,
         [propName]: newValue,
