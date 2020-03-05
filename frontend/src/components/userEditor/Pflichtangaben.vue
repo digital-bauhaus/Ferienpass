@@ -101,6 +101,7 @@
       />
     </b-form-group>
 
+    <slot />
   </div>
 </template>
 

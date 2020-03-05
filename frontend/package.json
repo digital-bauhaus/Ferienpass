@@ -17,6 +17,7 @@
     "core-js": "^3.6.4",
     "dayjs": "^1.8.21",
     "jspdf": "^1.5.3",
+    "lodash-es": "^4.17.15",
     "moment": "^2.24.0",
     "regenerator-runtime": "^0.13.3",
     "vue": "^2.6.11",

@@ -155,10 +155,10 @@ export default {
     };
   },
   methods: {
-    updateValue(propName, newValue) {
+    updateValue(propName, newPropValue) {
       this.$emit('input', {
         ...this.value,
-        [propName]: newValue,
+        [propName]: newPropValue,
       });
     },
     onSubmit() {

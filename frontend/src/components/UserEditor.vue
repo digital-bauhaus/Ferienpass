@@ -38,7 +38,18 @@
       @update:darfReiten="updateValue('darfReiten', $event)"
       @update:darfSchwimmen="updateValue('darfSchwimmen', $event)"
       @update:schwimmAbzeichen="updateValue('schwimmAbzeichen', $event)"
-    />
+    >
+      <Kontakt
+        heading="Notfallkontakt"
+        base="notfallkontakt"
+        :name="value.notfallKontakt.name"
+        :anschrift="value.notfallKontakt.address"
+        :telefon="value.notfallKontakt.telephone"
+        @update:name="updateValue('notfallKontakt.name', $event)"
+        @update:anschrift="updateValue('notfallKontakt.address', $event)"
+        @update:telefon="updateValue('notfallKontakt.telephone', $event)"
+      />
+    </Pflichtangaben>
     <Gesundheit />
     <Behinderung />
     <Angebote />
@@ -54,7 +65,7 @@
 </template>
 
 <script>
-
+import _ from 'lodash-es';
 import Grunddaten from '@/components/userEditor/Grunddaten.vue';
 import Pflichtangaben from '@/components/userEditor/Pflichtangaben.vue';
 import Gesundheit from '@/components/userEditor/Gesundheit.vue';
@@ -62,10 +73,12 @@ import Behinderung from '@/components/userEditor/Behinderung.vue';
 import Datenschutz from '@/components/userEditor/Datenschutz.vue';
 import Angebote from '@/components/userEditor/Angebote.vue';
 import Teilnahmebedingungen from '@/components/userEditor/Teilnahmebedingungen.vue';
+import Kontakt from '@/components/userEditor/Kontakt.vue';
 
 export default {
   name: 'UserEditor',
   components: {
+    Kontakt,
     Teilnahmebedingungen,
     Angebote,
     Datenschutz,
@@ -95,11 +108,11 @@ export default {
     },
   },
   methods: {
-    updateValue(propName, newValue) {
-      this.$emit('input', {
-        ...this.value,
-        [propName]: newValue,
-      });
+    updateValue(propName, newPropValue) {
+      // since user is a nested object, we have to be more careful when updating values
+      const newValue = _.cloneDeep(this.value);
+      _.set(newValue, propName, newPropValue);
+      this.$emit('input', newValue);
     },
     onSubmit() {
       this.showValidationStatus = true;
