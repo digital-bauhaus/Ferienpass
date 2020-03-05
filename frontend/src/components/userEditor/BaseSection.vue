@@ -1,16 +1,16 @@
 <template>
   <div>
     <b-form-group
-      id="base-familiyName-group"
-      label-for="base-familiyName-value"
+      id="base-familyName-group"
+      label-for="base-familyName-value"
       label="Familienname"
     >
       <b-form-input
-        id="base-familiyName-value"
+        id="base-familyName-value"
         required
         trim
-        :value="familiyName"
-        @update="$emit('update:familiyName', $event)"
+        :value="familyName"
+        @update="$emit('update:familyName', $event)"
       />
     </b-form-group>
 
@@ -124,7 +124,7 @@
 export default {
   name: 'BaseSection',
   props: {
-    familiyName: {
+    familyName: {
       type: String,
       required: true,
     },
