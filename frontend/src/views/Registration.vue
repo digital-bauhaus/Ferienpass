@@ -22,7 +22,17 @@
       :disabled="!isSchoolKid"
       :submit-button-text="submitButtonText"
       @submit="createUser"
-    />
+    >
+      <ProjektAuswahl>
+        <ProjektAuswahlItem
+          v-for="projekt in allProjects"
+          :key="projekt.id"
+          :checked="true"
+          :projekt="projekt"
+          :geburtsdatum="user.geburtsdatum"
+        />
+      </ProjektAuswahl>
+    </UserEditor>
 
     <b-alert
       class="fixed-bottom w-50 mx-auto"
@@ -44,10 +54,15 @@ import UserEditor from '@/components/UserEditor.vue';
 import CheckBox from '@/components/wrapper/CheckBox.vue';
 import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
 import RegistrationLayout from '@/views/layouts/RegistrationLayout.vue';
+import ProjektAuswahl from '@/components/userEditor/ProjektAuswahl.vue';
+import ProjektAuswahlItem from '@/components/userEditor/ProjektAuswahlItem.vue';
+
 
 export default {
   name: 'Registration',
   components: {
+    ProjektAuswahlItem,
+    ProjektAuswahl,
     RegistrationLayout,
     CheckBoxGroup,
     CheckBox,
@@ -57,9 +72,62 @@ export default {
   data() {
     return {
       user: {
-        notfallKontakt: {},
-        arzt: {},
-        behinderung: {},
+        vorname: '',
+        nachname: '',
+        geburtsdatum: '',
+        strasse: '',
+        stadt: '',
+        postleitzahl: '',
+        telefon: '',
+        email: '',
+        darfBehandeltWerden: false,
+        darfAlleinNachHause: false,
+        darfReiten: false,
+        darfSchwimmen: false,
+        schwimmAbzeichen: '',
+        allergien: '',
+        medikamente: '',
+        krankheiten: '',
+        hitzeempfindlichkeiten: false,
+        krankenkasse: '',
+        vegetarier: false,
+        laktoseUnvertraeglichkeit: false,
+        eierUnvertraeglichkeit: false,
+        essenLimitierungen: '',
+        liegtBehinderungVor: false,
+        notfallKontakt: {
+          name: '',
+          address: '',
+          telephone: '',
+        },
+        arzt: {
+          name: '',
+          address: '',
+          telephone: '',
+        },
+        behinderung: {
+          merkzeichen_AussergewoehnlicheGehbehinderung_aG: false,
+          merkzeichen_Hilflosigkeit_H: false,
+          merkzeichen_Blind_Bl: false,
+          merkzeichen_Gehoerlos_Gl: false,
+          merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B: false,
+          merkzeichen_BeeintraechtigungImStrassenverkehr_G: false,
+          merkzeichen_Taubblind_TBL: false,
+          rollstuhlNutzungNotwendig: false,
+          weitereHilfsmittel: '',
+          wertmarkeVorhanden: false,
+          begleitungNotwendig: false,
+          begleitpersonPflege: false,
+          begleitpersonMedizinischeVersorgung: false,
+          begleitpersonMobilitaet: false,
+          begleitpersonOrientierung: false,
+          begleitpersonSozialeBegleitung: false,
+          eingeschraenkteSinne: '',
+          hinweiseZumUmgangMitDemKind: '',
+          unterstuetzungSucheBegleitpersonNotwendig: false,
+          gewohnterBegleitpersonenDienstleister: '',
+          beantragungKostenuebernahmeBegleitpersonNotwendig: false,
+        },
       },
       serverErrorMessages: [],
       successAutomaticDismissCountDown: 0,

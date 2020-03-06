@@ -111,6 +111,18 @@ export default {
       type: Boolean,
       required: true,
     },
+    vegetarier: {
+      type: Boolean,
+      required: true,
+    },
+    laktoseUnvertraeglichkeit: {
+      type: Boolean,
+      required: true,
+    },
+    eierUnvertraeglichkeit: {
+      type: Boolean,
+      required: true,
+    },
     essenLimitierungen: {
       type: String,
       required: true,

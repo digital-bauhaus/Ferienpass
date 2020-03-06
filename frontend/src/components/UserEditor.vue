@@ -71,12 +71,18 @@
         :medikamente="value.medikamente"
         :krankenkasse="value.krankenkasse"
         :hitzeempfindlichkeiten="value.hitzeempfindlichkeiten"
+        :vegetarier="value.vegetarier"
+        :laktose-unvertraeglichkeit="value.laktoseUnvertraeglichkeit"
+        :eier-unvertraeglichkeit="value.eierUnvertraeglichkeit"
         :essen-limitierungen="value.essenLimitierungen"
         @update:allergien="updateValue('allergien', $event)"
         @update:krankheiten="updateValue('krankheiten', $event)"
         @update:medikamente="updateValue('medikamente', $event)"
         @update:krankenkasse="updateValue('krankenkasse', $event)"
         @update:hitzeempfindlichkeiten="updateValue('hitzeempfindlichkeiten', $event)"
+        @update:vegetarier="updateValue('vegetarier', $event)"
+        @update:laktoseUnvertraeglichkeit="updateValue('laktoseUnvertraeglichkeit', $event)"
+        @update:eierUnvertraeglichkeit="updateValue('eierUnvertraeglichkeit', $event)"
         @update:essenLimitierungen="updateValue('essenLimitierungen', $event)"
       >
         <Group label="Hausarzt">
@@ -96,7 +102,7 @@
     <FormSection label="Angaben bei Behinderung">
       <!-- eslint-disable max-len -->
       <Behinderung
-        :liegt-behinderung-vor="value.behinderung.liegtBehinderungVor"
+        :liegt-behinderung-vor="value.liegtBehinderungVor"
         :merkzeichen-aussergewoehnliche-gehbehinderunga-g="value.behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG"
         :merkzeichen-hilflosigkeit-h="value.behinderung.merkzeichen_Hilflosigkeit_H"
         :merkzeichen-blind-bl="value.behinderung.merkzeichen_Blind_Bl"
@@ -118,7 +124,7 @@
         :unterstuetzung-suche-begleitperson-notwendig="value.behinderung.unterstuetzungSucheBegleitpersonNotwendig"
         :gewohnter-begleitpersonen-dienstleister="value.behinderung.gewohnterBegleitpersonenDienstleister"
         :beantragung-kostenuebernahme-begleitperson-notwendig="value.behinderung.beantragungKostenuebernahmeBegleitpersonNotwendig"
-        @update:liegtBehinderungVor="updateValue('behinderung.liegtBehinderungVor', $event)"
+        @update:liegtBehinderungVor="updateValue('liegtBehinderungVor', $event)"
         @update:merkzeichenAussergewoehnlicheGehbehinderungaG="updateValue('behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG', $event)"
         @update:merkzeichenHilflosigkeitH="updateValue('behinderung.merkzeichen_Hilflosigkeit_H', $event)"
         @update:merkzeichenBlindBl="updateValue('behinderung.merkzeichen_Blind_Bl', $event)"
@@ -143,19 +149,33 @@
       />
     </FormSection>
 
-    <FormSection v-if="!isAdminView" label="Angebote">
-      <Angebote />
+    <FormSection
+      v-if="!isAdminView"
+      label="Angebote"
+    >
+      <Angebote>
+        <slot />
+      </Angebote>
     </FormSection>
 
-    <FormSection v-if="!isAdminView" label="Datenschutzerklärung">
+    <FormSection
+      v-if="!isAdminView"
+      label="Datenschutzerklärung"
+    >
       <Datenschutz />
     </FormSection>
 
-    <FormSection v-if="!isAdminView" label="Teilnahmebedingungen">
+    <FormSection
+      v-if="!isAdminView"
+      label="Teilnahmebedingungen"
+    >
       <Teilnahmebedingungen />
     </FormSection>
 
-    <CheckBoxGroup v-if="!isAdminView" base="confirmation">
+    <CheckBoxGroup
+      v-if="!isAdminView"
+      base="confirmation"
+    >
       <CheckBox
         v-model="confirmation"
         base="confirmation"

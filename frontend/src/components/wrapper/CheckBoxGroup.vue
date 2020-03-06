@@ -1,12 +1,10 @@
 <template>
-  <div>
-    <b-form-group
-      :id="`${base}-group`"
-      :label="label"
-    >
-      <slot />
-    </b-form-group>
-  </div>
+  <b-form-group
+    :id="`${base}-group`"
+    :label="label"
+  >
+    <slot />
+  </b-form-group>
 </template>
 
 <script>

@@ -11,7 +11,7 @@ export default {
 </script>
 
 // TODO remove when really no longer needed
-<style scoped>
+<style>
 
 /*
  * Border-Box for all elements
