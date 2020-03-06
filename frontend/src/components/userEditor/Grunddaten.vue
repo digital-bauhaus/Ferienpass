@@ -18,9 +18,14 @@
       @update="$emit('update:vorname', $event)"
     />
 
-    <div>
-      TODO: geburtsdatum
-    </div>
+    <FieldInput
+      base="grunddaten-geburtsdatum"
+      label="Geburtsdatum meines Kindes"
+      type="date"
+      :required="true"
+      :value="geburtsdatum"
+      @update="$emit('update:geburtsdatum', $event)"
+    />
 
     <FieldInput
       base="grunddaten-strasse"
