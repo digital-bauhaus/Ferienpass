@@ -23,13 +23,16 @@
       :submit-button-text="submitButtonText"
       @submit="createUser"
     >
-      <ProjektAuswahl>
+      <ProjektAuswahl v-if="loaded">
         <ProjektAuswahlItem
           v-for="projekt in allProjects"
           :key="projekt.id"
-          :checked="true"
           :projekt="projekt"
           :geburtsdatum="user.geburtsdatum"
+          :alle-projekte="allProjects"
+          :gewuenschte-projekte="gewuenschteProjekte"
+          :checked="gewuenschteProjekte[projekt.id]"
+          @input="updateGewuenschtesProjekt(projekt.id, $event)"
         />
       </ProjektAuswahl>
     </UserEditor>
@@ -134,6 +137,7 @@ export default {
       isSchoolKid: false,
       allProjects: [],
       loaded: false,
+      gewuenschteProjekte: {},
     };
   },
   computed: {
@@ -171,13 +175,30 @@ export default {
   methods: {
     loadProjects() {
       // TODO we need to split the project api into /projects and /public/projects
-      return api.getProjects().then((projects) => { this.allProjects = projects; });
+      return api.getProjects().then((projects) => {
+        this.allProjects = projects;
+        this.initGewuenschteProjekteHelper();
+        this.loaded = true;
+      });
     },
     createUser() {
       this.serverErrorMessages = [];
       api.updateUser(this.user).then(() => {
         this.showSuccessInfo();
       }).catch((errorMessages) => { this.serverErrorMessages = errorMessages; });
+    },
+    initGewuenschteProjekteHelper() {
+      this.allProjects.forEach((project) => {
+        this.gewuenschteProjekte[project.id] = false;
+      });
+    },
+    updateGewuenschtesProjekt(projektId, newValue) {
+      // we need to completely replace the object so the single projectItems notice the change
+      // this.$set(this.gewuenschteProjekte, projektId, newValue);
+      this.gewuenschteProjekte = {
+        ...this.gewuenschteProjekte,
+        [projektId]: newValue,
+      };
     },
     showSuccessInfo() {
       this.successAutomaticDismissCountDown = 5;

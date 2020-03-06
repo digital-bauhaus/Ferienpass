@@ -7,10 +7,13 @@
     primary-key="id"
     :items="projects"
     :fields="fields"
-    :sticky-header="true"
+    :sticky-header="'700px'"
   >
     <template v-slot:cell(actions)="row">
-      <slot name="actions" :row="row" />
+      <slot
+        name="actions"
+        :row="row"
+      />
     </template>
   </b-table>
 </template>

@@ -166,7 +166,6 @@ export default {
       this.loadCancelledProjectsOfUser();
     },
     updateUser() {
-      console.log('Updating user');
       this.serverErrorMessages = [];
       api.updateUser(this.user).then(() => {
         this.showSuccessInfo();

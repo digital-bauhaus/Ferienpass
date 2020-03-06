@@ -263,10 +263,8 @@ export default {
     onSubmit() {
       this.showValidationStatus = true;
       if (this.$refs.form.checkValidity()) {
-        console.log('go for it');
         this.$emit('submit');
       } else {
-        console.log('go nit for it');
         this.$refs.form.reportValidity();
       }
     },
