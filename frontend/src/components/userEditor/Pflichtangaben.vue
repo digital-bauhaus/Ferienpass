@@ -31,18 +31,24 @@
       base="pflichtangaben-darfSchwimmen"
       label="Mein Kind darf schwimmen?"
       :required="true"
+      :aria-expanded="darfSchwimmen"
+      aria-controls="pflichtangaben-schwimmAbzeichen-collapse"
       :checked="darfSchwimmen"
       @input="$emit('update:darfSchwimmen', $event)"
     />
 
-    <FieldInput
-      v-if="darfSchwimmen"
-      base="pflichtangaben-schwimmAbzeichen"
-      label="Schwimmabzeichen"
-      :required="true"
-      :value="schwimmAbzeichen"
-      @update="$emit('update:schwimmAbzeichen', $event)"
-    />
+    <b-collapse
+      id="pflichtangaben-schwimmAbzeichen-collapse"
+      :visible="darfSchwimmen"
+    >
+      <FieldInput
+        base="pflichtangaben-schwimmAbzeichen"
+        label="Schwimmabzeichen"
+        :required="true"
+        :value="schwimmAbzeichen"
+        @update="$emit('update:schwimmAbzeichen', $event)"
+      />
+    </b-collapse>
 
     <slot />
   </div>

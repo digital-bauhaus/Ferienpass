@@ -18,6 +18,8 @@
       <CheckBox
         base="behinderung-liegtBehinderungVor"
         :required="true"
+        :aria-expanded="liegtBehinderungVor"
+        aria-controls="behinderung-collapse"
         :checked="liegtBehinderungVor"
         @input="$emit('update:liegtBehinderungVor', $event)"
       >
@@ -25,7 +27,10 @@
       </CheckBox>
     </CheckBoxGroup>
 
-    <div v-if="liegtBehinderungVor">
+    <b-collapse
+      id="behinderung-collapse"
+      :visible="liegtBehinderungVor"
+    >
       <CheckBoxGroup
         base="behinderung-merkzeichen"
         label="Merkzeichen"
@@ -111,6 +116,8 @@
       <CheckBoxGroup base="behinderung-begleitungNotwendig">
         <CheckBox
           base="behinderung-begleitungNotwendig"
+          :aria-expanded="begleitungNotwendig"
+          aria-controls="behinderung-begleitperson-collapse"
           :checked="begleitungNotwendig"
           @input="$emit('update:begleitungNotwendig', $event)"
         >
@@ -119,61 +126,71 @@
         </CheckBox>
       </CheckBoxGroup>
 
-      <CheckBoxGroup
-        v-if="begleitungNotwendig"
-        base="behinderung-begleitperson"
-        label="Wofür wird die Begleitperson benötigt?"
+      <b-collapse
+        id="behinderung-begleitperson-collapse"
+        :visible="begleitungNotwendig"
       >
-        <CheckBox
-          base="behinderung-begleitpersonPflege"
-          :checked="begleitpersonPflege"
-          @input="$emit('update:begleitpersonPflege', $event)"
+        <CheckBoxGroup
+          base="behinderung-begleitperson"
+          label="Wofür wird die Begleitperson benötigt?"
         >
-          Pflege
-        </CheckBox>
-        <CheckBox
-          base="behinderung-begleitpersonMedizinischeVersorgung"
-          :checked="begleitpersonMedizinischeVersorgung"
-          @input="$emit('update:begleitpersonMedizinischeVersorgung', $event)"
-        >
-          Medizinische Versorgung
-        </CheckBox>
-        <CheckBox
-          base="behinderung-begleitpersonMobilitaet"
-          :checked="begleitpersonMobilitaet"
-          @input="$emit('update:begleitpersonMobilitaet', $event)"
-        >
-          Mobilität
-        </CheckBox>
-        <CheckBox
-          base="behinderung-begleitpersonOrientierung"
-          :checked="begleitpersonOrientierung"
-          @input="$emit('update:begleitpersonOrientierung', $event)"
-        >
-          Orientierung
-        </CheckBox>
-        <CheckBox
-          base="behinderung-begleitpersonSozialeBegleitung"
-          :checked="begleitpersonSozialeBegleitung"
-          @input="$emit('update:begleitpersonSozialeBegleitung', $event)"
-        >
-          Soziale Begleitung
-        </CheckBox>
-        <CheckBox
-          v-model="isEingeschraenkteSinne"
-          base="behinderung-isEingeschraenkteSinne"
-        >
-          Sinneswahrnehmung
-        </CheckBox>
-      </CheckBoxGroup>
+          <CheckBox
+            base="behinderung-begleitpersonPflege"
+            :checked="begleitpersonPflege"
+            @input="$emit('update:begleitpersonPflege', $event)"
+          >
+            Pflege
+          </CheckBox>
+          <CheckBox
+            base="behinderung-begleitpersonMedizinischeVersorgung"
+            :checked="begleitpersonMedizinischeVersorgung"
+            @input="$emit('update:begleitpersonMedizinischeVersorgung', $event)"
+          >
+            Medizinische Versorgung
+          </CheckBox>
+          <CheckBox
+            base="behinderung-begleitpersonMobilitaet"
+            :checked="begleitpersonMobilitaet"
+            @input="$emit('update:begleitpersonMobilitaet', $event)"
+          >
+            Mobilität
+          </CheckBox>
+          <CheckBox
+            base="behinderung-begleitpersonOrientierung"
+            :checked="begleitpersonOrientierung"
+            @input="$emit('update:begleitpersonOrientierung', $event)"
+          >
+            Orientierung
+          </CheckBox>
+          <CheckBox
+            base="behinderung-begleitpersonSozialeBegleitung"
+            :checked="begleitpersonSozialeBegleitung"
+            @input="$emit('update:begleitpersonSozialeBegleitung', $event)"
+          >
+            Soziale Begleitung
+          </CheckBox>
+          <CheckBox
+            v-model="isEingeschraenkteSinne"
+            base="behinderung-isEingeschraenkteSinne"
+            :aria-expanded="isEingeschraenkteSinne"
+            aria-controls="behinderung-eingeschraenkteSinne-collapse"
+          >
+            Sinneswahrnehmung
+          </CheckBox>
+        </CheckBoxGroup>
+      </b-collapse>
 
-      <FieldInput
-        v-if="isEingeschraenkteSinne"
-        base="behinderung-eingeschraenkteSinne"
-        label="Beeinträchtigte Sinneswahrnehmung angeben:"
-        :value="eingeschraenkteSinne"
-        @update="$emit('update:eingeschraenkteSinne', $event)"
-      />
+      <b-collapse
+        id="behinderung-eingeschraenkteSinne-collapse"
+        :visible="isEingeschraenkteSinne"
+      >
+        <FieldInput
+          base="behinderung-eingeschraenkteSinne"
+          label="Beeinträchtigte Sinneswahrnehmung angeben:"
+          :value="eingeschraenkteSinne"
+          @update="$emit('update:eingeschraenkteSinne', $event)"
+        />
+      </b-collapse>
 
       <TextAreaInput
         base="behinderung-hinweiseZumUmgangMitDemKind"
@@ -185,6 +202,8 @@
       <CheckBoxGroup base="behinderung-unterstuetzungSucheBegleitpersonNotwendig">
         <CheckBox
           base="behinderung-unterstuetzungSucheBegleitpersonNotwendig"
+          :aria-expanded="unterstuetzungSucheBegleitpersonNotwendig"
+          aria-controls="behinderung-gewohnterBegleitpersonenDienstleister-collapse"
           :checked="unterstuetzungSucheBegleitpersonNotwendig"
           @input="$emit('update:unterstuetzungSucheBegleitpersonNotwendig', $event)"
         >
@@ -192,14 +211,18 @@
         </CheckBox>
       </CheckBoxGroup>
 
-      <TextAreaInput
-        v-if="unterstuetzungSucheBegleitpersonNotwendig"
-        base="behinderung-gewohnterBegleitpersonenDienstleister"
-        label="Welcher Dienst ist in der Regel für die Begleitung/Betreuung
+      <b-collapse
+        id="behinderung-gewohnterBegleitpersonenDienstleister-collapse"
+        :visible="unterstuetzungSucheBegleitpersonNotwendig"
+      >
+        <TextAreaInput
+          base="behinderung-gewohnterBegleitpersonenDienstleister"
+          label="Welcher Dienst ist in der Regel für die Begleitung/Betreuung
                zuständig? (Bitte Kontaktdaten des Dienstes/der Dienste angeben):"
-        :value="gewohnterBegleitpersonenDienstleister"
-        @update="$emit('update:gewohnterBegleitpersonenDienstleister', $event)"
-      />
+          :value="gewohnterBegleitpersonenDienstleister"
+          @update="$emit('update:gewohnterBegleitpersonenDienstleister', $event)"
+        />
+      </b-collapse>
 
       <CheckBoxGroup base="behinderung-beantragungKostenuebernahmeBegleitpersonNotwendig">
         <CheckBox
@@ -218,7 +241,7 @@
           und Soziales der Stadt Weimar weitergegeben werden dürfen.
         </CheckBox>
       </CheckBoxGroup>
-    </div>
+    </b-collapse>
   </div>
 </template>
 
