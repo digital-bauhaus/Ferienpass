@@ -35,7 +35,7 @@
       @input="$emit('update:darfSchwimmen', $event)"
     />
 
-    <TextInput
+    <FieldInput
       v-if="darfSchwimmen"
       base="pflichtangaben-schwimmAbzeichen"
       label="Schwimmabzeichen"
@@ -50,11 +50,11 @@
 
 <script>
 import YesNoRadio from '@/components/wrapper/YesNoRadio.vue';
-import TextInput from '@/components/wrapper/TextInput.vue';
+import FieldInput from '@/components/wrapper/FieldInput.vue';
 
 export default {
   name: 'Pflichtangaben',
-  components: { TextInput, YesNoRadio },
+  components: { FieldInput, YesNoRadio },
   props: {
     darfBehandeltWerden: {
       type: Boolean,

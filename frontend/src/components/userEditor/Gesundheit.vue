@@ -31,13 +31,14 @@
 
     <CheckBox
       base="gesundheit-hitzeempfindlichkeiten"
-      label="Mein Kind ist hitzeempfindlich"
       heading="Hitzeempfindlichkeit"
       :checked="hitzeempfindlichkeiten"
       @input="$emit('update:hitzeempfindlichkeiten', $event)"
-    />
+    >
+      Mein Kind ist hitzeempfindlich
+    </CheckBox>
 
-    <TextInput
+    <FieldInput
       base="gesundheit-krankenkasse"
       label="Krankenkasse"
       :value="krankenkasse"
@@ -50,12 +51,12 @@
 
 <script>
 import DynamicInputList from '@/components/wrapper/DynamicInputList.vue';
-import TextInput from '@/components/wrapper/TextInput.vue';
+import FieldInput from '@/components/wrapper/FieldInput.vue';
 import CheckBox from '@/components/wrapper/CheckBox.vue';
 
 export default {
   name: 'Gesundheit',
-  components: { CheckBox, TextInput, DynamicInputList },
+  components: { CheckBox, FieldInput, DynamicInputList },
   props: {
     allergien: {
       type: String,

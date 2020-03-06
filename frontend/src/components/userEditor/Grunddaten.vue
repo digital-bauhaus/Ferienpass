@@ -2,7 +2,7 @@
   <div>
     <h2>Grunddaten</h2>
 
-    <TextInput
+    <FieldInput
       base="grunddaten-nachname"
       label="Familienname"
       :required="true"
@@ -10,7 +10,7 @@
       @update="$emit('update:nachname', $event)"
     />
 
-    <TextInput
+    <FieldInput
       base="grunddaten-vorname"
       label="Vorname meines Kindes"
       :required="true"
@@ -22,7 +22,7 @@
       TODO: geburtsdatum
     </div>
 
-    <TextInput
+    <FieldInput
       base="grunddaten-strasse"
       label="Straße"
       :required="true"
@@ -30,7 +30,7 @@
       @update="$emit('update:strasse', $event)"
     />
 
-    <TextInput
+    <FieldInput
       base="grunddaten-hausNummer"
       label="Hausnummer"
       :required="true"
@@ -38,7 +38,7 @@
       @update="$emit('update:hausNummer', $event)"
     />
 
-    <TextInput
+    <FieldInput
       base="grunddaten-postleitzahl"
       label="Postleitzahl"
       :required="true"
@@ -46,7 +46,7 @@
       @update="$emit('update:postleitzahl', $event)"
     />
 
-    <TextInput
+    <FieldInput
       base="grunddaten-stadt"
       label="Wohnort"
       :required="true"
@@ -54,7 +54,7 @@
       @update="$emit('update:stadt', $event)"
     />
 
-    <TextInput
+    <FieldInput
       base="grunddaten-telefon"
       label="Telefon"
       type="tel"
@@ -63,7 +63,7 @@
       @update="$emit('update:telefon', $event)"
     />
 
-    <TextInput
+    <FieldInput
       base="grunddaten-email"
       label="eMail"
       type="email"
@@ -75,11 +75,11 @@
 </template>
 
 <script>
-import TextInput from '@/components/wrapper/TextInput.vue';
+import FieldInput from '@/components/wrapper/FieldInput.vue';
 
 export default {
   name: 'Grunddaten',
-  components: { TextInput },
+  components: { FieldInput },
   props: {
     nachname: {
       type: String,

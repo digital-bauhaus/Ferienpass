@@ -74,14 +74,31 @@
         @update:telefon="updateValue('arzt.telephone', $event)"
       />
     </Gesundheit>
-    <Behinderung />
+
+    <Behinderung
+      :liegt-behinderung-vor="value.behinderung.liegtBehinderungVor"
+      :rollstuhl-nutzung-notwendig="value.behinderung.rollstuhlNutzungNotwendig"
+      :weitere-hilfsmittel="value.behinderung.weitereHilfsmittel"
+      :wertmarke-vorhanden="value.behinderung.wertmarkeVorhanden"
+      :begleitung-notwendig="value.behinderung.begleitungNotwendig"
+      @update:liegtBehinderungVor="updateValue('behinderung.liegtBehinderungVor', $event)"
+      @update:rollstuhlNutzungNotwendig="updateValue(
+        'behinderung.rollstuhlNutzungNotwendig', $event)"
+      @update:weitereHilfsmittel="updateValue('behinderung.weitereHilfsmittel', $event)"
+      @update:wertmarkeVorhanden="updateValue('behinderung.wertmarkeVorhanden', $event)"
+      @update:begleitungNotwendig="updateValue('behinderung.begleitungNotwendig', $event)"
+    />
+
     <Angebote />
+
     <Datenschutz />
+
     <Teilnahmebedingungen />
 
     <CheckBox
       v-model="confirmation"
       base="confirmation"
+      :required="true"
     >
       Ich bestätige die Richtigkeit meiner Angaben. Wurden wissentlich falsche Angaben gemacht,
       darf die Organisation das angemeldete Kind von den Angeboten ausschließen.

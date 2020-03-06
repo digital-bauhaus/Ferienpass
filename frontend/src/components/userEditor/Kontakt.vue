@@ -2,21 +2,21 @@
   <div>
     <h3>{{ heading }}</h3>
 
-    <TextInput
+    <FieldInput
       :base="`${base}-name`"
       label="Name"
       :value="name"
       @update="$emit('update:name', $event)"
     />
 
-    <TextInput
+    <FieldInput
       :base="`${base}-anschrift`"
       label="Anschrift"
       :value="anschrift"
       @update="$emit('update:anschrift', $event)"
     />
 
-    <TextInput
+    <FieldInput
       :base="`${base}-telefon`"
       label="Telefon"
       :value="telefon"
@@ -26,11 +26,11 @@
 </template>
 
 <script>
-import TextInput from '@/components/wrapper/TextInput.vue';
+import FieldInput from '@/components/wrapper/FieldInput.vue';
 
 export default {
   name: 'Kontakt',
-  components: { TextInput },
+  components: { FieldInput },
   props: {
     base: {
       type: String,

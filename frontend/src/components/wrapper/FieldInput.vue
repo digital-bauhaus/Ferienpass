@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'TextInput',
+  name: 'FieldInput',
   model: {
     prop: 'value',
     event: 'update',
