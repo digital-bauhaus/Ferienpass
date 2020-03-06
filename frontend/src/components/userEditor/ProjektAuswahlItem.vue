@@ -4,10 +4,11 @@
     class="projekt-auswahl-item"
     :invalid-feedback="invalidFeedback"
     :state="false"
+    :disabled="!state"
   >
     <b-form-checkbox
       :id="`$projekt-${projekt.id}-value`"
-      :checked="checked"
+      :checked="state ? checked : false"
       @input="$emit('input', $event)"
     >
       <ul class="projekt-auswahl-item__list">
@@ -55,7 +56,7 @@ export default {
         this.projekt.datum);
     },
     state() {
-      return this.name.length >= 4;
+      return !(this.isTooYoung || this.isTooOld || this.isFullyBooked);
     },
     isTooYoung() {
       return this.ageAtProjectStart < this.projekt.mindestAlter;
