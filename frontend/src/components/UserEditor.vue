@@ -56,10 +56,12 @@
       :krankheiten="value.krankheiten"
       :medikamente="value.medikamente"
       :krankenkasse="value.krankenkasse"
+      :hitzeempfindlichkeiten="value.hitzeempfindlichkeiten"
       @update:allergien="updateValue('allergien', $event)"
       @update:krankheiten="updateValue('krankheiten', $event)"
       @update:medikamente="updateValue('medikamente', $event)"
       @update:krankenkasse="updateValue('krankenkasse', $event)"
+      @update:hitzeempfindlichkeiten="updateValue('hitzeempfindlichkeiten', $event)"
     >
       <Kontakt
         heading="Hausarzt"
@@ -74,7 +76,9 @@
     </Gesundheit>
     <Behinderung />
     <Angebote />
-    <Datenschutz />
+    <Datenschutz>
+
+    </Datenschutz>
     <Teilnahmebedingungen />
     <b-button
       type="submit"

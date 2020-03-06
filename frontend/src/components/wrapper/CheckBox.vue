@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h3 v-if="false">{{ heading }}</h3>
     <b-form-group
       :id="`${base}-group`"
+      :label="heading"
     >
       <b-form-checkbox
         :id="`${base}-value`"
