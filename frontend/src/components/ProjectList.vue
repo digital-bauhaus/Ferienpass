@@ -9,28 +9,13 @@
     :fields="fields"
   >
     <template v-slot:cell(actions)="row">
-      <b-button
-        size="sm"
-        class="m-1"
-        :to="{path: '../ProjectsEdit', query: {id: row.item.id }}"
-      >
-        Bearbeiten
-      </b-button>
-      <b-button
-        size="sm"
-        class="m-1"
-        variant="danger"
-        @click="deleteProject(row.item.id)"
-      >
-        Löschen
-      </b-button>
+      <slot name="actions" :row="row" />
     </template>
   </b-table>
 </template>
 
 <script>
 import dayjs, { SHORT_DATE_FORMAT } from '../modules/dayjs';
-import api from '../modules/ferienpass-api';
 
 export default {
   name: 'ProjectList',
@@ -63,31 +48,6 @@ export default {
   methods: {
     formatDate(stringDate) {
       return dayjs(stringDate).format(SHORT_DATE_FORMAT);
-    },
-    deleteProject(projectId) {
-      this.$swal({
-        title: 'Wirklich löschen?',
-        text: 'Das Projekt wird vollständig gelöscht!',
-        icon: 'warning',
-        buttons: true,
-        dangerMode: true,
-      })
-        .then((willDelete) => {
-          if (willDelete) {
-            this.errors = [];
-            api.deleteProject(projectId).then(() => {
-              this.$emit('project-deleted');
-              return this.$swal('Projekt wurde gelöscht!', {
-                icon: 'success',
-              });
-            }).catch((e) => {
-              this.errors.push(e);
-              return this.$swal('Da ist was schief gegangen :(', {
-                icon: 'error',
-              });
-            });
-          }
-        });
     },
   },
 };

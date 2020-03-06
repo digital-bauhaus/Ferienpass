@@ -19,10 +19,56 @@
     </CheckBoxGroup>
     <UserEditor
       v-model="user"
+      :is-admin-view="true"
       :disabled="!isSchoolKid"
       :submit-button-text="submitButtonText"
       @submit="updateUser"
     />
+
+    <hr>
+
+    <h2>Angemeldete Projekte</h2>
+    <ProjectList :projects="projectsOfUser">
+      <template v-slot:actions="{ row }">
+        <b-button
+          size="sm"
+          class="m-1"
+          variant="warning"
+          @click="unassignFromProject(row.item.id, user.id)"
+        >
+          Stornieren
+        </b-button>
+      </template>
+    </ProjectList>
+
+    <h2>Stornierte Projekte</h2>
+    <ProjectList :projects="cancelledProjectsOfUser">
+      <template v-slot:actions="{ row }">
+        <b-button
+          size="sm"
+          class="m-1"
+          variant="warning"
+          @click="reactivateProject(row.item.id, user.id)"
+        >
+          Reaktivieren
+        </b-button>
+      </template>
+    </ProjectList>
+
+    <h2>Verfügbare Projekte</h2>
+    <ProjectList :projects="availableProjects">
+      <template v-slot:actions="{ row }">
+        <b-button
+          size="sm"
+          class="m-1"
+          variant="warning"
+          @click="assignToProject(row.item.id, user.id)"
+        >
+          Anmelden
+        </b-button>
+      </template>
+    </ProjectList>
+
     <b-alert
       class="fixed-bottom w-50 mx-auto"
       :show="successAutomaticDismissCountDown"
@@ -43,11 +89,17 @@ import UserEditor from '@/components/UserEditor.vue';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
 import CheckBox from '@/components/wrapper/CheckBox.vue';
 import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
+import ProjectList from '@/components/ProjectList.vue';
 
 export default {
   name: 'UserEdit',
   components: {
-    CheckBoxGroup, CheckBox, BaseLayout, UserEditor, ErrorAlert,
+    ProjectList,
+    CheckBoxGroup,
+    CheckBox,
+    BaseLayout,
+    UserEditor,
+    ErrorAlert,
   },
   data() {
     return {
@@ -55,6 +107,10 @@ export default {
       serverErrorMessages: [],
       successAutomaticDismissCountDown: 0,
       isSchoolKid: false,
+      allProjects: [],
+      projectsOfUser: [],
+      cancelledProjectsOfUser: [],
+      loaded: false,
     };
   },
   computed: {
@@ -76,22 +132,70 @@ export default {
     showServerErrorAlert() {
       return this.serverErrorMessages.length > 0;
     },
+    availableProjects() {
+      return this.allProjects.filter((project) => {
+        const isProjectOfUser = this.projectsOfUser.map((userProject) => userProject.id).includes(
+          project.id,
+        );
+        const isCancelledProjectOfuser = this.cancelledProjectsOfUser.map(
+          (userProject) => userProject.id,
+        ).includes(project.id);
+        return !isProjectOfUser && !isCancelledProjectOfuser;
+      });
+    },
   },
   created() {
-    this.loadUserData();
+    const dataPromises = [];
+    dataPromises.push(this.loadUserData());
+    dataPromises.push(this.loadProjects());
+    dataPromises.push(this.loadProjectsOfUser());
+    dataPromises.push(this.loadCancelledProjectsOfUser());
+    Promise.all(dataPromises).then(() => { this.loaded = true; }).catch(
+      (e) => this.errorMessages.push(e.toString()),
+    );
   },
   methods: {
     loadUserData() {
       this.serverErrorMessages = [];
-      api.getUser(this.userId).then((user) => {
+      return api.getUser(this.userId).then((user) => {
         this.user = user;
       }).catch((e) => this.serverErrorMessages.push(e.toString()));
+    },
+    loadProjects() {
+      return api.getProjects().then((projects) => { this.allProjects = projects; });
+    },
+    loadProjectsOfUser() {
+      return api.getUsersProjects(this.userId).then(
+        (projects) => { this.projectsOfUser = projects; },
+      );
+    },
+    loadCancelledProjectsOfUser() {
+      return api.getUsersCancelledProjects(this.userId).then(
+        (projects) => { this.cancelledProjectsOfUser = projects; },
+      );
+    },
+    reloadProjectsOfUser() {
+      this.loadProjectsOfUser();
+      this.loadCancelledProjectsOfUser();
     },
     updateUser() {
       this.serverErrorMessages = [];
       api.updateUser(this.user).then(() => {
         this.showSuccessInfo();
       }).catch((errorMessages) => { this.serverErrorMessages = errorMessages; });
+    },
+    unassignFromProject(projectId, userId) {
+      api.deleteUserFromProject(projectId, userId).then(() => {
+        this.reloadProjectsOfUser();
+      });
+    },
+    assignToProject(projectId, userId) {
+      api.addUserToProject(projectId, userId).then(() => {
+        this.reloadProjectsOfUser();
+      });
+    },
+    reactivateProject(projectId, userId) {
+      this.assignToProject(projectId, userId);
     },
     showSuccessInfo() {
       this.successAutomaticDismissCountDown = 5;

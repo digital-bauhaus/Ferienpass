@@ -1,12 +1,19 @@
 <template>
   <b-form
-    class="user-editor"
     v-if="hasUser"
     ref="form"
+    class="user-editor"
     novalidate
     :validated="showValidationStatus"
     @submit.prevent="onSubmit"
   >
+    <FormSection
+      v-if="isAdminView"
+      label="Verwaltungsaufgaben"
+    >
+      <Verwaltungsaufgaben />
+    </FormSection>
+
     <FormSection label="Grunddaten">
       <Grunddaten
         :nachname="value.nachname"
@@ -136,19 +143,19 @@
       />
     </FormSection>
 
-    <FormSection label="Angebote">
+    <FormSection v-if="!isAdminView" label="Angebote">
       <Angebote />
     </FormSection>
 
-    <FormSection label="Datenschutzerklärung">
+    <FormSection v-if="!isAdminView" label="Datenschutzerklärung">
       <Datenschutz />
     </FormSection>
 
-    <FormSection label="Teilnahmebedingungen">
+    <FormSection v-if="!isAdminView" label="Teilnahmebedingungen">
       <Teilnahmebedingungen />
     </FormSection>
 
-    <CheckBoxGroup base="confirmation">
+    <CheckBoxGroup v-if="!isAdminView" base="confirmation">
       <CheckBox
         v-model="confirmation"
         base="confirmation"
@@ -162,6 +169,7 @@
     <b-button
       type="submit"
       variant="primary"
+      class="mb-3"
     >
       {{ submitButtonText }}
     </b-button>
@@ -182,10 +190,12 @@ import CheckBox from '@/components/wrapper/CheckBox.vue';
 import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
 import Group from '@/components/wrapper/Group.vue';
 import FormSection from '@/components/wrapper/FormSection.vue';
+import Verwaltungsaufgaben from '@/components/userEditor/Verwaltungsaufgaben.vue';
 
 export default {
   name: 'UserEditor',
   components: {
+    Verwaltungsaufgaben,
     FormSection,
     CheckBoxGroup,
     CheckBox,
@@ -200,6 +210,10 @@ export default {
     Group,
   },
   props: {
+    isAdminView: {
+      type: Boolean,
+      default: false,
+    },
     value: {
       type: Object,
       required: true,

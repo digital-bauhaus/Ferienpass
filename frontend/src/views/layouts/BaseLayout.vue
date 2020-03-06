@@ -1,7 +1,7 @@
 <template>
   <div class="base-layout">
     <NavigationMenu />
-    <b-container>
+    <b-container fluid>
       <slot />
     </b-container>
   </div>
