@@ -1,5 +1,9 @@
 <template>
-  <b-card :header="label">
+  <b-card
+    :title="label"
+    title-tag="h5"
+    class="group mb-3"
+  >
     <slot />
   </b-card>
 </template>
@@ -17,5 +21,7 @@ export default {
 </script>
 
 <style scoped>
-
+.group >>> .form-group:last-child {
+  margin-bottom: 0;
+}
 </style>

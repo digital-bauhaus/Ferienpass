@@ -84,10 +84,7 @@
         </CheckBox>
       </CheckBoxGroup>
 
-      <Group
-        label="Hilfsmittel"
-        class="mb-3"
-      >
+      <Group label="Hilfsmittel">
         <CheckBoxGroup base="behinderung-rollstuhlNutzungNotwendig">
           <CheckBox
             base="behinderung-rollstuhlNutzungNotwendig"
