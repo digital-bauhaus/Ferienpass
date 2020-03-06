@@ -18,7 +18,7 @@
         {{ row.item.vorname }} {{ row.item.nachname }}
       </template>
       <template v-slot:cell(alter)="row">
-        {{ row.item.vorname }} {{ row.item.nachname }}
+        {{ calcualteAgeFromBirthday(row.item.geburtsdatum) }}
       </template>
       <template v-slot:cell(notfall)="row">
         <ul>
@@ -90,6 +90,10 @@ export default {
     },
     formatDate(stringDate) {
       return dayjs(stringDate).format(SHORT_DATE_FORMAT);
+    },
+    calcualteAgeFromBirthday(birthday) {
+      const today = dayjs();
+      return today.diff(dayjs(birthday), 'year');
     },
   },
 };
