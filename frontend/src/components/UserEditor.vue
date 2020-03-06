@@ -76,10 +76,17 @@
     </Gesundheit>
     <Behinderung />
     <Angebote />
-    <Datenschutz>
-
-    </Datenschutz>
+    <Datenschutz />
     <Teilnahmebedingungen />
+
+    <CheckBox
+      v-model="confirmation"
+      base="confirmation"
+    >
+      Ich bestätige die Richtigkeit meiner Angaben. Wurden wissentlich falsche Angaben gemacht,
+      darf die Organisation das angemeldete Kind von den Angeboten ausschließen.
+    </CheckBox>
+
     <b-button
       type="submit"
       variant="primary"
@@ -99,10 +106,12 @@ import Datenschutz from '@/components/userEditor/Datenschutz.vue';
 import Angebote from '@/components/userEditor/Angebote.vue';
 import Teilnahmebedingungen from '@/components/userEditor/Teilnahmebedingungen.vue';
 import Kontakt from '@/components/userEditor/Kontakt.vue';
+import CheckBox from '@/components/wrapper/CheckBox.vue';
 
 export default {
   name: 'UserEditor',
   components: {
+    CheckBox,
     Kontakt,
     Teilnahmebedingungen,
     Angebote,
@@ -125,6 +134,7 @@ export default {
   data() {
     return {
       showValidationStatus: false,
+      confirmation: false,
     };
   },
   computed: {

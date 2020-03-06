@@ -10,7 +10,9 @@
         :checked="checked"
         @input="$emit('input', $event)"
       >
-        {{ label }}
+        <slot>
+          {{ label }}
+        </slot>
       </b-form-checkbox>
     </b-form-group>
   </div>
@@ -34,7 +36,7 @@ export default {
     },
     label: {
       type: String,
-      required: true,
+      default: '',
     },
     heading: {
       type: String,
