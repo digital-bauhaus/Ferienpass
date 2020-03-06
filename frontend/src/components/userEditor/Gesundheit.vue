@@ -29,6 +29,14 @@
       @input="$emit('update:medikamente', $event.join('|'))"
     />
 
+    <CheckBox
+      base="gesundheit-hitzeempfindlichkeiten"
+      label="Mein Kind ist hitzeempfindlich"
+      heading="Hitzeempfindlichkeit"
+      :checked="hitzeempfindlichkeiten"
+      @input="$emit('update:hitzeempfindlichkeiten', $event)"
+    />
+
     <TextInput
       base="gesundheit-krankenkasse"
       label="Krankenkasse"
@@ -43,10 +51,11 @@
 <script>
 import DynamicInputList from '@/components/wrapper/DynamicInputList.vue';
 import TextInput from '@/components/wrapper/TextInput.vue';
+import CheckBox from '@/components/wrapper/CheckBox.vue';
 
 export default {
   name: 'Gesundheit',
-  components: { TextInput, DynamicInputList },
+  components: { CheckBox, TextInput, DynamicInputList },
   props: {
     allergien: {
       type: String,
@@ -58,6 +67,10 @@ export default {
     },
     medikamente: {
       type: String,
+      required: true,
+    },
+    hitzeempfindlichkeiten: {
+      type: Boolean,
       required: true,
     },
     krankenkasse: {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>{{ heading }}</h3>
+    <h3 v-if="false">{{ heading }}</h3>
     <b-form-group
       :id="`${base}-group`"
       :label-for="`${base}-value`"
