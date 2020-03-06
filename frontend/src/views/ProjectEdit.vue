@@ -30,6 +30,13 @@
       />
     </div>
 
+    <div v-if="!isNewProject">
+      <h2>Liste für Export:</h2>
+      <UserListForExport
+        :users="project.anmeldungen"
+      />
+    </div>
+
     <b-alert
       class="fixed-bottom w-50 mx-auto"
       :show="successAutomaticDismissCountDown"
@@ -49,10 +56,12 @@ import api from '@/modules/ferienpass-api';
 import ErrorAlert from '@/components/ErrorAlert.vue';
 import UserList from '@/components/UserList.vue';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
+import UserListForExport from '@/components/UserListForExport.vue';
 
 export default {
   name: 'ProjectEdit',
   components: {
+    UserListForExport,
     BaseLayout,
     ProjectEditor,
     ErrorAlert,
