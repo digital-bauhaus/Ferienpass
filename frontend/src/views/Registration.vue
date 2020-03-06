@@ -83,10 +83,10 @@ export default {
         postleitzahl: '',
         telefon: '',
         email: '',
-        darfBehandeltWerden: false,
-        darfAlleinNachHause: false,
-        darfReiten: false,
-        darfSchwimmen: false,
+        darfBehandeltWerden: null,
+        darfAlleinNachHause: null,
+        darfReiten: null,
+        darfSchwimmen: null,
         schwimmAbzeichen: '',
         allergien: '',
         medikamente: '',
@@ -183,7 +183,7 @@ export default {
     },
     createUser() {
       this.serverErrorMessages = [];
-      api.updateUser(this.user).then(() => {
+      api.registerUser(this.user).then(() => {
         this.showSuccessInfo();
       }).catch((errorMessages) => { this.serverErrorMessages = errorMessages; });
     },

@@ -26,7 +26,25 @@ export default {
     });
   },
 
-  // Anmeldung to Admin API
+  // Public API
+
+  registerUser(user) {
+    console.log('register new user via public API');
+    return AXIOS
+      .post('/public/register', user)
+      .then().catch((e) => {
+        if (e.response.data.errors) {
+        // validation errors
+          return Promise.reject(
+            e.response.data.errors.map((error) => `${error.field}: ${error.defaultMessage}`),
+          );
+        }
+        // other errors
+        return Promise.reject([e.toString()]);
+      });
+  },
+
+  // Old Anmeldung to Admin API
 
   registerTeilnehmer(userAsJson) {
     console.log('register new User from Anmeldung');
@@ -109,6 +127,24 @@ export default {
         })
       .then((response) => response.data);
   },
+  addUser(user) {
+    console.log('adding user');
+    return AXIOS
+      .post('/users', user,
+        {
+          auth,
+        })
+      .then().catch((e) => {
+        if (e.response.data.errors) {
+        // validation errors
+          return Promise.reject(
+            e.response.data.errors.map((error) => `${error.field}: ${error.defaultMessage}`),
+          );
+        }
+        // other errors
+        return Promise.reject([e.toString()]);
+      });
+  },
   updateUser(user) {
     console.log('updating existing user');
     return AXIOS
@@ -142,4 +178,5 @@ export default {
     console.log(`Adding user with id ${userId} to project with id ${projectId}`);
     return AXIOS.put(`projects/${projectId}/users/${userId}`);
   },
+
 };

@@ -64,6 +64,17 @@ public class BackendController {
         return "You're successfully 'logged' in.";
     }
 
+    /*************************************
+     * Public API
+     *********************************/
+
+    @RequestMapping(path = "/public/register", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Long registerUser(@RequestBody @Valid Teilnehmer user) {
+        return addUser(user);
+    }
+
     /*******************************************
      * API for user (Teilnehmer) functionality
      ******************************************/

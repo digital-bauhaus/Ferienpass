@@ -61,20 +61,20 @@ export default {
   components: { FieldInput, YesNoRadio },
   props: {
     darfBehandeltWerden: {
-      type: Boolean,
       required: true,
+      validator: (prop) => typeof prop === 'boolean' || prop === null,
     },
     darfAlleinNachHause: {
-      type: Boolean,
       required: true,
+      validator: (prop) => typeof prop === 'boolean' || prop === null,
     },
     darfReiten: {
-      type: Boolean,
       required: true,
+      validator: (prop) => typeof prop === 'boolean' || prop === null,
     },
     darfSchwimmen: {
-      type: Boolean,
       required: true,
+      validator: (prop) => typeof prop === 'boolean' || prop === null,
     },
     schwimmAbzeichen: {
       type: String,

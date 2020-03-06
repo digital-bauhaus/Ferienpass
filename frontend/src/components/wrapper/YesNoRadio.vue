@@ -34,8 +34,8 @@ export default {
       required: true,
     },
     checked: {
-      type: Boolean,
       required: true,
+      validator: (prop) => typeof prop === 'boolean' || prop === null,
     },
     label: {
       type: String,
