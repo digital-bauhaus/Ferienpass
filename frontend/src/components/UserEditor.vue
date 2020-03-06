@@ -40,7 +40,7 @@
       @update:schwimmAbzeichen="updateValue('schwimmAbzeichen', $event)"
     >
       <Kontakt
-        heading="Notfallkontakt"
+        heading="In Notfällen zu informieren"
         base="notfallkontakt"
         :name="value.notfallKontakt.name"
         :anschrift="value.notfallKontakt.address"
@@ -50,7 +50,23 @@
         @update:telefon="updateValue('notfallKontakt.telephone', $event)"
       />
     </Pflichtangaben>
-    <Gesundheit />
+
+    <Gesundheit
+      :allergien="value.allergien"
+      :krankenkasse="value.krankenkasse"
+      @update:krankenkasse="updateValue('krankenkasse', $event)"
+    >
+      <Kontakt
+        heading="Hausarzt"
+        base="hausarzt"
+        :name="value.arzt.name"
+        :anschrift="value.arzt.address"
+        :telefon="value.arzt.telephone"
+        @update:name="updateValue('arzt.name', $event)"
+        @update:anschrift="updateValue('arzt.address', $event)"
+        @update:telefon="updateValue('arzt.telephone', $event)"
+      />
+    </Gesundheit>
     <Behinderung />
     <Angebote />
     <Datenschutz />
