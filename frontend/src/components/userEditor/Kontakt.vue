@@ -2,54 +2,35 @@
   <div>
     <h3>{{ heading }}</h3>
 
-    <b-form-group
-      :id="`${base}-name-group`"
-      :label-for="`${base}-name-value`"
+    <TextInput
+      :base="`${base}-name`"
       label="Name"
-    >
-      <b-form-input
-        :id="`${base}-name-value`"
-        required
-        trim
-        :value="name"
-        @update="$emit('update:name', $event)"
-      />
-    </b-form-group>
+      :value="name"
+      @update="$emit('update:name', $event)"
+    />
 
-    <b-form-group
-      :id="`${base}-anschrift-group`"
-      :label-for="`${base}-anschrift-value`"
+    <TextInput
+      :base="`${base}-anschrift`"
       label="Anschrift"
-    >
-      <b-form-input
-        :id="`${base}-anschrift-value`"
-        required
-        trim
-        :value="anschrift"
-        @update="$emit('update:anschrift', $event)"
-      />
-    </b-form-group>
+      :value="anschrift"
+      @update="$emit('update:anschrift', $event)"
+    />
 
-    <b-form-group
-      :id="`${base}-telefon-group`"
-      :label-for="`${base}-telefon-value`"
+    <TextInput
+      :base="`${base}-telefon`"
       label="Telefon"
-    >
-      <b-form-input
-        :id="`${base}-telefon-value`"
-        type="tel"
-        required
-        trim
-        :value="telefon"
-        @update="$emit('update:telefon', $event)"
-      />
-    </b-form-group>
+      :value="telefon"
+      @update="$emit('update:telefon', $event)"
+    />
   </div>
 </template>
 
 <script>
+import TextInput from '@/components/wrapper/TextInput.vue';
+
 export default {
   name: 'Kontakt',
+  components: { TextInput },
   props: {
     base: {
       type: String,

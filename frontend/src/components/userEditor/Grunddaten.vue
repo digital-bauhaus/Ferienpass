@@ -1,129 +1,85 @@
 <template>
   <div>
     <h2>Grunddaten</h2>
-    <b-form-group
-      id="grunddaten-nachname-group"
-      label-for="grunddaten-nachname-value"
-      label="Familienname"
-    >
-      <b-form-input
-        id="grunddaten-nachname-value"
-        required
-        trim
-        :value="nachname"
-        @update="$emit('update:nachname', $event)"
-      />
-    </b-form-group>
 
-    <b-form-group
-      id="grunddaten-vorname-group"
-      label-for="grunddaten-vorname-value"
+    <TextInput
+      base="grunddaten-nachname"
+      label="Familienname"
+      :required="true"
+      :value="nachname"
+      @update="$emit('update:nachname', $event)"
+    />
+
+    <TextInput
+      base="grunddaten-vorname"
       label="Vorname meines Kindes"
-    >
-      <b-form-input
-        id="grunddaten-vorname-value"
-        required
-        trim
-        :value="vorname"
-        @update="$emit('update:vorname', $event)"
-      />
-    </b-form-group>
+      :required="true"
+      :value="vorname"
+      @update="$emit('update:vorname', $event)"
+    />
 
     <div>
       TODO: geburtsdatum
     </div>
 
-    <b-form-group
-      id="grunddaten-strasse-group"
-      label-for="grunddaten-strasse-value"
+    <TextInput
+      base="grunddaten-strasse"
       label="Straße"
-    >
-      <b-form-input
-        id="grunddaten-strasse-value"
-        required
-        trim
-        :value="strasse"
-        @update="$emit('update:strasse', $event)"
-      />
-    </b-form-group>
+      :required="true"
+      :value="strasse"
+      @update="$emit('update:strasse', $event)"
+    />
 
-    <b-form-group
-      id="grunddaten-hausNummer-group"
-      label-for="grunddaten-hausNummer-value"
+    <TextInput
+      base="grunddaten-hausNummer"
       label="Hausnummer"
-    >
-      <b-form-input
-        id="grunddaten-hausNummer-value"
-        required
-        trim
-        :value="hausNummer"
-        @update="$emit('update:hausNummer', $event)"
-      />
-    </b-form-group>
+      :required="true"
+      :value="hausNummer"
+      @update="$emit('update:hausNummer', $event)"
+    />
 
-    <b-form-group
-      id="grunddaten-postleitzahl-group"
-      label-for="grunddaten-postleitzahl-value"
+    <TextInput
+      base="grunddaten-postleitzahl"
       label="Postleitzahl"
-    >
-      <b-form-input
-        id="grunddaten-postleitzahl-value"
-        required
-        trim
-        :value="postleitzahl"
-        @update="$emit('update:postleitzahl', $event)"
-      />
-    </b-form-group>
+      :required="true"
+      :value="postleitzahl"
+      @update="$emit('update:postleitzahl', $event)"
+    />
 
-    <b-form-group
-      id="grunddaten-stadt-group"
-      label-for="grunddaten-stadt-value"
+    <TextInput
+      base="grunddaten-stadt"
       label="Wohnort"
-    >
-      <b-form-input
-        id="grunddaten-stadt-value"
-        required
-        trim
-        :value="stadt"
-        @update="$emit('update:stadt', $event)"
-      />
-    </b-form-group>
+      :required="true"
+      :value="stadt"
+      @update="$emit('update:stadt', $event)"
+    />
 
-    <b-form-group
-      id="grunddaten-telefon-group"
-      label-for="grunddaten-telefon-value"
+    <TextInput
+      base="grunddaten-telefon"
       label="Telefon"
-    >
-      <b-form-input
-        id="grunddaten-telefon-value"
-        type="tel"
-        required
-        trim
-        :value="telefon"
-        @update="$emit('update:telefon', $event)"
-      />
-    </b-form-group>
+      type="tel"
+      :required="true"
+      :value="telefon"
+      @update="$emit('update:telefon', $event)"
+    />
 
-    <b-form-group
-      id="grunddaten-email-group"
-      label-for="grunddaten-email-value"
+    <TextInput
+      base="grunddaten-email"
       label="eMail"
-    >
-      <b-form-input
-        id="grunddaten-email-value"
-        type="email"
-        required
-        trim
-        :value="email"
-        @update="$emit('update:email', $event)"
-      />
-    </b-form-group>
+      type="email"
+      :required="true"
+      :value="email"
+      @update="$emit('update:email', $event)"
+    />
   </div>
 </template>
 
 <script>
+import TextInput from '@/components/wrapper/TextInput.vue';
+
 export default {
   name: 'Grunddaten',
+  components: { TextInput },
   props: {
     nachname: {
       type: String,

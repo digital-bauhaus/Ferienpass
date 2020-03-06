@@ -3,7 +3,7 @@
     ref="form"
     novalidate
     :validated="showValidationStatus"
-    @submit="onSubmit"
+    @submit.prevent="onSubmit"
   >
     <b-form-row>
       <b-col sm="12">

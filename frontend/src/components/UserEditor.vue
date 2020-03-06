@@ -4,7 +4,7 @@
     ref="form"
     novalidate
     :validated="showValidationStatus"
-    @submit="onSubmit"
+    @submit.prevent="onSubmit"
   >
     <Grunddaten
       :nachname="value.nachname"
@@ -53,7 +53,12 @@
 
     <Gesundheit
       :allergien="value.allergien"
+      :krankheiten="value.krankheiten"
+      :medikamente="value.medikamente"
       :krankenkasse="value.krankenkasse"
+      @update:allergien="updateValue('allergien', $event)"
+      @update:krankheiten="updateValue('krankheiten', $event)"
+      @update:medikamente="updateValue('medikamente', $event)"
       @update:krankenkasse="updateValue('krankenkasse', $event)"
     >
       <Kontakt
@@ -133,7 +138,7 @@ export default {
     onSubmit() {
       this.showValidationStatus = true;
       if (this.$refs.form.checkValidity()) {
-        this.$emit('submit');
+        // this.$emit('submit');
       } else {
         this.$refs.form.reportValidity();
       }

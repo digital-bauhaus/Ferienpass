@@ -2,112 +2,59 @@
   <div>
     <h2>Pflichtangaben</h2>
 
-    <b-form-group
-      id="pflichtangaben-darfBehandeltWerden"
+    <YesNoRadio
+      base="pflichtangaben-darfBehandeltWerden"
       label="Behandlungserlaubnis bei Erkrankungen und Unfällen?"
-    >
-      <b-form-radio-group
-        id="pflichtangaben-darfBehandeltWerden-value"
-        name="pflichtangaben-darfBehandeltWerden"
-        required
-        stacked
-        :checked="darfBehandeltWerden"
-        @input="$emit('update:darfBehandeltWerden', $event)"
-      >
-        <b-form-radio :value="true">
-          Ja
-        </b-form-radio>
-        <b-form-radio :value="false">
-          Nein
-        </b-form-radio>
-      </b-form-radio-group>
-    </b-form-group>
+      :required="true"
+      :checked="darfBehandeltWerden"
+      @input="$emit('update:darfBehandeltWerden', $event)"
+    />
 
-    <b-form-group
-      id="pflichtangaben-darfAlleinNachHause"
+    <YesNoRadio
+      base="pflichtangaben-darfAlleinNachHause"
       label="Mein Kind darf alleine heimgehen?"
-    >
-      <b-form-radio-group
-        id="pflichtangaben-darfAlleinNachHause-value"
-        name="pflichtangaben-darfAlleinNachHause"
-        required
-        stacked
-        :checked="darfAlleinNachHause"
-        @input="$emit('update:darfAlleinNachHause', $event)"
-      >
-        <b-form-radio :value="true">
-          Ja
-        </b-form-radio>
-        <b-form-radio :value="false">
-          Nein, es wird abgeholt
-        </b-form-radio>
-      </b-form-radio-group>
-    </b-form-group>
+      :required="true"
+      no-text="Nein, es wird abgeholt"
+      :checked="darfAlleinNachHause"
+      @input="$emit('update:darfAlleinNachHause', $event)"
+    />
 
-    <b-form-group
-      id="pflichtangaben-darfReiten"
+    <YesNoRadio
+      base="pflichtangaben-darfReiten"
       label="Mein Kind darf reiten?"
-    >
-      <b-form-radio-group
-        id="pflichtangaben-darfReiten-value"
-        name="pflichtangaben-darfReiten"
-        required
-        stacked
-        :checked="darfReiten"
-        @input="$emit('update:darfReiten', $event)"
-      >
-        <b-form-radio :value="true">
-          Ja
-        </b-form-radio>
-        <b-form-radio :value="false">
-          Nein
-        </b-form-radio>
-      </b-form-radio-group>
-    </b-form-group>
+      :required="true"
+      :checked="darfReiten"
+      @input="$emit('update:darfReiten', $event)"
+    />
 
-    <b-form-group
-      id="pflichtangaben-darfSchwimmen"
+    <YesNoRadio
+      base="pflichtangaben-darfSchwimmen"
       label="Mein Kind darf schwimmen?"
-    >
-      <b-form-radio-group
-        id="pflichtangaben-darfSchwimmen-value"
-        name="pflichtangaben-darfSchwimmen"
-        required
-        stacked
-        :checked="darfSchwimmen"
-        @input="$emit('update:darfSchwimmen', $event)"
-      >
-        <b-form-radio :value="true">
-          Ja
-        </b-form-radio>
-        <b-form-radio :value="false">
-          Nein
-        </b-form-radio>
-      </b-form-radio-group>
-    </b-form-group>
+      :required="true"
+      :checked="darfSchwimmen"
+      @input="$emit('update:darfSchwimmen', $event)"
+    />
 
-    <b-form-group
+    <TextInput
       v-if="darfSchwimmen"
-      id="pflichtangaben-schwimmAbzeichen-group"
-      label-for="pflichtangaben-schwimmAbzeichen-value"
+      base="pflichtangaben-schwimmAbzeichen"
       label="Schwimmabzeichen"
-    >
-      <b-form-input
-        id="pflichtangaben-schwimmAbzeichen-value"
-        required
-        trim
-        :value="schwimmAbzeichen"
-        @update="$emit('update:schwimmAbzeichen', $event)"
-      />
-    </b-form-group>
+      :required="true"
+      :value="schwimmAbzeichen"
+      @update="$emit('update:schwimmAbzeichen', $event)"
+    />
 
     <slot />
   </div>
 </template>
 
 <script>
+import YesNoRadio from '@/components/wrapper/YesNoRadio.vue';
+import TextInput from '@/components/wrapper/TextInput.vue';
+
 export default {
   name: 'Pflichtangaben',
+  components: { TextInput, YesNoRadio },
   props: {
     darfBehandeltWerden: {
       type: Boolean,
