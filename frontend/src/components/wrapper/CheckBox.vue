@@ -1,19 +1,12 @@
 <template>
-  <div>
-    <b-form-group
-      :id="`${base}-group`"
-      :label="heading"
-    >
-      <b-form-checkbox
-        :id="`${base}-value`"
-        :required="required"
-        :checked="checked"
-        @input="$emit('input', $event)"
-      >
-        <slot />
-      </b-form-checkbox>
-    </b-form-group>
-  </div>
+  <b-form-checkbox
+    :id="`${base}-value`"
+    :required="required"
+    :checked="checked"
+    @input="$emit('input', $event)"
+  >
+    <slot />
+  </b-form-checkbox>
 </template>
 
 <script>
@@ -31,10 +24,6 @@ export default {
     checked: {
       type: Boolean,
       required: true,
-    },
-    heading: {
-      type: String,
-      default: null,
     },
     required: {
       type: Boolean,

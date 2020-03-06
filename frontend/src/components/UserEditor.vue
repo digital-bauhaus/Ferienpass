@@ -95,14 +95,16 @@
 
     <Teilnahmebedingungen />
 
-    <CheckBox
-      v-model="confirmation"
-      base="confirmation"
-      :required="true"
-    >
-      Ich bestätige die Richtigkeit meiner Angaben. Wurden wissentlich falsche Angaben gemacht,
-      darf die Organisation das angemeldete Kind von den Angeboten ausschließen.
-    </CheckBox>
+    <CheckBoxGroup base="confirmation">
+      <CheckBox
+        v-model="confirmation"
+        base="confirmation"
+        :required="true"
+      >
+        Ich bestätige die Richtigkeit meiner Angaben. Wurden wissentlich falsche Angaben gemacht,
+        darf die Organisation das angemeldete Kind von den Angeboten ausschließen.
+      </CheckBox>
+    </CheckBoxGroup>
 
     <b-button
       type="submit"
@@ -124,10 +126,12 @@ import Angebote from '@/components/userEditor/Angebote.vue';
 import Teilnahmebedingungen from '@/components/userEditor/Teilnahmebedingungen.vue';
 import Kontakt from '@/components/userEditor/Kontakt.vue';
 import CheckBox from '@/components/wrapper/CheckBox.vue';
+import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
 
 export default {
   name: 'UserEditor',
   components: {
+    CheckBoxGroup,
     CheckBox,
     Kontakt,
     Teilnahmebedingungen,
@@ -145,6 +149,10 @@ export default {
     },
     submitButtonText: {
       type: String,
+      required: true,
+    },
+    disabled: {
+      type: Boolean,
       required: true,
     },
   },

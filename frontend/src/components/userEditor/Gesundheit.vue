@@ -29,14 +29,55 @@
       @input="$emit('update:medikamente', $event.join('|'))"
     />
 
-    <CheckBox
+    <CheckBoxGroup
       base="gesundheit-hitzeempfindlichkeiten"
-      heading="Hitzeempfindlichkeit"
-      :checked="hitzeempfindlichkeiten"
-      @input="$emit('update:hitzeempfindlichkeiten', $event)"
+      label="Hitzeempfindlichkeit"
     >
-      Mein Kind ist hitzeempfindlich
-    </CheckBox>
+      <CheckBox
+        base="gesundheit-hitzeempfindlichkeiten"
+        heading="Hitzeempfindlichkeit"
+        :checked="hitzeempfindlichkeiten"
+        @input="$emit('update:hitzeempfindlichkeiten', $event)"
+      >
+        Mein Kind ist hitzeempfindlich
+      </CheckBox>
+    </CheckBoxGroup>
+
+    <CheckBoxGroup
+      base="gesundheit-ernaehrung"
+      label="Ernährungsbesonderheiten"
+    >
+      <CheckBox
+        base="gesundheit-vegetarier"
+        :checked="vegetarier"
+        @input="$emit('update:vegetarier', $event)"
+      >
+        Vegetarier
+      </CheckBox>
+      <CheckBox
+        base="gesundheit-laktoseUnvertraeglichkeit"
+        :checked="laktoseUnvertraeglichkeit"
+        @input="$emit('update:laktoseUnvertraeglichkeit', $event)"
+      >
+        Laktose-Unverträglichkeit
+      </CheckBox>
+      <CheckBox
+        base="gesundheit-eierUnvertraeglichkeit"
+        :checked="eierUnvertraeglichkeit"
+        @input="$emit('update:eierUnvertraeglichkeit', $event)"
+      >
+        Eier-Unverträglichkeit
+      </CheckBox>
+    </CheckBoxGroup>
+
+    <DynamicInputList
+      base="gesundheit-essenLimitierungen"
+      heading="TODO"
+      label="Weitere Ernährungsbesonderheiten:"
+      placeholder="z.B. Milchpulver-Unverträglichkeit"
+      :value="essenLimitierungen ? essenLimitierungen.split('|') : []"
+      @input="$emit('update:essenLimitierungen', $event.join('|'))"
+    />
 
     <FieldInput
       base="gesundheit-krankenkasse"
@@ -53,10 +94,13 @@
 import DynamicInputList from '@/components/wrapper/DynamicInputList.vue';
 import FieldInput from '@/components/wrapper/FieldInput.vue';
 import CheckBox from '@/components/wrapper/CheckBox.vue';
+import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
 
 export default {
   name: 'Gesundheit',
-  components: { CheckBox, FieldInput, DynamicInputList },
+  components: {
+    CheckBoxGroup, CheckBox, FieldInput, DynamicInputList,
+  },
   props: {
     allergien: {
       type: String,

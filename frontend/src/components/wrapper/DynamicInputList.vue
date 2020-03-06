@@ -9,7 +9,6 @@
       <b-form-tags
         :id="`${base}-tags`"
         :input-id="`${base}-value`"
-        tag-variant="primary"
         no-outer-focus
         :placeholder="placeholder"
         add-button-text="Hinzufügen"
@@ -18,7 +17,7 @@
         @input="$emit('input', $event)"
       >
         <template
-          v-slot="{ tags, inputAttrs, inputHandlers, tagVariant, addTag, removeTag,
+          v-slot="{ tags, inputAttrs, inputHandlers, addTag, removeTag,
                     addButtonText, placeholder }"
         >
           <div class="mb-2">
@@ -26,7 +25,6 @@
               v-for="tag in tags"
               :key="tag"
               :title="tag"
-              :variant="tagVariant"
               class="mr-1"
               @remove="removeTag(tag)"
             >
@@ -41,7 +39,6 @@
             />
             <b-input-group-append>
               <b-button
-                variant="primary"
                 @click="addTag()"
               >
                 {{ addButtonText }}
