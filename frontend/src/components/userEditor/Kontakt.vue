@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h3>{{ heading }}</h3>
-
     <FieldInput
       :base="`${base}-name`"
       label="Name"
@@ -33,10 +31,6 @@ export default {
   components: { FieldInput },
   props: {
     base: {
-      type: String,
-      required: true,
-    },
-    heading: {
       type: String,
       required: true,
     },

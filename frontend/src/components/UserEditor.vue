@@ -39,16 +39,17 @@
       @update:darfSchwimmen="updateValue('darfSchwimmen', $event)"
       @update:schwimmAbzeichen="updateValue('schwimmAbzeichen', $event)"
     >
-      <Kontakt
-        heading="In Notfällen zu informieren"
-        base="notfallkontakt"
-        :name="value.notfallKontakt.name"
-        :anschrift="value.notfallKontakt.address"
-        :telefon="value.notfallKontakt.telephone"
-        @update:name="updateValue('notfallKontakt.name', $event)"
-        @update:anschrift="updateValue('notfallKontakt.address', $event)"
-        @update:telefon="updateValue('notfallKontakt.telephone', $event)"
-      />
+      <Group label="In Notfällen zu informieren">
+        <Kontakt
+          base="notfallkontakt"
+          :name="value.notfallKontakt.name"
+          :anschrift="value.notfallKontakt.address"
+          :telefon="value.notfallKontakt.telephone"
+          @update:name="updateValue('notfallKontakt.name', $event)"
+          @update:anschrift="updateValue('notfallKontakt.address', $event)"
+          @update:telefon="updateValue('notfallKontakt.telephone', $event)"
+        />
+      </Group>
     </Pflichtangaben>
 
     <Gesundheit
@@ -65,16 +66,17 @@
       @update:hitzeempfindlichkeiten="updateValue('hitzeempfindlichkeiten', $event)"
       @update:essenLimitierungen="updateValue('essenLimitierungen', $event)"
     >
-      <Kontakt
-        heading="Hausarzt"
-        base="hausarzt"
-        :name="value.arzt.name"
-        :anschrift="value.arzt.address"
-        :telefon="value.arzt.telephone"
-        @update:name="updateValue('arzt.name', $event)"
-        @update:anschrift="updateValue('arzt.address', $event)"
-        @update:telefon="updateValue('arzt.telephone', $event)"
-      />
+      <Group label="Hausarzt">
+        <Kontakt
+          base="hausarzt"
+          :name="value.arzt.name"
+          :anschrift="value.arzt.address"
+          :telefon="value.arzt.telephone"
+          @update:name="updateValue('arzt.name', $event)"
+          @update:anschrift="updateValue('arzt.address', $event)"
+          @update:telefon="updateValue('arzt.telephone', $event)"
+        />
+      </Group>
     </Gesundheit>
 
     <!-- eslint-disable max-len -->
@@ -163,6 +165,7 @@ import Teilnahmebedingungen from '@/components/userEditor/Teilnahmebedingungen.v
 import Kontakt from '@/components/userEditor/Kontakt.vue';
 import CheckBox from '@/components/wrapper/CheckBox.vue';
 import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
+import Group from '@/components/wrapper/Group.vue';
 
 export default {
   name: 'UserEditor',
@@ -177,6 +180,7 @@ export default {
     Gesundheit,
     Pflichtangaben,
     Grunddaten,
+    Group,
   },
   props: {
     value: {

@@ -86,24 +86,32 @@
         </CheckBox>
       </CheckBoxGroup>
 
-      <CheckBoxGroup base="behinderung-rollstuhlNutzungNotwendig">
-        <CheckBox
-          base="behinderung-rollstuhlNutzungNotwendig"
-          :checked="rollstuhlNutzungNotwendig"
-          @input="$emit('update:rollstuhlNutzungNotwendig', $event)"
-        >
-          Rollstuhlnutzung
-        </CheckBox>
-      </CheckBoxGroup>
+      <Group
+        label="Hilfsmittel"
+        class="mb-3"
+      >
+        <CheckBoxGroup base="behinderung-rollstuhlNutzungNotwendig">
+          <CheckBox
+            base="behinderung-rollstuhlNutzungNotwendig"
+            :checked="rollstuhlNutzungNotwendig"
+            @input="$emit('update:rollstuhlNutzungNotwendig', $event)"
+          >
+            Rollstuhlnutzung
+          </CheckBox>
+        </CheckBoxGroup>
 
-      <TextAreaInput
-        base="behinderung-weitereHilfsmittel"
-        label="Weitere Hilfsmittel beschreiben:"
-        :value="weitereHilfsmittel"
-        @update="$emit('update:weitereHilfsmittel', $event)"
-      />
+        <TextAreaInput
+          base="behinderung-weitereHilfsmittel"
+          label="Weitere Hilfsmittel beschreiben:"
+          :value="weitereHilfsmittel"
+          @update="$emit('update:weitereHilfsmittel', $event)"
+        />
+      </Group>
 
-      <CheckBoxGroup base="behinderung-wertmarkeVorhanden">
+      <CheckBoxGroup
+        base="behinderung-wertmarkeVorhanden"
+        label="Wertmarke"
+      >
         <CheckBox
           base="behinderung-wertmarkeVorhanden"
           :checked="wertmarkeVorhanden"
@@ -112,6 +120,13 @@
           Wertmarke vorhanden
         </CheckBox>
       </CheckBoxGroup>
+
+      <TextAreaInput
+        base="behinderung-hinweiseZumUmgangMitDemKind"
+        label="Darauf ist im Umgang mit meinem Kind unbedingt zu achten:"
+        :value="hinweiseZumUmgangMitDemKind"
+        @update="$emit('update:hinweiseZumUmgangMitDemKind', $event)"
+      />
 
       <CheckBoxGroup base="behinderung-begleitungNotwendig">
         <CheckBox
@@ -178,69 +193,62 @@
             Sinneswahrnehmung
           </CheckBox>
         </CheckBoxGroup>
-      </b-collapse>
 
-      <b-collapse
-        id="behinderung-eingeschraenkteSinne-collapse"
-        :visible="isEingeschraenkteSinne"
-      >
-        <FieldInput
-          base="behinderung-eingeschraenkteSinne"
-          label="Beeinträchtigte Sinneswahrnehmung angeben:"
-          :value="eingeschraenkteSinne"
-          @update="$emit('update:eingeschraenkteSinne', $event)"
-        />
-      </b-collapse>
-
-      <TextAreaInput
-        base="behinderung-hinweiseZumUmgangMitDemKind"
-        label="Darauf ist im Umgang mit meinem Kind unbedingt zu achten:"
-        :value="hinweiseZumUmgangMitDemKind"
-        @update="$emit('update:hinweiseZumUmgangMitDemKind', $event)"
-      />
-
-      <CheckBoxGroup base="behinderung-unterstuetzungSucheBegleitpersonNotwendig">
-        <CheckBox
-          base="behinderung-unterstuetzungSucheBegleitpersonNotwendig"
-          :aria-expanded="unterstuetzungSucheBegleitpersonNotwendig"
-          aria-controls="behinderung-gewohnterBegleitpersonenDienstleister-collapse"
-          :checked="unterstuetzungSucheBegleitpersonNotwendig"
-          @input="$emit('update:unterstuetzungSucheBegleitpersonNotwendig', $event)"
+        <b-collapse
+          id="behinderung-eingeschraenkteSinne-collapse"
+          :visible="isEingeschraenkteSinne"
         >
-          Wir benötigen Unterstützung bei der Organisation der Begleitperson
-        </CheckBox>
-      </CheckBoxGroup>
+          <FieldInput
+            base="behinderung-eingeschraenkteSinne"
+            label="Beeinträchtigte Sinneswahrnehmung angeben:"
+            :value="eingeschraenkteSinne"
+            @update="$emit('update:eingeschraenkteSinne', $event)"
+          />
+        </b-collapse>
 
-      <b-collapse
-        id="behinderung-gewohnterBegleitpersonenDienstleister-collapse"
-        :visible="unterstuetzungSucheBegleitpersonNotwendig"
-      >
-        <TextAreaInput
-          base="behinderung-gewohnterBegleitpersonenDienstleister"
-          label="Welcher Dienst ist in der Regel für die Begleitung/Betreuung
+        <CheckBoxGroup base="behinderung-unterstuetzungSucheBegleitpersonNotwendig">
+          <CheckBox
+            base="behinderung-unterstuetzungSucheBegleitpersonNotwendig"
+            :aria-expanded="unterstuetzungSucheBegleitpersonNotwendig"
+            aria-controls="behinderung-gewohnterBegleitpersonenDienstleister-collapse"
+            :checked="unterstuetzungSucheBegleitpersonNotwendig"
+            @input="$emit('update:unterstuetzungSucheBegleitpersonNotwendig', $event)"
+          >
+            Wir benötigen Unterstützung bei der Organisation der Begleitperson
+          </CheckBox>
+        </CheckBoxGroup>
+
+        <b-collapse
+          id="behinderung-gewohnterBegleitpersonenDienstleister-collapse"
+          :visible="unterstuetzungSucheBegleitpersonNotwendig"
+        >
+          <TextAreaInput
+            base="behinderung-gewohnterBegleitpersonenDienstleister"
+            label="Welcher Dienst ist in der Regel für die Begleitung/Betreuung
                zuständig? (Bitte Kontaktdaten des Dienstes/der Dienste angeben):"
-          :value="gewohnterBegleitpersonenDienstleister"
-          @update="$emit('update:gewohnterBegleitpersonenDienstleister', $event)"
-        />
-      </b-collapse>
+            :value="gewohnterBegleitpersonenDienstleister"
+            @update="$emit('update:gewohnterBegleitpersonenDienstleister', $event)"
+          />
+        </b-collapse>
 
-      <CheckBoxGroup base="behinderung-beantragungKostenuebernahmeBegleitpersonNotwendig">
-        <CheckBox
-          base="behinderung-beantragungKostenuebernahmeBegleitpersonNotwendig"
-          :checked="beantragungKostenuebernahmeBegleitpersonNotwendig"
-          @input="$emit('update:beantragungKostenuebernahmeBegleitpersonNotwendig', $event)"
-        >
-          Hiermit beantrage ich die Übernahme der Kosten für die Begleitung/Betreuung o.g. Kindes
-          während der Teilnahme an den Ferienfreizeiten gemäß der Anmeldung unter Punkt TODO.
-          Auf die Förderung einer Begleitperson für Ferienfreizeiten besteht kein Rechtsanspruch.
-          Die bedürftigkeitsabhängige Prüfung erfolgt am Einzelfall durch das Amt für Familie und
-          Soziales der Stadt Weimar. Voraussetzung hierfür ist, dass das Kind als Hauptwohnsitz in
-          Weimar lebt.
-          <br>
-          Hiermit stimme ich außerdem zu, dass meine hier gemachten Angaben an das Amt für Familie
-          und Soziales der Stadt Weimar weitergegeben werden dürfen.
-        </CheckBox>
-      </CheckBoxGroup>
+        <CheckBoxGroup base="behinderung-beantragungKostenuebernahmeBegleitpersonNotwendig">
+          <CheckBox
+            base="behinderung-beantragungKostenuebernahmeBegleitpersonNotwendig"
+            :checked="beantragungKostenuebernahmeBegleitpersonNotwendig"
+            @input="$emit('update:beantragungKostenuebernahmeBegleitpersonNotwendig', $event)"
+          >
+            Hiermit beantrage ich die Übernahme der Kosten für die Begleitung/Betreuung o.g. Kindes
+            während der Teilnahme an den Ferienfreizeiten gemäß der Anmeldung unter Punkt TODO.
+            Auf die Förderung einer Begleitperson für Ferienfreizeiten besteht kein Rechtsanspruch.
+            Die bedürftigkeitsabhängige Prüfung erfolgt am Einzelfall durch das Amt für Familie und
+            Soziales der Stadt Weimar. Voraussetzung hierfür ist, dass das Kind als Hauptwohnsitz in
+            Weimar lebt.
+            <br>
+            Hiermit stimme ich außerdem zu, dass meine hier gemachten Angaben an das Amt für Familie
+            und Soziales der Stadt Weimar weitergegeben werden dürfen.
+          </CheckBox>
+        </CheckBoxGroup>
+      </b-collapse>
     </b-collapse>
   </div>
 </template>
@@ -250,11 +258,16 @@ import CheckBox from '@/components/wrapper/CheckBox.vue';
 import TextAreaInput from '@/components/wrapper/TextAreaInput.vue';
 import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
 import FieldInput from '@/components/wrapper/FieldInput.vue';
+import Group from '@/components/wrapper/Group.vue';
 
 export default {
   name: 'Behinderung',
   components: {
-    FieldInput, CheckBoxGroup, TextAreaInput, CheckBox,
+    Group,
+    FieldInput,
+    CheckBoxGroup,
+    TextAreaInput,
+    CheckBox,
   },
   props: {
     liegtBehinderungVor: {

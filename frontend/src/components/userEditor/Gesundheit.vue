@@ -4,7 +4,6 @@
 
     <DynamicInputList
       base="gesundheit-allergien"
-      heading="Allergien"
       label="Bei meinem Kind muss auf folgende Allergie(n) geachtet werden:"
       placeholder="z.B. Heuschnupfen"
       :value="allergien ? allergien.split('|') : []"
@@ -13,7 +12,6 @@
 
     <DynamicInputList
       base="gesundheit-krankheiten"
-      heading="Krankheiten"
       label="Krankheiten des Kindes bitte hier angeben:"
       placeholder="z.B. Epilepsie"
       :value="krankheiten ? krankheiten.split('|') : []"
@@ -22,7 +20,6 @@
 
     <DynamicInputList
       base="gesundheit-medikamente"
-      heading="Medikamente"
       label="Mein Kind nimmt folgende Medikamente ein:"
       placeholder="z.B. Diazepam"
       :value="medikamente ? medikamente.split('|') : []"
@@ -35,7 +32,6 @@
     >
       <CheckBox
         base="gesundheit-hitzeempfindlichkeiten"
-        heading="Hitzeempfindlichkeit"
         :checked="hitzeempfindlichkeiten"
         @input="$emit('update:hitzeempfindlichkeiten', $event)"
       >
@@ -72,7 +68,6 @@
 
     <DynamicInputList
       base="gesundheit-essenLimitierungen"
-      heading="TODO"
       label="Weitere Ernährungsbesonderheiten:"
       placeholder="z.B. Milchpulver-Unverträglichkeit"
       :value="essenLimitierungen ? essenLimitierungen.split('|') : []"

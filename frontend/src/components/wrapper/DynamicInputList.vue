@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <h3 v-if="false">{{ heading }}</h3>
-    <b-form-group
+  <b-form-group
       :id="`${base}-group`"
       :label-for="`${base}-value`"
       :label="label"
@@ -48,7 +46,6 @@
         </template>
       </b-form-tags>
     </b-form-group>
-  </div>
 </template>
 
 <script>
@@ -66,10 +63,6 @@ export default {
     value: {
       type: Array,
       default: () => [],
-    },
-    heading: {
-      type: String,
-      required: true,
     },
     label: {
       type: String,
