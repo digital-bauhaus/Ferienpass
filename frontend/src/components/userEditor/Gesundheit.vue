@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h2>Allergien, Krankheiten, ...</h2>
-
     <DynamicInputList
       base="gesundheit-allergien"
       label="Bei meinem Kind muss auf folgende Allergie(n) geachtet werden:"

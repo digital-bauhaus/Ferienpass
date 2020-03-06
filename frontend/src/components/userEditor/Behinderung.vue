@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h2>Angaben bei Behinderung</h2>
-
     <p>
       Im Ferienpass sollen möglichst alle Kinder, egal ob mit oder ohne Behinderung,
       die Möglichkeit für tolle Ferien geboten bekommen. Leider sind nicht alle Angebote des
@@ -238,7 +236,7 @@
             @input="$emit('update:beantragungKostenuebernahmeBegleitpersonNotwendig', $event)"
           >
             Hiermit beantrage ich die Übernahme der Kosten für die Begleitung/Betreuung o.g. Kindes
-            während der Teilnahme an den Ferienfreizeiten gemäß der Anmeldung unter Punkt TODO.
+            während der Teilnahme an den Ferienfreizeiten gemäß der Anmeldung unter Punkt 5.
             Auf die Förderung einer Begleitperson für Ferienfreizeiten besteht kein Rechtsanspruch.
             Die bedürftigkeitsabhängige Prüfung erfolgt am Einzelfall durch das Amt für Familie und
             Soziales der Stadt Weimar. Voraussetzung hierfür ist, dass das Kind als Hauptwohnsitz in

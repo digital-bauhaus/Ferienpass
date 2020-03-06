@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h2>Pflichtangaben</h2>
-
     <YesNoRadio
       base="pflichtangaben-darfBehandeltWerden"
       label="Behandlungserlaubnis bei Erkrankungen und Unfällen?"

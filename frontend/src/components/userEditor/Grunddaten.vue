@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h2>Grunddaten</h2>
-
     <FieldInput
       base="grunddaten-nachname"
       label="Familienname"

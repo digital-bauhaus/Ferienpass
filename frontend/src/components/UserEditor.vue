@@ -1,137 +1,152 @@
 <template>
   <b-form
+    class="user-editor"
     v-if="hasUser"
     ref="form"
     novalidate
     :validated="showValidationStatus"
     @submit.prevent="onSubmit"
   >
-    <Grunddaten
-      :nachname="value.nachname"
-      :vorname="value.vorname"
-      :geburtsdatum="value.geburtsdatum"
-      :strasse="value.strasse"
-      :haus-nummer="'TODO'"
-      :postleitzahl="value.postleitzahl"
-      :stadt="value.stadt"
-      :telefon="value.telefon"
-      :email="value.email"
-      @update:nachname="updateValue('nachname', $event)"
-      @update:vorname="updateValue('vorname', $event)"
-      @update:geburtsdatum="updateValue('geburtsdatum', $event)"
-      @update:strasse="updateValue('strasse', $event)"
-      @update:hausNummer="updateValue('TODO', $event)"
-      @update:postleitzahl="updateValue('postleitzahl', $event)"
-      @update:stadt="updateValue('stadt', $event)"
-      @update:telefon="updateValue('telefon', $event)"
-      @update:email="updateValue('email', $event)"
-    />
+    <FormSection label="Grunddaten">
+      <Grunddaten
+        :nachname="value.nachname"
+        :vorname="value.vorname"
+        :geburtsdatum="value.geburtsdatum"
+        :strasse="value.strasse"
+        :haus-nummer="'TODO'"
+        :postleitzahl="value.postleitzahl"
+        :stadt="value.stadt"
+        :telefon="value.telefon"
+        :email="value.email"
+        @update:nachname="updateValue('nachname', $event)"
+        @update:vorname="updateValue('vorname', $event)"
+        @update:geburtsdatum="updateValue('geburtsdatum', $event)"
+        @update:strasse="updateValue('strasse', $event)"
+        @update:hausNummer="updateValue('TODO', $event)"
+        @update:postleitzahl="updateValue('postleitzahl', $event)"
+        @update:stadt="updateValue('stadt', $event)"
+        @update:telefon="updateValue('telefon', $event)"
+        @update:email="updateValue('email', $event)"
+      />
+    </FormSection>
 
-    <Pflichtangaben
-      :darf-behandelt-werden="value.darfBehandeltWerden"
-      :darf-allein-nach-hause="value.darfAlleinNachHause"
-      :darf-reiten="value.darfReiten"
-      :darf-schwimmen="value.darfSchwimmen"
-      :schwimm-abzeichen="value.schwimmAbzeichen"
-      @update:darfBehandeltWerden="updateValue('darfBehandeltWerden', $event)"
-      @update:darfAlleinNachHause="updateValue('darfAlleinNachHause', $event)"
-      @update:darfReiten="updateValue('darfReiten', $event)"
-      @update:darfSchwimmen="updateValue('darfSchwimmen', $event)"
-      @update:schwimmAbzeichen="updateValue('schwimmAbzeichen', $event)"
-    >
-      <Group label="In Notfällen zu informieren">
-        <Kontakt
-          base="notfallkontakt"
-          :name="value.notfallKontakt.name"
-          :anschrift="value.notfallKontakt.address"
-          :telefon="value.notfallKontakt.telephone"
-          @update:name="updateValue('notfallKontakt.name', $event)"
-          @update:anschrift="updateValue('notfallKontakt.address', $event)"
-          @update:telefon="updateValue('notfallKontakt.telephone', $event)"
-        />
-      </Group>
-    </Pflichtangaben>
+    <FormSection label="Pflichtangaben">
+      <Pflichtangaben
+        :darf-behandelt-werden="value.darfBehandeltWerden"
+        :darf-allein-nach-hause="value.darfAlleinNachHause"
+        :darf-reiten="value.darfReiten"
+        :darf-schwimmen="value.darfSchwimmen"
+        :schwimm-abzeichen="value.schwimmAbzeichen"
+        @update:darfBehandeltWerden="updateValue('darfBehandeltWerden', $event)"
+        @update:darfAlleinNachHause="updateValue('darfAlleinNachHause', $event)"
+        @update:darfReiten="updateValue('darfReiten', $event)"
+        @update:darfSchwimmen="updateValue('darfSchwimmen', $event)"
+        @update:schwimmAbzeichen="updateValue('schwimmAbzeichen', $event)"
+      >
+        <Group label="In Notfällen zu informieren">
+          <Kontakt
+            base="notfallkontakt"
+            :name="value.notfallKontakt.name"
+            :anschrift="value.notfallKontakt.address"
+            :telefon="value.notfallKontakt.telephone"
+            @update:name="updateValue('notfallKontakt.name', $event)"
+            @update:anschrift="updateValue('notfallKontakt.address', $event)"
+            @update:telefon="updateValue('notfallKontakt.telephone', $event)"
+          />
+        </Group>
+      </Pflichtangaben>
+    </FormSection>
 
-    <Gesundheit
-      :allergien="value.allergien"
-      :krankheiten="value.krankheiten"
-      :medikamente="value.medikamente"
-      :krankenkasse="value.krankenkasse"
-      :hitzeempfindlichkeiten="value.hitzeempfindlichkeiten"
-      :essen-limitierungen="value.essenLimitierungen"
-      @update:allergien="updateValue('allergien', $event)"
-      @update:krankheiten="updateValue('krankheiten', $event)"
-      @update:medikamente="updateValue('medikamente', $event)"
-      @update:krankenkasse="updateValue('krankenkasse', $event)"
-      @update:hitzeempfindlichkeiten="updateValue('hitzeempfindlichkeiten', $event)"
-      @update:essenLimitierungen="updateValue('essenLimitierungen', $event)"
-    >
-      <Group label="Hausarzt">
-        <Kontakt
-          base="hausarzt"
-          :name="value.arzt.name"
-          :anschrift="value.arzt.address"
-          :telefon="value.arzt.telephone"
-          @update:name="updateValue('arzt.name', $event)"
-          @update:anschrift="updateValue('arzt.address', $event)"
-          @update:telefon="updateValue('arzt.telephone', $event)"
-        />
-      </Group>
-    </Gesundheit>
+    <FormSection label="Allergien, Krankheiten, ...">
+      <Gesundheit
+        :allergien="value.allergien"
+        :krankheiten="value.krankheiten"
+        :medikamente="value.medikamente"
+        :krankenkasse="value.krankenkasse"
+        :hitzeempfindlichkeiten="value.hitzeempfindlichkeiten"
+        :essen-limitierungen="value.essenLimitierungen"
+        @update:allergien="updateValue('allergien', $event)"
+        @update:krankheiten="updateValue('krankheiten', $event)"
+        @update:medikamente="updateValue('medikamente', $event)"
+        @update:krankenkasse="updateValue('krankenkasse', $event)"
+        @update:hitzeempfindlichkeiten="updateValue('hitzeempfindlichkeiten', $event)"
+        @update:essenLimitierungen="updateValue('essenLimitierungen', $event)"
+      >
+        <Group label="Hausarzt">
+          <Kontakt
+            base="hausarzt"
+            :name="value.arzt.name"
+            :anschrift="value.arzt.address"
+            :telefon="value.arzt.telephone"
+            @update:name="updateValue('arzt.name', $event)"
+            @update:anschrift="updateValue('arzt.address', $event)"
+            @update:telefon="updateValue('arzt.telephone', $event)"
+          />
+        </Group>
+      </Gesundheit>
+    </FormSection>
 
-    <!-- eslint-disable max-len -->
-    <Behinderung
-      :liegt-behinderung-vor="value.behinderung.liegtBehinderungVor"
-      :merkzeichen-aussergewoehnliche-gehbehinderunga-g="value.behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG"
-      :merkzeichen-hilflosigkeit-h="value.behinderung.merkzeichen_Hilflosigkeit_H"
-      :merkzeichen-blind-bl="value.behinderung.merkzeichen_Blind_Bl"
-      :merkzeichen-gehoerlos-gl="value.behinderung.merkzeichen_Gehoerlos_Gl"
-      :merkzeichen-berechtigt-zur-mitnahme-einer-begleitperson-b="value.behinderung.merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B"
-      :merkzeichen-beeintraechtigung-im-strassenverkehr-g="value.behinderung.merkzeichen_BeeintraechtigungImStrassenverkehr_G"
-      :merkzeichen-taubblind-t-b-l="value.behinderung.merkzeichen_Taubblind_TBL"
-      :rollstuhl-nutzung-notwendig="value.behinderung.rollstuhlNutzungNotwendig"
-      :weitere-hilfsmittel="value.behinderung.weitereHilfsmittel"
-      :wertmarke-vorhanden="value.behinderung.wertmarkeVorhanden"
-      :begleitung-notwendig="value.behinderung.begleitungNotwendig"
-      :begleitperson-pflege="value.behinderung.begleitpersonPflege"
-      :begleitperson-medizinische-versorgung="value.behinderung.begleitpersonMedizinischeVersorgung"
-      :begleitperson-mobilitaet="value.behinderung.begleitpersonMobilitaet"
-      :begleitperson-orientierung="value.behinderung.begleitpersonOrientierung"
-      :begleitperson-soziale-begleitung="value.behinderung.begleitpersonSozialeBegleitung"
-      :eingeschraenkte-sinne="value.behinderung.eingeschraenkteSinne"
-      :hinweise-zum-umgang-mit-dem-kind="value.behinderung.hinweiseZumUmgangMitDemKind"
-      :unterstuetzung-suche-begleitperson-notwendig="value.behinderung.unterstuetzungSucheBegleitpersonNotwendig"
-      :gewohnter-begleitpersonen-dienstleister="value.behinderung.gewohnterBegleitpersonenDienstleister"
-      :beantragung-kostenuebernahme-begleitperson-notwendig="value.behinderung.beantragungKostenuebernahmeBegleitpersonNotwendig"
-      @update:liegtBehinderungVor="updateValue('behinderung.liegtBehinderungVor', $event)"
-      @update:merkzeichenAussergewoehnlicheGehbehinderungaG="updateValue('behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG', $event)"
-      @update:merkzeichenHilflosigkeitH="updateValue('behinderung.merkzeichen_Hilflosigkeit_H', $event)"
-      @update:merkzeichenBlindBl="updateValue('behinderung.merkzeichen_Blind_Bl', $event)"
-      @update:merkzeichenGehoerlosGl="updateValue('behinderung.merkzeichen_Gehoerlos_Gl', $event)"
-      @update:merkzeichenBerechtigtZurMitnahmeEinerBegleitpersonB="updateValue('behinderung.merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B', $event)"
-      @update:merkzeichenBeeintraechtigungImStrassenverkehrG="updateValue('behinderung.merkzeichen_BeeintraechtigungImStrassenverkehr_G', $event)"
-      @update:merkzeichenTaubblindTBL="updateValue('behinderung.merkzeichen_Taubblind_TBL', $event)"
-      @update:rollstuhlNutzungNotwendig="updateValue('behinderung.rollstuhlNutzungNotwendig', $event)"
-      @update:weitereHilfsmittel="updateValue('behinderung.weitereHilfsmittel', $event)"
-      @update:wertmarkeVorhanden="updateValue('behinderung.wertmarkeVorhanden', $event)"
-      @update:begleitungNotwendig="updateValue('behinderung.begleitungNotwendig', $event)"
-      @update:begleitpersonPflege="updateValue('behinderung.begleitpersonPflege', $event)"
-      @update:begleitpersonMedizinischeVersorgung="updateValue('behinderung.begleitpersonMedizinischeVersorgung', $event)"
-      @update:begleitpersonMobilitaet="updateValue('behinderung.begleitpersonMobilitaet', $event)"
-      @update:begleitpersonOrientierung="updateValue('behinderung.begleitpersonOrientierung', $event)"
-      @update:begleitpersonSozialeBegleitung="updateValue('behinderung.begleitpersonSozialeBegleitung', $event)"
-      @update:eingeschraenkteSinne="updateValue('behinderung.eingeschraenkteSinne', $event)"
-      @update:hinweiseZumUmgangMitDemKind="updateValue('behinderung.hinweiseZumUmgangMitDemKind', $event)"
-      @update:unterstuetzungSucheBegleitpersonNotwendig="updateValue('behinderung.unterstuetzungSucheBegleitpersonNotwendig', $event)"
-      @update:gewohnterBegleitpersonenDienstleister="updateValue('behinderung.gewohnterBegleitpersonenDienstleister', $event)"
-      @update:beantragungKostenuebernahmeBegleitpersonNotwendig="updateValue('behinderung.beantragungKostenuebernahmeBegleitpersonNotwendig', $event)"
-    />
+    <FormSection label="Angaben bei Behinderung">
+      <!-- eslint-disable max-len -->
+      <Behinderung
+        :liegt-behinderung-vor="value.behinderung.liegtBehinderungVor"
+        :merkzeichen-aussergewoehnliche-gehbehinderunga-g="value.behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG"
+        :merkzeichen-hilflosigkeit-h="value.behinderung.merkzeichen_Hilflosigkeit_H"
+        :merkzeichen-blind-bl="value.behinderung.merkzeichen_Blind_Bl"
+        :merkzeichen-gehoerlos-gl="value.behinderung.merkzeichen_Gehoerlos_Gl"
+        :merkzeichen-berechtigt-zur-mitnahme-einer-begleitperson-b="value.behinderung.merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B"
+        :merkzeichen-beeintraechtigung-im-strassenverkehr-g="value.behinderung.merkzeichen_BeeintraechtigungImStrassenverkehr_G"
+        :merkzeichen-taubblind-t-b-l="value.behinderung.merkzeichen_Taubblind_TBL"
+        :rollstuhl-nutzung-notwendig="value.behinderung.rollstuhlNutzungNotwendig"
+        :weitere-hilfsmittel="value.behinderung.weitereHilfsmittel"
+        :wertmarke-vorhanden="value.behinderung.wertmarkeVorhanden"
+        :begleitung-notwendig="value.behinderung.begleitungNotwendig"
+        :begleitperson-pflege="value.behinderung.begleitpersonPflege"
+        :begleitperson-medizinische-versorgung="value.behinderung.begleitpersonMedizinischeVersorgung"
+        :begleitperson-mobilitaet="value.behinderung.begleitpersonMobilitaet"
+        :begleitperson-orientierung="value.behinderung.begleitpersonOrientierung"
+        :begleitperson-soziale-begleitung="value.behinderung.begleitpersonSozialeBegleitung"
+        :eingeschraenkte-sinne="value.behinderung.eingeschraenkteSinne"
+        :hinweise-zum-umgang-mit-dem-kind="value.behinderung.hinweiseZumUmgangMitDemKind"
+        :unterstuetzung-suche-begleitperson-notwendig="value.behinderung.unterstuetzungSucheBegleitpersonNotwendig"
+        :gewohnter-begleitpersonen-dienstleister="value.behinderung.gewohnterBegleitpersonenDienstleister"
+        :beantragung-kostenuebernahme-begleitperson-notwendig="value.behinderung.beantragungKostenuebernahmeBegleitpersonNotwendig"
+        @update:liegtBehinderungVor="updateValue('behinderung.liegtBehinderungVor', $event)"
+        @update:merkzeichenAussergewoehnlicheGehbehinderungaG="updateValue('behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG', $event)"
+        @update:merkzeichenHilflosigkeitH="updateValue('behinderung.merkzeichen_Hilflosigkeit_H', $event)"
+        @update:merkzeichenBlindBl="updateValue('behinderung.merkzeichen_Blind_Bl', $event)"
+        @update:merkzeichenGehoerlosGl="updateValue('behinderung.merkzeichen_Gehoerlos_Gl', $event)"
+        @update:merkzeichenBerechtigtZurMitnahmeEinerBegleitpersonB="updateValue('behinderung.merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B', $event)"
+        @update:merkzeichenBeeintraechtigungImStrassenverkehrG="updateValue('behinderung.merkzeichen_BeeintraechtigungImStrassenverkehr_G', $event)"
+        @update:merkzeichenTaubblindTBL="updateValue('behinderung.merkzeichen_Taubblind_TBL', $event)"
+        @update:rollstuhlNutzungNotwendig="updateValue('behinderung.rollstuhlNutzungNotwendig', $event)"
+        @update:weitereHilfsmittel="updateValue('behinderung.weitereHilfsmittel', $event)"
+        @update:wertmarkeVorhanden="updateValue('behinderung.wertmarkeVorhanden', $event)"
+        @update:begleitungNotwendig="updateValue('behinderung.begleitungNotwendig', $event)"
+        @update:begleitpersonPflege="updateValue('behinderung.begleitpersonPflege', $event)"
+        @update:begleitpersonMedizinischeVersorgung="updateValue('behinderung.begleitpersonMedizinischeVersorgung', $event)"
+        @update:begleitpersonMobilitaet="updateValue('behinderung.begleitpersonMobilitaet', $event)"
+        @update:begleitpersonOrientierung="updateValue('behinderung.begleitpersonOrientierung', $event)"
+        @update:begleitpersonSozialeBegleitung="updateValue('behinderung.begleitpersonSozialeBegleitung', $event)"
+        @update:eingeschraenkteSinne="updateValue('behinderung.eingeschraenkteSinne', $event)"
+        @update:hinweiseZumUmgangMitDemKind="updateValue('behinderung.hinweiseZumUmgangMitDemKind', $event)"
+        @update:unterstuetzungSucheBegleitpersonNotwendig="updateValue('behinderung.unterstuetzungSucheBegleitpersonNotwendig', $event)"
+        @update:gewohnterBegleitpersonenDienstleister="updateValue('behinderung.gewohnterBegleitpersonenDienstleister', $event)"
+        @update:beantragungKostenuebernahmeBegleitpersonNotwendig="updateValue('behinderung.beantragungKostenuebernahmeBegleitpersonNotwendig', $event)"
+      />
+    </FormSection>
 
-    <Angebote />
+    <FormSection label="Angebote">
+      <Angebote />
+    </FormSection>
 
-    <Datenschutz />
+    <FormSection label="Datenschutzerklärung">
+      <Datenschutz />
+    </FormSection>
 
-    <Teilnahmebedingungen />
+    <FormSection label="Teilnahmebedingungen">
+      <Teilnahmebedingungen />
+    </FormSection>
 
     <CheckBoxGroup base="confirmation">
       <CheckBox
@@ -166,10 +181,12 @@ import Kontakt from '@/components/userEditor/Kontakt.vue';
 import CheckBox from '@/components/wrapper/CheckBox.vue';
 import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
 import Group from '@/components/wrapper/Group.vue';
+import FormSection from '@/components/wrapper/FormSection.vue';
 
 export default {
   name: 'UserEditor',
   components: {
+    FormSection,
     CheckBoxGroup,
     CheckBox,
     Kontakt,
@@ -227,5 +244,8 @@ export default {
 </script>
 
 <style scoped>
-
+.user-editor {
+  /* Initialize the form section counter */
+  counter-reset: form-section;
+}
 </style>
