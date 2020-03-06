@@ -19,7 +19,6 @@
       <UserList
         :users="project.anmeldungen"
         :show-projects="false"
-        :allow-delete="false"
       />
     </div>
 
@@ -28,7 +27,6 @@
       <UserList
         :users="project.stornierteTeilnehmer"
         :show-projects="false"
-        :allow-delete="false"
       />
     </div>
 
@@ -53,7 +51,7 @@ import UserList from '@/components/UserList.vue';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
 
 export default {
-  name: 'ProjectsEdit',
+  name: 'ProjectEdit',
   components: {
     BaseLayout,
     ProjectEditor,

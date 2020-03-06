@@ -27,7 +27,6 @@ export default {
   },
   data() {
     return {
-      errors: [],
       fields: [
         { key: 'name', label: 'Name', sortable: true },
         {

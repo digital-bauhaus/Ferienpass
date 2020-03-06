@@ -2,11 +2,11 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Registration from '@/views/Registration.vue';
 import Login from '@/views/Login.vue';
-import Teilnehmer from '@/views/Teilnehmer.vue';
 import Verwaltung from '@/views/Verwaltung.vue';
 import Projects from '@/views/Projects.vue';
-import ProjectsEdit from '@/views/ProjectsEdit.vue';
+import ProjectEdit from '@/views/ProjectEdit.vue';
 import UserEdit from '@/views/UserEdit.vue';
+import Users from '@/views/Users.vue';
 import store from '@/store';
 
 Vue.use(VueRouter);
@@ -21,11 +21,6 @@ const routes = [
     component: Login,
   },
   {
-    path: '/Teilnehmer',
-    component: Teilnehmer,
-    meta: { requiresAuth: true },
-  },
-  {
     path: '/Verwaltung',
     component: Verwaltung,
     meta: { requiresAuth: true },
@@ -36,8 +31,13 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/ProjectsEdit',
-    component: ProjectsEdit,
+    path: '/ProjectEdit',
+    component: ProjectEdit,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/Users',
+    component: Users,
     meta: { requiresAuth: true },
   },
   {

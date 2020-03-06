@@ -1,16 +1,17 @@
 <template>
   <BaseLayout class="projects">
     <h1>
-      Übersicht Veranstaltungen
+      Übersicht Teilnehmer
     </h1>
-    <ProjectList
-      :projects="projects"
+    <UserList
+      :users="users"
+      :show-projects="true"
     >
       <template v-slot:actions="{ row }">
         <b-button
           size="sm"
           class="m-1"
-          :to="{path: '../ProjectEdit', query: {id: row.item.id }}"
+          :to="{path: '../UserEdit', query: {id: row.item.id }}"
         >
           Bearbeiten
         </b-button>
@@ -18,27 +19,27 @@
           size="sm"
           class="m-1"
           variant="danger"
-          @click="deleteProject(row.item.id)"
+          @click="deleteUser(row.item.id)"
         >
           Löschen
         </b-button>
       </template>
-    </ProjectList>
+    </UserList>
   </BaseLayout>
 </template>
 
 <script>
 import api from '@/modules/ferienpass-api';
-import ProjectList from '@/components/ProjectList.vue';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
+import UserList from '@/components/UserList.vue';
 
 export default {
-  name: 'Projects',
-  components: { BaseLayout, ProjectList },
+  name: 'Users',
+  components: { UserList, BaseLayout },
   data() {
     return {
       serverErrorMessages: [],
-      projects: [],
+      users: [],
     };
   },
   created() {
@@ -47,27 +48,27 @@ export default {
   methods: {
     loadProjects() {
       this.serverErrorMessages = [];
-      api.getProjects().then((projects) => { this.projects = projects; })
+      api.getUsers().then((users) => { this.users = users; })
         .catch((e) => this.serverErrorMessages.push(e));
     },
-    deleteProject(projectId) {
+    deleteUser(userId) {
       this.$swal({
         title: 'Wirklich löschen?',
-        text: 'Das Projekt wird vollständig gelöscht!',
+        text: 'Der Teilnehmer wird vollständig gelöscht und die Daten sind verloren! Er muss sich über die Anmeldung wieder NEU anmelden!',
         icon: 'warning',
         buttons: true,
         dangerMode: true,
       })
         .then((willDelete) => {
           if (willDelete) {
-            this.serverErrorMessages = [];
-            api.deleteProject(projectId).then(() => {
-              this.loadProjects();
-              return this.$swal('Projekt wurde gelöscht!', {
+            this.errors = [];
+            api.deleteUser(userId).then(() => {
+              this.$emit('user-deleted');
+              return this.$swal('Teilnehmer wurde gelöscht!', {
                 icon: 'success',
               });
             }).catch((e) => {
-              this.serverErrorMessages.push(e);
+              this.errors.push(e);
               return this.$swal('Da ist was schief gegangen :(', {
                 icon: 'error',
               });

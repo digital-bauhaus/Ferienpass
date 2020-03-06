@@ -24,13 +24,13 @@
         </b-nav-item>
         <b-nav-item
           active-class="active"
-          :to="{ path: '/ProjectsEdit', query: { id: '-1' } }"
+          :to="{ path: '/ProjectEdit', query: { id: '-1' } }"
         >
           Veranstaltung erstellen
         </b-nav-item>
         <b-nav-item
           active-class="active"
-          :to="{ path: '/Teilnehmer' }"
+          :to="{ path: '/Users' }"
         >
           Alle Teilnehmer
         </b-nav-item>
