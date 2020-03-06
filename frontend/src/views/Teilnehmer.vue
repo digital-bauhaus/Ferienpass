@@ -2,7 +2,7 @@
   <div>
     <NavigationMenu />
     <main>
-      <h1>Teilnehmerübersicht</h1>
+      <h1>Übersicht Teilnehmer</h1>
       <UserList
         :users="users"
         :show-projects="true"

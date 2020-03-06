@@ -2,7 +2,7 @@
   <div>
     <NavigationMenu />
     <main v-if="user">
-      <h1>Teilnehmerbearbeitung</h1>
+      <h1>Teilnehmer bearbeiten</h1>
 
       <form
         method="post"

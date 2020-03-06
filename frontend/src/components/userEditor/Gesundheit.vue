@@ -118,6 +118,10 @@ export default {
       type: Boolean,
       required: true,
     },
+    essenLimitierungen: {
+      type: String,
+      required: true,
+    },
     krankenkasse: {
       type: String,
       required: true,

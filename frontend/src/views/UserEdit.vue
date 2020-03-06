@@ -62,7 +62,7 @@ export default {
       return parseInt(this.$route.query.id, 10);
     },
     titleText() {
-      return 'Teilnehmerbearbeitung';
+      return 'Teilnehmer bearbeiten';
     },
     submitButtonText() {
       return 'Speichern';

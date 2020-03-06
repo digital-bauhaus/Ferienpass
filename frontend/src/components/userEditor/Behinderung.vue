@@ -31,51 +31,51 @@
         label="Merkzeichen"
       >
         <CheckBox
-          base="behinderung-merkzeichen_AussergewoehnlicheGehbehinderung_aG"
-          :checked="merkzeichen_AussergewoehnlicheGehbehinderung_aG"
-          @input="$emit('update:merkzeichen_AussergewoehnlicheGehbehinderung_aG', $event)"
+          base="behinderung-merkzeichenAussergewoehnlicheGehbehinderungaG"
+          :checked="merkzeichenAussergewoehnlicheGehbehinderungaG"
+          @input="$emit('update:merkzeichenAussergewoehnlicheGehbehinderungaG', $event)"
         >
           „aG“ (Außergewöhnliche Gehbehinderung)
         </CheckBox>
         <CheckBox
-          base="behinderung-merkzeichen_Hilflosigkeit_H"
-          :checked="merkzeichen_Hilflosigkeit_H"
-          @input="$emit('update:merkzeichen_Hilflosigkeit_H', $event)"
+          base="behinderung-merkzeichenHilflosigkeitH"
+          :checked="merkzeichenHilflosigkeitH"
+          @input="$emit('update:merkzeichenHilflosigkeitH', $event)"
         >
           „H“ (Hilflosigkeit)
         </CheckBox>
         <CheckBox
-          base="behinderung-merkzeichen_Blind_Bl"
-          :checked="merkzeichen_Blind_Bl"
-          @input="$emit('update:merkzeichen_Blind_Bl', $event)"
+          base="behinderung-merkzeichenBlindBl"
+          :checked="merkzeichenBlindBl"
+          @input="$emit('update:merkzeichenBlindBl', $event)"
         >
           „Bl“ (Blind)
         </CheckBox>
         <CheckBox
-          base="behinderung-merkzeichen_Gehoerlos_Gl"
-          :checked="merkzeichen_Gehoerlos_Gl"
-          @input="$emit('update:merkzeichen_Gehoerlos_Gl', $event)"
+          base="behinderung-merkzeichenGehoerlosGl"
+          :checked="merkzeichenGehoerlosGl"
+          @input="$emit('update:merkzeichenGehoerlosGl', $event)"
         >
           „Gl“ (Gehörlos)
         </CheckBox>
         <CheckBox
-          base="behinderung-merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B"
-          :checked="merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B"
-          @input="$emit('update:merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B', $event)"
+          base="behinderung-merkzeichenBerechtigtZurMitnahmeEinerBegleitpersonB"
+          :checked="merkzeichenBerechtigtZurMitnahmeEinerBegleitpersonB"
+          @input="$emit('update:merkzeichenBerechtigtZurMitnahmeEinerBegleitpersonB', $event)"
         >
           „B“ (Berechtigung zur Mitnahme einer Begleitperson)
         </CheckBox>
         <CheckBox
-          base="behinderung-merkzeichen_BeeintraechtigungImStrassenverkehr_G"
-          :checked="merkzeichen_BeeintraechtigungImStrassenverkehr_G"
-          @input="$emit('update:merkzeichen_BeeintraechtigungImStrassenverkehr_G', $event)"
+          base="behinderung-merkzeichenBeeintraechtigungImStrassenverkehrG"
+          :checked="merkzeichenBeeintraechtigungImStrassenverkehrG"
+          @input="$emit('update:merkzeichenBeeintraechtigungImStrassenverkehrG', $event)"
         >
           „G“ (Erhebliche Beeinträchtigung der Bewegungsfähigkeit im Straßenverkehr)
         </CheckBox>
         <CheckBox
-          base="behinderung-merkzeichen_Taubblind_TBL"
-          :checked="merkzeichen_Taubblind_TBL"
-          @input="$emit('update:merkzeichen_Taubblind_TBL', $event)"
+          base="behinderung-merkzeichenTaubblindTBL"
+          :checked="merkzeichenTaubblindTBL"
+          @input="$emit('update:merkzeichenTaubblindTBL', $event)"
         >
           „TBL“ (Taubblind)
         </CheckBox>
@@ -120,6 +120,7 @@
       </CheckBoxGroup>
 
       <CheckBoxGroup
+        v-if="begleitungNotwendig"
         base="behinderung-begleitperson"
         label="Wofür wird die Begleitperson benötigt?"
       >
@@ -237,6 +238,34 @@ export default {
       type: Boolean,
       required: true,
     },
+    merkzeichenAussergewoehnlicheGehbehinderungaG: {
+      type: Boolean,
+      required: true,
+    },
+    merkzeichenHilflosigkeitH: {
+      type: Boolean,
+      required: true,
+    },
+    merkzeichenBlindBl: {
+      type: Boolean,
+      required: true,
+    },
+    merkzeichenGehoerlosGl: {
+      type: Boolean,
+      required: true,
+    },
+    merkzeichenBerechtigtZurMitnahmeEinerBegleitpersonB: {
+      type: Boolean,
+      required: true,
+    },
+    merkzeichenBeeintraechtigungImStrassenverkehrG: {
+      type: Boolean,
+      required: true,
+    },
+    merkzeichenTaubblindTBL: {
+      type: Boolean,
+      required: true,
+    },
     rollstuhlNutzungNotwendig: {
       type: Boolean,
       required: true,
@@ -250,6 +279,46 @@ export default {
       required: true,
     },
     begleitungNotwendig: {
+      type: Boolean,
+      required: true,
+    },
+    begleitpersonPflege: {
+      type: Boolean,
+      required: true,
+    },
+    begleitpersonMedizinischeVersorgung: {
+      type: Boolean,
+      required: true,
+    },
+    begleitpersonMobilitaet: {
+      type: Boolean,
+      required: true,
+    },
+    begleitpersonOrientierung: {
+      type: Boolean,
+      required: true,
+    },
+    begleitpersonSozialeBegleitung: {
+      type: Boolean,
+      required: true,
+    },
+    eingeschraenkteSinne: {
+      type: String,
+      required: true,
+    },
+    hinweiseZumUmgangMitDemKind: {
+      type: String,
+      required: true,
+    },
+    unterstuetzungSucheBegleitpersonNotwendig: {
+      type: Boolean,
+      required: true,
+    },
+    gewohnterBegleitpersonenDienstleister: {
+      type: String,
+      required: true,
+    },
+    beantragungKostenuebernahmeBegleitpersonNotwendig: {
       type: Boolean,
       required: true,
     },

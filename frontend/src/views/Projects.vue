@@ -1,6 +1,8 @@
 <template>
   <BaseLayout class="projects">
-    <h1>Veranstaltungsübersicht</h1>
+    <h1>
+      Übersicht Veranstaltungen
+    </h1>
     <ProjectList
       :projects="projects"
       @project-deleted="loadProjects"
