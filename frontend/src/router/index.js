@@ -6,7 +6,6 @@ import Teilnehmer from '@/views/Teilnehmer.vue';
 import Verwaltung from '@/views/Verwaltung.vue';
 import Projects from '@/views/Projects.vue';
 import ProjectsEdit from '@/views/ProjectsEdit.vue';
-import TeilnehmerEdit from '@/views/TeilnehmerEdit.vue';
 import UserEdit from '@/views/UserEdit.vue';
 import store from '@/store';
 
@@ -39,11 +38,6 @@ const routes = [
   {
     path: '/ProjectsEdit',
     component: ProjectsEdit,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/TeilnehmerEdit',
-    component: TeilnehmerEdit,
     meta: { requiresAuth: true },
   },
   {

@@ -57,17 +57,10 @@
       <td class="nobr">
         <router-link
           v-if="allowEdit"
-          :to="{path: '../TeilnehmerEdit', query: {id: user.id }}"
-          class="fakebutton"
-        >
-          Bearbeiten
-        </router-link>
-        <router-link
-          v-if="allowEdit"
           :to="{path: '../UserEdit', query: {id: user.id }}"
           class="fakebutton"
         >
-          Bearbeiten NEU
+          Bearbeiten
         </router-link>
         <span
           v-if="allowDelete"
