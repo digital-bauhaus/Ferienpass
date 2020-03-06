@@ -2,12 +2,11 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Registration from '@/views/Registration.vue';
 import Login from '@/views/Login.vue';
-import Teilnehmer from '@/views/Teilnehmer.vue';
 import Verwaltung from '@/views/Verwaltung.vue';
-import Veranstaltungen from '@/views/Veranstaltungen.vue';
-import VeranstaltungEdit from '@/views/VeranstaltungEdit.vue';
-import TeilnehmerEdit from '@/views/TeilnehmerEdit.vue';
-
+import Projects from '@/views/Projects.vue';
+import ProjectEdit from '@/views/ProjectEdit.vue';
+import UserEdit from '@/views/UserEdit.vue';
+import Users from '@/views/Users.vue';
 import store from '@/store';
 
 Vue.use(VueRouter);
@@ -22,28 +21,28 @@ const routes = [
     component: Login,
   },
   {
-    path: '/Teilnehmer',
-    component: Teilnehmer,
-    meta: { requiresAuth: true },
-  },
-  {
     path: '/Verwaltung',
     component: Verwaltung,
     meta: { requiresAuth: true },
   },
   {
-    path: '/Veranstaltungen',
-    component: Veranstaltungen,
+    path: '/Projects',
+    component: Projects,
     meta: { requiresAuth: true },
   },
   {
-    path: '/VeranstaltungEdit',
-    component: VeranstaltungEdit,
+    path: '/ProjectEdit',
+    component: ProjectEdit,
     meta: { requiresAuth: true },
   },
   {
-    path: '/TeilnehmerEdit',
-    component: TeilnehmerEdit,
+    path: '/Users',
+    component: Users,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/UserEdit',
+    component: UserEdit,
     meta: { requiresAuth: true },
   },
 

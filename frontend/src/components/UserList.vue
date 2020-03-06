@@ -1,79 +1,41 @@
 <template>
-  <table
-    v-if="users && users.length"
-    id="userTable"
+  <b-table
+    striped
+    hover
+    outlined
+    :responsive="true"
+    primary-key="id"
+    :fields="fields"
+    :items="users"
   >
-    <tr>
-      <th
-        class="clickable"
-        @click="sortTable(0)"
-      >
-        Status
-      </th>
-      <th
-        class="clickable"
-        @click="sortTable(1)"
-      >
-        Name
-      </th>
-      <th v-if="showProjects">
-        Projekte
-      </th>
-      <th
-        class="clickable"
-        @click="sortDate()"
-      >
-        Buchung
-      </th>
-      <th>Addresse</th>
-      <th>Telefon</th>
-      <th>eMail</th>
-      <th>Geburtsdatum</th>
-      <th>Bearbeiten</th>
-    </tr>
-    <tr
-      v-for="user of users"
-      :key="user.id"
-    >
-      <td :id="user.bezahlt">
-        <span :id="user.bezahlt">{{ user.bezahlt }}</span>
-      </td>
-      <td>{{ user.nachname }}, {{ user.vorname }}</td>
-      <td v-if="showProjects && projectsLoaded">
-        <ul>
-          <li
-            v-for="projectName of projectNamesByUserId[user.id]"
-            :key="projectName"
-          >
-            {{ projectName }}
-          </li>
-        </ul>
-      </td>
-      <td>{{ user.registrierungsdatum }}</td>
-      <td>{{ user.strasse }}, {{ user.stadt }}</td>
-      <td>{{ user.telefon }}</td>
-      <td>{{ user.email }}</td>
-      <td>{{ user.geburtsdatum }}</td>
-      <td class="nobr">
-        <router-link
-          v-if="allowEdit"
-          :to="{path: '../TeilnehmerEdit', query: {id: user.id }}"
-          class="fakebutton"
+    <template v-slot:cell(bezahlt)="row">
+      <b-checkbox
+        disabled
+        :checked="row.item.bezahlt"
+      />
+    </template>
+    <template v-slot:cell(projects)="row">
+      <ul v-if="projectsLoaded">
+        <li
+          v-for="projectName of projectNamesByUserId[row.item.id]"
+          :key="projectName"
         >
-          Bearbeiten
-        </router-link>
-        <span
-          v-if="allowDelete"
-          class="fakebutton"
-          @click="deleteUser(user.id)"
-        >Teilnehmer löschen</span>
-      </td>
-    </tr>
-  </table>
+          {{ projectName }}
+        </li>
+      </ul>
+    </template>
+    <template v-slot:cell(actions)="row">
+      <slot
+        name="actions"
+        :row="row"
+      />
+    </template>
+  </b-table>
 </template>
 
 <script>
 import api from '../modules/ferienpass-api';
+import dayjs, { SHORT_DATE_FORMAT } from '../modules/dayjs';
 
 export default {
   name: 'UserList',
@@ -87,22 +49,31 @@ export default {
       required: false,
       default: false,
     },
-    allowEdit: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-    allowDelete: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
   },
   data() {
     return {
-      errors: [],
+      serverErrorMessages: [],
       projectNamesByUserId: [],
       projectsLoaded: false,
+      fields: [
+        { key: 'bezahlt', label: 'Bezahlt', sortable: true },
+        { key: 'vorname', label: 'Vorname', sortable: true },
+        { key: 'nachname', label: 'Nachname', sortable: true },
+        {
+          key: 'registrierungsdatum', label: 'Registrierungsdatum', sortable: true, formatter: 'formatDate',
+        },
+        {
+          key: 'geburtsdatum', label: 'Geburtsdatum', sortable: true, formatter: 'formatDate',
+        },
+        { key: 'strasse', label: 'Straße', sortable: true },
+        { key: 'hausNummer', label: 'Hausnummer', sortable: true },
+        { key: 'postleitzahl', label: 'Postleitzahl', sortable: true },
+        { key: 'stadt', label: 'Wohnort', sortable: true },
+        { key: 'telefon', label: 'Telefon', sortable: true },
+        { key: 'email', label: 'Email', sortable: true },
+        this.showProjects && { key: 'projects', label: 'Projekte', sortable: false },
+        { key: 'actions', label: 'Aktionen', sortable: false },
+      ],
     };
   },
   created() {
@@ -111,8 +82,11 @@ export default {
     }
   },
   methods: {
+    formatDate(stringDate) {
+      return dayjs(stringDate).format(SHORT_DATE_FORMAT);
+    },
     loadProjectsOfUsers() {
-      this.errors = [];
+      this.serverErrorMessages = [];
       // instead of one api-call per user,
       // we request ALL projects and build a lookup-table ourselves
       api.getProjects().then((projects) => {
@@ -120,7 +94,7 @@ export default {
           this.projectNamesByUserId[user.id] = this.findProjectNamesForUserId(projects, user.id);
         });
         this.projectsLoaded = true;
-      }).catch((e) => this.errors.push(e));
+      }).catch((e) => this.serverErrorMessages.push(e));
     },
     findProjectNamesForUserId(projects, userId) {
       const projectNames = [];
@@ -131,181 +105,11 @@ export default {
       });
       return projectNames;
     },
-    deleteUser(userId) {
-      this.$swal({
-        title: 'Wirklich löschen?',
-        text: 'Der Teilnehmer wird vollständig gelöscht und die Daten sind verloren! Er muss sich über die Anmeldung wieder NEU anmelden!',
-        icon: 'warning',
-        buttons: true,
-        dangerMode: true,
-      })
-        .then((willDelete) => {
-          if (willDelete) {
-            this.errors = [];
-            api.deleteUser(userId).then(() => {
-              this.$emit('user-deleted');
-              return this.$swal('Teilnehmer wurde gelöscht!', {
-                icon: 'success',
-              });
-            }).catch((e) => {
-              this.errors.push(e);
-              return this.$swal('Da ist was schief gegangen :(', {
-                icon: 'error',
-              });
-            });
-          }
-        });
-    },
-    sortTable(n) {
-      let rows; let i; let x; let y; let shouldSwitch;
-      let switchcount = 0;
-      const table = document.getElementById('userTable');
-      let switching = true;
-      let dir = 'asc';
-      while (switching) {
-        switching = false;
-        rows = table.getElementsByTagName('TR');
 
-        for (i = 1; i < (rows.length - 1); i += 1) {
-          shouldSwitch = false;
-          x = rows[i].getElementsByTagName('TD')[n];
-          y = rows[i + 1].getElementsByTagName('TD')[n];
-
-          if (dir === 'asc') {
-            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-              shouldSwitch = true;
-              break;
-            }
-          } else if (dir === 'desc') {
-            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-              shouldSwitch = true;
-              break;
-            }
-          }
-        }
-        if (shouldSwitch) {
-          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-          switching = true;
-          switchcount += 1;
-        } else if (switchcount === 0 && dir === 'asc') {
-          dir = 'desc';
-          switching = true;
-        }
-      }
-    },
-    sortDate() {
-      let rows; let i; let x; let y; let shouldSwitch;
-      let switchcount = 0;
-      const table = document.getElementById('userTable');
-      let switching = true;
-      let dir = 'asc';
-      while (switching) {
-        switching = false;
-        rows = table.getElementsByTagName('TR');
-
-        for (i = 1; i < (rows.length - 1); i += 1) {
-          shouldSwitch = false;
-
-          const tmpx = rows[i].getElementsByTagName('TD')[2].innerHTML;
-          x = tmpx.toString();
-          const patternx = /(\d{2})\.(\d{2})\.(\d{4})/;
-          const dx = new Date(x.replace(patternx, '$3-$2-$1'));
-
-          const tmpy = rows[i + 1].getElementsByTagName('TD')[2].innerHTML;
-          y = tmpy.toString();
-          const patterny = /(\d{2})\.(\d{2})\.(\d{4})/;
-          const dy = new Date(y.replace(patterny, '$3-$2-$1'));
-
-          if (dir === 'asc') {
-            if (dx > dy) {
-              shouldSwitch = true;
-              break;
-            }
-          } else if (dir === 'desc') {
-            if (dx < dy) {
-              shouldSwitch = true;
-              break;
-            }
-          }
-        }
-        if (shouldSwitch) {
-          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-          switching = true;
-          switchcount += 1;
-        } else if (switchcount === 0 && dir === 'asc') {
-          dir = 'desc';
-          switching = true;
-        }
-      }
-    },
   },
 };
 </script>
 
 <style scoped>
-
-table {
-  border-collapse: collapse;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 80%;
-  border-radius: 15px;
-  border: 0px;
-}
-
-th {
-  background: #333435;
-  color: white;
-  font-weight: bold;
-}
-
-.clickable {
-  cursor: pointer;
-}
-
-.clickable:after {
-  font-weight: normal;
-  position: relative;
-  left: 5px;
-  content: '▼';
-}
-
-td, th {
-  min-width: 150px;
-  padding: 6px;
-  border: 1px solid #ccc;
-  text-align: left;
-  border: 0px;
-}
-
-tr:nth-child(even) {
-  background: #eee;
-}
-
-.fakebutton {
-  color: black;
-  background: lightgrey;
-  border-radius: 7px;
-  padding: 4px;
-  cursor: pointer;
-}
-
-.fakebutton:hover {
-  text-decoration: none;
-  background: #3a4372;
-  color: white;
-  transition: .10s;
-}
-
-ul {
-  margin-bottom: 0;
-}
-
-td:nth-child(1) {
-  background-color: #fce553;
-  color: #fce553;
-  cursor: default;
-}
 
 </style>

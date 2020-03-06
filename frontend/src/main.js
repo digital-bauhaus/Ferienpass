@@ -1,4 +1,6 @@
+import './modules/polyfills';
 import Vue from 'vue';
+import './modules/bootstrap-vue';
 import VueSwal from 'vue-swal';
 import App from './App.vue';
 import router from './router';

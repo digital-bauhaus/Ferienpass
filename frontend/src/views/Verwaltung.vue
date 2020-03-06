@@ -1,28 +1,29 @@
 <template>
-  <div>
-    <NavigationMenu />
-    <main>
-      <div class="front">
-        <div class="title">
+  <CenteredLayout class="verwaltung">
+    <b-row
+      align-v="center"
+      class="h-100"
+    >
+      <b-col>
+        <h1 class="text-center">
           {{ title }}
-        </div>
-        <hr>
-        <div class="subtitle">
+        </h1>
+        <hr class="verwaltung__divider">
+        <h2 class="text-center text-secondary">
           {{ subtitle }}
-        </div>
-      </div>
-    </main>
-  </div>
+        </h2>
+      </b-col>
+    </b-row>
+  </CenteredLayout>
 </template>
 
 
 <script>
-
-import NavigationMenu from '@/components/NavigationMenu.vue';
+import CenteredLayout from '@/views/layouts/CenteredLayout.vue';
 
 export default {
   name: 'Verwaltung',
-  components: { NavigationMenu },
+  components: { CenteredLayout },
   data() {
     return {
       title: 'Ferienpass Weimar',
@@ -32,44 +33,11 @@ export default {
 };
 </script>
 
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.front {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  margin: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  width: 480px;
-  height: 480px;
-  text-align: center;
-  font-weight: bold;
-}
-
-
-.front .title {
-  font-size: 50px;
-}
-
-.front hr {
+.verwaltung__divider {
   border-top: 2px solid #2c3e50;
-  width: 60%;
-}
-
-.front .subtitle {
-  color: #707a8c;
-  margin-top: 15px;
-  font-size: 30px;
-
+  width: 40%;
 }
 
 </style>
