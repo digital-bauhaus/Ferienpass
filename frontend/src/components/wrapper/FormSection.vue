@@ -1,5 +1,5 @@
 <template>
-  <section class="form-section">
+  <section class="form-section text-break">
     <h2 class="form-section__title">{{ label }}</h2>
     <slot />
   </section>

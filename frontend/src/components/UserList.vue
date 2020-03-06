@@ -7,6 +7,7 @@
     primary-key="id"
     :fields="fields"
     :items="users"
+    :sticky-header="true"
   >
     <template v-slot:cell(bezahlt)="row">
       <b-checkbox

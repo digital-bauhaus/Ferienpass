@@ -1,11 +1,11 @@
 <template>
   <b-form
-    v-if="hasUser"
     ref="form"
     class="user-editor"
     novalidate
     :validated="showValidationStatus"
     @submit.prevent="onSubmit"
+    @keydown.enter="preventAccidentalSubmit"
   >
     <FormSection
       v-if="isAdminView"
@@ -224,7 +224,7 @@ export default {
     },
     disabled: {
       type: Boolean,
-      required: true,
+      default: false,
     },
   },
   data() {
@@ -232,11 +232,6 @@ export default {
       showValidationStatus: false,
       confirmation: false,
     };
-  },
-  computed: {
-    hasUser() {
-      return this.value && this.value.id && this.value.id > 0;
-    },
   },
   methods: {
     updateValue(propName, newPropValue) {
@@ -248,10 +243,19 @@ export default {
     onSubmit() {
       this.showValidationStatus = true;
       if (this.$refs.form.checkValidity()) {
-        // this.$emit('submit');
+        console.log('go for it');
+        this.$emit('submit');
       } else {
+        console.log('go nit for it');
         this.$refs.form.reportValidity();
       }
+    },
+    preventAccidentalSubmit(event) {
+      if (['textarea', 'submit'].includes(event.target.type)) {
+        return;
+      }
+
+      event.preventDefault();
     },
   },
 };

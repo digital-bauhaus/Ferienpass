@@ -42,7 +42,7 @@
       <FieldInput
         base="pflichtangaben-schwimmAbzeichen"
         label="Schwimmabzeichen"
-        :required="true"
+        :required="darfSchwimmen"
         :value="schwimmAbzeichen"
         @update="$emit('update:schwimmAbzeichen', $event)"
       />

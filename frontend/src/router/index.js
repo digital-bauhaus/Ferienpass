@@ -1,13 +1,14 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Registration from '@/views/Registration.vue';
-import Login from '@/views/Login.vue';
-import Verwaltung from '@/views/Verwaltung.vue';
-import Projects from '@/views/Projects.vue';
-import ProjectEdit from '@/views/ProjectEdit.vue';
-import UserEdit from '@/views/UserEdit.vue';
-import Users from '@/views/Users.vue';
+import Login from '@/views/admin/Login.vue';
+import Verwaltung from '@/views/admin/Verwaltung.vue';
+import Projects from '@/views/admin/Projects.vue';
+import ProjectEdit from '@/views/admin/ProjectEdit.vue';
+import UserEdit from '@/views/admin/UserEdit.vue';
+import Users from '@/views/admin/Users.vue';
 import store from '@/store';
+import RegistrationOld from '@/views/RegistrationOld.vue';
 
 Vue.use(VueRouter);
 
@@ -15,6 +16,10 @@ const routes = [
   {
     path: '/',
     component: Registration,
+  },
+  {
+    path: '/old',
+    component: RegistrationOld,
   },
   {
     path: '/login',

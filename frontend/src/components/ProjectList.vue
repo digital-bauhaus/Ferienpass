@@ -7,6 +7,7 @@
     primary-key="id"
     :items="projects"
     :fields="fields"
+    :sticky-header="true"
   >
     <template v-slot:cell(actions)="row">
       <slot name="actions" :row="row" />
