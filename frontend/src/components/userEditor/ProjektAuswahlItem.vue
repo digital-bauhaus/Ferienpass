@@ -120,7 +120,7 @@ export default {
         return 'Zu alt';
       }
       if (this.beginsDuringAnother) {
-        return 'Startet während anders endet';
+        return 'Zeitliche Überschneidung.';
       }
       return '';
     },

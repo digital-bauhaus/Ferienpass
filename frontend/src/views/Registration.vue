@@ -183,7 +183,12 @@ export default {
     },
     createUser() {
       this.serverErrorMessages = [];
-      api.registerUser(this.user).then(() => {
+      const gewuenschteProjekteIds = Object.entries(this.gewuenschteProjekte)
+        .filter((entry) => entry[1]).map((entry) => entry[0]);
+      api.registerUser({
+        ...this.user,
+        gewuenschteProjekte: gewuenschteProjekteIds,
+      }).then(() => {
         this.showSuccessInfo();
       }).catch((errorMessages) => { this.serverErrorMessages = errorMessages; });
     },
