@@ -56,6 +56,7 @@
           <Kontakt
             base="notfallkontakt"
             :disabled="disabled"
+            :telefon-required="true"
             :name="value.notfallKontakt.name"
             :anschrift="value.notfallKontakt.address"
             :telefon="value.notfallKontakt.telephone"

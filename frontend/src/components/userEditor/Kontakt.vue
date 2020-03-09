@@ -20,6 +20,7 @@
       :base="`${base}-telefon`"
       label="Telefon"
       :disabled="disabled"
+      :required="telefonRequired"
       :value="telefon"
       @update="$emit('update:telefon', $event)"
     />
@@ -52,6 +53,10 @@ export default {
     telefon: {
       type: String,
       required: true,
+    },
+    telefonRequired: {
+      type: Boolean,
+      default: false,
     },
   },
 };

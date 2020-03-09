@@ -118,10 +118,10 @@ export default {
         return 'Projekt ist leider schon ausgebucht.';
       }
       if (this.isTooYoung) {
-        return 'Zu jung';
+        return 'Altersbeschränkung nicht erfüllt.';
       }
       if (this.isTooOld) {
-        return 'Zu alt';
+        return 'Altersbeschränkung nicht erfüllt.';
       }
       if (this.beginsDuringAnother) {
         return 'Zeitliche Überschneidung.';
@@ -142,6 +142,7 @@ export default {
       return dayjs(stringDate).format(SHORT_DATE_FORMAT);
     },
     calculateAgeFromBirthdayAtReferenceDay(birthday, referenceDay) {
+      if (birthday === '') return 0;
       const reference = dayjs(referenceDay);
       return reference.diff(dayjs(birthday), 'year');
     },
@@ -152,7 +153,11 @@ export default {
 <style scoped>
 .projekt-auswahl-item__list {
   list-style: none;
+  padding-left:  0;
   margin: 0;
   font-size: 0.9em;
+}
+.projekt-auswahl-item >>> .invalid-feedback {
+  padding-left: 1.75rem;
 }
 </style>

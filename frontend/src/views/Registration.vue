@@ -31,6 +31,7 @@
           :geburtsdatum="user.geburtsdatum"
           :alle-projekte="allProjects"
           :gewuenschte-projekte="gewuenschteProjekte"
+          :disabled="!isSchoolKid"
           :checked="gewuenschteProjekte[projekt.id]"
           @input="updateGewuenschtesProjekt(projekt.id, $event)"
         />

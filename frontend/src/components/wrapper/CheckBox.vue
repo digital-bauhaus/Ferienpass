@@ -1,6 +1,7 @@
 <template>
   <b-form-checkbox
     :id="`${base}-value`"
+    :name="`${base}-value`"
     :required="required"
     :checked="checked"
     :disabled="disabled"
