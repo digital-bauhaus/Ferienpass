@@ -14,7 +14,7 @@
         base="schoolkid"
         :required="true"
       >
-        Mein Kind geht zur Schule
+        Mein Kind geht zur Schule *
       </CheckBox>
     </CheckBoxGroup>
     <UserEditor

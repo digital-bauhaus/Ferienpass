@@ -190,7 +190,7 @@
         :required="true"
       >
         Ich bestätige die Richtigkeit meiner Angaben. Wurden wissentlich falsche Angaben gemacht,
-        darf die Organisation das angemeldete Kind von den Angeboten ausschließen.
+        darf die Organisation das angemeldete Kind von den Angeboten ausschließen. *
       </CheckBox>
     </CheckBoxGroup>
 

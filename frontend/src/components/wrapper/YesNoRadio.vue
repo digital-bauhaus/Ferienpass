@@ -1,7 +1,7 @@
 <template>
   <b-form-group
     :id="`${base}-group`"
-    :label="label"
+    :label="`${label}${required ? ' *' : ''}`"
   >
     <b-form-radio-group
       :id="`${base}-value`"

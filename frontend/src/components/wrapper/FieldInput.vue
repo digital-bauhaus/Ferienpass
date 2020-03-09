@@ -2,7 +2,7 @@
   <b-form-group
     :id="`${base}-group`"
     :label-for="`${base}-value`"
-    :label="label"
+    :label="`${label}${required ? ' *' : ''}`"
   >
     <b-form-input
       :id="`${base}-value`"
