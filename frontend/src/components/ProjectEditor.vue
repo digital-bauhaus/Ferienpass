@@ -7,122 +7,82 @@
   >
     <b-form-row>
       <b-col sm="12">
-        <b-form-group
-          id="project-name-group"
-          label-for="project-name-value"
+        <FieldInput
+          base="project-name"
           label="Name"
-        >
-          <b-form-input
-            id="project-name-value"
-            required
-            trim
-            placeholder="Name der Veranstaltung"
-            :value="value.name"
-            @update="updateValue('name', $event)"
-          />
-        </b-form-group>
+          :required="true"
+          placeholder="Name der Veranstaltung"
+          :value="value.name"
+          @update="updateValue('name', $event)"
+        />
       </b-col>
 
       <b-col sm="6">
-        <b-form-group
-          id="project-beginDate-group"
-          label-for="project-beginDate-value"
+        <FieldInput
+          base="project-beginDate"
+          type="date"
           label="Beginndatum"
-        >
-          <b-form-input
-            id="project-beginDate-value"
-            type="date"
-            required
-            placeholder="Datum (TT.MM.JJJ)"
-            :value="value.datum"
-            @update="updateValue('datum', $event)"
-          />
-        </b-form-group>
+          :required="true"
+          placeholder="Datum (TT.MM.JJJ)"
+          :value="value.datum"
+          @update="updateValue('datum', $event)"
+        />
       </b-col>
       <b-col sm="6">
-        <b-form-group
-          id="project-endDate-group"
-          label-for="project-endDate-value"
+        <FieldInput
+          base="project-endDate"
+          type="date"
           label="Enddatum"
-        >
-          <b-form-input
-            id="project-endDate-value"
-            type="date"
-            placeholder="Datum (TT.MM.JJJ)"
-            required
-            :value="value.datumEnde"
-            @update="updateValue('datumEnde', $event)"
-          />
-        </b-form-group>
+          :required="true"
+          placeholder="Datum (TT.MM.JJJ)"
+          :value="value.datumEnde"
+          @update="updateValue('datumEnde', $event)"
+        />
       </b-col>
 
       <b-col sm="6">
-        <b-form-group
-          id="project-slotsTotal-group"
-          label-for="project-slotsTotal-value"
+        <FieldInput
+          base="project-slotsTotal"
+          type="number"
           label="Plätze (gesamt)"
-        >
-          <b-form-input
-            id="project-slotsTotal-value"
-            type="number"
-            required
-            trim
-            placeholder="Plätze"
-            :value="value.slotsGesamt"
-            @update="updateValue('slotsGesamt', $event)"
-          />
-        </b-form-group>
+          :required="true"
+          placeholder="Plätze"
+          :value="value.slotsGesamt"
+          @update="updateValue('slotsGesamt', $event)"
+        />
       </b-col>
       <b-col sm="6">
-        <b-form-group
-          id="project-slotsReserved-group"
-          label-for="project-slotsReserved-value"
+        <FieldInput
+          base="project-slotsReserved"
+          type="number"
           label="Plätze (reserviert)"
-        >
-          <b-form-input
-            id="project-slotsReserved-value"
-            type="number"
-            trim
-            placeholder="Reservierte Plätze"
-            :value="value.slotsReserviert"
-            @update="updateValue('slotsReserviert', $event)"
-          />
-        </b-form-group>
+          placeholder="Reservierte Plätze"
+          :value="value.slotsReserviert"
+          @update="updateValue('slotsReserviert', $event)"
+        />
       </b-col>
 
       <b-col sm="6">
-        <b-form-group
-          id="project-minAge-group"
-          label-for="project-minAge-value"
+        <FieldInput
+          base="project-minAge"
+          type="number"
           label="Mindestalter"
-        >
-          <b-form-input
-            id="project-minAge-value"
-            type="number"
-            required
-            trim
-            placeholder="Altersbegrenzung"
-            :value="value.mindestAlter"
-            @update="updateValue('mindestAlter', $event)"
-          />
-        </b-form-group>
+          :required="true"
+          placeholder="Altersbegrenzung"
+          :value="value.mindestAlter"
+          @update="updateValue('mindestAlter', $event)"
+        />
       </b-col>
       <b-col sm="6">
-        <b-form-group
-          id="project-maxAge-group"
-          label-for="project-maxAge-value"
+        <FieldInput
+          base="project-maxAge"
+          type="number"
           label="Höchstalter"
-        >
-          <b-form-input
-            id="project-maxAge-value"
-            type="number"
-            required
-            trim
-            placeholder="Altersbegrenzung"
-            :value="value.hoechstAlter"
-            @update="updateValue('hoechstAlter', $event)"
-          />
-        </b-form-group>
+          :required="true"
+          placeholder="Altersbegrenzung"
+          :value="value.hoechstAlter"
+          @update="updateValue('hoechstAlter', $event)"
+        />
       </b-col>
     </b-form-row>
 
@@ -136,9 +96,11 @@
 </template>
 
 <script>
+import FieldInput from '@/components/wrapper/FieldInput.vue';
 
 export default {
   name: 'ProjectEditor',
+  components: { FieldInput },
   props: {
     value: {
       type: Object,
