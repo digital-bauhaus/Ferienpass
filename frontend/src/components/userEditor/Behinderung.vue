@@ -117,14 +117,10 @@
         </CheckBox>
       </CheckBoxGroup>
 
-      <TextAreaInput
-        base="behinderung-hinweiseZumUmgangMitDemKind"
-        label="Darauf ist im Umgang mit meinem Kind unbedingt zu achten:"
-        :value="hinweiseZumUmgangMitDemKind"
-        @update="$emit('update:hinweiseZumUmgangMitDemKind', $event)"
-      />
-
-      <CheckBoxGroup base="behinderung-begleitungNotwendig">
+      <CheckBoxGroup
+        base="behinderung-begleitungNotwendig"
+        label="Begleitperson"
+      >
         <CheckBox
           base="behinderung-begleitungNotwendig"
           :aria-expanded="begleitungNotwendig"
@@ -201,6 +197,13 @@
             @update="$emit('update:eingeschraenkteSinne', $event)"
           />
         </b-collapse>
+
+        <TextAreaInput
+          base="behinderung-hinweiseZumUmgangMitDemKind"
+          label="Darauf ist im Umgang mit meinem Kind unbedingt zu achten:"
+          :value="hinweiseZumUmgangMitDemKind"
+          @update="$emit('update:hinweiseZumUmgangMitDemKind', $event)"
+        />
 
         <CheckBoxGroup base="behinderung-unterstuetzungSucheBegleitpersonNotwendig">
           <CheckBox

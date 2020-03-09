@@ -2,6 +2,7 @@
   <b-form-group
     :id="`${base}-group`"
     :label="label"
+    label-class="font-weight-bold"
   >
     <slot />
   </b-form-group>
