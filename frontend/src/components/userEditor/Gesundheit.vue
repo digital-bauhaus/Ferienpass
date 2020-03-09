@@ -4,6 +4,7 @@
       base="gesundheit-allergien"
       label="Bei meinem Kind muss auf folgende Allergie(n) geachtet werden:"
       placeholder="z.B. Heuschnupfen"
+      :disabled="disabled"
       :value="allergien ? allergien.split('|') : []"
       @input="$emit('update:allergien', $event.join('|'))"
     />
@@ -12,6 +13,7 @@
       base="gesundheit-krankheiten"
       label="Krankheiten des Kindes bitte hier angeben:"
       placeholder="z.B. Epilepsie"
+      :disabled="disabled"
       :value="krankheiten ? krankheiten.split('|') : []"
       @input="$emit('update:krankheiten', $event.join('|'))"
     />
@@ -20,6 +22,7 @@
       base="gesundheit-medikamente"
       label="Mein Kind nimmt folgende Medikamente ein:"
       placeholder="z.B. Diazepam"
+      :disabled="disabled"
       :value="medikamente ? medikamente.split('|') : []"
       @input="$emit('update:medikamente', $event.join('|'))"
     />
@@ -27,6 +30,7 @@
     <CheckBoxGroup
       base="gesundheit-hitzeempfindlichkeiten"
       label="Hitzeempfindlichkeit"
+      :disabled="disabled"
     >
       <CheckBox
         base="gesundheit-hitzeempfindlichkeiten"
@@ -40,6 +44,7 @@
     <CheckBoxGroup
       base="gesundheit-ernaehrung"
       label="Ernährungsbesonderheiten"
+      :disabled="disabled"
     >
       <CheckBox
         base="gesundheit-vegetarier"
@@ -68,6 +73,7 @@
       base="gesundheit-essenLimitierungen"
       label="Weitere Ernährungsbesonderheiten:"
       placeholder="z.B. Milchpulver-Unverträglichkeit"
+      :disabled="disabled"
       :value="essenLimitierungen ? essenLimitierungen.split('|') : []"
       @input="$emit('update:essenLimitierungen', $event.join('|'))"
     />
@@ -75,6 +81,7 @@
     <FieldInput
       base="gesundheit-krankenkasse"
       label="Krankenkasse"
+      :disabled="disabled"
       :value="krankenkasse"
       @update="$emit('update:krankenkasse', $event)"
     />
@@ -95,6 +102,10 @@ export default {
     CheckBoxGroup, CheckBox, FieldInput, DynamicInputList,
   },
   props: {
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     allergien: {
       type: String,
       required: true,
@@ -108,6 +119,18 @@ export default {
       required: true,
     },
     hitzeempfindlichkeiten: {
+      type: Boolean,
+      required: true,
+    },
+    vegetarier: {
+      type: Boolean,
+      required: true,
+    },
+    laktoseUnvertraeglichkeit: {
+      type: Boolean,
+      required: true,
+    },
+    eierUnvertraeglichkeit: {
       type: Boolean,
       required: true,
     },

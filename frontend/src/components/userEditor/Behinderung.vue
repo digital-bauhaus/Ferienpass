@@ -12,7 +12,10 @@
       finanzielle Unterstützung beantragen möchten.
     </p>
 
-    <CheckBoxGroup base="behinderung-liegtBehinderungVor">
+    <CheckBoxGroup
+      base="behinderung-liegtBehinderungVor"
+      :disabled="disabled"
+    >
       <CheckBox
         base="behinderung-liegtBehinderungVor"
         :required="true"
@@ -32,6 +35,7 @@
       <CheckBoxGroup
         base="behinderung-merkzeichen"
         label="Merkzeichen"
+        :disabled="disabled"
       >
         <CheckBox
           base="behinderung-merkzeichenAussergewoehnlicheGehbehinderungaG"
@@ -84,28 +88,32 @@
         </CheckBox>
       </CheckBoxGroup>
 
-      <Group label="Hilfsmittel">
-        <CheckBoxGroup base="behinderung-rollstuhlNutzungNotwendig">
-          <CheckBox
-            base="behinderung-rollstuhlNutzungNotwendig"
-            :checked="rollstuhlNutzungNotwendig"
-            @input="$emit('update:rollstuhlNutzungNotwendig', $event)"
-          >
-            Rollstuhlnutzung
-          </CheckBox>
-        </CheckBoxGroup>
+      <CheckBoxGroup
+        base="behinderung-rollstuhlNutzungNotwendig"
+        label="Hilfsmittel"
+        :disabled="disabled"
+      >
+        <CheckBox
+          base="behinderung-rollstuhlNutzungNotwendig"
+          :checked="rollstuhlNutzungNotwendig"
+          @input="$emit('update:rollstuhlNutzungNotwendig', $event)"
+        >
+          Rollstuhlnutzung
+        </CheckBox>
+      </CheckBoxGroup>
 
-        <TextAreaInput
-          base="behinderung-weitereHilfsmittel"
-          label="Weitere Hilfsmittel beschreiben:"
-          :value="weitereHilfsmittel"
-          @update="$emit('update:weitereHilfsmittel', $event)"
-        />
-      </Group>
+      <TextAreaInput
+        base="behinderung-weitereHilfsmittel"
+        label="Weitere Hilfsmittel beschreiben:"
+        :disabled="disabled"
+        :value="weitereHilfsmittel"
+        @update="$emit('update:weitereHilfsmittel', $event)"
+      />
 
       <CheckBoxGroup
         base="behinderung-wertmarkeVorhanden"
         label="Wertmarke"
+        :disabled="disabled"
       >
         <CheckBox
           base="behinderung-wertmarkeVorhanden"
@@ -116,14 +124,11 @@
         </CheckBox>
       </CheckBoxGroup>
 
-      <TextAreaInput
-        base="behinderung-hinweiseZumUmgangMitDemKind"
-        label="Darauf ist im Umgang mit meinem Kind unbedingt zu achten:"
-        :value="hinweiseZumUmgangMitDemKind"
-        @update="$emit('update:hinweiseZumUmgangMitDemKind', $event)"
-      />
-
-      <CheckBoxGroup base="behinderung-begleitungNotwendig">
+      <CheckBoxGroup
+        base="behinderung-begleitungNotwendig"
+        label="Begleitperson"
+        :disabled="disabled"
+      >
         <CheckBox
           base="behinderung-begleitungNotwendig"
           :aria-expanded="begleitungNotwendig"
@@ -143,6 +148,7 @@
         <CheckBoxGroup
           base="behinderung-begleitperson"
           label="Wofür wird die Begleitperson benötigt?"
+          :disabled="disabled"
         >
           <CheckBox
             base="behinderung-begleitpersonPflege"
@@ -196,12 +202,24 @@
           <FieldInput
             base="behinderung-eingeschraenkteSinne"
             label="Beeinträchtigte Sinneswahrnehmung angeben:"
+            :disabled="disabled"
             :value="eingeschraenkteSinne"
             @update="$emit('update:eingeschraenkteSinne', $event)"
           />
         </b-collapse>
 
-        <CheckBoxGroup base="behinderung-unterstuetzungSucheBegleitpersonNotwendig">
+        <TextAreaInput
+          base="behinderung-hinweiseZumUmgangMitDemKind"
+          label="Darauf ist im Umgang mit meinem Kind unbedingt zu achten:"
+          :disabled="disabled"
+          :value="hinweiseZumUmgangMitDemKind"
+          @update="$emit('update:hinweiseZumUmgangMitDemKind', $event)"
+        />
+
+        <CheckBoxGroup
+          base="behinderung-unterstuetzungSucheBegleitpersonNotwendig"
+          :disabled="disabled"
+        >
           <CheckBox
             base="behinderung-unterstuetzungSucheBegleitpersonNotwendig"
             :aria-expanded="unterstuetzungSucheBegleitpersonNotwendig"
@@ -221,12 +239,16 @@
             base="behinderung-gewohnterBegleitpersonenDienstleister"
             label="Welcher Dienst ist in der Regel für die Begleitung/Betreuung
                zuständig? (Bitte Kontaktdaten des Dienstes/der Dienste angeben):"
+            :disabled="disabled"
             :value="gewohnterBegleitpersonenDienstleister"
             @update="$emit('update:gewohnterBegleitpersonenDienstleister', $event)"
           />
         </b-collapse>
 
-        <CheckBoxGroup base="behinderung-beantragungKostenuebernahmeBegleitpersonNotwendig">
+        <CheckBoxGroup
+          base="behinderung-beantragungKostenuebernahmeBegleitpersonNotwendig"
+          :disabled="disabled"
+        >
           <CheckBox
             base="behinderung-beantragungKostenuebernahmeBegleitpersonNotwendig"
             :checked="beantragungKostenuebernahmeBegleitpersonNotwendig"
@@ -253,18 +275,20 @@ import CheckBox from '@/components/wrapper/CheckBox.vue';
 import TextAreaInput from '@/components/wrapper/TextAreaInput.vue';
 import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
 import FieldInput from '@/components/wrapper/FieldInput.vue';
-import Group from '@/components/wrapper/Group.vue';
 
 export default {
   name: 'Behinderung',
   components: {
-    Group,
     FieldInput,
     CheckBoxGroup,
     TextAreaInput,
     CheckBox,
   },
   props: {
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     liegtBehinderungVor: {
       type: Boolean,
       required: true,

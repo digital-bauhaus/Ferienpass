@@ -1,0 +1,22 @@
+@import "variables.scss";
+
+// Define your variable overrides here
+
+// color overrides
+$input-border-color: $custom-border-color;
+$custom-control-indicator-border-color: $custom-border-color;
+$card-border-color: $custom-border-color-light;
+
+// sizing overrides
+$border-width: 2px;
+$label-margin-bottom: 0;
+$custom-control-indicator-size: 1.25rem;
+$border-radius: 0.5rem;
+$custom-checkbox-indicator-border-radius: 0.4rem;
+
+// Include Bootstrap and BootstrapVue SCSS files
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~bootstrap-vue/src/index.scss';
+
+
+

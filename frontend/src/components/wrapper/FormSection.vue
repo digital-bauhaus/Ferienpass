@@ -1,6 +1,8 @@
 <template>
-  <section class="form-section">
-    <h2 class="form-section__title">{{ label }}</h2>
+  <section class="form-section text-break">
+    <h2 class="form-section__title">
+      {{ label }}
+    </h2>
     <slot />
   </section>
 </template>

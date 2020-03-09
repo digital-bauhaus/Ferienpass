@@ -4,6 +4,7 @@
       base="grunddaten-nachname"
       label="Familienname"
       :required="true"
+      :disabled="disabled"
       :value="nachname"
       @update="$emit('update:nachname', $event)"
     />
@@ -12,6 +13,7 @@
       base="grunddaten-vorname"
       label="Vorname meines Kindes"
       :required="true"
+      :disabled="disabled"
       :value="vorname"
       @update="$emit('update:vorname', $event)"
     />
@@ -21,6 +23,7 @@
       label="Geburtsdatum meines Kindes"
       type="date"
       :required="true"
+      :disabled="disabled"
       :value="geburtsdatum"
       @update="$emit('update:geburtsdatum', $event)"
     />
@@ -29,6 +32,7 @@
       base="grunddaten-strasse"
       label="Straße"
       :required="true"
+      :disabled="disabled"
       :value="strasse"
       @update="$emit('update:strasse', $event)"
     />
@@ -37,6 +41,7 @@
       base="grunddaten-hausNummer"
       label="Hausnummer"
       :required="true"
+      :disabled="disabled"
       :value="hausNummer"
       @update="$emit('update:hausNummer', $event)"
     />
@@ -45,6 +50,7 @@
       base="grunddaten-postleitzahl"
       label="Postleitzahl"
       :required="true"
+      :disabled="disabled"
       :value="postleitzahl"
       @update="$emit('update:postleitzahl', $event)"
     />
@@ -53,6 +59,7 @@
       base="grunddaten-stadt"
       label="Wohnort"
       :required="true"
+      :disabled="disabled"
       :value="stadt"
       @update="$emit('update:stadt', $event)"
     />
@@ -62,6 +69,7 @@
       label="Telefon"
       type="tel"
       :required="true"
+      :disabled="disabled"
       :value="telefon"
       @update="$emit('update:telefon', $event)"
     />
@@ -71,6 +79,7 @@
       label="eMail"
       type="email"
       :required="true"
+      :disabled="disabled"
       :value="email"
       @update="$emit('update:email', $event)"
     />
@@ -84,6 +93,10 @@ export default {
   name: 'Grunddaten',
   components: { FieldInput },
   props: {
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     nachname: {
       type: String,
       required: true,

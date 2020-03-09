@@ -10,6 +10,7 @@
       :required="required"
       trim
       :placeholder="placeholder"
+      :disabled="disabled"
       :value="value"
       @update="$emit('update', $event)"
     />
@@ -47,6 +48,10 @@ export default {
     placeholder: {
       type: String,
       default: '',
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
 };

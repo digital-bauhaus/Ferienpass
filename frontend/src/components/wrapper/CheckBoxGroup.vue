@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <b-form-group
-      :id="`${base}-group`"
-      :label="label"
-    >
-      <slot />
-    </b-form-group>
-  </div>
+  <b-form-group
+    :id="`${base}-group`"
+    :label="label"
+    label-class="font-weight-bold"
+    :disabled="disabled"
+  >
+    <slot />
+  </b-form-group>
 </template>
 
 <script>
@@ -16,6 +16,10 @@ export default {
     base: {
       type: String,
       required: true,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
     label: {
       type: String,

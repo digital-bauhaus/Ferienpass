@@ -17,6 +17,7 @@ import de.bauhaus.digital.repository.TeilnehmerRepository;
 import de.bauhaus.digital.transformation.AnmeldungJson;
 import de.bauhaus.digital.transformation.AnmeldungToAdmin;
 import de.bauhaus.digital.transformation.Project;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
@@ -62,6 +64,39 @@ public class BackendController {
     String sayHello() {
         LOG.info("GET successfully called on /login resource");
         return "You're successfully 'logged' in.";
+    }
+
+    /*************************************
+     * Public API
+     *********************************/
+
+    @RequestMapping(path = "/public/register", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    ResponseEntity<?> registerUser(@RequestBody @Valid Teilnehmer user) {
+
+        Teilnehmer savedUser;
+
+        Optional<Teilnehmer> maybeTeilnehmer = teilnehmerRepository.findById(user.getId());
+        if (maybeTeilnehmer.isPresent()) {
+            // we already saved the Teilnehmer before, so we update it
+            savedUser = teilnehmerRepository.save(user);
+        } else {
+            savedUser = teilnehmerRepository.save(user);
+        }
+
+        List<Pair<Long, Boolean>> projectsWithAssignmentState = savedUser.getGewuenschteProjekte().stream().map((projektId) -> {
+            return Pair.of(projektId,
+                    assignUserToProject(projektId, savedUser.getId()));
+        }).collect(Collectors.toList());
+        System.out.println(projectsWithAssignmentState.toString());
+
+        if (projectsWithAssignmentState.stream().noneMatch(Pair::getSecond)) {
+            // we have at least one project that could not be assigned
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(projectsWithAssignmentState);
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser.getId());
     }
 
     /*******************************************
@@ -283,7 +318,8 @@ public class BackendController {
     @RequestMapping(path = "/projects/{projektId}/users/{userId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
-    Boolean assignUserToProject(@PathVariable("projektId") Long projektId, @PathVariable("userId") Long userId) {
+    Boolean assignUserToProject(@PathVariable("projektId") Long projektId, @PathVariable("userId") Long userId)
+            throws UserNotFoundException, ProjektNotFoundException {
 
         Optional<Projekt> maybeProjekt = projektRepository.findById(projektId);
         if (maybeProjekt.isPresent()) {

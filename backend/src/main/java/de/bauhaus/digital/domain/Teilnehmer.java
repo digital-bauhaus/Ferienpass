@@ -2,6 +2,8 @@ package de.bauhaus.digital.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+import java.util.List;
 import javax.persistence.*;
 import java.time.LocalDate;
 import javax.validation.constraints.Email;
@@ -87,6 +89,9 @@ public class Teilnehmer {
     private boolean darfSchwimmen; // required
     private String schwimmAbzeichen;
 
+    @Transient
+    @JsonSetter
+    private List<Long> gewuenschteProjekte;
 
     @Override
     public String toString() {
@@ -379,5 +384,10 @@ public class Teilnehmer {
 
     public void setDarfBehandeltWerden(boolean darfBehandeltWerden) {
         this.darfBehandeltWerden = darfBehandeltWerden;
+    }
+
+
+    public List<Long> getGewuenschteProjekte() {
+        return gewuenschteProjekte;
     }
 }

@@ -1,8 +1,10 @@
 <template>
   <b-form-checkbox
     :id="`${base}-value`"
+    :name="`${base}-value`"
     :required="required"
     :checked="checked"
+    :disabled="disabled"
     @input="$emit('input', $event)"
   >
     <slot />
@@ -26,6 +28,10 @@ export default {
       required: true,
     },
     required: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       default: false,
     },

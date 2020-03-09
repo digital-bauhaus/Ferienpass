@@ -7,6 +7,7 @@ import router from './router';
 import toIdentifier from './mixins/to-identifier';
 import * as formComponents from './components/registrationForm';
 import store from './store';
+import './design/design.scss';
 
 Object.values(formComponents).forEach((component) => Vue.component(component.name, component));
 

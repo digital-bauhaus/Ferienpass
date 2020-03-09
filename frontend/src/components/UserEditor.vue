@@ -1,11 +1,11 @@
 <template>
   <b-form
-    v-if="hasUser"
     ref="form"
     class="user-editor"
     novalidate
     :validated="showValidationStatus"
     @submit.prevent="onSubmit"
+    @keydown.enter="preventAccidentalSubmit"
   >
     <FormSection
       v-if="isAdminView"
@@ -16,6 +16,7 @@
 
     <FormSection label="Grunddaten">
       <Grunddaten
+        :disabled="disabled"
         :nachname="value.nachname"
         :vorname="value.vorname"
         :geburtsdatum="value.geburtsdatum"
@@ -39,6 +40,7 @@
 
     <FormSection label="Pflichtangaben">
       <Pflichtangaben
+        :disabled="disabled"
         :darf-behandelt-werden="value.darfBehandeltWerden"
         :darf-allein-nach-hause="value.darfAlleinNachHause"
         :darf-reiten="value.darfReiten"
@@ -53,6 +55,8 @@
         <Group label="In Notfällen zu informieren">
           <Kontakt
             base="notfallkontakt"
+            :disabled="disabled"
+            :telefon-required="true"
             :name="value.notfallKontakt.name"
             :anschrift="value.notfallKontakt.address"
             :telefon="value.notfallKontakt.telephone"
@@ -66,22 +70,30 @@
 
     <FormSection label="Allergien, Krankheiten, ...">
       <Gesundheit
+        :disabled="disabled"
         :allergien="value.allergien"
         :krankheiten="value.krankheiten"
         :medikamente="value.medikamente"
         :krankenkasse="value.krankenkasse"
         :hitzeempfindlichkeiten="value.hitzeempfindlichkeiten"
+        :vegetarier="value.vegetarier"
+        :laktose-unvertraeglichkeit="value.laktoseUnvertraeglichkeit"
+        :eier-unvertraeglichkeit="value.eierUnvertraeglichkeit"
         :essen-limitierungen="value.essenLimitierungen"
         @update:allergien="updateValue('allergien', $event)"
         @update:krankheiten="updateValue('krankheiten', $event)"
         @update:medikamente="updateValue('medikamente', $event)"
         @update:krankenkasse="updateValue('krankenkasse', $event)"
         @update:hitzeempfindlichkeiten="updateValue('hitzeempfindlichkeiten', $event)"
+        @update:vegetarier="updateValue('vegetarier', $event)"
+        @update:laktoseUnvertraeglichkeit="updateValue('laktoseUnvertraeglichkeit', $event)"
+        @update:eierUnvertraeglichkeit="updateValue('eierUnvertraeglichkeit', $event)"
         @update:essenLimitierungen="updateValue('essenLimitierungen', $event)"
       >
         <Group label="Hausarzt">
           <Kontakt
             base="hausarzt"
+            :disabled="disabled"
             :name="value.arzt.name"
             :anschrift="value.arzt.address"
             :telefon="value.arzt.telephone"
@@ -96,7 +108,8 @@
     <FormSection label="Angaben bei Behinderung">
       <!-- eslint-disable max-len -->
       <Behinderung
-        :liegt-behinderung-vor="value.behinderung.liegtBehinderungVor"
+        :disabled="disabled"
+        :liegt-behinderung-vor="value.liegtBehinderungVor"
         :merkzeichen-aussergewoehnliche-gehbehinderunga-g="value.behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG"
         :merkzeichen-hilflosigkeit-h="value.behinderung.merkzeichen_Hilflosigkeit_H"
         :merkzeichen-blind-bl="value.behinderung.merkzeichen_Blind_Bl"
@@ -118,7 +131,7 @@
         :unterstuetzung-suche-begleitperson-notwendig="value.behinderung.unterstuetzungSucheBegleitpersonNotwendig"
         :gewohnter-begleitpersonen-dienstleister="value.behinderung.gewohnterBegleitpersonenDienstleister"
         :beantragung-kostenuebernahme-begleitperson-notwendig="value.behinderung.beantragungKostenuebernahmeBegleitpersonNotwendig"
-        @update:liegtBehinderungVor="updateValue('behinderung.liegtBehinderungVor', $event)"
+        @update:liegtBehinderungVor="updateValue('liegtBehinderungVor', $event)"
         @update:merkzeichenAussergewoehnlicheGehbehinderungaG="updateValue('behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG', $event)"
         @update:merkzeichenHilflosigkeitH="updateValue('behinderung.merkzeichen_Hilflosigkeit_H', $event)"
         @update:merkzeichenBlindBl="updateValue('behinderung.merkzeichen_Blind_Bl', $event)"
@@ -143,19 +156,34 @@
       />
     </FormSection>
 
-    <FormSection v-if="!isAdminView" label="Angebote">
-      <Angebote />
+    <FormSection
+      v-if="!isAdminView"
+      label="Angebote"
+    >
+      <Angebote>
+        <slot />
+      </Angebote>
     </FormSection>
 
-    <FormSection v-if="!isAdminView" label="Datenschutzerklärung">
+    <FormSection
+      v-if="!isAdminView"
+      label="Datenschutzerklärung"
+    >
       <Datenschutz />
     </FormSection>
 
-    <FormSection v-if="!isAdminView" label="Teilnahmebedingungen">
+    <FormSection
+      v-if="!isAdminView"
+      label="Teilnahmebedingungen"
+    >
       <Teilnahmebedingungen />
     </FormSection>
 
-    <CheckBoxGroup v-if="!isAdminView" base="confirmation">
+    <CheckBoxGroup
+      v-if="!isAdminView"
+      base="confirmation"
+      :disabled="disabled"
+    >
       <CheckBox
         v-model="confirmation"
         base="confirmation"
@@ -170,6 +198,7 @@
       type="submit"
       variant="primary"
       class="mb-3"
+      :disabled="disabled"
     >
       {{ submitButtonText }}
     </b-button>
@@ -224,7 +253,7 @@ export default {
     },
     disabled: {
       type: Boolean,
-      required: true,
+      default: false,
     },
   },
   data() {
@@ -232,11 +261,6 @@ export default {
       showValidationStatus: false,
       confirmation: false,
     };
-  },
-  computed: {
-    hasUser() {
-      return this.value && this.value.id && this.value.id > 0;
-    },
   },
   methods: {
     updateValue(propName, newPropValue) {
@@ -248,10 +272,17 @@ export default {
     onSubmit() {
       this.showValidationStatus = true;
       if (this.$refs.form.checkValidity()) {
-        // this.$emit('submit');
+        this.$emit('submit');
       } else {
         this.$refs.form.reportValidity();
       }
+    },
+    preventAccidentalSubmit(event) {
+      if (['textarea', 'submit'].includes(event.target.type)) {
+        return;
+      }
+
+      event.preventDefault();
     },
   },
 };

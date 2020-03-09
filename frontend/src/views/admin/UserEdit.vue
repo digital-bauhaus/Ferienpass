@@ -8,19 +8,10 @@
       :heading-text="serverErrorHeadingText"
       :errors="serverErrorMessages"
     />
-    <CheckBoxGroup base="schoolkid">
-      <CheckBox
-        v-model="isSchoolKid"
-        base="schoolkid"
-        :required="true"
-      >
-        Mein Kind geht zur Schule
-      </CheckBox>
-    </CheckBoxGroup>
+
     <UserEditor
       v-model="user"
       :is-admin-view="true"
-      :disabled="!isSchoolKid"
       :submit-button-text="submitButtonText"
       @submit="updateUser"
     />
@@ -87,16 +78,12 @@ import api from '@/modules/ferienpass-api';
 import ErrorAlert from '@/components/ErrorAlert.vue';
 import UserEditor from '@/components/UserEditor.vue';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
-import CheckBox from '@/components/wrapper/CheckBox.vue';
-import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
 import ProjectList from '@/components/ProjectList.vue';
 
 export default {
   name: 'UserEdit',
   components: {
     ProjectList,
-    CheckBoxGroup,
-    CheckBox,
     BaseLayout,
     UserEditor,
     ErrorAlert,

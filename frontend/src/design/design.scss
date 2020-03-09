@@ -1,0 +1,11 @@
+// Custom app design
+
+@import "variables.scss";
+@import "bootstrap-custom.scss";
+
+// General style overrides and custom classes
+html {
+  // font-size: 1.25rem;
+  // line-height: 1.5;
+  overflow-y: scroll;
+}

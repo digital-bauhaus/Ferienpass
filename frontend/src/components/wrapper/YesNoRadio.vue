@@ -8,6 +8,7 @@
       :name="`${base}-name`"
       :required="required"
       stacked
+      :disabled="disabled"
       :checked="checked"
       @input="$emit('input', $event)"
     >
@@ -34,8 +35,8 @@ export default {
       required: true,
     },
     checked: {
-      type: Boolean,
       required: true,
+      validator: (prop) => typeof prop === 'boolean' || prop === null,
     },
     label: {
       type: String,
@@ -52,6 +53,10 @@ export default {
     noText: {
       type: String,
       default: 'Nein',
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
 };
