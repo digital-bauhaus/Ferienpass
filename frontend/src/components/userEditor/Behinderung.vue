@@ -84,24 +84,25 @@
         </CheckBox>
       </CheckBoxGroup>
 
-      <Group label="Hilfsmittel">
-        <CheckBoxGroup base="behinderung-rollstuhlNutzungNotwendig">
-          <CheckBox
-            base="behinderung-rollstuhlNutzungNotwendig"
-            :checked="rollstuhlNutzungNotwendig"
-            @input="$emit('update:rollstuhlNutzungNotwendig', $event)"
-          >
-            Rollstuhlnutzung
-          </CheckBox>
-        </CheckBoxGroup>
+      <CheckBoxGroup
+        base="behinderung-rollstuhlNutzungNotwendig"
+        label="Hilfsmittel"
+      >
+        <CheckBox
+          base="behinderung-rollstuhlNutzungNotwendig"
+          :checked="rollstuhlNutzungNotwendig"
+          @input="$emit('update:rollstuhlNutzungNotwendig', $event)"
+        >
+          Rollstuhlnutzung
+        </CheckBox>
+      </CheckBoxGroup>
 
-        <TextAreaInput
-          base="behinderung-weitereHilfsmittel"
-          label="Weitere Hilfsmittel beschreiben:"
-          :value="weitereHilfsmittel"
-          @update="$emit('update:weitereHilfsmittel', $event)"
-        />
-      </Group>
+      <TextAreaInput
+        base="behinderung-weitereHilfsmittel"
+        label="Weitere Hilfsmittel beschreiben:"
+        :value="weitereHilfsmittel"
+        @update="$emit('update:weitereHilfsmittel', $event)"
+      />
 
       <CheckBoxGroup
         base="behinderung-wertmarkeVorhanden"
@@ -253,12 +254,10 @@ import CheckBox from '@/components/wrapper/CheckBox.vue';
 import TextAreaInput from '@/components/wrapper/TextAreaInput.vue';
 import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
 import FieldInput from '@/components/wrapper/FieldInput.vue';
-import Group from '@/components/wrapper/Group.vue';
 
 export default {
   name: 'Behinderung',
   components: {
-    Group,
     FieldInput,
     CheckBoxGroup,
     TextAreaInput,
