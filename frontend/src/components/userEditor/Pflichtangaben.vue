@@ -4,6 +4,7 @@
       base="pflichtangaben-darfBehandeltWerden"
       label="Behandlungserlaubnis bei Erkrankungen und Unfällen?"
       :required="true"
+      :disabled="disabled"
       :checked="darfBehandeltWerden"
       @input="$emit('update:darfBehandeltWerden', $event)"
     />
@@ -12,6 +13,7 @@
       base="pflichtangaben-darfAlleinNachHause"
       label="Mein Kind darf alleine heimgehen?"
       :required="true"
+      :disabled="disabled"
       no-text="Nein, es wird abgeholt"
       :checked="darfAlleinNachHause"
       @input="$emit('update:darfAlleinNachHause', $event)"
@@ -21,6 +23,7 @@
       base="pflichtangaben-darfReiten"
       label="Mein Kind darf reiten?"
       :required="true"
+      :disabled="disabled"
       :checked="darfReiten"
       @input="$emit('update:darfReiten', $event)"
     />
@@ -29,6 +32,7 @@
       base="pflichtangaben-darfSchwimmen"
       label="Mein Kind darf schwimmen?"
       :required="true"
+      :disabled="disabled"
       :aria-expanded="darfSchwimmen"
       aria-controls="pflichtangaben-schwimmAbzeichen-collapse"
       :checked="darfSchwimmen"
@@ -43,6 +47,7 @@
         base="pflichtangaben-schwimmAbzeichen"
         label="Schwimmabzeichen"
         :required="darfSchwimmen"
+        :disabled="disabled"
         :value="schwimmAbzeichen"
         @update="$emit('update:schwimmAbzeichen', $event)"
       />
@@ -60,6 +65,10 @@ export default {
   name: 'Pflichtangaben',
   components: { FieldInput, YesNoRadio },
   props: {
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     darfBehandeltWerden: {
       required: true,
       validator: (prop) => typeof prop === 'boolean' || prop === null,

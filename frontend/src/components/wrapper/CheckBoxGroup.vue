@@ -3,6 +3,7 @@
     :id="`${base}-group`"
     :label="label"
     label-class="font-weight-bold"
+    :disabled="disabled"
   >
     <slot />
   </b-form-group>
@@ -15,6 +16,10 @@ export default {
     base: {
       type: String,
       required: true,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
     label: {
       type: String,

@@ -16,6 +16,7 @@
 
     <FormSection label="Grunddaten">
       <Grunddaten
+        :disabled="disabled"
         :nachname="value.nachname"
         :vorname="value.vorname"
         :geburtsdatum="value.geburtsdatum"
@@ -39,6 +40,7 @@
 
     <FormSection label="Pflichtangaben">
       <Pflichtangaben
+        :disabled="disabled"
         :darf-behandelt-werden="value.darfBehandeltWerden"
         :darf-allein-nach-hause="value.darfAlleinNachHause"
         :darf-reiten="value.darfReiten"
@@ -53,6 +55,7 @@
         <Group label="In Notfällen zu informieren">
           <Kontakt
             base="notfallkontakt"
+            :disabled="disabled"
             :name="value.notfallKontakt.name"
             :anschrift="value.notfallKontakt.address"
             :telefon="value.notfallKontakt.telephone"
@@ -66,6 +69,7 @@
 
     <FormSection label="Allergien, Krankheiten, ...">
       <Gesundheit
+        :disabled="disabled"
         :allergien="value.allergien"
         :krankheiten="value.krankheiten"
         :medikamente="value.medikamente"
@@ -88,6 +92,7 @@
         <Group label="Hausarzt">
           <Kontakt
             base="hausarzt"
+            :disabled="disabled"
             :name="value.arzt.name"
             :anschrift="value.arzt.address"
             :telefon="value.arzt.telephone"
@@ -102,6 +107,7 @@
     <FormSection label="Angaben bei Behinderung">
       <!-- eslint-disable max-len -->
       <Behinderung
+        :disabled="disabled"
         :liegt-behinderung-vor="value.liegtBehinderungVor"
         :merkzeichen-aussergewoehnliche-gehbehinderunga-g="value.behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG"
         :merkzeichen-hilflosigkeit-h="value.behinderung.merkzeichen_Hilflosigkeit_H"
@@ -175,6 +181,7 @@
     <CheckBoxGroup
       v-if="!isAdminView"
       base="confirmation"
+      :disabled="disabled"
     >
       <CheckBox
         v-model="confirmation"
@@ -190,6 +197,7 @@
       type="submit"
       variant="primary"
       class="mb-3"
+      :disabled="disabled"
     >
       {{ submitButtonText }}
     </b-button>

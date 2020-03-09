@@ -8,6 +8,7 @@
       :name="`${base}-name`"
       :required="required"
       stacked
+      :disabled="disabled"
       :checked="checked"
       @input="$emit('input', $event)"
     >
@@ -52,6 +53,10 @@ export default {
     noText: {
       type: String,
       default: 'Nein',
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
 };

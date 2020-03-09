@@ -1,5 +1,8 @@
 <template>
-  <CheckBoxGroup base="verwaltung-bezahlt">
+  <CheckBoxGroup
+    base="verwaltung-bezahlt"
+    :disabled="disabled"
+  >
     <CheckBox
       base="verwaltung-bezahlt"
       :checked="bezahlt"
@@ -19,6 +22,12 @@ export default {
   components: {
     CheckBoxGroup,
     CheckBox,
+  },
+  props: {
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>

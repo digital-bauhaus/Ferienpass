@@ -25,6 +25,7 @@
             v-for="tag in tags"
             :key="tag"
             :title="tag"
+            :disabled="disabled"
             class="mr-1"
             @remove="removeTag(tag)"
           >
@@ -35,10 +36,12 @@
           <b-form-input
             v-bind="inputAttrs"
             :placeholder="placeholder"
+            :disabled="disabled"
             v-on="inputHandlers"
           />
           <b-input-group-append>
             <b-button
+              :disabled="disabled"
               @click="addTag()"
             >
               {{ addButtonText }}
@@ -61,6 +64,10 @@ export default {
     base: {
       type: String,
       required: true,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
     value: {
       type: Array,

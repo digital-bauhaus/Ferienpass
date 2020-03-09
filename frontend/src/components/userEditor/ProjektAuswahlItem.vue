@@ -4,7 +4,7 @@
     class="projekt-auswahl-item"
     :invalid-feedback="invalidFeedback"
     :state="state"
-    :disabled="!isSelectable"
+    :disabled="disabled || !isSelectable"
   >
     <b-form-checkbox
       :id="`$projekt-${projekt.id}-value`"
@@ -38,6 +38,10 @@ export default {
     event: 'input',
   },
   props: {
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     checked: {
       type: Boolean,
       required: true,

@@ -9,6 +9,7 @@
       :required="required"
       trim
       max-rows="8"
+      :disabled="disabled"
       :value="value"
       @update="$emit('update', $event)"
     />
@@ -36,6 +37,10 @@ export default {
       required: true,
     },
     required: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       default: false,
     },
