@@ -1,11 +1,13 @@
 <template>
   <b-form-group
     :id="`${base}-group`"
+    class="dynamic-input-list"
     :label-for="`${base}-value`"
     :label="label"
   >
     <b-form-tags
       :id="`${base}-tags`"
+      class="dynamic-input-list__tags"
       :input-id="`${base}-value`"
       no-outer-focus
       :placeholder="placeholder"
@@ -76,6 +78,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "../../design/variables.scss";
+
+.dynamic-input-list__tags {
+  border: none;
+}
 
 </style>

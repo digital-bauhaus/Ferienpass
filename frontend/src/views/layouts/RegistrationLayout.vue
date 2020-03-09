@@ -1,7 +1,6 @@
 <template>
   <b-container
     class="registration-layout"
-    fluid
   >
     <header class="registration-layout__header">
       <img
