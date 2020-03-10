@@ -87,6 +87,7 @@ export default {
         postleitzahl: '',
         telefon: '',
         email: '',
+        darfErmaessigtenPreisZahlen: false,
         darfBehandeltWerden: null,
         darfAlleinNachHause: null,
         darfReiten: null,

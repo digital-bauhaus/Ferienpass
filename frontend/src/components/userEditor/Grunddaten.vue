@@ -83,15 +83,32 @@
       :value="email"
       @update="$emit('update:email', $event)"
     />
+
+    <CheckBoxGroup
+      base="grunddaten-darfErmaessigtenPreisZahlen"
+      :disabled="disabled"
+    >
+      <CheckBox
+        base="grunddaten-darfErmaessigtenPreisZahlen"
+        :checked="darfErmaessigtenPreisZahlen"
+        @input="$emit('update:darfErmaessigtenPreisZahlen', $event)"
+      >
+        Ich bin berechtig den ermäßigten Preis zu zahlen. Ich beziehe finanzielle Leistungen des
+        Sozialamtes (Wohngeld, Kinderzuschlag, Bildung- und Teilhabe) oder des
+        Jobcenters (ALG II, Harz IV).
+      </CheckBox>
+    </CheckBoxGroup>
   </div>
 </template>
 
 <script>
 import FieldInput from '@/components/wrapper/FieldInput.vue';
+import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
+import CheckBox from '@/components/wrapper/CheckBox.vue';
 
 export default {
   name: 'Grunddaten',
-  components: { FieldInput },
+  components: { CheckBox, CheckBoxGroup, FieldInput },
   props: {
     disabled: {
       type: Boolean,
@@ -131,6 +148,10 @@ export default {
     },
     email: {
       type: String,
+      required: true,
+    },
+    darfErmaessigtenPreisZahlen: {
+      type: Boolean,
       required: true,
     },
   },

@@ -28,6 +28,7 @@
         :wohnort="value.wohnort"
         :telefon="value.telefon"
         :email="value.email"
+        :darf-ermaessigten-preis-zahlen="value.darfErmaessigtenPreisZahlen"
         @update:nachname="updateValue('nachname', $event)"
         @update:vorname="updateValue('vorname', $event)"
         @update:geburtsdatum="updateValue('geburtsdatum', $event)"
@@ -37,6 +38,7 @@
         @update:wohnort="updateValue('wohnort', $event)"
         @update:telefon="updateValue('telefon', $event)"
         @update:email="updateValue('email', $event)"
+        @update:darfErmaessigtenPreisZahlen="updateValue('darfErmaessigtenPreisZahlen', $event)"
       />
     </FormSection>
 
