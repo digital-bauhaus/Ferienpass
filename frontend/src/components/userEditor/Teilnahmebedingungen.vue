@@ -31,9 +31,6 @@
       Fotos dürfen auf der Internetseite des Ferienpasses und im Ferienpass-Heft verwendet werden.
     </ParagraphListItem>
     <ParagraphListItem>
-      Die Datenschutzerklärung habe ich zur Kenntnis genommen.
-    </ParagraphListItem>
-    <ParagraphListItem>
       <span>
         <b>Stornierungsregelung</b>: Nach der Bezahlung entstehen Stornierungskosten. Bei
         Stornierung einer Aktion bis einer Woche vor der Veranstaltung werden 50% der Kosten

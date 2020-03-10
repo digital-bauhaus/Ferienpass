@@ -3,10 +3,10 @@
     <h1>
       {{ titleText }}
     </h1>
-    <CheckBoxGroup base="schoolkid">
+    <CheckBoxGroup base="user-schulkind">
       <CheckBox
-        v-model="isSchoolKid"
-        base="schoolkid"
+        v-model="user.schulkind"
+        base="user-schulkind"
         :required="true"
       >
         Mein Kind geht zur Schule *
@@ -14,7 +14,7 @@
     </CheckBoxGroup>
     <UserEditor
       v-model="user"
-      :disabled="!isSchoolKid"
+      :disabled="!user.schulkind"
       :submit-button-text="submitButtonText"
       @submit="createUser"
     >
@@ -26,7 +26,7 @@
           :geburtsdatum="user.geburtsdatum"
           :alle-projekte="allProjects"
           :gewuenschte-projekte="gewuenschteProjekte"
-          :disabled="!isSchoolKid"
+          :disabled="!user.schulkind"
           :checked="gewuenschteProjekte[projekt.id]"
           @input="updateGewuenschtesProjekt(projekt.id, $event)"
         />
@@ -76,11 +76,13 @@ export default {
   data() {
     return {
       user: {
+        id: null,
+        schulkind: false,
         vorname: '',
         nachname: '',
         geburtsdatum: '',
         strasse: '',
-        hausnummer: '99', // TODO
+        hausnummer: '',
         wohnort: '',
         postleitzahl: '',
         telefon: '',
@@ -136,16 +138,14 @@ export default {
           gewohnterBegleitpersonenDienstleister: '',
           beantragungKostenuebernahmeBegleitperson: false,
         },
-        datenschutzErklaerungAkzeptiert: true, // TODO
-        teilnahmeBedingungAkzeptiert: true, // TODO
-        schulkind: true, // TODO
+        datenschutzErklaerungAkzeptiert: false,
+        teilnahmeBedingungAkzeptiert: false,
       },
-      serverErrorMessages: [],
-      successAutomaticDismissCountDown: 0,
-      isSchoolKid: false,
+      gewuenschteProjekte: {},
       allProjects: [],
       loaded: false,
-      gewuenschteProjekte: {},
+      serverErrorMessages: [],
+      successAutomaticDismissCountDown: 0,
     };
   },
   computed: {

@@ -181,16 +181,26 @@
 
     <CheckBoxGroup
       v-if="!isAdminView"
-      base="confirmation"
+      base="akzeptanz"
       :disabled="disabled"
     >
       <CheckBox
-        v-model="confirmation"
-        base="confirmation"
+        base="datenschutzErklaerungAkzeptiert"
         :required="true"
+        :checked="value.datenschutzErklaerungAkzeptiert"
+        @input="$emit('update:datenschutzErklaerungAkzeptiert', $event)"
       >
-        Ich bestätige die Richtigkeit meiner Angaben. Wurden wissentlich falsche Angaben gemacht,
-        darf die Organisation das angemeldete Kind von den Angeboten ausschließen. *
+        Ich habe die Datenschutzerklärung gelesen und akzeptiert. *
+      </CheckBox>
+      <CheckBox
+        base="teilnahmeBedingungAkzeptiert"
+        :required="true"
+        :checked="value.teilnahmeBedingungAkzeptiert"
+        @input="$emit('update:teilnahmeBedingungAkzeptiert', $event)"
+      >
+        Ich habe die Teilnahmebedingungen gelesen und akzeptiert. Ich bestätige die Richtigkeit meiner
+        Angaben. Wurden wissentlich falsche Angaben gemacht, darf die Organisation das angemeldete
+        Kind von den Angeboten ausschließen. *
       </CheckBox>
     </CheckBoxGroup>
 
@@ -259,7 +269,6 @@ export default {
   data() {
     return {
       showValidationStatus: false,
-      confirmation: false,
     };
   },
   methods: {

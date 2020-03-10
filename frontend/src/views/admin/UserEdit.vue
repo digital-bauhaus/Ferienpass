@@ -93,7 +93,6 @@ export default {
       user: {}, // TODO either define model or move userEditor down
       serverErrorMessages: [],
       successAutomaticDismissCountDown: 0,
-      isSchoolKid: false,
       allProjects: [],
       projectsOfUser: [],
       cancelledProjectsOfUser: [],
