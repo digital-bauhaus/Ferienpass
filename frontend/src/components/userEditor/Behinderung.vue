@@ -185,10 +185,11 @@
             Soziale Begleitung
           </CheckBox>
           <CheckBox
-            v-model="isEingeschraenkteSinne"
             base="behinderung-isEingeschraenkteSinne"
-            :aria-expanded="isEingeschraenkteSinne"
+            :aria-expanded="begleitpersonSinneswahrnehmung"
             aria-controls="behinderung-eingeschraenkteSinne-collapse"
+            :checked="begleitpersonSinneswahrnehmung"
+            @input="$emit('update:begleitpersonSinneswahrnehmung', $event)"
           >
             Sinneswahrnehmung
           </CheckBox>
@@ -196,7 +197,7 @@
 
         <b-collapse
           id="behinderung-eingeschraenkteSinne-collapse"
-          :visible="isEingeschraenkteSinne"
+          :visible="begleitpersonSinneswahrnehmung"
         >
           <FieldInput
             base="behinderung-eingeschraenkteSinne"
@@ -356,6 +357,10 @@ export default {
       type: Boolean,
       required: true,
     },
+    begleitpersonSinneswahrnehmung: {
+      type: Boolean,
+      required: true,
+    },
     eingeschraenkteSinne: {
       type: String,
       required: true,
@@ -376,11 +381,6 @@ export default {
       type: Boolean,
       required: true,
     },
-  },
-  data() {
-    return {
-      isEingeschraenkteSinne: false,
-    };
   },
 };
 </script>
