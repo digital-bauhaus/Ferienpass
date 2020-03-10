@@ -48,9 +48,10 @@ public class DomainFactory {
         String essenLimitierungen = "Laktoseintoleranz";
         String krankheiten = "Grippe: Muss oft Husten und braucht Hustenbonbons";
         String allergien = "Heuschnupfen: braucht Nasenspray, siehe Medikamente";
-        Behinderung behinderung = new Behinderung();
-        behinderung.setRollstuhlNutzungNotwendig(true);
-        behinderung.setMerkzeichen_Taubblind_TBL(true);
+        Behinderung behinderung = Behinderung.newBuilder().
+                rollstuhlNutzungNotwendig(true).
+                merkzeichen_Taubblind_TBL(true).
+                build();
         String schwimmAbzeichen = "Seepferdchen";
         String hitze = "Wärme: bis 25 Grad ist alles okay";
         String medikamente = "Nasentropfen_ maximal 2x am Tag ein Schub";

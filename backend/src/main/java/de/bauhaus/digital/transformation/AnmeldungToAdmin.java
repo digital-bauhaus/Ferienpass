@@ -44,21 +44,21 @@ public class AnmeldungToAdmin {
     private static void mappeDatenZuBehinderungen(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
 
         teilnehmer.setLiegtBehinderungVor(anmeldungJson.getDisabilitiesDisabilityExistent());
-        Behinderung behinderung = new Behinderung();
-
-        if(anmeldungJson.getDisabilitiesDisabilityExistent()) {
-            mappeMerkzeichen(anmeldungJson, behinderung);
-
-            behinderung.setRollstuhlNutzungNotwendig(anmeldungJson.getDisabilitiesWheelchair());
-            behinderung.setWeitereHilfsmittel(anmeldungJson.getDisabilitiesAdditionalTools());
-            behinderung.setWertmarkeVorhanden(anmeldungJson.getDisabilitiesTokenAvailable());
-
-            mappeBegleitpersonenDaten(anmeldungJson, behinderung);
-            behinderung.setEingeschraenkteSinne(mappeEingeschraenkteSinne(anmeldungJson));
-
-            behinderung.setHinweiseZumUmgangMitDemKind(anmeldungJson.getDisabilitiesCompanionAdditionalNotes());
-        }
-        teilnehmer.setBehinderung(behinderung);
+//        Behinderung behinderung = new Behinderung();
+//
+//        if(anmeldungJson.getDisabilitiesDisabilityExistent()) {
+//            mappeMerkzeichen(anmeldungJson, behinderung);
+//
+//            behinderung.setRollstuhlNutzungNotwendig(anmeldungJson.getDisabilitiesWheelchair());
+//            behinderung.setWeitereHilfsmittel(anmeldungJson.getDisabilitiesAdditionalTools());
+//            behinderung.setWertmarkeVorhanden(anmeldungJson.getDisabilitiesTokenAvailable());
+//
+//            mappeBegleitpersonenDaten(anmeldungJson, behinderung);
+//            behinderung.setEingeschraenkteSinne(mappeEingeschraenkteSinne(anmeldungJson));
+//
+//            behinderung.setHinweiseZumUmgangMitDemKind(anmeldungJson.getDisabilitiesCompanionAdditionalNotes());
+//        }
+//        teilnehmer.setBehinderung(behinderung);
     }
 
     private static String mappeEingeschraenkteSinne(AnmeldungJson anmeldungJson) {
@@ -74,27 +74,27 @@ public class AnmeldungToAdmin {
     }
 
     private static void mappeBegleitpersonenDaten(AnmeldungJson anmeldungJson, Behinderung behinderung) {
-        behinderung.setBegleitungNotwendig(anmeldungJson.getDisabilitiesCompanionRequired());
-        if (behinderung.isBegleitungNotwendig()) {
-            behinderung.setBegleitpersonPflege(anmeldungJson.getDisabilitiesCompanionForNursing());
-            behinderung.setBegleitpersonMedizinischeVersorgung(anmeldungJson.getDisabilitiesCompanionForHealthCare());
-            behinderung.setBegleitpersonMobilitaet(anmeldungJson.getDisabilitiesCompanionForMobility());
-            behinderung.setBegleitpersonOrientierung(anmeldungJson.getDisabilitiesCompanionForOrientation());
-            behinderung.setBegleitpersonSozialeBegleitung(anmeldungJson.getDisabilitiesCompanionSocial());
-            behinderung.setUnterstuetzungSucheBegleitpersonNotwendig(anmeldungJson.getDisabilitiesCompanionHelpFindingRequired());
-            behinderung.setGewohnterBegleitpersonenDienstleister(anmeldungJson.getDisabilitiesCompanionUsualService());
-            behinderung.setBeantragungKostenuebernahmeBegleitpersonNotwendig(anmeldungJson.getDisabilitiesCompanionCostTakeover());
-        }
+//        behinderung.setBegleitungNotwendig(anmeldungJson.getDisabilitiesCompanionRequired());
+//        if (behinderung.isBegleitungNotwendig()) {
+//            behinderung.setBegleitpersonPflege(anmeldungJson.getDisabilitiesCompanionForNursing());
+//            behinderung.setBegleitpersonMedizinischeVersorgung(anmeldungJson.getDisabilitiesCompanionForHealthCare());
+//            behinderung.setBegleitpersonMobilitaet(anmeldungJson.getDisabilitiesCompanionForMobility());
+//            behinderung.setBegleitpersonOrientierung(anmeldungJson.getDisabilitiesCompanionForOrientation());
+//            behinderung.setBegleitpersonSozialeBegleitung(anmeldungJson.getDisabilitiesCompanionSocial());
+//            behinderung.setUnterstuetzungSucheBegleitperson(anmeldungJson.getDisabilitiesCompanionHelpFindingRequired());
+//            behinderung.setGewohnterBegleitpersonenDienstleister(anmeldungJson.getDisabilitiesCompanionUsualService());
+//            behinderung.setBeantragungKostenuebernahmeBegleitperson(anmeldungJson.getDisabilitiesCompanionCostTakeover());
+//        }
     }
 
     private static void mappeMerkzeichen(AnmeldungJson anmeldungJson, Behinderung behinderung) {
-        behinderung.setMerkzeichen_AussergewoehnlicheGehbehinderung_aG(anmeldungJson.getDisabilitiesMarkAg());
-        behinderung.setMerkzeichen_Hilflosigkeit_H(anmeldungJson.getDisabilitiesMarkH());
-        behinderung.setMerkzeichen_Blind_Bl(anmeldungJson.getDisabilitiesMarkBl());
-        behinderung.setMerkzeichen_Gehoerlos_Gl(anmeldungJson.getDisabilitiesMarkGl());
-        behinderung.setMerkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B(anmeldungJson.getDisabilitiesMarkB());
-        behinderung.setMerkzeichen_BeeintraechtigungImStrassenverkehr_G(anmeldungJson.getDisabilitiesMarkG());
-        behinderung.setMerkzeichen_Taubblind_TBL(anmeldungJson.getDisabilitiesMarkTbl());
+//        behinderung.setMerkzeichen_AussergewoehnlicheGehbehinderung_aG(anmeldungJson.getDisabilitiesMarkAg());
+//        behinderung.setMerkzeichen_Hilflosigkeit_H(anmeldungJson.getDisabilitiesMarkH());
+//        behinderung.setMerkzeichen_Blind_Bl(anmeldungJson.getDisabilitiesMarkBl());
+//        behinderung.setMerkzeichen_Gehoerlos_Gl(anmeldungJson.getDisabilitiesMarkGl());
+//        behinderung.setMerkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B(anmeldungJson.getDisabilitiesMarkB());
+//        behinderung.setMerkzeichen_BeeintraechtigungImStrassenverkehr_G(anmeldungJson.getDisabilitiesMarkG());
+//        behinderung.setMerkzeichen_Taubblind_TBL(anmeldungJson.getDisabilitiesMarkTbl());
     }
 
 
@@ -139,7 +139,7 @@ public class AnmeldungToAdmin {
                 anmeldungJson.getConditionsEmergencyAddress(),
                 anmeldungJson.getConditionsEmergencyPhoneNumber());
     }
-    
+
 
     private static LocalDate mappeGeburtsdatum(AnmeldungJson anmeldungJson) {
         return LocalDate.of(
