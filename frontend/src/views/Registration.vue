@@ -100,16 +100,19 @@ export default {
         essenLimitierungen: '',
         liegtBehinderungVor: false,
         notfallKontakt: {
+          id: null,
           name: '',
-          address: '',
-          telephone: '',
+          anschrift: '',
+          telefon: '',
         },
         arzt: {
+          id: null,
           name: '',
-          address: '',
-          telephone: '',
+          anschrift: '',
+          telefon: '',
         },
         behinderung: {
+          id: null,
           merkzeichen_AussergewoehnlicheGehbehinderung_aG: false,
           merkzeichen_Hilflosigkeit_H: false,
           merkzeichen_Blind_Bl: false,

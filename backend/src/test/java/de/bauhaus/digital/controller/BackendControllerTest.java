@@ -272,11 +272,11 @@ public class BackendControllerTest {
         Assert.assertThat(responseUser.getTelefon(),is(telefon));
         Assert.assertThat(responseUser.getKrankenkasse(),is(krankenkasse));
         Assert.assertThat(responseUser.getNotfallKontakt().getName(),is(kontakt.getName()));
-        Assert.assertThat(responseUser.getNotfallKontakt().getAddress(),is(kontakt.getAddress()));
-        Assert.assertThat(responseUser.getNotfallKontakt().getTelephone(),is(kontakt.getTelephone()));
+        Assert.assertThat(responseUser.getNotfallKontakt().getAnschrift(),is(kontakt.getAnschrift()));
+        Assert.assertThat(responseUser.getNotfallKontakt().getTelefon(),is(kontakt.getTelefon()));
         Assert.assertThat(responseUser.getArzt().getName(),is(arzt.getName()));
-        Assert.assertThat(responseUser.getArzt().getAddress(),is(arzt.getAddress()));
-        Assert.assertThat(responseUser.getArzt().getTelephone(),is(arzt.getTelephone()));
+        Assert.assertThat(responseUser.getArzt().getAnschrift(),is(arzt.getAnschrift()));
+        Assert.assertThat(responseUser.getArzt().getTelefon(),is(arzt.getTelefon()));
         Assert.assertThat(responseUser.getAllergien(),is(allergien));
         Assert.assertThat(responseUser.getKrankheiten(),is(krankheiten));
         Assert.assertThat(responseUser.getEssenLimitierungen(),is(essenLimitierungen));
@@ -582,13 +582,13 @@ public class BackendControllerTest {
 
         Kontakt notfallKontakt = responseUser.getNotfallKontakt();
         assertThat(notfallKontakt.getName(), is("Andreas Müller"));
-        assertThat(notfallKontakt.getAddress(), is("Werner-Heisenberg-Straße 5"));
-        assertThat(notfallKontakt.getTelephone(), is("0172/34012875"));
+        assertThat(notfallKontakt.getAnschrift(), is("Werner-Heisenberg-Straße 5"));
+        assertThat(notfallKontakt.getTelefon(), is("0172/34012875"));
 
         Arzt hausarzt = responseUser.getArzt();
         assertThat(hausarzt.getName(), is("Dr. Martin Schreiber"));
-        assertThat(hausarzt.getAddress(), is("Amadeusstrasse 2"));
-        assertThat(hausarzt.getTelephone(), is("0364 / 0123456"));
+        assertThat(hausarzt.getAnschrift(), is("Amadeusstrasse 2"));
+        assertThat(hausarzt.getTelefon(), is("0364 / 0123456"));
     }
 
     private boolean containsTeilnehmer(Teilnehmer teilnehmer, List<Teilnehmer> anmeldungen) {

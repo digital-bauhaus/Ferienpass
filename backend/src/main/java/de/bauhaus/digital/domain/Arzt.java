@@ -10,55 +10,46 @@ public class Arzt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long arzt_id;
-    private String name;
-    private String address;
-    private String telephone;
+    private long id;
 
-    public Arzt(String name, String address, String telephone) {
-        this.setName(name);
-        this.setAddress(address);
-        this.setTelephone(telephone);
+    private String name;
+
+    private String anschrift;
+
+    private String telefon;
+
+    public Arzt(String name, String anschrift, String telefon) {
+        this.name = name;
+        this.anschrift = anschrift;
+        this.telefon = telefon;
     }
 
-    protected Arzt(){}
+    protected Arzt() {}
 
     @Override
     public String toString() {
-        return String.format(
-                "Arzt[id=%d, Name='%s', Adresse='%s', Telefon='%s']",
-                arzt_id, name, address, telephone);
+        return "Arzt{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", anschrift='" + anschrift + '\'' +
+                ", telefon='" + telefon + '\'' +
+                '}';
     }
 
     public long getId() {
-        return arzt_id;
-    }
-
-    public void setId(long id) {
-        this.arzt_id = id;
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getAnschrift() {
+        return anschrift;
     }
 
-    public String getAddress() {
-        return address;
+    public String getTelefon() {
+        return telefon;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
 }

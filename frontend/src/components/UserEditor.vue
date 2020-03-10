@@ -58,11 +58,11 @@
             :disabled="disabled"
             :telefon-required="true"
             :name="value.notfallKontakt.name"
-            :anschrift="value.notfallKontakt.address"
-            :telefon="value.notfallKontakt.telephone"
+            :anschrift="value.notfallKontakt.anschrift"
+            :telefon="value.notfallKontakt.telefon"
             @update:name="updateValue('notfallKontakt.name', $event)"
-            @update:anschrift="updateValue('notfallKontakt.address', $event)"
-            @update:telefon="updateValue('notfallKontakt.telephone', $event)"
+            @update:anschrift="updateValue('notfallKontakt.anschrift', $event)"
+            @update:telefon="updateValue('notfallKontakt.telefon', $event)"
           />
         </Group>
       </Pflichtangaben>
@@ -95,11 +95,11 @@
             base="hausarzt"
             :disabled="disabled"
             :name="value.arzt.name"
-            :anschrift="value.arzt.address"
-            :telefon="value.arzt.telephone"
+            :anschrift="value.arzt.anschrift"
+            :telefon="value.arzt.telefon"
             @update:name="updateValue('arzt.name', $event)"
-            @update:anschrift="updateValue('arzt.address', $event)"
-            @update:telefon="updateValue('arzt.telephone', $event)"
+            @update:anschrift="updateValue('arzt.anschrift', $event)"
+            @update:telefon="updateValue('arzt.telefon', $event)"
           />
         </Group>
       </Gesundheit>
