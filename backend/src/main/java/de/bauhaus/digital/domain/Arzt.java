@@ -26,16 +26,6 @@ public class Arzt {
 
     protected Arzt() {}
 
-    @Override
-    public String toString() {
-        return "Arzt{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", anschrift='" + anschrift + '\'' +
-                ", telefon='" + telefon + '\'' +
-                '}';
-    }
-
     public long getId() {
         return id;
     }
@@ -50,6 +40,16 @@ public class Arzt {
 
     public String getTelefon() {
         return telefon;
+    }
+
+    @Override
+    public String toString() {
+        return "Arzt{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", anschrift='" + anschrift + '\'' +
+                ", telefon='" + telefon + '\'' +
+                '}';
     }
 
 }

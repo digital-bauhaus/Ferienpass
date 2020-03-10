@@ -73,38 +73,6 @@ public class Behinderung {
         return new Builder();
     }
 
-    @Override
-    public String toString() {
-        return "Behinderung{" +
-                "id=" + id +
-                ", merkzeichen_AussergewoehnlicheGehbehinderung_aG=" + merkzeichen_AussergewoehnlicheGehbehinderung_aG +
-                ", merkzeichen_Hilflosigkeit_H=" + merkzeichen_Hilflosigkeit_H +
-                ", merkzeichen_Blind_Bl=" + merkzeichen_Blind_Bl +
-                ", merkzeichen_Gehoerlos_Gl=" + merkzeichen_Gehoerlos_Gl +
-                ", merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B="
-                + merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B +
-                ", merkzeichen_BeeintraechtigungImStrassenverkehr_G=" + merkzeichen_BeeintraechtigungImStrassenverkehr_G
-                +
-                ", merkzeichen_Taubblind_TBL=" + merkzeichen_Taubblind_TBL +
-                ", rollstuhlNutzungNotwendig=" + rollstuhlNutzungNotwendig +
-                ", weitereHilfsmittel='" + weitereHilfsmittel + '\'' +
-                ", wertmarkeVorhanden=" + wertmarkeVorhanden +
-                ", begleitungNotwendig=" + begleitungNotwendig +
-                ", begleitpersonPflege=" + begleitpersonPflege +
-                ", begleitpersonMedizinischeVersorgung=" + begleitpersonMedizinischeVersorgung +
-                ", begleitpersonMobilitaet=" + begleitpersonMobilitaet +
-                ", begleitpersonOrientierung=" + begleitpersonOrientierung +
-                ", begleitpersonSozialeBegleitung=" + begleitpersonSozialeBegleitung +
-                ", begleitpersonSinneswahrnehmung=" + begleitpersonSinneswahrnehmung +
-                ", eingeschraenkteSinne='" + eingeschraenkteSinne + '\'' +
-                ", hinweiseZumUmgangMitDemKind='" + hinweiseZumUmgangMitDemKind + '\'' +
-                ", unterstuetzungSucheBegleitperson=" + unterstuetzungSucheBegleitperson +
-                ", gewohnterBegleitpersonenDienstleister='" + gewohnterBegleitpersonenDienstleister + '\'' +
-                ", beantragungKostenuebernahmeBegleitperson=" + beantragungKostenuebernahmeBegleitperson +
-                ", zustimmungWeitergabeDatenAmtFamilieUndSoziales=" + zustimmungWeitergabeDatenAmtFamilieUndSoziales +
-                '}';
-    }
-
     public long getId() {
         return id;
     }
@@ -199,6 +167,38 @@ public class Behinderung {
 
     public boolean isZustimmungWeitergabeDatenAmtFamilieUndSoziales() {
         return zustimmungWeitergabeDatenAmtFamilieUndSoziales;
+    }
+
+    @Override
+    public String toString() {
+        return "Behinderung{" +
+                "id=" + id +
+                ", merkzeichen_AussergewoehnlicheGehbehinderung_aG=" + merkzeichen_AussergewoehnlicheGehbehinderung_aG +
+                ", merkzeichen_Hilflosigkeit_H=" + merkzeichen_Hilflosigkeit_H +
+                ", merkzeichen_Blind_Bl=" + merkzeichen_Blind_Bl +
+                ", merkzeichen_Gehoerlos_Gl=" + merkzeichen_Gehoerlos_Gl +
+                ", merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B="
+                + merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B +
+                ", merkzeichen_BeeintraechtigungImStrassenverkehr_G=" + merkzeichen_BeeintraechtigungImStrassenverkehr_G
+                +
+                ", merkzeichen_Taubblind_TBL=" + merkzeichen_Taubblind_TBL +
+                ", rollstuhlNutzungNotwendig=" + rollstuhlNutzungNotwendig +
+                ", weitereHilfsmittel='" + weitereHilfsmittel + '\'' +
+                ", wertmarkeVorhanden=" + wertmarkeVorhanden +
+                ", begleitungNotwendig=" + begleitungNotwendig +
+                ", begleitpersonPflege=" + begleitpersonPflege +
+                ", begleitpersonMedizinischeVersorgung=" + begleitpersonMedizinischeVersorgung +
+                ", begleitpersonMobilitaet=" + begleitpersonMobilitaet +
+                ", begleitpersonOrientierung=" + begleitpersonOrientierung +
+                ", begleitpersonSozialeBegleitung=" + begleitpersonSozialeBegleitung +
+                ", begleitpersonSinneswahrnehmung=" + begleitpersonSinneswahrnehmung +
+                ", eingeschraenkteSinne='" + eingeschraenkteSinne + '\'' +
+                ", hinweiseZumUmgangMitDemKind='" + hinweiseZumUmgangMitDemKind + '\'' +
+                ", unterstuetzungSucheBegleitperson=" + unterstuetzungSucheBegleitperson +
+                ", gewohnterBegleitpersonenDienstleister='" + gewohnterBegleitpersonenDienstleister + '\'' +
+                ", beantragungKostenuebernahmeBegleitperson=" + beantragungKostenuebernahmeBegleitperson +
+                ", zustimmungWeitergabeDatenAmtFamilieUndSoziales=" + zustimmungWeitergabeDatenAmtFamilieUndSoziales +
+                '}';
     }
 
     public static final class Builder {

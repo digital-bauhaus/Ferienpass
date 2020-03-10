@@ -141,46 +141,16 @@ public class BackendController {
     @ResponseStatus(HttpStatus.OK)
     public Teilnehmer updateUser(@RequestBody @Valid Teilnehmer user) {
 
-        return teilnehmerRepository.findById(user.getId()).map(teilnehmer2Update -> {
-
-            //Basic data
-            teilnehmer2Update.setVorname(user.getVorname());
-            teilnehmer2Update.setNachname(user.getNachname());
-            teilnehmer2Update.setGeburtsdatum(user.getGeburtsdatum());
-            teilnehmer2Update.setStrasse(user.getStrasse());
-            teilnehmer2Update.setPostleitzahl(user.getPostleitzahl());
-            teilnehmer2Update.setStadt(user.getStadt());
-            teilnehmer2Update.setTelefon(user.getTelefon());
-            teilnehmer2Update.setKrankenkasse(user.getKrankenkasse());
-
-            teilnehmer2Update.setArzt(user.getArzt());
-            teilnehmer2Update.setNotfallKontakt(user.getNotfallKontakt());
-            teilnehmer2Update.setLiegtBehinderungVor(user.isLiegtBehinderungVor());
-            teilnehmer2Update.setBehinderung(user.getBehinderung());
-
-            //Diverse
-            teilnehmer2Update.setDarfBehandeltWerden(user.isDarfBehandeltWerden());
-            teilnehmer2Update.setDarfAlleinNachHause(user.isDarfAlleinNachHause());
-            teilnehmer2Update.setDarfReiten(user.isDarfReiten());
-            teilnehmer2Update.setDarfSchwimmen(user.isDarfSchwimmen());
-            teilnehmer2Update.setSchwimmAbzeichen(user.getSchwimmAbzeichen());
-            teilnehmer2Update.setErlaubeMedikamentation(user.isErlaubeMedikamentation());
-            teilnehmer2Update.setBezahlt(user.isBezahlt());
-            teilnehmer2Update.setEmail((user.getEmail()));
-
-            //Limitations
-            teilnehmer2Update.setKrankheiten(user.getKrankheiten());
-            teilnehmer2Update.setHitzeempfindlichkeiten(user.getHitzeempfindlichkeiten());
-            teilnehmer2Update.setMedikamente(user.getMedikamente());
-            teilnehmer2Update.setAllergien(user.getAllergien());
-            teilnehmer2Update.setEssenLimitierungen(user.getEssenLimitierungen());
-
-            Teilnehmer savedTeilnehmer = teilnehmerRepository.save(teilnehmer2Update);
+        Optional<Teilnehmer> maybeTeilnehmer = teilnehmerRepository.findById(user.getId());
+        if (maybeTeilnehmer.isPresent()) {
+            Teilnehmer foundTeilnehmer = maybeTeilnehmer.get();
+            foundTeilnehmer = user;
+            teilnehmerRepository.save(foundTeilnehmer);
             LOG.info("User with id "+ user.getId() + " successfully updated");
-            return savedTeilnehmer;
-
-        }).orElseThrow(() -> new UserNotFoundException("User " + user.getId() + " not found"));
-
+            return foundTeilnehmer;
+        } else {
+            throw new UserNotFoundException("User " + user.getId() + " not found");
+        }
 
     }
 

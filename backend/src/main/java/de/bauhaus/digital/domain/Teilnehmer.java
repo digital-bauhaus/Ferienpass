@@ -1,8 +1,7 @@
 package de.bauhaus.digital.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import com.fasterxml.jackson.annotation.JsonSetter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,20 +11,20 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 
 @Entity
-@JsonIgnoreProperties(value= {"angemeldeteProjekte","stornierungen"})
 public class Teilnehmer {
-    // PrimaryKey
+
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
+    // Verwaltung
+
+    private boolean aktiv = true;
     private LocalDate registrierungsdatum = LocalDate.now();
     private boolean bezahlt = false;
-    private boolean aktiv = true;
 
-    /* Grunddaten */
+
+    // Grunddaten
 
     @NotBlank(message = "Vorname darf nicht leer sein.")
     private String vorname;
@@ -38,8 +37,10 @@ public class Teilnehmer {
 
     @NotBlank(message = "Straße darf nicht leer sein.")
     private String strasse;
-    @NotBlank(message = "Stadt darf nicht leer sein.")
-    private String stadt;
+    @NotBlank(message = "Hausnummer darf nicht leer sein.")
+    private String hausnummer;
+    @NotBlank(message = "Wohnort darf nicht leer sein.")
+    private String wohnort;
     @NotBlank(message = "Postleitzahl darf nicht leer sein.")
     private String postleitzahl;
 
@@ -49,345 +50,505 @@ public class Teilnehmer {
     @Email(message = "Es muss eine gültige Email-Adresse angegeben werden.")
     private String email;
 
-    /* Allergien, Krankheiten */
 
-    @NotBlank(message = "Krankenkasse darf nicht leer sein.")
-    private String krankenkasse;
-    private boolean erlaubeMedikamentation; // required
-    private boolean darfBehandeltWerden; // required
+    // Pflichtangaben
+
+    @NotNull(message = "Es muss eine Auswahl für die Behandlungserlaubnis getroffen werden.")
+    private Boolean darfBehandeltWerden;
+
+    @NotNull(message = "Es muss eine Auswahl für das Heimgeherlaubnis getroffen werden.")
+    private Boolean darfAlleinNachHause;
+
+    @NotNull(message = "Es muss eine Auswahl für die Reiterlaubnis getroffen werden.")
+    private Boolean darfReiten;
+
+    @NotNull(message = "Es muss eine Auswahl für die Schwimmerlaubnis getroffen werden.")
+    private Boolean darfSchwimmen;
+
+    // TODO only required when darfSchwimmen=true
+    private String schwimmAbzeichen;
+
+    @ManyToOne(cascade=CascadeType.ALL)
+    private Kontakt notfallKontakt;
+
+
+    // Allergien, Krankheiten
 
     private String allergien;
 
-    private String medikamente;
-
-    private String hitzeempfindlichkeiten;
-
     private String krankheiten;
 
-    private String essenLimitierungen;
+    private String medikamente;
+
+    private boolean hitzeempfindlich;
+
+    private boolean essenVegetarier;
+    private boolean essenLaktoseUnvertraeglichkeit;
+    private boolean essenEierUnvertraeglicheit;
+    private String essenWeitereLimitierungen;
+
+    private String krankenkasse;
 
     @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="kontakt_id")
-    private Kontakt notfallKontakt;
-
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="arzt_id")
     private Arzt arzt;
 
-    /* Behinderung */
+    // Behinderung
 
     private boolean liegtBehinderungVor;
 
     @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="behinderung_id")
     private Behinderung behinderung;
 
-    /* Erklaerung */
-
-    private boolean darfAlleinNachHause; // required
-    private boolean darfReiten; // required
-    private boolean darfSchwimmen; // required
-    private String schwimmAbzeichen;
+    // Other
 
     @Transient
     @JsonSetter
-    private List<Long> gewuenschteProjekte;
+    private List<Long> gewuenschteProjekte = new ArrayList<>();;
 
-    @Override
-    public String toString() {
-        return "Teilnehmer{" +
-                "id=" + getId() +
-                ", Vorname='" + getVorname() + '\'' +
-                ", Nachname='" + getNachname() + '\'' +
-                ", Geburtsdatum=" + getGeburtsdatum() +
-                ", Registrierungsdatum=" + getRegistrierungsdatum() + '\'' +
-                ", Straße='" + getStrasse() + '\'' +
-                ", Stadt='" + getStadt() + '\'' +
-                ", Postleitzahl='" + getPostleitzahl() + '\'' +
-                ", Telefon='" + getTelefon() + '\'' +
-                ", Notrufnummer='" + getKrankenkasse() + '\'' +
-                ", erlaube Medikamentation=" + isErlaubeMedikamentation() + '\'' +
-                ", Notfallkontakt='" + getNotfallKontakt() + '\'' +
-                ", darf allein nach Hause=" + isDarfAlleinNachHause() + '\'' +
-                ", darf Reiten=" + isDarfReiten() + '\'' +
-                ", darf Schwimmen=" + isDarfSchwimmen() + '\'' +
-                ", Schwimmabzeichen=" +getSchwimmAbzeichen() + '\'' +
-                ", darf behandelt werden=" + isDarfBehandeltWerden() + '\'' +
-                ", bezahlt=" + isBezahlt() + '\'' +
-                ", Arzt=" + getArzt()+ '\'' +
-                ", liegt Beeinträchtigung vor=" + isLiegtBehinderungVor()+ '\'' +
-                ", Behinderung=" + getBehinderung()+ '\'' +
-                ", Krankheiten=" + getKrankheiten()+ '\'' +
-                ", Essenslimitierungen=" + getEssenLimitierungen()+ '\'' +
-                ", Allergien=" + getAllergien()+ '\'' +
-                ", Medikamente=" + getMedikamente()+ '\'' +
-                ", Hitzeempfindlichkeiten=" + getHitzeempfindlichkeiten() + '\'' +
-                '}';
+    protected Teilnehmer() {}
+
+    private Teilnehmer(Builder builder) {
+        id = builder.id;
+        aktiv = builder.aktiv;
+        registrierungsdatum = builder.registrierungsdatum;
+        bezahlt = builder.bezahlt;
+        vorname = builder.vorname;
+        nachname = builder.nachname;
+        geburtsdatum = builder.geburtsdatum;
+        strasse = builder.strasse;
+        hausnummer = builder.hausnummer;
+        wohnort = builder.wohnort;
+        postleitzahl = builder.postleitzahl;
+        telefon = builder.telefon;
+        email = builder.email;
+        darfBehandeltWerden = builder.darfBehandeltWerden;
+        darfAlleinNachHause = builder.darfAlleinNachHause;
+        darfReiten = builder.darfReiten;
+        darfSchwimmen = builder.darfSchwimmen;
+        schwimmAbzeichen = builder.schwimmAbzeichen;
+        notfallKontakt = builder.notfallKontakt;
+        allergien = builder.allergien;
+        krankheiten = builder.krankheiten;
+        medikamente = builder.medikamente;
+        hitzeempfindlich = builder.hitzeempfindlich;
+        essenVegetarier = builder.essenVegetarier;
+        essenLaktoseUnvertraeglichkeit = builder.essenLaktoseUnvertraeglichkeit;
+        essenEierUnvertraeglicheit = builder.essenEierUnvertraeglicheit;
+        essenWeitereLimitierungen = builder.essenWeitereLimitierungen;
+        krankenkasse = builder.krankenkasse;
+        arzt = builder.arzt;
+        liegtBehinderungVor = builder.liegtBehinderungVor;
+        behinderung = builder.behinderung;
+        gewuenschteProjekte = builder.gewuenschteProjekte;
     }
 
-    public Teilnehmer() {}
-
-    public Teilnehmer(String firstName, String lastName, LocalDate birthDate, LocalDate registerDate, String street, String city, String postcode, String telephone, String krankenkasse,
-                      boolean allowTreatment, Kontakt emergencyContact, boolean allowHomeAlone, boolean allowRiding, boolean allowSwimming, String schwimmAbzeichen, boolean hasPayed,
-                      boolean darfBehandeltWerden, Arzt doctor,
-                      String allergien, String essenLimitierungen, String krankheiten, boolean beeintraechtigt, Behinderung behinderung,
-                      String hitzempfindlichkeiten, String medikamente, String email) {
-
-        this.setVorname(firstName);
-        this.setNachname(lastName);
-        this.setGeburtsdatum(birthDate);
-        this.setRegistrierungsdatum(registerDate);
-        this.setStrasse(street);
-        this.setStadt(city);
-        this.setPostleitzahl(postcode);
-        this.setTelefon(telephone);
-        this.setKrankenkasse(krankenkasse);
-        this.setErlaubeMedikamentation(allowTreatment);
-        this.setNotfallKontakt(emergencyContact);
-        this.setDarfAlleinNachHause(allowHomeAlone);
-        this.setDarfReiten(allowRiding);
-        this.setDarfSchwimmen(allowSwimming);
-        this.setSchwimmAbzeichen(schwimmAbzeichen);
-        this.setBezahlt(hasPayed);
-        this.setArzt(doctor);
-        this.setAllergien(allergien);
-        this.setEssenLimitierungen(essenLimitierungen);
-        this.setKrankheiten(krankheiten);
-        this.setLiegtBehinderungVor(beeintraechtigt);
-        this.setBehinderung(behinderung);
-        this.setMedikamente(medikamente);
-        this.setHitzeempfindlichkeiten(hitzempfindlichkeiten);
-        this.setDarfBehandeltWerden(darfBehandeltWerden);
-        this.setEmail((email));
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public static Builder newBuilder(Teilnehmer copy) {
+        Builder builder = new Builder();
+        builder.id = copy.getId();
+        builder.aktiv = copy.isAktiv();
+        builder.registrierungsdatum = copy.getRegistrierungsdatum();
+        builder.bezahlt = copy.isBezahlt();
+        builder.vorname = copy.getVorname();
+        builder.nachname = copy.getNachname();
+        builder.geburtsdatum = copy.getGeburtsdatum();
+        builder.strasse = copy.getStrasse();
+        builder.hausnummer = copy.getHausnummer();
+        builder.wohnort = copy.getWohnort();
+        builder.postleitzahl = copy.getPostleitzahl();
+        builder.telefon = copy.getTelefon();
+        builder.email = copy.getEmail();
+        builder.darfBehandeltWerden = copy.getDarfBehandeltWerden();
+        builder.darfAlleinNachHause = copy.getDarfAlleinNachHause();
+        builder.darfReiten = copy.getDarfReiten();
+        builder.darfSchwimmen = copy.getDarfSchwimmen();
+        builder.schwimmAbzeichen = copy.getSchwimmAbzeichen();
+        builder.notfallKontakt = copy.getNotfallKontakt();
+        builder.allergien = copy.getAllergien();
+        builder.krankheiten = copy.getKrankheiten();
+        builder.medikamente = copy.getMedikamente();
+        builder.hitzeempfindlich = copy.isHitzeempfindlich();
+        builder.essenVegetarier = copy.isEssenVegetarier();
+        builder.essenLaktoseUnvertraeglichkeit = copy.isEssenLaktoseUnvertraeglichkeit();
+        builder.essenEierUnvertraeglicheit = copy.isEssenEierUnvertraeglicheit();
+        builder.essenWeitereLimitierungen = copy.getEssenWeitereLimitierungen();
+        builder.krankenkasse = copy.getKrankenkasse();
+        builder.arzt = copy.getArzt();
+        builder.liegtBehinderungVor = copy.isLiegtBehinderungVor();
+        builder.behinderung = copy.getBehinderung();
+        builder.gewuenschteProjekte = copy.getGewuenschteProjekte();
+        return builder;
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getVorname() {
-        return vorname;
-    }
-
-    public void setVorname(String vorname) {
-        this.vorname = vorname;
-    }
-
-    public String getNachname() {
-        return nachname;
-    }
-
-    public void setNachname(String nachname) {
-        this.nachname = nachname;
-    }
-
-    public LocalDate getGeburtsdatum() {
-        return geburtsdatum;
-    }
-
-    public void setGeburtsdatum(LocalDate geburtsdatum) {
-        this.geburtsdatum = geburtsdatum;
+    public boolean isAktiv() {
+        return aktiv;
     }
 
     public LocalDate getRegistrierungsdatum() {
         return registrierungsdatum;
     }
 
-    public void setRegistrierungsdatum(LocalDate registrierungsdatum) {
-        this.registrierungsdatum = registrierungsdatum;
+    public boolean isBezahlt() {
+        return bezahlt;
+    }
+
+    public String getVorname() {
+        return vorname;
+    }
+
+    public String getNachname() {
+        return nachname;
+    }
+
+    public LocalDate getGeburtsdatum() {
+        return geburtsdatum;
     }
 
     public String getStrasse() {
         return strasse;
     }
 
-    public void setStrasse(String strasse) {
-        this.strasse = strasse;
+    public String getHausnummer() {
+        return hausnummer;
     }
 
-    public String getStadt() {
-        return stadt;
-    }
-
-    public void setStadt(String stadt) {
-        this.stadt = stadt;
+    public String getWohnort() {
+        return wohnort;
     }
 
     public String getPostleitzahl() {
         return postleitzahl;
     }
 
-    public void setPostleitzahl(String postleitzahl) {
-        this.postleitzahl = postleitzahl;
-    }
-
     public String getTelefon() {
         return telefon;
     }
 
-    public void setTelefon(String telefon) {
-        this.telefon = telefon;
+    public String getEmail() {
+        return email;
     }
 
-    public String getKrankenkasse() {
-        return krankenkasse;
+    public Boolean getDarfBehandeltWerden() {
+        return darfBehandeltWerden;
     }
 
-    public void setKrankenkasse(String krankenkasse) {
-        this.krankenkasse = krankenkasse;
-    }
-
-    public boolean isErlaubeMedikamentation() {
-        return erlaubeMedikamentation;
-    }
-
-    public void setErlaubeMedikamentation(boolean erlaubeMedikamentation) {
-        this.erlaubeMedikamentation = erlaubeMedikamentation;
-    }
-
-    public Kontakt getNotfallKontakt() {
-        return notfallKontakt;
-    }
-
-    public void setNotfallKontakt(Kontakt notfallKontakt) {
-        this.notfallKontakt = notfallKontakt;
-    }
-
-    public boolean isDarfAlleinNachHause() {
+    public Boolean getDarfAlleinNachHause() {
         return darfAlleinNachHause;
     }
 
-    public void setDarfAlleinNachHause(boolean darfAlleinNachHause) {
-        this.darfAlleinNachHause = darfAlleinNachHause;
-    }
-
-    public boolean isDarfReiten() {
+    public Boolean getDarfReiten() {
         return darfReiten;
     }
 
-    public void setDarfReiten(boolean darfReiten) {
-        this.darfReiten = darfReiten;
-    }
-
-    public boolean isDarfSchwimmen() {
+    public Boolean getDarfSchwimmen() {
         return darfSchwimmen;
-    }
-
-    public void setDarfSchwimmen(boolean darfSchwimmen) {
-        this.darfSchwimmen = darfSchwimmen;
-    }
-
-    public boolean isBezahlt() {
-        return bezahlt;
-    }
-
-    public void setBezahlt(boolean bezahlt) {
-        this.bezahlt = bezahlt;
-    }
-
-    public boolean isAktiv() {
-        return aktiv;
-    }
-
-    public void setAktiv(boolean aktiv) {
-        this.aktiv = aktiv;
-    }
-
-    public Arzt getArzt() {
-        return arzt;
-    }
-
-    public void setArzt(Arzt arzt) {
-        this.arzt = arzt;
-    }
-
-    public String getAllergien() {
-        return allergien;
-    }
-
-    public void setAllergien(String allergien) {
-        this.allergien = allergien;
-    }
-
-    public String getKrankheiten() {
-        return krankheiten;
-    }
-
-    public void setKrankheiten(String krankheiten) {
-        this.krankheiten = krankheiten;
-    }
-
-    public void setBehinderung(Behinderung behinderung) {
-        this.behinderung = behinderung;
-    }
-
-    public Behinderung getBehinderung() {
-
-        return behinderung;
-    }
-
-    public String getEssenLimitierungen() {
-        return essenLimitierungen;
-    }
-
-    public void setEssenLimitierungen(String essenLimitierungen) {
-        this.essenLimitierungen = essenLimitierungen;
-    }
-
-    public boolean isLiegtBehinderungVor() {
-        return liegtBehinderungVor;
-    }
-
-    public void setLiegtBehinderungVor(boolean liegtBehinderungVor) {
-        this.liegtBehinderungVor = liegtBehinderungVor;
     }
 
     public String getSchwimmAbzeichen() {
         return schwimmAbzeichen;
     }
 
-    public void setSchwimmAbzeichen(String schwimmAbzeichen) {
-        this.schwimmAbzeichen = schwimmAbzeichen;
+    public Kontakt getNotfallKontakt() {
+        return notfallKontakt;
+    }
+
+    public String getAllergien() {
+        return allergien;
+    }
+
+    public String getKrankheiten() {
+        return krankheiten;
     }
 
     public String getMedikamente() {
         return medikamente;
     }
 
-    public void setMedikamente(String medikamente) {
-        this.medikamente = medikamente;
+    public boolean isHitzeempfindlich() {
+        return hitzeempfindlich;
     }
 
-    public String getHitzeempfindlichkeiten() {
-        return hitzeempfindlichkeiten;
+    public boolean isEssenVegetarier() {
+        return essenVegetarier;
     }
 
-    public void setHitzeempfindlichkeiten(String hitzeempfindlichkeiten) {
-        this.hitzeempfindlichkeiten = hitzeempfindlichkeiten;
+    public boolean isEssenLaktoseUnvertraeglichkeit() {
+        return essenLaktoseUnvertraeglichkeit;
     }
 
-    public boolean isDarfBehandeltWerden() {
-        return darfBehandeltWerden;
+    public boolean isEssenEierUnvertraeglicheit() {
+        return essenEierUnvertraeglicheit;
     }
 
-    public void setDarfBehandeltWerden(boolean darfBehandeltWerden) {
-        this.darfBehandeltWerden = darfBehandeltWerden;
+    public String getEssenWeitereLimitierungen() {
+        return essenWeitereLimitierungen;
     }
 
+    public String getKrankenkasse() {
+        return krankenkasse;
+    }
+
+    public Arzt getArzt() {
+        return arzt;
+    }
+
+    public boolean isLiegtBehinderungVor() {
+        return liegtBehinderungVor;
+    }
+
+    public Behinderung getBehinderung() {
+        return behinderung;
+    }
 
     public List<Long> getGewuenschteProjekte() {
         return gewuenschteProjekte;
+    }
+
+    @Override
+    public String toString() {
+        return "Teilnehmer{" +
+                "id=" + id +
+                ", aktiv=" + aktiv +
+                ", registrierungsdatum=" + registrierungsdatum +
+                ", bezahlt=" + bezahlt +
+                ", vorname='" + vorname + '\'' +
+                ", nachname='" + nachname + '\'' +
+                ", geburtsdatum=" + geburtsdatum +
+                ", strasse='" + strasse + '\'' +
+                ", hausnummer='" + hausnummer + '\'' +
+                ", wohnort='" + wohnort + '\'' +
+                ", postleitzahl='" + postleitzahl + '\'' +
+                ", telefon='" + telefon + '\'' +
+                ", email='" + email + '\'' +
+                ", darfBehandeltWerden=" + darfBehandeltWerden +
+                ", darfAlleinNachHause=" + darfAlleinNachHause +
+                ", darfReiten=" + darfReiten +
+                ", darfSchwimmen=" + darfSchwimmen +
+                ", schwimmAbzeichen='" + schwimmAbzeichen + '\'' +
+                ", notfallKontakt=" + notfallKontakt +
+                ", allergien='" + allergien + '\'' +
+                ", krankheiten='" + krankheiten + '\'' +
+                ", medikamente='" + medikamente + '\'' +
+                ", hitzeempfindlich=" + hitzeempfindlich +
+                ", essenVegetarier=" + essenVegetarier +
+                ", essenLaktoseUnvertraeglichkeit=" + essenLaktoseUnvertraeglichkeit +
+                ", essenEierUnvertraeglicheit=" + essenEierUnvertraeglicheit +
+                ", essenWeitereLimitierungen='" + essenWeitereLimitierungen + '\'' +
+                ", krankenkasse='" + krankenkasse + '\'' +
+                ", arzt=" + arzt +
+                ", liegtBehinderungVor=" + liegtBehinderungVor +
+                ", behinderung=" + behinderung +
+                ", gewuenschteProjekte=" + gewuenschteProjekte +
+                '}';
+    }
+
+    public static final class Builder {
+
+        private long id;
+        private boolean aktiv = true;
+        private LocalDate registrierungsdatum = LocalDate.now();
+        private boolean bezahlt = false;
+        private String vorname;
+        private String nachname;
+        private LocalDate geburtsdatum;
+        private String strasse;
+        private String hausnummer;
+        private String wohnort;
+        private String postleitzahl;
+        private String telefon;
+        private String email;
+        private Boolean darfBehandeltWerden;
+        private Boolean darfAlleinNachHause;
+        private Boolean darfReiten;
+        private Boolean darfSchwimmen;
+        private String schwimmAbzeichen;
+        private Kontakt notfallKontakt;
+        private String allergien;
+        private String krankheiten;
+        private String medikamente;
+        private boolean hitzeempfindlich;
+        private boolean essenVegetarier;
+        private boolean essenLaktoseUnvertraeglichkeit;
+        private boolean essenEierUnvertraeglicheit;
+        private String essenWeitereLimitierungen;
+        private String krankenkasse;
+        private Arzt arzt;
+        private boolean liegtBehinderungVor;
+        private Behinderung behinderung;
+        private List<Long> gewuenschteProjekte = new ArrayList<>();
+
+        private Builder() {
+        }
+
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder aktiv(boolean aktiv) {
+            this.aktiv = aktiv;
+            return this;
+        }
+
+        public Builder registrierungsdatum(LocalDate registrierungsdatum) {
+            this.registrierungsdatum = registrierungsdatum;
+            return this;
+        }
+
+        public Builder bezahlt(boolean bezahlt) {
+            this.bezahlt = bezahlt;
+            return this;
+        }
+
+        public Builder vorname(String vorname) {
+            this.vorname = vorname;
+            return this;
+        }
+
+        public Builder nachname(String nachname) {
+            this.nachname = nachname;
+            return this;
+        }
+
+        public Builder geburtsdatum(LocalDate geburtsdatum) {
+            this.geburtsdatum = geburtsdatum;
+            return this;
+        }
+
+        public Builder strasse(String strasse) {
+            this.strasse = strasse;
+            return this;
+        }
+
+        public Builder hausnummer(String hausnummer) {
+            this.hausnummer = hausnummer;
+            return this;
+        }
+
+        public Builder wohnort(String wohnort) {
+            this.wohnort = wohnort;
+            return this;
+        }
+
+        public Builder postleitzahl(String postleitzahl) {
+            this.postleitzahl = postleitzahl;
+            return this;
+        }
+
+        public Builder telefon(String telefon) {
+            this.telefon = telefon;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder darfBehandeltWerden(Boolean darfBehandeltWerden) {
+            this.darfBehandeltWerden = darfBehandeltWerden;
+            return this;
+        }
+
+        public Builder darfAlleinNachHause(Boolean darfAlleinNachHause) {
+            this.darfAlleinNachHause = darfAlleinNachHause;
+            return this;
+        }
+
+        public Builder darfReiten(Boolean darfReiten) {
+            this.darfReiten = darfReiten;
+            return this;
+        }
+
+        public Builder darfSchwimmen(Boolean darfSchwimmen) {
+            this.darfSchwimmen = darfSchwimmen;
+            return this;
+        }
+
+        public Builder schwimmAbzeichen(String schwimmAbzeichen) {
+            this.schwimmAbzeichen = schwimmAbzeichen;
+            return this;
+        }
+
+        public Builder notfallKontakt(Kontakt notfallKontakt) {
+            this.notfallKontakt = notfallKontakt;
+            return this;
+        }
+
+        public Builder allergien(String allergien) {
+            this.allergien = allergien;
+            return this;
+        }
+
+        public Builder krankheiten(String krankheiten) {
+            this.krankheiten = krankheiten;
+            return this;
+        }
+
+        public Builder medikamente(String medikamente) {
+            this.medikamente = medikamente;
+            return this;
+        }
+
+        public Builder hitzeempfindlich(boolean hitzeempfindlich) {
+            this.hitzeempfindlich = hitzeempfindlich;
+            return this;
+        }
+
+        public Builder essenVegetarier(boolean essenVegetarier) {
+            this.essenVegetarier = essenVegetarier;
+            return this;
+        }
+
+        public Builder essenLaktoseUnvertraeglichkeit(boolean essenLaktoseUnvertraeglichkeit) {
+            this.essenLaktoseUnvertraeglichkeit = essenLaktoseUnvertraeglichkeit;
+            return this;
+        }
+
+        public Builder essenEierUnvertraeglicheit(boolean essenEierUnvertraeglicheit) {
+            this.essenEierUnvertraeglicheit = essenEierUnvertraeglicheit;
+            return this;
+        }
+
+        public Builder essenWeitereLimitierungen(String essenWeitereLimitierungen) {
+            this.essenWeitereLimitierungen = essenWeitereLimitierungen;
+            return this;
+        }
+
+        public Builder krankenkasse(String krankenkasse) {
+            this.krankenkasse = krankenkasse;
+            return this;
+        }
+
+        public Builder arzt(Arzt arzt) {
+            this.arzt = arzt;
+            return this;
+        }
+
+        public Builder liegtBehinderungVor(boolean liegtBehinderungVor) {
+            this.liegtBehinderungVor = liegtBehinderungVor;
+            return this;
+        }
+
+        public Builder behinderung(Behinderung behinderung) {
+            this.behinderung = behinderung;
+            return this;
+        }
+
+        public Builder gewuenschteProjekte(List<Long> gewuenschteProjekte) {
+            this.gewuenschteProjekte = gewuenschteProjekte;
+            return this;
+        }
+
+        public Teilnehmer build() {
+            return new Teilnehmer(this);
+        }
     }
 }

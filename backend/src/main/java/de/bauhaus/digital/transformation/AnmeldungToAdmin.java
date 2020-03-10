@@ -11,7 +11,7 @@ public class AnmeldungToAdmin {
 
     public static Teilnehmer mapAnmeldedataToTeilnehmer(AnmeldungJson anmeldungJson) {
 
-        Teilnehmer teilnehmer = new Teilnehmer();
+        Teilnehmer teilnehmer = Teilnehmer.newBuilder().build();
 
         mappeBasisInformationen(anmeldungJson, teilnehmer);
 
@@ -28,10 +28,10 @@ public class AnmeldungToAdmin {
     }
 
     private static void mappeErklaerung(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
-        teilnehmer.setDarfAlleinNachHause(mappeYesOrNoToBoolean(anmeldungJson.getDeclarationGoingHomeAloneAllowed()));
-        teilnehmer.setDarfReiten(mappeYesOrNoToBoolean(anmeldungJson.getDeclarationHorseRidingAllowed()));
-        teilnehmer.setDarfSchwimmen(mappeYesOrNoToBoolean(anmeldungJson.getDeclarationSwimmingAllowed()));
-        teilnehmer.setSchwimmAbzeichen(anmeldungJson.getDeclarationSwimmingBadge());
+//        teilnehmer.setDarfAlleinNachHause(mappeYesOrNoToBoolean(anmeldungJson.getDeclarationGoingHomeAloneAllowed()));
+//        teilnehmer.setDarfReiten(mappeYesOrNoToBoolean(anmeldungJson.getDeclarationHorseRidingAllowed()));
+//        teilnehmer.setDarfSchwimmen(mappeYesOrNoToBoolean(anmeldungJson.getDeclarationSwimmingAllowed()));
+//        teilnehmer.setSchwimmAbzeichen(anmeldungJson.getDeclarationSwimmingBadge());
     }
 
     private static boolean mappeYesOrNoToBoolean(String yesOrNo) {
@@ -43,7 +43,7 @@ public class AnmeldungToAdmin {
 
     private static void mappeDatenZuBehinderungen(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
 
-        teilnehmer.setLiegtBehinderungVor(anmeldungJson.getDisabilitiesDisabilityExistent());
+//        teilnehmer.setLiegtBehinderungVor(anmeldungJson.getDisabilitiesDisabilityExistent());
 //        Behinderung behinderung = new Behinderung();
 //
 //        if(anmeldungJson.getDisabilitiesDisabilityExistent()) {
@@ -99,31 +99,31 @@ public class AnmeldungToAdmin {
 
 
     private static void mappeBasisInformationen(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
-        teilnehmer.setNachname(anmeldungJson.getBaseFamilyName());
-        teilnehmer.setVorname(anmeldungJson.getBaseForename());
-        teilnehmer.setGeburtsdatum(mappeGeburtsdatum(anmeldungJson));
-        teilnehmer.setStrasse(anmeldungJson.getBaseStreetName() + " " + anmeldungJson.getBaseHouseNumber());
-        teilnehmer.setPostleitzahl(anmeldungJson.getBaseZipCode());
-        teilnehmer.setStadt(anmeldungJson.getBaseResidence());
-        teilnehmer.setTelefon(anmeldungJson.getBasePhoneNumber());
-        teilnehmer.setEmail(anmeldungJson.getBaseEmail());
+//        teilnehmer.setNachname(anmeldungJson.getBaseFamilyName());
+//        teilnehmer.setVorname(anmeldungJson.getBaseForename());
+//        teilnehmer.setGeburtsdatum(mappeGeburtsdatum(anmeldungJson));
+//        teilnehmer.setStrasse(anmeldungJson.getBaseStreetName() + " " + anmeldungJson.getBaseHouseNumber());
+//        teilnehmer.setPostleitzahl(anmeldungJson.getBaseZipCode());
+//        teilnehmer.setWohnort(anmeldungJson.getBaseResidence());
+//        teilnehmer.setTelefon(anmeldungJson.getBasePhoneNumber());
+//        teilnehmer.setEmail(anmeldungJson.getBaseEmail());
     }
 
     private static void mappeAllergienKrankheitenNotfallkontaktEtc(AnmeldungJson anmeldungJson, Teilnehmer teilnehmer) {
-        teilnehmer.setAllergien(anmeldungJson.getConditionsAllergies0()+"\n"+anmeldungJson.getConditionsAllergies1()+"\n"+anmeldungJson.getConditionsAllergies2()+
-                "\n"+anmeldungJson.getConditionsAllergies3()+"\n"+anmeldungJson.getConditionsAllergies4());
-        teilnehmer.setKrankheiten(anmeldungJson.getConditionsDiseases0()+"\n"+anmeldungJson.getConditionsDiseases1()+"\n"+anmeldungJson.getConditionsDiseases2()+
-                "\n"+anmeldungJson.getConditionsDiseases3()+"\n"+anmeldungJson.getConditionsDiseases4()+"\n");
-
-        teilnehmer.setEssenLimitierungen(anmeldungJson.getConditionsNutrition0()+"\n"+anmeldungJson.getConditionsNutrition1()+"\n"+anmeldungJson.getConditionsNutrition2()+"\n"+
-                anmeldungJson.getConditionsNutrition3()+"\n"+anmeldungJson.getConditionsNutrition4()+"\n");
-        // TODO: ist setErlaubeMedikamentation() das Gleiche wie "Behandlungserlaubnis bei Erkrankungen und Unfällen"? Nein. Es gibt jetzt 2 Felder dafür
-        teilnehmer.setErlaubeMedikamentation(mappeYesOrNoToBoolean(anmeldungJson.getConditionsChildTreatmentAllowed()));
-
-        teilnehmer.setKrankenkasse(anmeldungJson.getConditionsHealthInsurance());
-        teilnehmer.setNotfallKontakt(mappeNotfallKontakt(anmeldungJson));
-
-        teilnehmer.setArzt(mappeArzt(anmeldungJson));
+//        teilnehmer.setAllergien(anmeldungJson.getConditionsAllergies0()+"\n"+anmeldungJson.getConditionsAllergies1()+"\n"+anmeldungJson.getConditionsAllergies2()+
+//                "\n"+anmeldungJson.getConditionsAllergies3()+"\n"+anmeldungJson.getConditionsAllergies4());
+//        teilnehmer.setKrankheiten(anmeldungJson.getConditionsDiseases0()+"\n"+anmeldungJson.getConditionsDiseases1()+"\n"+anmeldungJson.getConditionsDiseases2()+
+//                "\n"+anmeldungJson.getConditionsDiseases3()+"\n"+anmeldungJson.getConditionsDiseases4()+"\n");
+//
+//        teilnehmer.setEssenWeitereLimitierungen(anmeldungJson.getConditionsNutrition0()+"\n"+anmeldungJson.getConditionsNutrition1()+"\n"+anmeldungJson.getConditionsNutrition2()+"\n"+
+//                anmeldungJson.getConditionsNutrition3()+"\n"+anmeldungJson.getConditionsNutrition4()+"\n");
+//        // TODO: ist setErlaubeMedikamentation() das Gleiche wie "Behandlungserlaubnis bei Erkrankungen und Unfällen"? Nein. Es gibt jetzt 2 Felder dafür
+//        teilnehmer.setErlaubeMedikamentation(mappeYesOrNoToBoolean(anmeldungJson.getConditionsChildTreatmentAllowed()));
+//
+//        teilnehmer.setKrankenkasse(anmeldungJson.getConditionsHealthInsurance());
+//        teilnehmer.setNotfallKontakt(mappeNotfallKontakt(anmeldungJson));
+//
+//        teilnehmer.setArzt(mappeArzt(anmeldungJson));
     }
 
     private static Arzt mappeArzt(AnmeldungJson anmeldungJson) {

@@ -51,37 +51,37 @@ public class DomainFactory {
                 merkzeichen_Taubblind_TBL(true).
                 build();
         String schwimmAbzeichen = "Seepferdchen";
-        String hitze = "Wärme: bis 25 Grad ist alles okay";
         String medikamente = "Nasentropfen_ maximal 2x am Tag ein Schub";
         String email = "myEmail@weimar.de";
 
-        return new Teilnehmer(
-                firstName,
-                lastName,
-                LocalDate.of(2005,10,20),
-                LocalDate.now(),
-                "Bahnhofstraße 4",
-                "Weimar",
-                "99423",
-                "03544444",
-                "0453434",
-                true,
-                kontact,
-                true,
-                false,
-                false,
-                schwimmAbzeichen,
-                false,
-                false,
-                arzt,
-                allergien,
-                essenLimitierungen,
-                krankheiten,
-                true,
-                behinderung,
-                hitze,
-                medikamente,
-                email);
+        return Teilnehmer.newBuilder()
+                .vorname(firstName)
+                .nachname(lastName)
+                .geburtsdatum(LocalDate.of(2005,10,20))
+                .strasse("Bahnhofstraße")
+                .hausnummer("4")
+                .wohnort("Weimar")
+                .postleitzahl("99423")
+                .telefon("03544444")
+                .krankenkasse("AOK")
+                .darfBehandeltWerden(true)
+                .notfallKontakt(kontact)
+                .darfAlleinNachHause(true)
+                .darfReiten(false)
+                .darfSchwimmen(false)
+                .schwimmAbzeichen(schwimmAbzeichen)
+                .bezahlt(false)
+                .darfBehandeltWerden(false)
+                .arzt(arzt)
+                .allergien(allergien)
+                .essenWeitereLimitierungen(essenLimitierungen)
+                .krankheiten(krankheiten)
+                .liegtBehinderungVor(true)
+                .behinderung(behinderung)
+                .hitzeempfindlich(true)
+                .medikamente(medikamente)
+                .email(email)
+                .build();
     }
 
 }

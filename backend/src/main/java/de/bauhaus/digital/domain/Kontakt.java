@@ -28,16 +28,6 @@ public class Kontakt {
 
     protected Kontakt() {}
 
-    @Override
-    public String toString() {
-        return "Kontakt{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", anschrift='" + anschrift + '\'' +
-                ", telefon='" + telefon + '\'' +
-                '}';
-    }
-
     public long getId() {
         return id;
     }
@@ -52,6 +42,16 @@ public class Kontakt {
 
     public String getTelefon() {
         return telefon;
+    }
+
+    @Override
+    public String toString() {
+        return "Kontakt{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", anschrift='" + anschrift + '\'' +
+                ", telefon='" + telefon + '\'' +
+                '}';
     }
 
 }

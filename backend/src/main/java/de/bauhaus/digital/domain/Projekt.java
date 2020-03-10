@@ -182,6 +182,23 @@ public class Projekt {
         return stornierteTeilnehmer;
     }
 
+    @Override
+    public String toString() {
+        return "Projekt{" +
+                "id=" + id +
+                ", aktiv=" + aktiv +
+                ", name='" + name + '\'' +
+                ", datumBeginn=" + datumBeginn +
+                ", datumEnde=" + datumEnde +
+                ", mindestAlter=" + mindestAlter +
+                ", hoechstAlter=" + hoechstAlter +
+                ", plaetzeGesamt=" + plaetzeGesamt +
+                ", plaetzeReserviert=" + plaetzeReserviert +
+                ", angemeldeteTeilnehmer=" + angemeldeteTeilnehmer +
+                ", stornierteTeilnehmer=" + stornierteTeilnehmer +
+                '}';
+    }
+
     public static final class Builder {
 
         private long id;
