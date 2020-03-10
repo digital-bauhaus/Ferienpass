@@ -55,6 +55,9 @@ public class DomainFactory {
         String email = "myEmail@weimar.de";
 
         return Teilnehmer.newBuilder()
+                .schulkind(true)
+                .datenschutzErklaerungAkzeptiert(true)
+                .teilnahmeBedingungAkzeptiert(true)
                 .vorname(firstName)
                 .nachname(lastName)
                 .geburtsdatum(LocalDate.of(2005,10,20))

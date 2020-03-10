@@ -227,6 +227,9 @@ public class BackendControllerTest {
 
         Teilnehmer klausKlausen = Teilnehmer.newBuilder()
                 .id(userId) // Exlicitely set Id of User to update, so our implementation can find it
+                .schulkind(true)
+                .datenschutzErklaerungAkzeptiert(true)
+                .teilnahmeBedingungAkzeptiert(true)
                 .vorname(vorname)
                 .nachname(nachname)
                 .geburtsdatum(geburtsdatum)

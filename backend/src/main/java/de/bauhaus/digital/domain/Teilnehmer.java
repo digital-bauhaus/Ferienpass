@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import java.time.LocalDate;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -21,8 +22,15 @@ public class Teilnehmer {
 
     private boolean aktiv = true;
     private LocalDate registrierungsdatum = LocalDate.now();
+
     private boolean bezahlt = false;
 
+    @AssertTrue(message = "Das Kind muss zur Schule gehen.")
+    private boolean schulkind;
+    @AssertTrue(message = "Datenschutzerklärung muss akzeptiert werden.")
+    private boolean datenschutzErklaerungAkzeptiert;
+    @AssertTrue(message = "Teilnahmebedingungen müssen akzeptiert werden.")
+    private boolean teilnahmeBedingungAkzeptiert;
 
     // Grunddaten
 
@@ -49,6 +57,8 @@ public class Teilnehmer {
     @NotBlank(message = "Email darf nicht leer sein.")
     @Email(message = "Es muss eine gültige Email-Adresse angegeben werden.")
     private String email;
+
+    private boolean darfErmaessigtenPreisZahlen;
 
 
     // Pflichtangaben
@@ -112,6 +122,9 @@ public class Teilnehmer {
         aktiv = builder.aktiv;
         registrierungsdatum = builder.registrierungsdatum;
         bezahlt = builder.bezahlt;
+        schulkind = builder.schulkind;
+        datenschutzErklaerungAkzeptiert = builder.datenschutzErklaerungAkzeptiert;
+        teilnahmeBedingungAkzeptiert = builder.teilnahmeBedingungAkzeptiert;
         vorname = builder.vorname;
         nachname = builder.nachname;
         geburtsdatum = builder.geburtsdatum;
@@ -121,6 +134,7 @@ public class Teilnehmer {
         postleitzahl = builder.postleitzahl;
         telefon = builder.telefon;
         email = builder.email;
+        darfErmaessigtenPreisZahlen = builder.darfErmaessigtenPreisZahlen;
         darfBehandeltWerden = builder.darfBehandeltWerden;
         darfAlleinNachHause = builder.darfAlleinNachHause;
         darfReiten = builder.darfReiten;
@@ -152,6 +166,9 @@ public class Teilnehmer {
         builder.aktiv = copy.isAktiv();
         builder.registrierungsdatum = copy.getRegistrierungsdatum();
         builder.bezahlt = copy.isBezahlt();
+        builder.schulkind = copy.isSchulkind();
+        builder.datenschutzErklaerungAkzeptiert = copy.isDatenschutzErklaerungAkzeptiert();
+        builder.teilnahmeBedingungAkzeptiert = copy.isTeilnahmeBedingungAkzeptiert();
         builder.vorname = copy.getVorname();
         builder.nachname = copy.getNachname();
         builder.geburtsdatum = copy.getGeburtsdatum();
@@ -161,6 +178,7 @@ public class Teilnehmer {
         builder.postleitzahl = copy.getPostleitzahl();
         builder.telefon = copy.getTelefon();
         builder.email = copy.getEmail();
+        builder.darfErmaessigtenPreisZahlen = copy.isDarfErmaessigtenPreisZahlen();
         builder.darfBehandeltWerden = copy.getDarfBehandeltWerden();
         builder.darfAlleinNachHause = copy.getDarfAlleinNachHause();
         builder.darfReiten = copy.getDarfReiten();
@@ -199,6 +217,18 @@ public class Teilnehmer {
         return bezahlt;
     }
 
+    public boolean isSchulkind() {
+        return schulkind;
+    }
+
+    public boolean isDatenschutzErklaerungAkzeptiert() {
+        return datenschutzErklaerungAkzeptiert;
+    }
+
+    public boolean isTeilnahmeBedingungAkzeptiert() {
+        return teilnahmeBedingungAkzeptiert;
+    }
+
     public String getVorname() {
         return vorname;
     }
@@ -233,6 +263,10 @@ public class Teilnehmer {
 
     public String getEmail() {
         return email;
+    }
+
+    public boolean isDarfErmaessigtenPreisZahlen() {
+        return darfErmaessigtenPreisZahlen;
     }
 
     public Boolean getDarfBehandeltWerden() {
@@ -318,6 +352,9 @@ public class Teilnehmer {
                 ", aktiv=" + aktiv +
                 ", registrierungsdatum=" + registrierungsdatum +
                 ", bezahlt=" + bezahlt +
+                ", schulkind=" + schulkind +
+                ", datenschutzErklaerungAkzeptiert=" + datenschutzErklaerungAkzeptiert +
+                ", teilnahmeBedingungAkzeptiert=" + teilnahmeBedingungAkzeptiert +
                 ", vorname='" + vorname + '\'' +
                 ", nachname='" + nachname + '\'' +
                 ", geburtsdatum=" + geburtsdatum +
@@ -327,6 +364,7 @@ public class Teilnehmer {
                 ", postleitzahl='" + postleitzahl + '\'' +
                 ", telefon='" + telefon + '\'' +
                 ", email='" + email + '\'' +
+                ", darfErmaessigtenPreisZahlen=" + darfErmaessigtenPreisZahlen +
                 ", darfBehandeltWerden=" + darfBehandeltWerden +
                 ", darfAlleinNachHause=" + darfAlleinNachHause +
                 ", darfReiten=" + darfReiten +
@@ -355,6 +393,9 @@ public class Teilnehmer {
         private boolean aktiv = true;
         private LocalDate registrierungsdatum = LocalDate.now();
         private boolean bezahlt = false;
+        private boolean schulkind;
+        private boolean datenschutzErklaerungAkzeptiert;
+        private boolean teilnahmeBedingungAkzeptiert;
         private String vorname;
         private String nachname;
         private LocalDate geburtsdatum;
@@ -364,6 +405,7 @@ public class Teilnehmer {
         private String postleitzahl;
         private String telefon;
         private String email;
+        private boolean darfErmaessigtenPreisZahlen;
         private Boolean darfBehandeltWerden;
         private Boolean darfAlleinNachHause;
         private Boolean darfReiten;
@@ -404,6 +446,21 @@ public class Teilnehmer {
 
         public Builder bezahlt(boolean bezahlt) {
             this.bezahlt = bezahlt;
+            return this;
+        }
+
+        public Builder schulkind(boolean schulkind) {
+            this.schulkind = schulkind;
+            return this;
+        }
+
+        public Builder datenschutzErklaerungAkzeptiert(boolean datenschutzErklaerungAkzeptiert) {
+            this.datenschutzErklaerungAkzeptiert = datenschutzErklaerungAkzeptiert;
+            return this;
+        }
+
+        public Builder teilnahmeBedingungAkzeptiert(boolean teilnahmeBedingungAkzeptiert) {
+            this.teilnahmeBedingungAkzeptiert = teilnahmeBedingungAkzeptiert;
             return this;
         }
 
@@ -449,6 +506,11 @@ public class Teilnehmer {
 
         public Builder email(String email) {
             this.email = email;
+            return this;
+        }
+
+        public Builder darfErmaessigtenPreisZahlen(boolean darfErmaessigtenPreisZahlen) {
+            this.darfErmaessigtenPreisZahlen = darfErmaessigtenPreisZahlen;
             return this;
         }
 
