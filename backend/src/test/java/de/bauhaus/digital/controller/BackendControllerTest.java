@@ -360,13 +360,13 @@ public class BackendControllerTest {
         debugOutProjekte();
 
         // Ist der User in Projekt Pizza backen & Golf spielen angemeldet?
-        List<Teilnehmer> anmeldungenPizzaBacken = getProjekt(pizzaBackenId).getAnmeldungen();
+        List<Teilnehmer> anmeldungenPizzaBacken = getProjekt(pizzaBackenId).getAngemeldeteTeilnehmer();
         assertThat(containsTeilnehmer(responseUser, anmeldungenPizzaBacken), is(true));
 
-        List<Teilnehmer> anmeldungenFussball = getProjekt(fussballId).getAnmeldungen();
+        List<Teilnehmer> anmeldungenFussball = getProjekt(fussballId).getAngemeldeteTeilnehmer();
         assertThat(containsTeilnehmer(responseUser, anmeldungenFussball), is(false));
 
-        List<Teilnehmer> anmeldungenGolfSpielen = getProjekt(golfSpielenId).getAnmeldungen();
+        List<Teilnehmer> anmeldungenGolfSpielen = getProjekt(golfSpielenId).getAngemeldeteTeilnehmer();
         assertThat(containsTeilnehmer(responseUser, anmeldungenGolfSpielen), is(true));
     }
 
@@ -406,18 +406,18 @@ public class BackendControllerTest {
         // Da im anmeldung-post-data.json Pizza backen 1x fuer den Teilnehmer reserviert wird
         // sollten jetzt nur noch 8 - 3 - 1 = 4 Plaetze frei sein - sowie 4 reserviert
         Projekt pizzaBacken = getProjekt(pizzaBackenId);
-        assertThat(pizzaBacken.getSlotsReserviert(), is(4));
-        assertThat(pizzaBacken.getSlotsFrei(), is(4));
+        assertThat(pizzaBacken.getPlaetzeReserviert(), is(4));
+        assertThat(pizzaBacken.getPlaetzeFrei(), is(4));
 
         // Fussball 10 gesamt - 7 reserviert - keine Anmeldung = 3 frei bzw. 7 reserviert
         Projekt fussball = getProjekt(fussballId);
-        assertThat(fussball.getSlotsReserviert(), is(7));
-        assertThat(fussball.getSlotsFrei() , is(3));
+        assertThat(fussball.getPlaetzeReserviert(), is(7));
+        assertThat(fussball.getPlaetzeFrei() , is(3));
 
         // Golf spielen 9 gesamt - 5 reserviert - 1 Anmeldung = 3 frei bzw. 6 reserviert
         Projekt golfSpielen = getProjekt(golfSpielenId);
-        assertThat(golfSpielen.getSlotsReserviert(), is(6));
-        assertThat(golfSpielen.getSlotsFrei(), is(3));
+        assertThat(golfSpielen.getPlaetzeReserviert(), is(6));
+        assertThat(golfSpielen.getPlaetzeFrei(), is(3));
 
         // Slotsfrei bei Fussball auf 0 fahren
         // Dafuer Pizza backen nicht mehr reservieren
@@ -433,8 +433,8 @@ public class BackendControllerTest {
         registerNewUserFromAnmeldungFrontend(anmeldungJson);
 
         Projekt fussballNach3Anmeldungen = getProjekt(fussballId);
-        assertThat(fussballNach3Anmeldungen.getSlotsFrei(), is(0));
-        assertThat(fussballNach3Anmeldungen.getSlotsReserviert(), is(10));
+        assertThat(fussballNach3Anmeldungen.getPlaetzeFrei(), is(0));
+        assertThat(fussballNach3Anmeldungen.getPlaetzeReserviert(), is(10));
 
         // Wenn wir noch einen Teilnehmer auf Fussball reservieren wollen,
         // sollte die API uns einen HTTP 409 schicken und das Projekt Fussball
@@ -454,7 +454,7 @@ public class BackendControllerTest {
         registerNewUserFromAnmeldungFrontend(anmeldungJson);
         // Nun sollte Golf spielen auch voll sein
         Projekt golfSpielenNach3WeiterenAnmeldungen = getProjekt(golfSpielenId);
-        assertThat(golfSpielenNach3WeiterenAnmeldungen.getSlotsFrei(), is(0));
+        assertThat(golfSpielenNach3WeiterenAnmeldungen.getPlaetzeFrei(), is(0));
 
         // Nun auch wieder fuer Fussball registrieren wollen
         setzeAnmeldungFuerFussball(anmeldungJson, true);
@@ -480,14 +480,14 @@ public class BackendControllerTest {
 
         // Pizza sollte nun noch 4 Plätze frei haben
         // Fussball und Golf keine mehr
-        assertThat(getProjekt(pizzaBackenId).getSlotsFrei(), is(4));
-        assertThat(getProjekt(fussballId).getSlotsFrei(), is(0));
-        assertThat(getProjekt(golfSpielenId).getSlotsFrei(), is(0));
+        assertThat(getProjekt(pizzaBackenId).getPlaetzeFrei(), is(4));
+        assertThat(getProjekt(fussballId).getPlaetzeFrei(), is(0));
+        assertThat(getProjekt(golfSpielenId).getPlaetzeFrei(), is(0));
 
         // Nun versuchen wir unseren Luis Fernandez zu registrieren
         registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(anmeldungJson);
         Projekt pizzaNachGemischtemRequest = getProjekt(pizzaBackenId);
-        for(Teilnehmer angemeldeterTeilnehmer : pizzaNachGemischtemRequest.getAnmeldungen()) {
+        for(Teilnehmer angemeldeterTeilnehmer : pizzaNachGemischtemRequest.getAngemeldeteTeilnehmer()) {
             assertThat(angemeldeterTeilnehmer.getNachname(), not("Fernandez"));
         }
 
@@ -633,14 +633,12 @@ public class BackendControllerTest {
         Projekt responeProjekt = getProjekt(projectID);
         assertThat(projectID, is(responeProjekt.getId()));
         assertThat(responeProjekt.getName(), is(projekt.getName()));
-        assertThat(responeProjekt.getSlotsFrei(), is(projekt.getSlotsFrei()));
-        assertThat(responeProjekt.getKosten(), is(projekt.getKosten()));
+        assertThat(responeProjekt.getPlaetzeFrei(), is(projekt.getPlaetzeFrei()));
         assertThat(responeProjekt.getMindestAlter(), is(projekt.getMindestAlter()));
         assertThat(responeProjekt.getHoechstAlter(), is(projekt.getHoechstAlter()));
-        assertThat(responeProjekt.getDatum(), is(projekt.getDatum()));
-        assertThat(responeProjekt.getSlotsGesamt(), is(projekt.getSlotsGesamt()));
-        assertThat(responeProjekt.getWebLink(), is(projekt.getWebLink()));
-        assertThat(responeProjekt.getAnmeldungen(), is(projekt.getAnmeldungen()));
+        assertThat(responeProjekt.getDatumBeginn(), is(projekt.getDatumBeginn()));
+        assertThat(responeProjekt.getPlaetzeGesamt(), is(projekt.getPlaetzeGesamt()));
+        assertThat(responeProjekt.getAngemeldeteTeilnehmer(), is(projekt.getAngemeldeteTeilnehmer()));
     }
 
 
@@ -659,8 +657,8 @@ public class BackendControllerTest {
         Teilnehmer responseUser = getUser(userId);
 
         Projekt responseProjekt = getProjekt(projectID);
-        assertThat(responseProjekt.getAnmeldungen().size(), is(1));
-        assertThat(responseProjekt.getAnmeldungen().get(0).getId(), is(responseUser.getId()));
+        assertThat(responseProjekt.getAngemeldeteTeilnehmer().size(), is(1));
+        assertThat(responseProjekt.getAngemeldeteTeilnehmer().get(0).getId(), is(responseUser.getId()));
     }
 
     @Test
@@ -678,7 +676,7 @@ public class BackendControllerTest {
 
         assertThat(projectID, is(responseProjekt.getId()));
         assertThat(projekt.getName(), is(responseProjekt.getName()));
-        assertThat(responseProjekt.isAktiv(),is(false));
+        // assertThat(responseProjekt.isAktiv(),is(false)); // TODO?
     }
 
     @Test
@@ -745,7 +743,7 @@ public class BackendControllerTest {
         numberOfProjects = allProjects.size();
         int sumOfRegisteredTeilnehmer = 0;
         for (Projekt projekt: allProjects) {
-            sumOfRegisteredTeilnehmer += projekt.getAnmeldungen().size();
+            sumOfRegisteredTeilnehmer += projekt.getAngemeldeteTeilnehmer().size();
         }
         System.out.println("Number of registered participants of all projects: " + sumOfRegisteredTeilnehmer);
 
@@ -761,7 +759,7 @@ public class BackendControllerTest {
 
         int newSumOfRegisteredTeilnehmer = 0;
         for (Projekt projekt: allProjects) {
-            newSumOfRegisteredTeilnehmer += projekt.getAnmeldungen().size();
+            newSumOfRegisteredTeilnehmer += projekt.getAngemeldeteTeilnehmer().size();
         }
         //4 Assignments
         assertThat(newSumOfRegisteredTeilnehmer,is(sumOfRegisteredTeilnehmer+4));
@@ -841,21 +839,21 @@ public class BackendControllerTest {
     public void shouldUpdateProjectCorrectly() {
         Long projectId = addProjekt(createSampleProject());
 
-        Projekt projekt = getProjekt(projectId);
-        projekt.setName("Klettern am Berg");
-        projekt.setDatum(LocalDate.of(2019, 8,3));
-        projekt.setDatumEnde(LocalDate.of(2019, 9,2));
-        projekt.setSlotsReserviert(6);
-        projekt.setSlotsGesamt(25);
-
+        Projekt projekt = Projekt.newBuilder(getProjekt(projectId))
+                .name("Klettern am Berg")
+                .datumBeginn(LocalDate.of(2019, 8,3))
+                .datumEnde(LocalDate.of(2019, 9,2))
+                .plaetzeReserviert(6)
+                .plaetzeGesamt(25)
+                .build();
 
         Projekt updatedProjekt = updateProjekt(projekt);
 
         assertThat(updatedProjekt.getName(), is(projekt.getName()));
-        assertThat(updatedProjekt.getDatum(), is(projekt.getDatum()));
+        assertThat(updatedProjekt.getDatumBeginn(), is(projekt.getDatumBeginn()));
         assertThat(updatedProjekt.getDatumEnde(), is(projekt.getDatumEnde()));
-        assertThat(updatedProjekt.getSlotsReserviert(), is(projekt.getSlotsReserviert()));
-        assertThat(updatedProjekt.getSlotsGesamt(), is(projekt.getSlotsGesamt()));
+        assertThat(updatedProjekt.getPlaetzeReserviert(), is(projekt.getPlaetzeReserviert()));
+        assertThat(updatedProjekt.getPlaetzeGesamt(), is(projekt.getPlaetzeGesamt()));
     }
 
     @Test
@@ -869,10 +867,10 @@ public class BackendControllerTest {
 
     @Test
     public void givenEndeDatumBeforeDatum_whenCreatingProjekt_thenBadRequest() {
-        Projekt projekt = createSampleProject();
-
-        projekt.setDatum(LocalDate.of(2019, 12, 5));
-        projekt.setDatumEnde(LocalDate.of(2019, 12, 4));
+        Projekt projekt = Projekt.newBuilder(createSampleProject())
+                .datumBeginn(LocalDate.of(2019, 12, 5))
+                .datumEnde(LocalDate.of(2019, 12, 4))
+                .build();
 
         given()
             .body(projekt)
@@ -887,10 +885,10 @@ public class BackendControllerTest {
 
     @Test
     public void givenHoechstAlterSmallerThanMindestAlter_whenCreatingProjekt_thenBadRequest() {
-        Projekt projekt = createSampleProject();
-
-        projekt.setHoechstAlter(10);
-        projekt.setMindestAlter(11);
+        Projekt projekt = Projekt.newBuilder(createSampleProject())
+                .mindestAlter(11)
+                .hoechstAlter(10)
+                .build();
 
         given()
                 .body(projekt)
@@ -905,10 +903,10 @@ public class BackendControllerTest {
 
     @Test
     public void givenMoreSlotsReservedThanTotalSlots_whenCreatingProjekt_thenBadRequest() {
-        Projekt projekt = createSampleProject();
-
-        projekt.setSlotsReserviert(10);
-        projekt.setSlotsGesamt(5);
+        Projekt projekt = Projekt.newBuilder(createSampleProject())
+                .plaetzeReserviert(11)
+                .plaetzeGesamt(5)
+                .build();
 
         given()
                 .body(projekt)
@@ -918,7 +916,7 @@ public class BackendControllerTest {
                 .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("errors", hasSize(1))
-                .body("errors[0].field", is("slotsReserviert"));
+                .body("errors[0].field", is("plaetzeReserviert"));
     }
 
     @Test
@@ -928,9 +926,9 @@ public class BackendControllerTest {
 
         assignUser2Projekt(projectId, userId);
 
-        Projekt projekt = getProjekt(projectId);
-
-        projekt.setSlotsReserviert(0);
+        Projekt projekt = Projekt.newBuilder(getProjekt(projectId))
+                .plaetzeReserviert(0)
+                .build();
 
         given()
                 .body(projekt)
@@ -940,7 +938,7 @@ public class BackendControllerTest {
             .then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body("errors", hasSize(1))
-                .body("errors[0].field", is("slotsReserviert"));
+                .body("errors[0].field", is("plaetzeReserviert"));
     }
 
     private List<Projekt> getAlleZugewiesenenProjekteByFirstNameAndLastName(String vorname, String nachname) {
@@ -1178,7 +1176,7 @@ public class BackendControllerTest {
 
         allProjects.forEach(projekt -> System.out.println(projekt.getId() + ", Name: " + projekt.getName()));
         allProjects.forEach(projekt -> {
-            projekt.getAnmeldungen().forEach(teilnehmer -> System.out.println(projekt.getId() + ", Teilnehmer: " + teilnehmer.getVorname()));
+            projekt.getAngemeldeteTeilnehmer().forEach(teilnehmer -> System.out.println(projekt.getId() + ", Teilnehmer: " + teilnehmer.getVorname()));
 
         });
         System.out.println("Projekte " + allProjects);

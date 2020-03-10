@@ -203,7 +203,7 @@ public class BackendController {
         LOG.info("GET called on /user/" + userId + "/projects");
         List<Projekt> resultList = new ArrayList<>();
         for (Projekt projekt : projektRepository.findAll()) {
-            for (Teilnehmer teilnehmer: projekt.getAnmeldungen()) {
+            for (Teilnehmer teilnehmer: projekt.getAngemeldeteTeilnehmer()) {
                 if(teilnehmer.getId() == userId)
                     resultList.add(projekt);
             }
@@ -307,8 +307,8 @@ public class BackendController {
         Optional<Projekt> maybeProjekt = projektRepository.findById(projektId);
         if (maybeProjekt.isPresent()) {
             Projekt projekt = maybeProjekt.get();
-            LOG.info("Returning " + projekt.getAnmeldungen().size() + " registered participants for project " + projekt.getName());
-            return projekt.getAnmeldungen();
+            LOG.info("Returning " + projekt.getAngemeldeteTeilnehmer().size() + " registered participants for project " + projekt.getName());
+            return projekt.getAngemeldeteTeilnehmer();
         } else {
             throw new ProjektNotFoundException("Projekt mit der id " + projektId + " wurde nicht gefunden.");
         }
@@ -386,7 +386,7 @@ public class BackendController {
         Optional<Projekt> maybeProjekt = projektRepository.findById(projektId);
         if (maybeProjekt.isPresent()) {
             Projekt projekt = maybeProjekt.get();
-            projekt.setAktiv(false);
+            // projekt.setAktiv(false); // TODO should be just done with a normal update
             projektRepository.save(projekt);
             LOG.info(projekt.getName() + " with id " + projekt.getId() + " is set to inactive");
             return true;
@@ -404,7 +404,7 @@ public class BackendController {
         LOG.info("GET called on /projects/byusername resource");
         List<Projekt> resultList = new ArrayList<>();
         for (Projekt projekt : projektRepository.findAll()) {
-            for (Teilnehmer t: projekt.getAnmeldungen()) {
+            for (Teilnehmer t: projekt.getAngemeldeteTeilnehmer()) {
                 if(t.getVorname().equals(vorname) && t.getNachname().equals(nachname))
                     resultList.add(projekt);
             }

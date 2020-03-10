@@ -16,10 +16,10 @@ public interface ProjektRepository extends CrudRepository<Projekt, Long> {
     //List<Projekt> findByProjekts(@Param("projekt_id") long projekt_id);
     //List<Projekt> findByprojekt_id(@Param("projekt_id") long projekt_id);
 
-    @Query(value="FROM Projekt p WHERE p.aktiv=true ORDER BY p.datum, p.datumEnde ASC")
+    @Query(value="FROM Projekt p WHERE p.aktiv=true ORDER BY p.datumBeginn, p.datumEnde ASC")
     List<Projekt> findAllProjects();
 
-    @Query(value="SELECT p.anmeldungen FROM Projekt p WHERE p.name in :name")
+    @Query(value="SELECT p.angemeldeteTeilnehmer FROM Projekt p WHERE p.name in :name")
     List<Teilnehmer> findUsersByName();
 
 

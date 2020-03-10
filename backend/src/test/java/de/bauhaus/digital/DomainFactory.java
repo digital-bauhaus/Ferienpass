@@ -8,7 +8,7 @@ public class DomainFactory {
 
     public static Projekt createSampleProject() {
         return createSampleProject("Schwimmem im See", LocalDate.of(2018, 7,
-                1), LocalDate.of(2018, 7, 3), 10, 5, "Sportjugend Weimar", 15, 20);
+                1), LocalDate.of(2018, 7, 3), 10, 5, 15, 20);
     }
 
     public static Projekt createSampleProjectOfSlots(int slotsGesamt, int slotsReserviert) {
@@ -25,13 +25,11 @@ public class DomainFactory {
                                               LocalDate endeDatum,
                                               int slotsGesamt,
                                               int slotsReserviert) {
-        return createSampleProject(projektName, datum, endeDatum, slotsGesamt, slotsReserviert, "Sportjugend Weimar", 15, 20);
+        return createSampleProject(projektName, datum, endeDatum, slotsGesamt, slotsReserviert, 15, 20);
     }
 
-    public static Projekt createSampleProject(String projektName, LocalDate datum, LocalDate endeDatum, int slotsGesamt, int slotsReserviert, String traeger, int mindestAlter, int hoechstAlter) {
-        return new Projekt(projektName, datum, endeDatum, mindestAlter,
-                hoechstAlter, 12, slotsGesamt, slotsReserviert, traeger, "www" +
-                ".google.com");
+    public static Projekt createSampleProject(String projektName, LocalDate datum, LocalDate endeDatum, int slotsGesamt, int slotsReserviert, int mindestAlter, int hoechstAlter) {
+        return Projekt.newBuilder().name(projektName).datumBeginn(datum).datumEnde(endeDatum).plaetzeGesamt(slotsGesamt).plaetzeReserviert(slotsReserviert).mindestAlter(mindestAlter).hoechstAlter(hoechstAlter).build();
     }
 
     public static Teilnehmer createSampleUser() {
