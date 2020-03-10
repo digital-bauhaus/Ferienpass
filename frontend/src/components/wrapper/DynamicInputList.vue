@@ -13,12 +13,13 @@
       :placeholder="placeholder"
       add-button-text="Hinzufügen"
       duplicate-tag-text="Doppelter Eintrag"
+      :separator="separator"
       :value="value"
       @input="$emit('input', $event)"
     >
       <template
         v-slot="{ tags, inputAttrs, inputHandlers, addTag, removeTag,
-                  addButtonText, placeholder }"
+                  addButtonText, placeHolder: placeholderProp }"
       >
         <div class="mb-2">
           <b-form-tag
@@ -35,7 +36,7 @@
         <b-input-group>
           <b-form-input
             v-bind="inputAttrs"
-            :placeholder="placeholder"
+            :placeholder="placeholderProp"
             :disabled="disabled"
             v-on="inputHandlers"
           />
@@ -80,6 +81,10 @@ export default {
     placeholder: {
       type: String,
       default: '',
+    },
+    separator: {
+      type: String,
+      default: null,
     },
   },
 };
