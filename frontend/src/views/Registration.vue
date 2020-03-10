@@ -3,11 +3,6 @@
     <h1>
       {{ titleText }}
     </h1>
-    <ErrorAlert
-      v-if="showServerErrorAlert"
-      :heading-text="serverErrorHeadingText"
-      :errors="serverErrorMessages"
-    />
     <CheckBoxGroup base="schoolkid">
       <CheckBox
         v-model="isSchoolKid"
@@ -37,6 +32,11 @@
         />
       </ProjektAuswahl>
     </UserEditor>
+    <ErrorAlert
+      v-if="showServerErrorAlert"
+      :heading-text="serverErrorHeadingText"
+      :errors="serverErrorMessages"
+    />
 
     <b-alert
       class="fixed-bottom w-50 mx-auto"
@@ -80,6 +80,7 @@ export default {
         nachname: '',
         geburtsdatum: '',
         strasse: '',
+        hausnummer: '99', // TODO
         wohnort: '',
         postleitzahl: '',
         telefon: '',
@@ -135,6 +136,9 @@ export default {
           gewohnterBegleitpersonenDienstleister: '',
           beantragungKostenuebernahmeBegleitperson: false,
         },
+        datenschutzErklaerungAkzeptiert: true, // TODO
+        teilnahmeBedingungAkzeptiert: true, // TODO
+        schulkind: true, // TODO
       },
       serverErrorMessages: [],
       successAutomaticDismissCountDown: 0,

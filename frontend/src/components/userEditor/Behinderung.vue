@@ -18,7 +18,6 @@
     >
       <CheckBox
         base="behinderung-liegtBehinderungVor"
-        :required="true"
         :aria-expanded="liegtBehinderungVor"
         aria-controls="behinderung-collapse"
         :checked="liegtBehinderungVor"
