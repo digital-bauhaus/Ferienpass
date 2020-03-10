@@ -218,7 +218,7 @@ public class BackendControllerTest {
         String nachname = "Klausen";
         LocalDate geburtsdatum = LocalDate.of(1999, 12, 31);
         String strasse = "Bahnhofstraße";
-        String hausNummer = "5";
+        String hausnummer = "5";
         String wohnort = "Erfurt";
         String plz = "99082";
         String telefon = "03544444";
@@ -234,7 +234,7 @@ public class BackendControllerTest {
                 .nachname(nachname)
                 .geburtsdatum(geburtsdatum)
                 .strasse(strasse)
-                .hausnummer(hausNummer)
+                .hausnummer(hausnummer)
                 .wohnort(wohnort)
                 .postleitzahl(plz)
                 .telefon(telefon)

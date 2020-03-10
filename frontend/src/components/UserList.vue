@@ -67,7 +67,7 @@ export default {
           key: 'geburtsdatum', label: 'Geburtsdatum', sortable: true, formatter: 'formatDate',
         },
         { key: 'strasse', label: 'Straße', sortable: true },
-        { key: 'hausNummer', label: 'Hausnummer', sortable: true },
+        { key: 'hausnummer', label: 'Hausnummer', sortable: true },
         { key: 'postleitzahl', label: 'Postleitzahl', sortable: true },
         { key: 'wohnort', label: 'Wohnort', sortable: true },
         { key: 'telefon', label: 'Telefon', sortable: true },
