@@ -7,6 +7,8 @@
     @submit.prevent="onSubmit"
     @keydown.enter="preventAccidentalSubmit"
   >
+    <!-- eslint-disable max-len -->
+
     <FormSection
       v-if="isAdminView"
       label="Verwaltungsaufgaben"
@@ -76,18 +78,18 @@
         :medikamente="value.medikamente"
         :krankenkasse="value.krankenkasse"
         :hitzeempfindlich="value.hitzeempfindlich"
-        :vegetarier="value.vegetarier"
-        :laktose-unvertraeglichkeit="value.laktoseUnvertraeglichkeit"
-        :eier-unvertraeglichkeit="value.eierUnvertraeglichkeit"
+        :essen-vegetarier="value.essenVegetarier"
+        :essen-laktose-unvertraeglichkeit="value.essenLaktoseUnvertraeglichkeit"
+        :essen-eier-unvertraeglichkeit="value.essenEinerUnvertraeglichkeit"
         :essen-weitere-limitierungen="value.essenWeitereLimitierungen"
         @update:allergien="updateValue('allergien', $event)"
         @update:krankheiten="updateValue('krankheiten', $event)"
         @update:medikamente="updateValue('medikamente', $event)"
         @update:krankenkasse="updateValue('krankenkasse', $event)"
         @update:hitzeempfindlich="updateValue('hitzeempfindlich', $event)"
-        @update:vegetarier="updateValue('vegetarier', $event)"
-        @update:laktoseUnvertraeglichkeit="updateValue('laktoseUnvertraeglichkeit', $event)"
-        @update:eierUnvertraeglichkeit="updateValue('eierUnvertraeglichkeit', $event)"
+        @update:essenVegetarier="updateValue('essenVegetarier', $event)"
+        @update:essenLaktoseUnvertraeglichkeit="updateValue('essenLaktoseUnvertraeglichkeit', $event)"
+        @update:essenEinerUnvertraeglichkeit="updateValue('essenEinerUnvertraeglichkeit', $event)"
         @update:essenWeitereLimitierungen="updateValue('essenWeitereLimitierungen', $event)"
       >
         <Group label="Hausarzt">
@@ -106,7 +108,6 @@
     </FormSection>
 
     <FormSection label="Angaben bei Behinderung">
-      <!-- eslint-disable max-len -->
       <Behinderung
         :disabled="disabled"
         :liegt-behinderung-vor="value.liegtBehinderungVor"

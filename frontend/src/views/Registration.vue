@@ -97,9 +97,9 @@ export default {
         krankheiten: '',
         hitzeempfindlich: false,
         krankenkasse: '',
-        vegetarier: false,
-        laktoseUnvertraeglichkeit: false,
-        eierUnvertraeglichkeit: false,
+        essenVegetarier: false,
+        essenLaktoseUnvertraeglichkeit: false,
+        essenEinerUnvertraeglichkeit: false,
         essenWeitereLimitierungen: '',
         liegtBehinderungVor: false,
         notfallKontakt: {

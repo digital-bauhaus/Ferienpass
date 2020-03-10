@@ -50,23 +50,23 @@
       :disabled="disabled"
     >
       <CheckBox
-        base="gesundheit-vegetarier"
-        :checked="vegetarier"
-        @input="$emit('update:vegetarier', $event)"
+        base="gesundheit-essenVegetarier"
+        :checked="essenVegetarier"
+        @input="$emit('update:essenVegetarier', $event)"
       >
         Vegetarier
       </CheckBox>
       <CheckBox
-        base="gesundheit-laktoseUnvertraeglichkeit"
-        :checked="laktoseUnvertraeglichkeit"
-        @input="$emit('update:laktoseUnvertraeglichkeit', $event)"
+        base="gesundheit-essenLaktoseUnvertraeglichkeit"
+        :checked="essenLaktoseUnvertraeglichkeit"
+        @input="$emit('update:essenLaktoseUnvertraeglichkeit', $event)"
       >
         Laktose-Unverträglichkeit
       </CheckBox>
       <CheckBox
-        base="gesundheit-eierUnvertraeglichkeit"
-        :checked="eierUnvertraeglichkeit"
-        @input="$emit('update:eierUnvertraeglichkeit', $event)"
+        base="gesundheit-essenEierUnvertraeglichkeit"
+        :checked="essenEierUnvertraeglichkeit"
+        @input="$emit('update:essenEierUnvertraeglichkeit', $event)"
       >
         Eier-Unverträglichkeit
       </CheckBox>
@@ -126,15 +126,15 @@ export default {
       type: Boolean,
       required: true,
     },
-    vegetarier: {
+    essenVegetarier: {
       type: Boolean,
       required: true,
     },
-    laktoseUnvertraeglichkeit: {
+    essenLaktoseUnvertraeglichkeit: {
       type: Boolean,
       required: true,
     },
-    eierUnvertraeglichkeit: {
+    essenEierUnvertraeglichkeit: {
       type: Boolean,
       required: true,
     },
