@@ -69,7 +69,7 @@ export default {
         { key: 'strasse', label: 'Straße', sortable: true },
         { key: 'hausNummer', label: 'Hausnummer', sortable: true },
         { key: 'postleitzahl', label: 'Postleitzahl', sortable: true },
-        { key: 'stadt', label: 'Wohnort', sortable: true },
+        { key: 'wohnort', label: 'Wohnort', sortable: true },
         { key: 'telefon', label: 'Telefon', sortable: true },
         { key: 'email', label: 'Email', sortable: true },
         this.showProjects && { key: 'projects', label: 'Projekte', sortable: false },
@@ -100,7 +100,7 @@ export default {
     findProjectNamesForUserId(projects, userId) {
       const projectNames = [];
       projects.forEach((project) => {
-        if (project.anmeldungen.map((user) => user.id).includes(userId)) {
+        if (project.angemeldeteTeilnehmer.map((user) => user.id).includes(userId)) {
           projectNames.push(project.name);
         }
       });

@@ -4,6 +4,7 @@
       base="gesundheit-allergien"
       label="Bei meinem Kind muss auf folgende Allergie(n) geachtet werden:"
       placeholder="z.B. Heuschnupfen"
+      separator="|"
       :disabled="disabled"
       :value="allergien ? allergien.split('|') : []"
       @input="$emit('update:allergien', $event.join('|'))"
@@ -13,6 +14,7 @@
       base="gesundheit-krankheiten"
       label="Krankheiten des Kindes bitte hier angeben:"
       placeholder="z.B. Epilepsie"
+      separator="|"
       :disabled="disabled"
       :value="krankheiten ? krankheiten.split('|') : []"
       @input="$emit('update:krankheiten', $event.join('|'))"
@@ -22,20 +24,21 @@
       base="gesundheit-medikamente"
       label="Mein Kind nimmt folgende Medikamente ein:"
       placeholder="z.B. Diazepam"
+      separator="|"
       :disabled="disabled"
       :value="medikamente ? medikamente.split('|') : []"
       @input="$emit('update:medikamente', $event.join('|'))"
     />
 
     <CheckBoxGroup
-      base="gesundheit-hitzeempfindlichkeiten"
+      base="gesundheit-hitzeempfindlich"
       label="Hitzeempfindlichkeit"
       :disabled="disabled"
     >
       <CheckBox
-        base="gesundheit-hitzeempfindlichkeiten"
-        :checked="hitzeempfindlichkeiten"
-        @input="$emit('update:hitzeempfindlichkeiten', $event)"
+        base="gesundheit-hitzeempfindlich"
+        :checked="hitzeempfindlich"
+        @input="$emit('update:hitzeempfindlich', $event)"
       >
         Mein Kind ist hitzeempfindlich
       </CheckBox>
@@ -70,12 +73,13 @@
     </CheckBoxGroup>
 
     <DynamicInputList
-      base="gesundheit-essenLimitierungen"
+      base="gesundheit-essenWeitereLimitierungen"
       label="Weitere Ernährungsbesonderheiten:"
       placeholder="z.B. Milchpulver-Unverträglichkeit"
+      separator="|"
       :disabled="disabled"
-      :value="essenLimitierungen ? essenLimitierungen.split('|') : []"
-      @input="$emit('update:essenLimitierungen', $event.join('|'))"
+      :value="essenWeitereLimitierungen ? essenWeitereLimitierungen.split('|') : []"
+      @input="$emit('update:essenWeitereLimitierungen', $event.join('|'))"
     />
 
     <FieldInput
@@ -118,7 +122,7 @@ export default {
       type: String,
       required: true,
     },
-    hitzeempfindlichkeiten: {
+    hitzeempfindlich: {
       type: Boolean,
       required: true,
     },
@@ -134,7 +138,7 @@ export default {
       type: Boolean,
       required: true,
     },
-    essenLimitierungen: {
+    essenWeitereLimitierungen: {
       type: String,
       required: true,
     },

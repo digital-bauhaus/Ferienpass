@@ -56,12 +56,12 @@
     />
 
     <FieldInput
-      base="grunddaten-stadt"
+      base="grunddaten-wohnort"
       label="Wohnort"
       :required="true"
       :disabled="disabled"
-      :value="stadt"
-      @update="$emit('update:stadt', $event)"
+      :value="wohnort"
+      @update="$emit('update:wohnort', $event)"
     />
 
     <FieldInput
@@ -121,7 +121,7 @@ export default {
       type: String,
       required: true,
     },
-    stadt: {
+    wohnort: {
       type: String,
       required: true,
     },

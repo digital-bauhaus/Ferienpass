@@ -3,11 +3,6 @@
     <h1>
       {{ titleText }}
     </h1>
-    <ErrorAlert
-      v-if="showServerErrorAlert"
-      :heading-text="serverErrorHeadingText"
-      :errors="serverErrorMessages"
-    />
     <CheckBoxGroup base="schoolkid">
       <CheckBox
         v-model="isSchoolKid"
@@ -37,6 +32,11 @@
         />
       </ProjektAuswahl>
     </UserEditor>
+    <ErrorAlert
+      v-if="showServerErrorAlert"
+      :heading-text="serverErrorHeadingText"
+      :errors="serverErrorMessages"
+    />
 
     <b-alert
       class="fixed-bottom w-50 mx-auto"
@@ -80,7 +80,8 @@ export default {
         nachname: '',
         geburtsdatum: '',
         strasse: '',
-        stadt: '',
+        hausnummer: '99', // TODO
+        wohnort: '',
         postleitzahl: '',
         telefon: '',
         email: '',
@@ -92,24 +93,27 @@ export default {
         allergien: '',
         medikamente: '',
         krankheiten: '',
-        hitzeempfindlichkeiten: false,
+        hitzeempfindlich: false,
         krankenkasse: '',
         vegetarier: false,
         laktoseUnvertraeglichkeit: false,
         eierUnvertraeglichkeit: false,
-        essenLimitierungen: '',
+        essenWeitereLimitierungen: '',
         liegtBehinderungVor: false,
         notfallKontakt: {
+          id: null,
           name: '',
-          address: '',
-          telephone: '',
+          anschrift: '',
+          telefon: '',
         },
         arzt: {
+          id: null,
           name: '',
-          address: '',
-          telephone: '',
+          anschrift: '',
+          telefon: '',
         },
         behinderung: {
+          id: null,
           merkzeichen_AussergewoehnlicheGehbehinderung_aG: false,
           merkzeichen_Hilflosigkeit_H: false,
           merkzeichen_Blind_Bl: false,
@@ -128,10 +132,13 @@ export default {
           begleitpersonSozialeBegleitung: false,
           eingeschraenkteSinne: '',
           hinweiseZumUmgangMitDemKind: '',
-          unterstuetzungSucheBegleitpersonNotwendig: false,
+          unterstuetzungSucheBegleitperson: false,
           gewohnterBegleitpersonenDienstleister: '',
-          beantragungKostenuebernahmeBegleitpersonNotwendig: false,
+          beantragungKostenuebernahmeBegleitperson: false,
         },
+        datenschutzErklaerungAkzeptiert: true, // TODO
+        teilnahmeBedingungAkzeptiert: true, // TODO
+        schulkind: true, // TODO
       },
       serverErrorMessages: [],
       successAutomaticDismissCountDown: 0,

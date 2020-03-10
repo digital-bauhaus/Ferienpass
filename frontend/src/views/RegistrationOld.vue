@@ -442,7 +442,7 @@ export default {
           name: `projekt-id${adminProjekt.id}`,
           registered: false,
           projekt: {
-            date: new Date(adminProjekt.datum),
+            date: new Date(adminProjekt.datumBeginn),
             endDate: new Date(adminProjekt.datumEnde),
             id: adminProjekt.id,
             org: adminProjekt.traeger,

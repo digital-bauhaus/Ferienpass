@@ -14,7 +14,7 @@ public class ProjektValidator implements ConstraintValidator<ProjektValidation, 
     public boolean isValid(Projekt value, ConstraintValidatorContext context) {
         boolean valid = true;
 
-        if (value.getDatumEnde() != null && value.getDatumEnde().isBefore(value.getDatum())) {
+        if (value.getDatumEnde() != null && value.getDatumEnde().isBefore(value.getDatumBeginn())) {
             context.buildConstraintViolationWithTemplate("Enddatum darf nicht vor Beginndatum liegen.").addPropertyNode("datumEnde").addConstraintViolation();
             valid = false;
         }
@@ -22,12 +22,12 @@ public class ProjektValidator implements ConstraintValidator<ProjektValidation, 
             context.buildConstraintViolationWithTemplate("Höchstalter darf nicht kleiner als das Mindestalter sein.").addPropertyNode("hoechstAlter").addConstraintViolation();
             valid = false;
         }
-        if (value.getSlotsReserviert() < value.getAnmeldungen().size()) {
-            context.buildConstraintViolationWithTemplate("Es dürfen nicht weniger Plätze reserviert werden als aktuell Teilnehmer angemeldet sind.").addPropertyNode("slotsReserviert").addConstraintViolation();
+        if (value.getPlaetzeReserviert() < value.getAngemeldeteTeilnehmer().size()) {
+            context.buildConstraintViolationWithTemplate("Es dürfen nicht weniger Plätze reserviert werden als aktuell Teilnehmer angemeldet sind.").addPropertyNode("plaetzeReserviert").addConstraintViolation();
             valid = false;
         }
-        if (value.getSlotsReserviert() > value.getSlotsGesamt()) {
-            context.buildConstraintViolationWithTemplate("Es dürfen nicht mehr Plätze reserviert werden als überhaupt verfügbar sind.").addPropertyNode("slotsReserviert").addConstraintViolation();
+        if (value.getPlaetzeReserviert() > value.getPlaetzeGesamt()) {
+            context.buildConstraintViolationWithTemplate("Es dürfen nicht mehr Plätze reserviert werden als überhaupt verfügbar sind.").addPropertyNode("plaetzeReserviert").addConstraintViolation();
             valid = false;
         }
 

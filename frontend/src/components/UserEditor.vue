@@ -23,7 +23,7 @@
         :strasse="value.strasse"
         :haus-nummer="'TODO'"
         :postleitzahl="value.postleitzahl"
-        :stadt="value.stadt"
+        :wohnort="value.wohnort"
         :telefon="value.telefon"
         :email="value.email"
         @update:nachname="updateValue('nachname', $event)"
@@ -32,7 +32,7 @@
         @update:strasse="updateValue('strasse', $event)"
         @update:hausNummer="updateValue('TODO', $event)"
         @update:postleitzahl="updateValue('postleitzahl', $event)"
-        @update:stadt="updateValue('stadt', $event)"
+        @update:wohnort="updateValue('wohnort', $event)"
         @update:telefon="updateValue('telefon', $event)"
         @update:email="updateValue('email', $event)"
       />
@@ -58,11 +58,11 @@
             :disabled="disabled"
             :telefon-required="true"
             :name="value.notfallKontakt.name"
-            :anschrift="value.notfallKontakt.address"
-            :telefon="value.notfallKontakt.telephone"
+            :anschrift="value.notfallKontakt.anschrift"
+            :telefon="value.notfallKontakt.telefon"
             @update:name="updateValue('notfallKontakt.name', $event)"
-            @update:anschrift="updateValue('notfallKontakt.address', $event)"
-            @update:telefon="updateValue('notfallKontakt.telephone', $event)"
+            @update:anschrift="updateValue('notfallKontakt.anschrift', $event)"
+            @update:telefon="updateValue('notfallKontakt.telefon', $event)"
           />
         </Group>
       </Pflichtangaben>
@@ -75,31 +75,31 @@
         :krankheiten="value.krankheiten"
         :medikamente="value.medikamente"
         :krankenkasse="value.krankenkasse"
-        :hitzeempfindlichkeiten="value.hitzeempfindlichkeiten"
+        :hitzeempfindlich="value.hitzeempfindlich"
         :vegetarier="value.vegetarier"
         :laktose-unvertraeglichkeit="value.laktoseUnvertraeglichkeit"
         :eier-unvertraeglichkeit="value.eierUnvertraeglichkeit"
-        :essen-limitierungen="value.essenLimitierungen"
+        :essen-weitere-limitierungen="value.essenWeitereLimitierungen"
         @update:allergien="updateValue('allergien', $event)"
         @update:krankheiten="updateValue('krankheiten', $event)"
         @update:medikamente="updateValue('medikamente', $event)"
         @update:krankenkasse="updateValue('krankenkasse', $event)"
-        @update:hitzeempfindlichkeiten="updateValue('hitzeempfindlichkeiten', $event)"
+        @update:hitzeempfindlich="updateValue('hitzeempfindlich', $event)"
         @update:vegetarier="updateValue('vegetarier', $event)"
         @update:laktoseUnvertraeglichkeit="updateValue('laktoseUnvertraeglichkeit', $event)"
         @update:eierUnvertraeglichkeit="updateValue('eierUnvertraeglichkeit', $event)"
-        @update:essenLimitierungen="updateValue('essenLimitierungen', $event)"
+        @update:essenWeitereLimitierungen="updateValue('essenWeitereLimitierungen', $event)"
       >
         <Group label="Hausarzt">
           <Kontakt
             base="hausarzt"
             :disabled="disabled"
             :name="value.arzt.name"
-            :anschrift="value.arzt.address"
-            :telefon="value.arzt.telephone"
+            :anschrift="value.arzt.anschrift"
+            :telefon="value.arzt.telefon"
             @update:name="updateValue('arzt.name', $event)"
-            @update:anschrift="updateValue('arzt.address', $event)"
-            @update:telefon="updateValue('arzt.telephone', $event)"
+            @update:anschrift="updateValue('arzt.anschrift', $event)"
+            @update:telefon="updateValue('arzt.telefon', $event)"
           />
         </Group>
       </Gesundheit>
@@ -128,9 +128,9 @@
         :begleitperson-soziale-begleitung="value.behinderung.begleitpersonSozialeBegleitung"
         :eingeschraenkte-sinne="value.behinderung.eingeschraenkteSinne"
         :hinweise-zum-umgang-mit-dem-kind="value.behinderung.hinweiseZumUmgangMitDemKind"
-        :unterstuetzung-suche-begleitperson-notwendig="value.behinderung.unterstuetzungSucheBegleitpersonNotwendig"
+        :unterstuetzung-suche-begleitperson="value.behinderung.unterstuetzungSucheBegleitperson"
         :gewohnter-begleitpersonen-dienstleister="value.behinderung.gewohnterBegleitpersonenDienstleister"
-        :beantragung-kostenuebernahme-begleitperson-notwendig="value.behinderung.beantragungKostenuebernahmeBegleitpersonNotwendig"
+        :beantragung-kostenuebernahme-begleitperson="value.behinderung.beantragungKostenuebernahmeBegleitperson"
         @update:liegtBehinderungVor="updateValue('liegtBehinderungVor', $event)"
         @update:merkzeichenAussergewoehnlicheGehbehinderungaG="updateValue('behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG', $event)"
         @update:merkzeichenHilflosigkeitH="updateValue('behinderung.merkzeichen_Hilflosigkeit_H', $event)"
@@ -150,9 +150,9 @@
         @update:begleitpersonSozialeBegleitung="updateValue('behinderung.begleitpersonSozialeBegleitung', $event)"
         @update:eingeschraenkteSinne="updateValue('behinderung.eingeschraenkteSinne', $event)"
         @update:hinweiseZumUmgangMitDemKind="updateValue('behinderung.hinweiseZumUmgangMitDemKind', $event)"
-        @update:unterstuetzungSucheBegleitpersonNotwendig="updateValue('behinderung.unterstuetzungSucheBegleitpersonNotwendig', $event)"
+        @update:unterstuetzungSucheBegleitperson="updateValue('behinderung.unterstuetzungSucheBegleitperson', $event)"
         @update:gewohnterBegleitpersonenDienstleister="updateValue('behinderung.gewohnterBegleitpersonenDienstleister', $event)"
-        @update:beantragungKostenuebernahmeBegleitpersonNotwendig="updateValue('behinderung.beantragungKostenuebernahmeBegleitpersonNotwendig', $event)"
+        @update:beantragungKostenuebernahmeBegleitperson="updateValue('behinderung.beantragungKostenuebernahmeBegleitperson', $event)"
       />
     </FormSection>
 

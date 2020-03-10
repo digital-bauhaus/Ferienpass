@@ -18,7 +18,6 @@
     >
       <CheckBox
         base="behinderung-liegtBehinderungVor"
-        :required="true"
         :aria-expanded="liegtBehinderungVor"
         aria-controls="behinderung-collapse"
         :checked="liegtBehinderungVor"
@@ -217,15 +216,15 @@
         />
 
         <CheckBoxGroup
-          base="behinderung-unterstuetzungSucheBegleitpersonNotwendig"
+          base="behinderung-unterstuetzungSucheBegleitperson"
           :disabled="disabled"
         >
           <CheckBox
-            base="behinderung-unterstuetzungSucheBegleitpersonNotwendig"
-            :aria-expanded="unterstuetzungSucheBegleitpersonNotwendig"
+            base="behinderung-unterstuetzungSucheBegleitperson"
+            :aria-expanded="unterstuetzungSucheBegleitperson"
             aria-controls="behinderung-gewohnterBegleitpersonenDienstleister-collapse"
-            :checked="unterstuetzungSucheBegleitpersonNotwendig"
-            @input="$emit('update:unterstuetzungSucheBegleitpersonNotwendig', $event)"
+            :checked="unterstuetzungSucheBegleitperson"
+            @input="$emit('update:unterstuetzungSucheBegleitperson', $event)"
           >
             Wir benötigen Unterstützung bei der Organisation der Begleitperson
           </CheckBox>
@@ -233,7 +232,7 @@
 
         <b-collapse
           id="behinderung-gewohnterBegleitpersonenDienstleister-collapse"
-          :visible="unterstuetzungSucheBegleitpersonNotwendig"
+          :visible="unterstuetzungSucheBegleitperson"
         >
           <TextAreaInput
             base="behinderung-gewohnterBegleitpersonenDienstleister"
@@ -246,13 +245,13 @@
         </b-collapse>
 
         <CheckBoxGroup
-          base="behinderung-beantragungKostenuebernahmeBegleitpersonNotwendig"
+          base="behinderung-beantragungKostenuebernahmeBegleitperson"
           :disabled="disabled"
         >
           <CheckBox
-            base="behinderung-beantragungKostenuebernahmeBegleitpersonNotwendig"
-            :checked="beantragungKostenuebernahmeBegleitpersonNotwendig"
-            @input="$emit('update:beantragungKostenuebernahmeBegleitpersonNotwendig', $event)"
+            base="behinderung-beantragungKostenuebernahmeBegleitperson"
+            :checked="beantragungKostenuebernahmeBegleitperson"
+            @input="$emit('update:beantragungKostenuebernahmeBegleitperson', $event)"
           >
             Hiermit beantrage ich die Übernahme der Kosten für die Begleitung/Betreuung o.g. Kindes
             während der Teilnahme an den Ferienfreizeiten gemäß der Anmeldung unter Punkt 5.
@@ -365,7 +364,7 @@ export default {
       type: String,
       required: true,
     },
-    unterstuetzungSucheBegleitpersonNotwendig: {
+    unterstuetzungSucheBegleitperson: {
       type: Boolean,
       required: true,
     },
@@ -373,7 +372,7 @@ export default {
       type: String,
       required: true,
     },
-    beantragungKostenuebernahmeBegleitpersonNotwendig: {
+    beantragungKostenuebernahmeBegleitperson: {
       type: Boolean,
       required: true,
     },

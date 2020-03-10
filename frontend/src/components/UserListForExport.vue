@@ -40,11 +40,11 @@
           <li> Allergien: {{ row.item.allergien }} </li>
           <li> Krankheiten: {{ row.item.krankheiten }} </li>
           <li> Medikamente: {{ row.item.krankheiten }} </li>
-          <li> Hitzeempfindlich? {{ row.item.hitzeempfindlichkeiten ? 'Ja' : 'Nein' }} </li>
+          <li> Hitzeempfindlich? {{ row.item.hitzeempfindlich ? 'Ja' : 'Nein' }} </li>
           <li> Vegetarier? {{ row.item.vegetarier ? 'Ja' : 'Nein' }} </li>
           <li> Laktose-Unverträgl.? {{ row.item.laktoseUnvertraeglichkeit ? 'Ja' : 'Nein' }} </li>
           <li> Eier-Unverträgl.? {{ row.item.eierUnvertraeglichkeit ? 'Ja' : 'Nein' }} </li>
-          <li> Ernährung: {{ row.item.essenLimitierungen }} </li>
+          <li> Ernährung: {{ row.item.essenWeitereLimitierungen }} </li>
         </ul>
       </template>
       <template v-slot:cell(behinderung)="row">

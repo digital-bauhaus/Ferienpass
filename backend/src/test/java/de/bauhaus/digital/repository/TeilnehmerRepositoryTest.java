@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 
 import static de.bauhaus.digital.DomainFactory.createSampleUserOfName;
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -29,27 +28,39 @@ public class TeilnehmerRepositoryTest {
     @Before
     public void init() {
         Teilnehmer garyEich = createSampleUserOfName("Eich", "Gary");
+        Teilnehmer garyNorris = createSampleUserOfName("Norris", "Gary");
+        Teilnehmer chuckNorris = createSampleUserOfName("Norris", "Chuck");
+        Teilnehmer inactive = Teilnehmer.newBuilder(createSampleUserOfName("nicht", "aktiv")).aktiv(false).build();
         entityManager.persist(garyEich);
+        entityManager.persist(garyNorris);
+        entityManager.persist(chuckNorris);
+        entityManager.persist(inactive);
         entityManager.flush();
     }
 
     @Test
-    public void testFindByLastName() throws Exception {
+    public void whenFindAllActive_thenInactiveUsersAreMissing() {
 
-        List<Teilnehmer> usersWithLastNameEich = teilnehmerRepository.findByNachname("Eich");
+        List<Teilnehmer> allActive = teilnehmerRepository.findAllActive();
 
-        assertThat(usersWithLastNameEich.isEmpty(), is(false));
-        assertThat(usersWithLastNameEich.get(0).getNachname(), containsString("Eich"));
+        assertThat(allActive.size(), is(3));
     }
 
-
     @Test
-    public void testFindByFirstName() throws Exception {
-        // Search for specific User in Database according to firstname
-        List<Teilnehmer> usersWithFirstNameGary = teilnehmerRepository.findByVorname("Gary");
+    public void whenFindAllActiveSortedByName_ThenIsSortedByName() {
 
-        assertThat(usersWithFirstNameGary.isEmpty(), is(false));
-        assertThat(usersWithFirstNameGary.get(0).getVorname(), containsString("Gary"));
+        List<Teilnehmer> allSortedByName = teilnehmerRepository.findAllActiveSortedByName();
+
+        assertThat(allSortedByName.size(), is(3));
+
+        assertThat(allSortedByName.get(0).getNachname(), is("Eich"));
+        assertThat(allSortedByName.get(0).getVorname(), is("Gary"));
+
+        assertThat(allSortedByName.get(1).getNachname(), is("Norris"));
+        assertThat(allSortedByName.get(1).getVorname(), is("Chuck"));
+
+        assertThat(allSortedByName.get(2).getNachname(), is("Norris"));
+        assertThat(allSortedByName.get(2).getVorname(), is("Gary"));
     }
 
 }

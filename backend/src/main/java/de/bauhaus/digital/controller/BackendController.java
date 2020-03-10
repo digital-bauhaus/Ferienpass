@@ -109,7 +109,7 @@ public class BackendController {
     public @ResponseBody
     List<Teilnehmer> getUsers() {
         LOG.info("GET called on /allusers resource");
-        return teilnehmerRepository.findAllUsers();
+        return teilnehmerRepository.findAllActive();
     }
 
     // GET USER INFORMATION BY ID
@@ -141,46 +141,16 @@ public class BackendController {
     @ResponseStatus(HttpStatus.OK)
     public Teilnehmer updateUser(@RequestBody @Valid Teilnehmer user) {
 
-        return teilnehmerRepository.findById(user.getId()).map(teilnehmer2Update -> {
-
-            //Basic data
-            teilnehmer2Update.setVorname(user.getVorname());
-            teilnehmer2Update.setNachname(user.getNachname());
-            teilnehmer2Update.setGeburtsdatum(user.getGeburtsdatum());
-            teilnehmer2Update.setStrasse(user.getStrasse());
-            teilnehmer2Update.setPostleitzahl(user.getPostleitzahl());
-            teilnehmer2Update.setStadt(user.getStadt());
-            teilnehmer2Update.setTelefon(user.getTelefon());
-            teilnehmer2Update.setKrankenkasse(user.getKrankenkasse());
-
-            teilnehmer2Update.setArzt(user.getArzt());
-            teilnehmer2Update.setNotfallKontakt(user.getNotfallKontakt());
-            teilnehmer2Update.setLiegtBehinderungVor(user.isLiegtBehinderungVor());
-            teilnehmer2Update.setBehinderung(user.getBehinderung());
-
-            //Diverse
-            teilnehmer2Update.setDarfBehandeltWerden(user.isDarfBehandeltWerden());
-            teilnehmer2Update.setDarfAlleinNachHause(user.isDarfAlleinNachHause());
-            teilnehmer2Update.setDarfReiten(user.isDarfReiten());
-            teilnehmer2Update.setDarfSchwimmen(user.isDarfSchwimmen());
-            teilnehmer2Update.setSchwimmAbzeichen(user.getSchwimmAbzeichen());
-            teilnehmer2Update.setErlaubeMedikamentation(user.isErlaubeMedikamentation());
-            teilnehmer2Update.setBezahlt(user.isBezahlt());
-            teilnehmer2Update.setEmail((user.getEmail()));
-
-            //Limitations
-            teilnehmer2Update.setKrankheiten(user.getKrankheiten());
-            teilnehmer2Update.setHitzeempfindlichkeiten(user.getHitzeempfindlichkeiten());
-            teilnehmer2Update.setMedikamente(user.getMedikamente());
-            teilnehmer2Update.setAllergien(user.getAllergien());
-            teilnehmer2Update.setEssenLimitierungen(user.getEssenLimitierungen());
-
-            Teilnehmer savedTeilnehmer = teilnehmerRepository.save(teilnehmer2Update);
+        Optional<Teilnehmer> maybeTeilnehmer = teilnehmerRepository.findById(user.getId());
+        if (maybeTeilnehmer.isPresent()) {
+            Teilnehmer foundTeilnehmer = maybeTeilnehmer.get();
+            foundTeilnehmer = user;
+            teilnehmerRepository.save(foundTeilnehmer);
             LOG.info("User with id "+ user.getId() + " successfully updated");
-            return savedTeilnehmer;
-
-        }).orElseThrow(() -> new UserNotFoundException("User " + user.getId() + " not found"));
-
+            return foundTeilnehmer;
+        } else {
+            throw new UserNotFoundException("User " + user.getId() + " not found");
+        }
 
     }
 
@@ -203,7 +173,7 @@ public class BackendController {
         LOG.info("GET called on /user/" + userId + "/projects");
         List<Projekt> resultList = new ArrayList<>();
         for (Projekt projekt : projektRepository.findAll()) {
-            for (Teilnehmer teilnehmer: projekt.getAnmeldungen()) {
+            for (Teilnehmer teilnehmer: projekt.getAngemeldeteTeilnehmer()) {
                 if(teilnehmer.getId() == userId)
                     resultList.add(projekt);
             }
@@ -242,7 +212,7 @@ public class BackendController {
     public @ResponseBody
     List<Projekt> getProjects() {
         LOG.info("GET called on /projects resource");
-        return projektRepository.findAllProjects();
+        return projektRepository.findAllActiveSortedByDatum();
     }
 
     // DELETE PROJECT
@@ -307,8 +277,8 @@ public class BackendController {
         Optional<Projekt> maybeProjekt = projektRepository.findById(projektId);
         if (maybeProjekt.isPresent()) {
             Projekt projekt = maybeProjekt.get();
-            LOG.info("Returning " + projekt.getAnmeldungen().size() + " registered participants for project " + projekt.getName());
-            return projekt.getAnmeldungen();
+            LOG.info("Returning " + projekt.getAngemeldeteTeilnehmer().size() + " registered participants for project " + projekt.getName());
+            return projekt.getAngemeldeteTeilnehmer();
         } else {
             throw new ProjektNotFoundException("Projekt mit der id " + projektId + " wurde nicht gefunden.");
         }
@@ -386,7 +356,7 @@ public class BackendController {
         Optional<Projekt> maybeProjekt = projektRepository.findById(projektId);
         if (maybeProjekt.isPresent()) {
             Projekt projekt = maybeProjekt.get();
-            projekt.setAktiv(false);
+            // projekt.setAktiv(false); // TODO should be just done with a normal update
             projektRepository.save(projekt);
             LOG.info(projekt.getName() + " with id " + projekt.getId() + " is set to inactive");
             return true;
@@ -404,7 +374,7 @@ public class BackendController {
         LOG.info("GET called on /projects/byusername resource");
         List<Projekt> resultList = new ArrayList<>();
         for (Projekt projekt : projektRepository.findAll()) {
-            for (Teilnehmer t: projekt.getAnmeldungen()) {
+            for (Teilnehmer t: projekt.getAngemeldeteTeilnehmer()) {
                 if(t.getVorname().equals(vorname) && t.getNachname().equals(nachname))
                     resultList.add(projekt);
             }
@@ -456,7 +426,7 @@ public class BackendController {
 
     private List<Long> addEveryProjektThatHasNoFreeSlots() {
         List<Long> projekteOhneFreiSlots = new ArrayList<>();
-        projektRepository.findAllProjects().forEach(projekt -> {
+        projektRepository.findAllActiveSortedByDatum().forEach(projekt -> {
             if (!projekt.hasProjektFreeSlots()) {
                 projekteOhneFreiSlots.add(projekt.getId());
             }

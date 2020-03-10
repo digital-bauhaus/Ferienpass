@@ -4,60 +4,54 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Kontakt {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long kontakt_id;
-    private String name;
-    private String address;
-    private String telephone;
 
-    public Kontakt(String name, String address, String telephone) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    private String name;
+
+    private String anschrift;
+
+    @NotBlank(message = "Notfallkontakt-Telefonnummer muss angegeben werden.")
+    private String telefon;
+
+    public Kontakt(String name, String anschrift, String telefon) {
         this.name = name;
-        this.address = address;
-        this.telephone = telephone;
+        this.anschrift = anschrift;
+        this.telefon = telefon;
     }
 
-    protected  Kontakt() {}
+    protected Kontakt() {}
 
-    @Override
-    public String toString() {
-        return String.format(
-                "Contact[id=%d, name='%s', address='%s', telephone='%s']",
-                kontakt_id, name, address, telephone);
+    public long getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getAnschrift() {
+        return anschrift;
     }
 
-    public String getAddress() {
-        return address;
+    public String getTelefon() {
+        return telefon;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    @Override
+    public String toString() {
+        return "Kontakt{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", anschrift='" + anschrift + '\'' +
+                ", telefon='" + telefon + '\'' +
+                '}';
     }
 
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-
-    public long getId() {
-        return kontakt_id;
-    }
-
-    public void setId(long id) {
-        this.kontakt_id = id;
-    }
 }

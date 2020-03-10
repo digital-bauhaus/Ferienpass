@@ -16,7 +16,7 @@
         <li class="font-weight-bold">
           {{ projekt.name }}
         </li>
-        <li>{{ formatDate(projekt.datum) }} - {{ formatDate(projekt.datumEnde) }}</li>
+        <li>{{ formatDate(projekt.datumBeginn) }} - {{ formatDate(projekt.datumEnde) }}</li>
         <li v-if="projekt.mindestAlter > 0">
           Ab {{ projekt.mindestAlter }} Jahren
         </li>
@@ -66,7 +66,7 @@ export default {
   computed: {
     ageAtProjectStart() {
       return this.calculateAgeFromBirthdayAtReferenceDay(this.geburtsdatum,
-        this.projekt.datum);
+        this.projekt.datumBeginn);
     },
     isSelectable() {
       return this.state;
@@ -84,9 +84,9 @@ export default {
     beginsDuringAnother() {
       return this.alleProjekte.some((otherProjekt) => {
         if (this.projekt.id !== otherProjekt.id && this.gewuenschteProjekte[otherProjekt.id]) {
-          const thisProjektBeginDatum = dayjs(this.projekt.datum);
+          const thisProjektBeginDatum = dayjs(this.projekt.datumBeginn);
           const thisProjektEndDatum = dayjs(this.projekt.datumEnde);
-          const otherProjektBeginDatum = dayjs(otherProjekt.datum);
+          const otherProjektBeginDatum = dayjs(otherProjekt.datumBeginn);
           const otherProjektEndDatum = dayjs(otherProjekt.datumEnde);
 
           // pruefe zeitliche Ueberschneidungen
@@ -111,7 +111,7 @@ export default {
       });
     },
     isFullyBooked() {
-      return this.projekt.slotsFrei <= 0;
+      return this.projekt.plaetzeFrei <= 0;
     },
     invalidFeedback() {
       if (this.isFullyBooked) {

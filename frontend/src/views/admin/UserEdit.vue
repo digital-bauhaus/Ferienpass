@@ -90,7 +90,7 @@ export default {
   },
   data() {
     return {
-      user: {},
+      user: {}, // TODO either define model or move userEditor down
       serverErrorMessages: [],
       successAutomaticDismissCountDown: 0,
       isSchoolKid: false,
