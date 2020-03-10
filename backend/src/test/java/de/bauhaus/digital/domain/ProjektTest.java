@@ -31,14 +31,14 @@ public class ProjektTest {
     }
 
     @Test
-    public void when_adding_one_Teilnehmer_slotsReserviert_increases_once() {
+    public void when_adding_one_Teilnehmer_plaetzeReserviert_increases_once() {
         Projekt kinderuni = createSampleProjectOfSlots(20, 10);
         kinderuni.addAnmeldung(DomainFactory.createSampleUserOfName("Müller", "Luis"));
         assertThat(kinderuni.getPlaetzeReserviert(), is(11));
     }
 
     @Test
-    public void when_adding_5_Teilnehmer_slotsReserviert_increases_5_times() {
+    public void when_adding_5_Teilnehmer_plaetzeReserviert_increases_5_times() {
         Projekt gartenParty = createSampleProjectOfSlots(15, 3);
         gartenParty.addAnmeldung(DomainFactory.createSampleUserOfName("Schulze", "Max"));
         gartenParty.addAnmeldung(DomainFactory.createSampleUserOfName("Meier", "Moritz")  );
@@ -59,7 +59,7 @@ public class ProjektTest {
     }
 
     @Test
-    public void when_cancelling_one_Teilnehmer_slotsReserviert_decreases(){
+    public void when_cancelling_one_Teilnehmer_plaetzeReserviert_decreases(){
         Projekt project = createSampleProjectOfSlots(20, 0);
         Teilnehmer user = createSampleUser();
         project.addAnmeldung(user);

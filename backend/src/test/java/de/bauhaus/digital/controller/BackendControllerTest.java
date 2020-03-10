@@ -200,7 +200,7 @@ public class BackendControllerTest {
         String krankheiten = "Grippe: Muss oft Husten Hustenbonbons";
 
 
-        String essenLimitierungen = "Laktoseintoleranz";
+        String essenWeitereLimitierungen = "Laktoseintoleranz";
         String allergien = "Heuschnupfen: Nasenspray nur 2x am Tag";
 
         Boolean liegtBehinderungVor = true;
@@ -219,7 +219,7 @@ public class BackendControllerTest {
         LocalDate geburtsdatum = LocalDate.of(1999, 12, 31);
         String strasse = "Bahnhofstraße";
         String hausNummer = "5";
-        String stadt = "Erfurt";
+        String wohnort = "Erfurt";
         String plz = "99082";
         String telefon = "03544444";
         String krankenkasse = "AOK";
@@ -235,7 +235,7 @@ public class BackendControllerTest {
                 .geburtsdatum(geburtsdatum)
                 .strasse(strasse)
                 .hausnummer(hausNummer)
-                .wohnort(stadt)
+                .wohnort(wohnort)
                 .postleitzahl(plz)
                 .telefon(telefon)
                 .krankenkasse(krankenkasse)
@@ -249,7 +249,7 @@ public class BackendControllerTest {
                 .darfBehandeltWerden(true)
                 .arzt(arzt)
                 .allergien(allergien)
-                .essenWeitereLimitierungen(essenLimitierungen)
+                .essenWeitereLimitierungen(essenWeitereLimitierungen)
                 .krankheiten(krankheiten)
                 .liegtBehinderungVor(liegtBehinderungVor)
                 .behinderung(behinderung)
@@ -268,7 +268,7 @@ public class BackendControllerTest {
         Assert.assertThat(responseUser.getGeburtsdatum(),is(geburtsdatum));
         Assert.assertThat(responseUser.getStrasse(),is(strasse));
         Assert.assertThat(responseUser.getPostleitzahl(),is(plz));
-        Assert.assertThat(responseUser.getWohnort(),is(stadt));
+        Assert.assertThat(responseUser.getWohnort(),is(wohnort));
         Assert.assertThat(responseUser.getTelefon(),is(telefon));
         Assert.assertThat(responseUser.getKrankenkasse(),is(krankenkasse));
         Assert.assertThat(responseUser.getNotfallKontakt().getName(),is(kontakt.getName()));
@@ -279,7 +279,7 @@ public class BackendControllerTest {
         Assert.assertThat(responseUser.getArzt().getTelefon(),is(arzt.getTelefon()));
         Assert.assertThat(responseUser.getAllergien(),is(allergien));
         Assert.assertThat(responseUser.getKrankheiten(),is(krankheiten));
-        Assert.assertThat(responseUser.getEssenWeitereLimitierungen(),is(essenLimitierungen));
+        Assert.assertThat(responseUser.getEssenWeitereLimitierungen(),is(essenWeitereLimitierungen));
         Assert.assertThat(responseUser.getMedikamente(),is(medikamente));
         Assert.assertThat(responseUser.isHitzeempfindlich(),is(hitzeempfindlich));
         Assert.assertThat(responseUser.getEmail(), is(email));
@@ -418,7 +418,7 @@ public class BackendControllerTest {
         assertThat(golfSpielen.getPlaetzeReserviert(), is(6));
         assertThat(golfSpielen.getPlaetzeFrei(), is(3));
 
-        // Slotsfrei bei Fussball auf 0 fahren
+        // plaetzeFrei bei Fussball auf 0 fahren
         // Dafuer Pizza backen nicht mehr reservieren
         setzeAnmeldungFuerPizza(anmeldungJson, false);
         // aber Fussball
@@ -589,8 +589,8 @@ public class BackendControllerTest {
         assertThat(hausarzt.getTelefon(), is("0364 / 0123456"));
     }
 
-    private boolean containsTeilnehmer(Teilnehmer teilnehmer, List<Teilnehmer> anmeldungen) {
-        for (Teilnehmer angemeldeterTeilnehmer : anmeldungen) {
+    private boolean containsTeilnehmer(Teilnehmer teilnehmer, List<Teilnehmer> angemeldeteTeilnehmer) {
+        for (Teilnehmer angemeldeterTeilnehmer : angemeldeteTeilnehmer) {
             if(angemeldeterTeilnehmer.getId() == teilnehmer.getId())
                 return true;
         }
@@ -861,7 +861,7 @@ public class BackendControllerTest {
     }
 
     @Test
-    public void givenEndeDatumBeforeDatum_whenCreatingProjekt_thenBadRequest() {
+    public void givenDatumEndeBeforeDatumBeginn_whenCreatingProjekt_thenBadRequest() {
         Projekt projekt = Projekt.newBuilder(createSampleProject())
                 .datumBeginn(LocalDate.of(2019, 12, 5))
                 .datumEnde(LocalDate.of(2019, 12, 4))

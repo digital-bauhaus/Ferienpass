@@ -17,7 +17,7 @@
     <div v-if="!isNewProject">
       <h2>Angemeldete Nutzer:</h2>
       <UserList
-        :users="project.anmeldungen"
+        :users="project.angemeldeteTeilnehmer"
         :show-projects="false"
       />
     </div>
@@ -33,7 +33,7 @@
     <div v-if="!isNewProject">
       <h2>Liste für Export:</h2>
       <UserListForExport
-        :users="project.anmeldungen"
+        :users="project.angemeldeteTeilnehmer"
       />
     </div>
 
@@ -72,7 +72,7 @@ export default {
       project: {
         /* TODO these have to be default values on the server model */
         aktiv: true,
-        anmeldungen: [],
+        angemeldeteTeilnehmer: [],
         stornierteTeilnehmer: [],
       },
       serverErrorMessages: [],

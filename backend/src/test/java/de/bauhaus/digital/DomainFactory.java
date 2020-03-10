@@ -11,25 +11,25 @@ public class DomainFactory {
                 1), LocalDate.of(2018, 7, 3), 10, 5, 15, 20);
     }
 
-    public static Projekt createSampleProjectOfSlots(int slotsGesamt, int slotsReserviert) {
+    public static Projekt createSampleProjectOfSlots(int plaetzeGesamt, int plaetzeReserviert) {
         return createSampleProject(
                 "Schwimmem im See",
                 LocalDate.of(2018, 7,1),
                 LocalDate.of(2018, 7, 3),
-                slotsGesamt,
-                slotsReserviert);
+                plaetzeGesamt,
+                plaetzeReserviert);
     }
 
     public static Projekt createSampleProject(String projektName,
-                                              LocalDate datum,
-                                              LocalDate endeDatum,
-                                              int slotsGesamt,
-                                              int slotsReserviert) {
-        return createSampleProject(projektName, datum, endeDatum, slotsGesamt, slotsReserviert, 15, 20);
+                                              LocalDate datumBeginn,
+                                              LocalDate datumEnde,
+                                              int plaetzeGesamt,
+                                              int plaetzeReserviert) {
+        return createSampleProject(projektName, datumBeginn, datumEnde, plaetzeGesamt, plaetzeReserviert, 15, 20);
     }
 
-    public static Projekt createSampleProject(String projektName, LocalDate datum, LocalDate endeDatum, int slotsGesamt, int slotsReserviert, int mindestAlter, int hoechstAlter) {
-        return Projekt.newBuilder().name(projektName).datumBeginn(datum).datumEnde(endeDatum).plaetzeGesamt(slotsGesamt).plaetzeReserviert(slotsReserviert).mindestAlter(mindestAlter).hoechstAlter(hoechstAlter).build();
+    public static Projekt createSampleProject(String projektName, LocalDate datumBeginn, LocalDate datumEnde, int plaetzeGesamt, int plaetzeReserviert, int mindestAlter, int hoechstAlter) {
+        return Projekt.newBuilder().name(projektName).datumBeginn(datumBeginn).datumEnde(datumEnde).plaetzeGesamt(plaetzeGesamt).plaetzeReserviert(plaetzeReserviert).mindestAlter(mindestAlter).hoechstAlter(hoechstAlter).build();
     }
 
     public static Teilnehmer createSampleUser() {
@@ -43,7 +43,7 @@ public class DomainFactory {
                 "555-6891");
         Kontakt kontact = new Kontakt("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
 
-        String essenLimitierungen = "Laktoseintoleranz";
+        String essenWeitereLimitierungen = "Laktoseintoleranz";
         String krankheiten = "Grippe: Muss oft Husten und braucht Hustenbonbons";
         String allergien = "Heuschnupfen: braucht Nasenspray, siehe Medikamente";
         Behinderung behinderung = Behinderung.newBuilder().
@@ -77,7 +77,7 @@ public class DomainFactory {
                 .darfBehandeltWerden(false)
                 .arzt(arzt)
                 .allergien(allergien)
-                .essenWeitereLimitierungen(essenLimitierungen)
+                .essenWeitereLimitierungen(essenWeitereLimitierungen)
                 .krankheiten(krankheiten)
                 .liegtBehinderungVor(true)
                 .behinderung(behinderung)

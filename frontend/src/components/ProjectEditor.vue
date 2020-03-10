@@ -24,8 +24,8 @@
           label="Beginndatum"
           :required="true"
           placeholder="Datum (TT.MM.JJJ)"
-          :value="value.datum"
-          @update="updateValue('datum', $event)"
+          :value="value.datumBeginn"
+          @update="updateValue('datumBeginn', $event)"
         />
       </b-col>
       <b-col sm="6">
@@ -47,8 +47,8 @@
           label="Plätze (gesamt)"
           :required="true"
           placeholder="Plätze"
-          :value="value.slotsGesamt"
-          @update="updateValue('slotsGesamt', $event)"
+          :value="value.plaetzeGesamt"
+          @update="updateValue('plaetzeGesamt', $event)"
         />
       </b-col>
       <b-col sm="6">
@@ -57,8 +57,8 @@
           type="number"
           label="Plätze (reserviert)"
           placeholder="Reservierte Plätze"
-          :value="value.slotsReserviert"
-          @update="updateValue('slotsReserviert', $event)"
+          :value="value.plaetzeReserviert"
+          @update="updateValue('plaetzeReserviert', $event)"
         />
       </b-col>
 
