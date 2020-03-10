@@ -70,8 +70,13 @@ export default {
   data() {
     return {
       project: {
-        /* TODO these have to be default values on the server model */
-        aktiv: true,
+        name: '',
+        datumBeginn: '',
+        datumEnde: '',
+        plaetzeGesamt: '',
+        plaetzeReserviert: '',
+        mindestAlter: '',
+        hoechstAlter: '',
         angemeldeteTeilnehmer: [],
         stornierteTeilnehmer: [],
       },
