@@ -251,6 +251,8 @@
         >
           <CheckBox
             base="behinderung-beantragungKostenuebernahmeBegleitperson"
+            :aria-expanded="beantragungKostenuebernahmeBegleitperson"
+            aria-controls="behinderung-zustimmungWeitergabeDatenAmtFamilieUndSoziales-collapse"
             :checked="beantragungKostenuebernahmeBegleitperson"
             @input="$emit('update:beantragungKostenuebernahmeBegleitperson', $event)"
           >
@@ -260,11 +262,28 @@
             Die bedürftigkeitsabhängige Prüfung erfolgt am Einzelfall durch das Amt für Familie und
             Soziales der Stadt Weimar. Voraussetzung hierfür ist, dass das Kind als Hauptwohnsitz in
             Weimar lebt.
-            <br>
-            Hiermit stimme ich außerdem zu, dass meine hier gemachten Angaben an das Amt für Familie
-            und Soziales der Stadt Weimar weitergegeben werden dürfen.
           </CheckBox>
         </CheckBoxGroup>
+
+        <b-collapse
+          id="behinderung-zustimmungWeitergabeDatenAmtFamilieUndSoziales-collapse"
+          :visible="beantragungKostenuebernahmeBegleitperson"
+        >
+          <CheckBoxGroup
+            base="behinderung-zustimmungWeitergabeDatenAmtFamilieUndSoziales"
+            :disabled="disabled"
+          >
+            <CheckBox
+              base="behinderung-zustimmungWeitergabeDatenAmtFamilieUndSoziales"
+              :required="beantragungKostenuebernahmeBegleitperson"
+              :checked="zustimmungWeitergabeDatenAmtFamilieUndSoziales"
+              @input="$emit('update:zustimmungWeitergabeDatenAmtFamilieUndSoziales', $event)"
+            >
+              Hiermit stimme ich zu, dass meine hier gemachten Angaben an das Amt für Familie
+              und Soziales der Stadt Weimar weitergegeben werden dürfen. *
+            </CheckBox>
+          </CheckBoxGroup>
+        </b-collapse>
       </b-collapse>
     </b-collapse>
   </div>
@@ -378,6 +397,10 @@ export default {
       required: true,
     },
     beantragungKostenuebernahmeBegleitperson: {
+      type: Boolean,
+      required: true,
+    },
+    zustimmungWeitergabeDatenAmtFamilieUndSoziales: {
       type: Boolean,
       required: true,
     },

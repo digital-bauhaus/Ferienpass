@@ -133,6 +133,7 @@
         :unterstuetzung-suche-begleitperson="value.behinderung.unterstuetzungSucheBegleitperson"
         :gewohnter-begleitpersonen-dienstleister="value.behinderung.gewohnterBegleitpersonenDienstleister"
         :beantragung-kostenuebernahme-begleitperson="value.behinderung.beantragungKostenuebernahmeBegleitperson"
+        :zustimmung-weitergabe-daten-amt-familie-und-soziales="value.behinderung.zustimmungWeitergabeDatenAmtFamilieUndSoziales"
         @update:liegtBehinderungVor="updateValue('liegtBehinderungVor', $event)"
         @update:merkzeichenAussergewoehnlicheGehbehinderungaG="updateValue('behinderung.merkzeichen_AussergewoehnlicheGehbehinderung_aG', $event)"
         @update:merkzeichenHilflosigkeitH="updateValue('behinderung.merkzeichen_Hilflosigkeit_H', $event)"
@@ -156,6 +157,7 @@
         @update:unterstuetzungSucheBegleitperson="updateValue('behinderung.unterstuetzungSucheBegleitperson', $event)"
         @update:gewohnterBegleitpersonenDienstleister="updateValue('behinderung.gewohnterBegleitpersonenDienstleister', $event)"
         @update:beantragungKostenuebernahmeBegleitperson="updateValue('behinderung.beantragungKostenuebernahmeBegleitperson', $event)"
+        @update:zustimmungWeitergabeDatenAmtFamilieUndSoziales="updateValue('behinderung.zustimmungWeitergabeDatenAmtFamilieUndSoziales', $event)"
       />
     </FormSection>
 
