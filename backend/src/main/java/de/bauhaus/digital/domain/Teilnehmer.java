@@ -79,6 +79,7 @@ public class Teilnehmer {
     private String schwimmAbzeichen;
 
     @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="kontakt_id")
     private Kontakt notfallKontakt;
 
 
@@ -100,6 +101,7 @@ public class Teilnehmer {
     private String krankenkasse;
 
     @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "arzt_id")
     private Arzt arzt;
 
     // Behinderung
@@ -107,6 +109,7 @@ public class Teilnehmer {
     private boolean liegtBehinderungVor;
 
     @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "behinderung_id")
     private Behinderung behinderung;
 
     // Other

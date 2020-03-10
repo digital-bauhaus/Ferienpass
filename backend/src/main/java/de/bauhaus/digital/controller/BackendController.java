@@ -109,7 +109,7 @@ public class BackendController {
     public @ResponseBody
     List<Teilnehmer> getUsers() {
         LOG.info("GET called on /allusers resource");
-        return teilnehmerRepository.findAllUsers();
+        return teilnehmerRepository.findAllActive();
     }
 
     // GET USER INFORMATION BY ID
@@ -212,7 +212,7 @@ public class BackendController {
     public @ResponseBody
     List<Projekt> getProjects() {
         LOG.info("GET called on /projects resource");
-        return projektRepository.findAllProjects();
+        return projektRepository.findAllActiveSortedByDatum();
     }
 
     // DELETE PROJECT
@@ -426,7 +426,7 @@ public class BackendController {
 
     private List<Long> addEveryProjektThatHasNoFreeSlots() {
         List<Long> projekteOhneFreiSlots = new ArrayList<>();
-        projektRepository.findAllProjects().forEach(projekt -> {
+        projektRepository.findAllActiveSortedByDatum().forEach(projekt -> {
             if (!projekt.hasProjektFreeSlots()) {
                 projekteOhneFreiSlots.add(projekt.getId());
             }

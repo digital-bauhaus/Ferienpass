@@ -11,22 +11,10 @@ import java.util.List;
 
 public interface TeilnehmerRepository extends CrudRepository<Teilnehmer, Long> {
 
-    @Query(value="FROM Teilnehmer")
-    List<Teilnehmer> findAllUsers();
+    @Query(value="FROM Teilnehmer t WHERE t.aktiv=true")
+    List<Teilnehmer> findAllActive();
 
-    @Query(value="FROM Teilnehmer u WHERE u.bezahlt = true")
-    List<Teilnehmer> findAllUsersThatHavePayed();
+    @Query(value="FROM Teilnehmer t WHERE t.aktiv=true ORDER BY t.nachname, t.vorname ASC")
+    List<Teilnehmer> findAllActiveSortedByName();
 
-    List<Teilnehmer> findById(@Param("id") int id);
-
-    @Query(value="FROM Teilnehmer u WHERE u.vorname LIKE CONCAT('%',:vorname,'%') or u.vorname LIKE CONCAT('%',:nachname,'%') or u.nachname LIKE CONCAT('%',:vorname,'%') or u.nachname LIKE CONCAT('%',:nachname,'%')")
-    List<Teilnehmer> findByName(@Param("vorname") String vorname, @Param("nachname") String nachname);
-
-    List<Teilnehmer> findByNachname(@Param("nachname") String nachname);
-
-    List<Teilnehmer> findByVorname(@Param("vorname") String vorname);
-
-    int findProjekt_idByVornameAndNachname(@Param("vorname") String vorname, @Param("nachname") String nachname);
-
-    List<Teilnehmer> findByRegistrierungsdatum(@Param("registrierungsdatum") LocalDate registrierungsdatum);
 }
