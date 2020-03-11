@@ -1,11 +1,15 @@
 package de.bauhaus.digital.repository;
 
+import static de.bauhaus.digital.DomainFactory.createSampleUser;
 import static de.bauhaus.digital.DomainFactory.createSampleUserOfName;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import de.bauhaus.digital.domain.Behinderung;
 import de.bauhaus.digital.domain.Teilnehmer;
 import java.util.List;
+import java.util.Optional;
 import javax.validation.ConstraintViolationException;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +29,9 @@ public class TeilnehmerRepositoryTest {
     @Autowired
     private TeilnehmerRepository teilnehmerRepository;
 
+    @Autowired
+    private BehinderungRepository behinderungRepository;
+
     @Before
     public void init() {
         Teilnehmer garyEich = createSampleUserOfName("Eich", "Gary");
@@ -42,6 +49,30 @@ public class TeilnehmerRepositoryTest {
     public void givenInvalidProjekt_whenSaving_thenFails() {
         Teilnehmer invalidTeilnehmer = Teilnehmer.newBuilder().build();
         teilnehmerRepository.save(invalidTeilnehmer);
+    }
+
+    @Test
+    public void givenTeilnehmerMitBehinderung_whenDeletingTeilnehmer_thenBehinderungIsAlsoDeleted() {
+        Behinderung behinderung = Behinderung.newBuilder().build();
+        Teilnehmer teilnehmer = Teilnehmer.newBuilder(createSampleUser())
+                .behinderung(behinderung)
+                .build();
+        teilnehmerRepository.save(teilnehmer);
+
+        // check that the Behinderung got an ID
+        long behinderungId = behinderung.getId();
+        assertThat(behinderungId, greaterThan(0L));
+
+        // find the Behinderung in the database
+        Optional<Behinderung> behinderungNachSpeichern = behinderungRepository.findById(behinderungId);
+        assertThat(behinderungNachSpeichern.isPresent(), is(true));
+
+        // delete the Teilnehmer
+        teilnehmerRepository.delete(teilnehmer);
+
+        // find the Behinderung again
+        Optional<Behinderung> behinderungNachLoeschen = behinderungRepository.findById(behinderungId);
+        assertThat(behinderungNachLoeschen.isPresent(), is(false));
     }
 
     @Test
