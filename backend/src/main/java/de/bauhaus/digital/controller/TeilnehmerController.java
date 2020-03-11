@@ -48,11 +48,11 @@ public class TeilnehmerController {
         LOG.info("GET called on /users/" + id);
 
         Optional<Teilnehmer> optionalTeilnehmer = teilnehmerRepository.findById(id);
-        if(optionalTeilnehmer.isPresent()) {
-            return optionalTeilnehmer.get();
-        } else {
+        if (!optionalTeilnehmer.isPresent()) {
             throw new UserNotFoundException("Teilnehmer mit id " + id + " wurde nicht gefunden.");
         }
+
+        return optionalTeilnehmer.get();
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -74,34 +74,34 @@ public class TeilnehmerController {
         LOG.info("PUT called on /users resource");
 
         Optional<Teilnehmer> optionalTeilnehmer = teilnehmerRepository.findById(teilnehmer.getId());
-        if (optionalTeilnehmer.isPresent()) {
-            // We directly save the Teilnehmer we received in the database
-            Teilnehmer savedTeilnehmer = teilnehmerRepository.save(teilnehmer);
-
-            LOG.info("Teilnehmer with id "+ teilnehmer.getId() + " successfully updated in DB.");
-            return savedTeilnehmer;
-        } else {
+        if (!optionalTeilnehmer.isPresent()) {
             throw new UserNotFoundException("Teilnehmer mit id " + teilnehmer.getId() + " wurde nicht gefunden.");
         }
+
+        // We directly save the Teilnehmer we received in the database
+        Teilnehmer savedTeilnehmer = teilnehmerRepository.save(teilnehmer);
+
+        LOG.info("Teilnehmer with id "+ teilnehmer.getId() + " successfully updated in DB.");
+        return savedTeilnehmer;
     }
 
-    @RequestMapping(path = "/{teilnehmerId}", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public void deleteUser(@PathVariable("teilnehmerId") long teilnehmerId) {
-        LOG.info("DELETE called on /users/" + teilnehmerId);
+    public void deleteUser(@PathVariable("id") long id) {
+        LOG.info("DELETE called on /users/" + id);
 
-        Optional<Teilnehmer> optionalTeilnehmer = teilnehmerRepository.findById(teilnehmerId);
-        if (optionalTeilnehmer.isPresent()) {
-            // Before we delete the Teilnehmer, we need to delete every Projekt assignement
-            // otherwise we will run into https://github.com/digital-bauhaus/Ferienpass/issues/71
-            // TODO check
-            getRegisteredProjectsOfUser(teilnehmerId).stream().forEach(projekt -> projekt.deleteTeilnehmerVonAllenProjekten(getUserById(teilnehmerId)));
-
-            teilnehmerRepository.deleteById(teilnehmerId);
-            LOG.info("Teilnehmer with id "+ teilnehmerId + " deleted.");
-        } else {
-            throw new UserNotFoundException("Teilnehmer mit id " + teilnehmerId + " wurde nicht gefunden.");
+        Optional<Teilnehmer> optionalTeilnehmer = teilnehmerRepository.findById(id);
+        if (!optionalTeilnehmer.isPresent()) {
+            throw new UserNotFoundException("Teilnehmer mit id " + id + " wurde nicht gefunden.");
         }
+
+        // Before we delete the Teilnehmer, we need to delete every Projekt assignement
+        // otherwise we will run into https://github.com/digital-bauhaus/Ferienpass/issues/71
+        // TODO check
+        getRegisteredProjectsOfUser(id).stream().forEach(projekt -> projekt.deleteTeilnehmerVonAllenProjekten(getUserById(id)));
+
+        teilnehmerRepository.deleteById(id);
+        LOG.info("Teilnehmer with id "+ id + " deleted.");
     }
 
     @RequestMapping(path = "/{teilnehmerId}/projects")
@@ -110,7 +110,10 @@ public class TeilnehmerController {
     List<Projekt> getRegisteredProjectsOfUser(@PathVariable("teilnehmerId") Long teilnehmerId) {
         LOG.info("GET called on /users/" + teilnehmerId + "/projects");
 
-        // TODO TeilnehmerNotFoundException
+        Optional<Teilnehmer> optionalTeilnehmer = teilnehmerRepository.findById(teilnehmerId);
+        if (!optionalTeilnehmer.isPresent()) {
+            throw new UserNotFoundException("Teilnehmer mit id " + teilnehmerId + " wurde nicht gefunden.");
+        }
 
         List<Projekt> resultList = new ArrayList<>();
         for (Projekt projekt : projektRepository.findAll()) {
@@ -133,6 +136,11 @@ public class TeilnehmerController {
     public @ResponseBody
     List<Projekt> getCancelledProjectsOfUser(@PathVariable("teilnehmerId") Long teilnehmerId) {
         LOG.info("GET called on /users/" + teilnehmerId + "/cancelledprojects");
+
+        Optional<Teilnehmer> optionalTeilnehmer = teilnehmerRepository.findById(teilnehmerId);
+        if (!optionalTeilnehmer.isPresent()) {
+            throw new UserNotFoundException("Teilnehmer mit id " + teilnehmerId + " wurde nicht gefunden.");
+        }
 
         List<Projekt> resultList = new ArrayList<>();
         for (Projekt projekt : projektRepository.findAll()) {
