@@ -41,6 +41,7 @@ public class MailController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody void sendMail(@RequestBody Teilnehmer teilnehmer) throws IOException {
+        LOG.info("POST called on /mail resource");
 
         Mail mail = new Mail(
                 new Email("mail@ferienpass-weimar.de"),
@@ -59,7 +60,6 @@ public class MailController {
         LOG.info("AnmeldebestaetigungsMail send to " + teilnehmer.getEmail()
                 + " with StatusCode " + sendgridResponse.getStatusCode()
                 + " & Headers " + sendgridResponse.getHeaders());
-
     }
 
     protected String readMailText() throws IOException {

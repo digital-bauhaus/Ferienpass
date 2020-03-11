@@ -38,17 +38,20 @@ public class ProjekteController {
     public @ResponseBody
     List<Projekt> getProjects() {
         LOG.info("GET called on /projects resource");
+
         return projektRepository.findAllActiveSortedByDatum();
     }
 
-    @GetMapping(path = "/{projektId}")
+    @GetMapping(path = "/{id}")
     public @ResponseBody
-    Projekt getProjectById(@PathVariable("projektId") Long projekt_id) {
-        Optional<Projekt> maybeProjekt = projektRepository.findById(projekt_id);
-        if (maybeProjekt.isPresent()) {
-            return maybeProjekt.get();
+    Projekt getProjectById(@PathVariable("id") Long id) {
+        LOG.info("GET called on /projects/" + id);
+
+        Optional<Projekt> optionalProjekt = projektRepository.findById(id);
+        if (optionalProjekt.isPresent()) {
+            return optionalProjekt.get();
         } else {
-            throw new ProjektNotFoundException("Projekt mit der id " + projekt_id + " wurde nicht gefunden.");
+            throw new ProjektNotFoundException("Projekt mit id " + id + " wurde nicht gefunden.");
         }
     }
 
@@ -56,10 +59,11 @@ public class ProjekteController {
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Long addProject(@RequestBody @Valid Projekt projekt) {
+        LOG.info("POST called on /projects resource");
 
         projektRepository.save(projekt);
 
-        LOG.info(projekt.toString() + " successfully saved into DB");
+        LOG.info("Projekt successfully saved into DB with id " + projekt.getId());
 
         return projekt.getId();
     }
@@ -68,14 +72,15 @@ public class ProjekteController {
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     Projekt updateProject(@RequestBody @Valid Projekt projekt) {
+        LOG.info("PUT called on /projects resource");
 
-        Optional<Projekt> maybeProjekt = projektRepository.findById(projekt.getId());
-        if (maybeProjekt.isPresent()) {
-            Projekt foundProjekt = maybeProjekt.get();
-            foundProjekt = projekt;
-            projektRepository.save(foundProjekt);
-            LOG.info("Projekt with id " + projekt.getId() + " successfully updated on DB.");
-            return foundProjekt;
+        Optional<Projekt> optionalProjekt = projektRepository.findById(projekt.getId());
+        if (optionalProjekt.isPresent()) {
+            // We directly save the Projekt we received in the database
+            Projekt savedProjekt = projektRepository.save(projekt);
+
+            LOG.info("Projekt with id " + projekt.getId() + " successfully updated in DB.");
+            return savedProjekt;
         } else {
             throw new ProjektNotFoundException("Projekt mit der id " + projekt.getId() + " wurde nicht gefunden.");
         }
@@ -83,13 +88,13 @@ public class ProjekteController {
 
     @RequestMapping(path = "/{projektId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody Boolean deleteProject(@PathVariable("projektId") Long projektId) {
+    public void deleteProject(@PathVariable("projektId") Long projektId) {
+        LOG.info("DELETE called on /projects/" + projektId);
 
-        Optional<Projekt> maybeProjekt = projektRepository.findById(projektId);
-        if (maybeProjekt.isPresent()) {
+        Optional<Projekt> optionalProjekt = projektRepository.findById(projektId);
+        if (optionalProjekt.isPresent()) {
             projektRepository.deleteById(projektId);
-            LOG.info("Projekt with id " + projektId + " has been deleted.");
-            return true;
+            LOG.info("Projekt with id " + projektId + " deleted.");
         } else {
             throw new ProjektNotFoundException("Projekt mit der id " + projektId + " wurde nicht gefunden.");
         }
@@ -98,30 +103,33 @@ public class ProjekteController {
     @GetMapping(path = "/{projektId}/users")
     public @ResponseBody
     List<Teilnehmer> getRegisteredUsersOfProject(@PathVariable("projektId") Long projektId) {
+        LOG.info("GET called on /projects/" + projektId + "/users");
+
         Optional<Projekt> maybeProjekt = projektRepository.findById(projektId);
         if (maybeProjekt.isPresent()) {
             Projekt projekt = maybeProjekt.get();
-            LOG.info("Returning " + projekt.getAngemeldeteTeilnehmer().size() + " registered participants for project " + projekt.getName());
+            LOG.info("Returning " + projekt.getAngemeldeteTeilnehmer().size() + " registered Teilnehmer for project " + projekt.getName());
             return projekt.getAngemeldeteTeilnehmer();
         } else {
             throw new ProjektNotFoundException("Projekt mit der id " + projektId + " wurde nicht gefunden.");
         }
     }
 
-    @RequestMapping(path = "/{projektId}/users/{userId}", method = RequestMethod.PUT)
+    @RequestMapping(path = "/{projektId}/users/{teilnehmerId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
-    Boolean assignUserToProject(@PathVariable("projektId") Long projektId, @PathVariable("userId") Long userId)
+    Boolean assignUserToProject(@PathVariable("projektId") Long projektId, @PathVariable("teilnehmerId") Long teilnehmerId)
             throws UserNotFoundException, ProjektNotFoundException {
+        LOG.info("PUT called on /projects/" + projektId + "/users/" + teilnehmerId);
 
-        Optional<Projekt> maybeProjekt = projektRepository.findById(projektId);
-        if (maybeProjekt.isPresent()) {
-            Projekt projekt = maybeProjekt.get();
+        Optional<Projekt> optionalProjekt = projektRepository.findById(projektId);
+        if (optionalProjekt.isPresent()) {
+            Projekt projekt = optionalProjekt.get();
 
-            Optional<Teilnehmer> maybeTeilnehmer = teilnehmerRepository.findById(userId);
-            if (maybeTeilnehmer.isPresent()) {
+            Optional<Teilnehmer> optionalTeilnehmer = teilnehmerRepository.findById(teilnehmerId);
+            if (optionalTeilnehmer.isPresent()) {
 
-                Teilnehmer teilnehmer = maybeTeilnehmer.get();
+                Teilnehmer teilnehmer = optionalTeilnehmer.get();
                 if (projekt.hasProjektFreeSlots()) {
                     return assignUserToProjektWhenNotAlreadyAssigned(teilnehmer, projekt);
                 } else {
@@ -129,7 +137,32 @@ public class ProjekteController {
                     return false;
                 }
             } else {
-                throw new UserNotFoundException("Teilnehmer mit der id " + userId + " wurde nicht gefunden.");
+                throw new UserNotFoundException("Teilnehmer mit der id " + teilnehmerId + " wurde nicht gefunden.");
+            }
+        } else {
+            throw new ProjektNotFoundException("Projekt mit der id " + projektId + " wurde nicht gefunden.");
+        }
+    }
+
+    @RequestMapping(path = "/{projektId}/users/{teilnehmerId}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Boolean unassignUserFromProject(@PathVariable("projektId") Long projektId, @PathVariable("teilnehmerId") Long teilnehmerId) {
+        LOG.info("DELETE called on /projects/" + projektId + "/users/" + teilnehmerId);
+
+        Optional<Projekt> optionalProjekt = projektRepository.findById(projektId);
+        if (optionalProjekt.isPresent()) {
+            Projekt projekt = optionalProjekt.get();
+
+            Optional<Teilnehmer> optionalTeilnehmer = teilnehmerRepository.findById(teilnehmerId);
+            if (optionalTeilnehmer.isPresent()) {
+
+                Teilnehmer teilnehmer = optionalTeilnehmer.get();
+                projekt.addStornierung(teilnehmer);
+                projektRepository.save(projekt);
+                LOG.info("Teilnehmer " + teilnehmer.getVorname() + " " + teilnehmer.getNachname() + " was cancelled for Projekt: " + projekt.getName());
+                return true;
+            } else {
+                throw new UserNotFoundException("Teilnehmer mit der id " + teilnehmerId + " wurde nicht gefunden.");
             }
         } else {
             throw new ProjektNotFoundException("Projekt mit der id " + projektId + " wurde nicht gefunden.");
@@ -140,35 +173,11 @@ public class ProjekteController {
         if(projekt.isTeilnehmerNotAlreadyAsignedToProjekt(teilnehmer)) {
             projekt.addAnmeldung(teilnehmer);
             projektRepository.save(projekt);
-            LOG.info("Der Teilnehmer " + teilnehmer.getVorname() + " " + teilnehmer.getNachname() + " wurde bei folgenden Projekt angemeldet: " + projekt.toString());
+            LOG.info("Teilnehmer " + teilnehmer.getVorname() + " " + teilnehmer.getNachname() + " was registered for Projekt: " + projekt.toString());
         } else {
-            LOG.info("Teilnehmer " + teilnehmer.getNachname() + " bereits bei Projekt angemeldet " + projekt.getName() + ".");
+            LOG.info("Teilnehmer " + teilnehmer.getVorname() + " " + teilnehmer.getNachname() + " was already registered for Projekt: " + projekt.getName());
         }
         return true;
-    }
-
-    @RequestMapping(path = "/{projektId}/users/{userId}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody Boolean unassignUserFromProject(@PathVariable("projektId") Long projektId, @PathVariable("userId") Long userId) {
-
-        Optional<Projekt> maybeProjekt = projektRepository.findById(projektId);
-        if (maybeProjekt.isPresent()) {
-            Projekt projekt = maybeProjekt.get();
-
-            Optional<Teilnehmer> maybeTeilnehmer = teilnehmerRepository.findById(userId);
-            if (maybeTeilnehmer.isPresent()) {
-
-                Teilnehmer teilnehmer = maybeTeilnehmer.get();
-                projekt.addStornierung(teilnehmer);
-                projektRepository.save(projekt);
-                LOG.info("Der Teilnehmer " + teilnehmer.getVorname() + " " + teilnehmer.getNachname() + " wurde aus dem folgenden Projekt abgemeldet: " + projekt.toString());
-                return true;
-            } else {
-                throw new UserNotFoundException("Teilnehmer mit der id " + userId + " wurde nicht gefunden.");
-            }
-        } else {
-            throw new ProjektNotFoundException("Projekt mit der id " + projektId + " wurde nicht gefunden.");
-        }
     }
 
 }

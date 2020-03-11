@@ -279,16 +279,16 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
         .when()
                 .delete(BASE_URL + "/users/{userId}")
         .then()
-                .statusCode(is(HttpStatus.SC_NO_CONTENT));
+                .statusCode(is(HttpStatus.SC_OK));
     }
 
     private void getNoUser(Long userId) {
-            given()
-                .pathParam("id", userId)
-                .when()
-                .get(BASE_URL + "/users/{id}")
-                .then()
-                .statusCode(HttpStatus.SC_NOT_FOUND);
+        given()
+            .pathParam("id", userId)
+            .when()
+            .get(BASE_URL + "/users/{id}")
+            .then()
+            .statusCode(HttpStatus.SC_NOT_FOUND);
     }
 
 }

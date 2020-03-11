@@ -216,9 +216,9 @@ public class ProjekteControllerTest extends AbstractControllerTest {
     public void shouldDeleteAddedProjectCorrectly() {
         Long projectId = addProjekt(createSampleProject());
 
-        Boolean isProjectDeleted = deleteProjekt(projectId);
+        deleteProjekt(projectId);
 
-        assertThat(isProjectDeleted, is(true));
+        getNoProjekt(projectId);
     }
 
     @Test
@@ -359,16 +359,23 @@ public class ProjekteControllerTest extends AbstractControllerTest {
                     .body().as(Projekt.class);
     }
 
-    private Boolean deleteProjekt(Long projektId) {
-        return given()
-                    .pathParam("projekt_id", projektId)
-                    .contentType(ContentType.JSON)
-                .when()
-                    .delete(BASE_URL + "/projects/{projekt_id}")
-                .then()
-                    .statusCode(is(HttpStatus.SC_OK))
-                    .extract().body().as(Boolean.class);
+    private void deleteProjekt(Long projektId) {
+        given()
+            .pathParam("projekt_id", projektId)
+            .contentType(ContentType.JSON)
+        .when()
+            .delete(BASE_URL + "/projects/{projekt_id}")
+        .then()
+            .statusCode(is(HttpStatus.SC_OK));
+    }
 
+    private void getNoProjekt(Long projektId) {
+        given()
+            .pathParam("id", projektId)
+            .when()
+            .get(BASE_URL + "/projects/{id}")
+            .then()
+            .statusCode(HttpStatus.SC_NOT_FOUND);
     }
 
 }
