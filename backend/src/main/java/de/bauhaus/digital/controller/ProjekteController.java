@@ -130,7 +130,7 @@ public class ProjekteController {
             if (optionalTeilnehmer.isPresent()) {
 
                 Teilnehmer teilnehmer = optionalTeilnehmer.get();
-                if (projekt.hasProjektFreeSlots()) {
+                if (projekt.hatProjektFreiePlaetze()) {
                     return assignUserToProjektWhenNotAlreadyAssigned(teilnehmer, projekt);
                 } else {
                     LOG.info("Could not assign " + teilnehmer.getNachname() + " to project " + projekt.getName() + " because all free slots are taken.");
@@ -157,7 +157,7 @@ public class ProjekteController {
             if (optionalTeilnehmer.isPresent()) {
 
                 Teilnehmer teilnehmer = optionalTeilnehmer.get();
-                projekt.addStornierung(teilnehmer);
+                projekt.storniereTeilnehmer(teilnehmer);
                 projektRepository.save(projekt);
                 LOG.info("Teilnehmer " + teilnehmer.getVorname() + " " + teilnehmer.getNachname() + " was cancelled for Projekt: " + projekt.getName());
                 return true;
@@ -171,7 +171,7 @@ public class ProjekteController {
 
     private Boolean assignUserToProjektWhenNotAlreadyAssigned(Teilnehmer teilnehmer, Projekt projekt) {
         if(projekt.isTeilnehmerNotAlreadyAsignedToProjekt(teilnehmer)) {
-            projekt.addAnmeldung(teilnehmer);
+            projekt.meldeTeilnehmerAn(teilnehmer);
             projektRepository.save(projekt);
             LOG.info("Teilnehmer " + teilnehmer.getVorname() + " " + teilnehmer.getNachname() + " was registered for Projekt: " + projekt.toString());
         } else {

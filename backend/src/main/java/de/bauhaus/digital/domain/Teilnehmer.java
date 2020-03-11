@@ -112,11 +112,11 @@ public class Teilnehmer {
     @JoinColumn(name = "behinderung_id")
     private Behinderung behinderung;
 
-    // Other
+    // Speziell fuer Registrierung
 
     @Transient
     @JsonSetter
-    private List<Long> gewuenschteProjekte = new ArrayList<>();;
+    private List<Long> gewuenschteProjekte = new ArrayList<>();
 
     protected Teilnehmer() {}
 

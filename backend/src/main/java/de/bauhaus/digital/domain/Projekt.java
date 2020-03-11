@@ -92,34 +92,36 @@ public class Projekt {
     }
 
     /**
-     * Register the user for this project. If the user was cancelled before,
-     * his cancellation is deleted.
-     * @param teilnehmer
+     * Meldet Teilnehmer an. Wenn der Teilnehmer storniert war, wird seine Stornierung aufgehoben
+     *
+     * @param anzumeldenderTeilnehmer Teilnehmer der angemeldet werden soll
      */
-    public void addAnmeldung(Teilnehmer teilnehmer) {
+    public void meldeTeilnehmerAn(Teilnehmer anzumeldenderTeilnehmer) {
         // Note: no check, we just remove the cancellation
-        this.stornierteTeilnehmer.remove(teilnehmer);
+        this.stornierteTeilnehmer.remove(anzumeldenderTeilnehmer);
 
-        this.angemeldeteTeilnehmer.add(teilnehmer);
+        this.angemeldeteTeilnehmer.add(anzumeldenderTeilnehmer);
         this.plaetzeReserviert = this.plaetzeReserviert + 1;
     }
 
     /**
-     * @param zuStornierenderTeilnehmer
-     * @return true, if the Teilnehmer was actually registered for this
-     * Veranstaltung and could be cancelled
+     * Storniere Teilnehmer von der Veranstaltung.
+     *
+     * @param zuStornierenderTeilnehmer Teilnehmer der storniert werden soll
+     * @return true, wenn der Teilnehmer tatsaechlich fuer diese Veranstaltung angemeldet wear
      */
-    public boolean addStornierung(Teilnehmer zuStornierenderTeilnehmer) {
-        boolean teilnehmerWasRegistered =
+    public boolean storniereTeilnehmer(Teilnehmer zuStornierenderTeilnehmer) {
+        boolean teilnehmerIstAngemeldet =
                 this.angemeldeteTeilnehmer.remove(zuStornierenderTeilnehmer);
-        if (teilnehmerWasRegistered)
+        if (teilnehmerIstAngemeldet)
         {
             this.stornierteTeilnehmer.add(zuStornierenderTeilnehmer);
             this.plaetzeReserviert = this.plaetzeReserviert - 1;
         }
-        return teilnehmerWasRegistered;
+        return teilnehmerIstAngemeldet;
     }
 
+    // TODO
     public boolean deleteTeilnehmerVonAllenProjekten(Teilnehmer zuLoeschenderTeilnehmer) {
         boolean warAngemeldet = this.angemeldeteTeilnehmer.remove(zuLoeschenderTeilnehmer);
         boolean warStorniert = this.stornierteTeilnehmer.remove(zuLoeschenderTeilnehmer);
@@ -130,11 +132,13 @@ public class Projekt {
         return warAngemeldet || warStorniert;
     }
 
+    // TODO
     public boolean isTeilnehmerNotAlreadyAsignedToProjekt(Teilnehmer teilnehmer) {
         return !this.angemeldeteTeilnehmer.contains(teilnehmer);
     }
 
-    public boolean hasProjektFreeSlots() {
+    // TODO
+    public boolean hatProjektFreiePlaetze() {
         return getPlaetzeFrei() > 0;
     }
 

@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 import de.bauhaus.digital.domain.Projekt;
 import java.time.LocalDate;
 import java.util.List;
+import javax.validation.ConstraintViolationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +37,12 @@ public class ProjektRepositoryTest {
         entityManager.persist(drittes);
         entityManager.persist(inaktiv);
         entityManager.flush();
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void givenInvalidProjekt_whenSaving_thenFails() {
+        Projekt invalidProjekt = Projekt.newBuilder().build();
+        projektRepository.save(invalidProjekt);
     }
 
     @Test

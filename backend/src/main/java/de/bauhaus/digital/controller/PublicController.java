@@ -95,8 +95,8 @@ public class PublicController {
         for (Project project : anmeldungJson.getProjects()) {
             if(project.isRegistered()) {
                 Projekt projekt = projektRepository.findById(project.getId().longValue()).orElse(null);
-                if(projekt.hasProjektFreeSlots()) {
-                    projekt.addAnmeldung(neuAngemeldeterTeilnehmer);
+                if(projekt.hatProjektFreiePlaetze()) {
+                    projekt.meldeTeilnehmerAn(neuAngemeldeterTeilnehmer);
                 } else {
                     LOG.info("The Projekt " + projekt.getName() + " with Id " + projekt.getId() + " has no free Slots left!");
                     oneOrMoreProjekteVoll = true;
@@ -121,7 +121,7 @@ public class PublicController {
     private List<Long> addEveryProjektThatHasNoFreeSlots() {
         List<Long> projekteOhneFreiSlots = new ArrayList<>();
         projektRepository.findAllActiveSortedByDatum().forEach(projekt -> {
-            if (!projekt.hasProjektFreeSlots()) {
+            if (!projekt.hatProjektFreiePlaetze()) {
                 projekteOhneFreiSlots.add(projekt.getId());
             }
         });
