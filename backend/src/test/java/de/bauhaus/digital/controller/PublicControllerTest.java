@@ -37,19 +37,19 @@ public class PublicControllerTest extends AbstractControllerTest {
 
         // Zuerst fuer klare Verhältnisse sorgen und Seiteneffekte vermeiden!
         // Daher neue Projekte anlegen ...
-        Long pizzaBackenId = addProjekt(createSampleProject(
+        Long pizzaBackenId = addProject(createSampleProject(
                 "Pizza backen",
                 LocalDate.of(2018, 7, 12),
                 LocalDate.of(2018, 7, 13),
                 15,
                 3));
-        Long fussballId = addProjekt(createSampleProject(
+        Long fussballId = addProject(createSampleProject(
                 "Fussball",
                 LocalDate.of(2018, 8, 14),
                 LocalDate.of(2018, 8, 17),
                 10,
                 7));
-        Long golfSpielenId = addProjekt(createSampleProject(
+        Long golfSpielenId = addProject(createSampleProject(
                 "Golf spielen",
                 LocalDate.of(2018, 7, 2),
                 LocalDate.of(2018, 7, 2),
@@ -86,13 +86,13 @@ public class PublicControllerTest extends AbstractControllerTest {
         debugOutProjekte();
 
         // Ist der User in Projekt Pizza backen & Golf spielen angemeldet?
-        List<Teilnehmer> anmeldungenPizzaBacken = getProjekt(pizzaBackenId).getAngemeldeteTeilnehmer();
+        List<Teilnehmer> anmeldungenPizzaBacken = getProject(pizzaBackenId).getAngemeldeteTeilnehmer();
         assertThat(containsTeilnehmer(responseUser, anmeldungenPizzaBacken), is(true));
 
-        List<Teilnehmer> anmeldungenFussball = getProjekt(fussballId).getAngemeldeteTeilnehmer();
+        List<Teilnehmer> anmeldungenFussball = getProject(fussballId).getAngemeldeteTeilnehmer();
         assertThat(containsTeilnehmer(responseUser, anmeldungenFussball), is(false));
 
-        List<Teilnehmer> anmeldungenGolfSpielen = getProjekt(golfSpielenId).getAngemeldeteTeilnehmer();
+        List<Teilnehmer> anmeldungenGolfSpielen = getProject(golfSpielenId).getAngemeldeteTeilnehmer();
         assertThat(containsTeilnehmer(responseUser, anmeldungenGolfSpielen), is(true));
     }
 
@@ -100,19 +100,19 @@ public class PublicControllerTest extends AbstractControllerTest {
     public void pruefeRegistrierungProjekteBeiApiCallAnmeldungMicroservice() throws IOException {
         // Zuerst fuer klare Verhältnisse sorgen und Seiteneffekte vermeiden!
         // Daher neue Projekte anlegen ...
-        Long pizzaBackenId = addProjekt(createSampleProject(
+        Long pizzaBackenId = addProject(createSampleProject(
                 "Pizza backen",
                 LocalDate.of(2018, 7, 12),
                 LocalDate.of(2018, 7, 13),
                 8,
                 3));
-        Long fussballId = addProjekt(createSampleProject(
+        Long fussballId = addProject(createSampleProject(
                 "Fussball",
                 LocalDate.of(2018, 8, 14),
                 LocalDate.of(2018, 8, 17),
                 10,
                 7));
-        Long golfSpielenId = addProjekt(createSampleProject(
+        Long golfSpielenId = addProject(createSampleProject(
                 "Golf spielen",
                 LocalDate.of(2018, 7, 2),
                 LocalDate.of(2018, 7, 2),
@@ -131,17 +131,17 @@ public class PublicControllerTest extends AbstractControllerTest {
         // Pizza backen startet mit 15 Slots gesamt und 3 reserviert
         // Da im anmeldung-post-data.json Pizza backen 1x fuer den Teilnehmer reserviert wird
         // sollten jetzt nur noch 8 - 3 - 1 = 4 Plaetze frei sein - sowie 4 reserviert
-        Projekt pizzaBacken = getProjekt(pizzaBackenId);
+        Projekt pizzaBacken = getProject(pizzaBackenId);
         assertThat(pizzaBacken.getPlaetzeReserviert(), is(4));
         assertThat(pizzaBacken.getPlaetzeFrei(), is(4));
 
         // Fussball 10 gesamt - 7 reserviert - keine Anmeldung = 3 frei bzw. 7 reserviert
-        Projekt fussball = getProjekt(fussballId);
+        Projekt fussball = getProject(fussballId);
         assertThat(fussball.getPlaetzeReserviert(), is(7));
         assertThat(fussball.getPlaetzeFrei() , is(3));
 
         // Golf spielen 9 gesamt - 5 reserviert - 1 Anmeldung = 3 frei bzw. 6 reserviert
-        Projekt golfSpielen = getProjekt(golfSpielenId);
+        Projekt golfSpielen = getProject(golfSpielenId);
         assertThat(golfSpielen.getPlaetzeReserviert(), is(6));
         assertThat(golfSpielen.getPlaetzeFrei(), is(3));
 
@@ -158,7 +158,7 @@ public class PublicControllerTest extends AbstractControllerTest {
         registerNewUserFromAnmeldungFrontend(anmeldungJson);
         registerNewUserFromAnmeldungFrontend(anmeldungJson);
 
-        Projekt fussballNach3Anmeldungen = getProjekt(fussballId);
+        Projekt fussballNach3Anmeldungen = getProject(fussballId);
         assertThat(fussballNach3Anmeldungen.getPlaetzeFrei(), is(0));
         assertThat(fussballNach3Anmeldungen.getPlaetzeReserviert(), is(10));
 
@@ -179,7 +179,7 @@ public class PublicControllerTest extends AbstractControllerTest {
         registerNewUserFromAnmeldungFrontend(anmeldungJson);
         registerNewUserFromAnmeldungFrontend(anmeldungJson);
         // Nun sollte Golf spielen auch voll sein
-        Projekt golfSpielenNach3WeiterenAnmeldungen = getProjekt(golfSpielenId);
+        Projekt golfSpielenNach3WeiterenAnmeldungen = getProject(golfSpielenId);
         assertThat(golfSpielenNach3WeiterenAnmeldungen.getPlaetzeFrei(), is(0));
 
         // Nun auch wieder fuer Fussball registrieren wollen
@@ -206,13 +206,13 @@ public class PublicControllerTest extends AbstractControllerTest {
 
         // Pizza sollte nun noch 4 Plätze frei haben
         // Fussball und Golf keine mehr
-        assertThat(getProjekt(pizzaBackenId).getPlaetzeFrei(), is(4));
-        assertThat(getProjekt(fussballId).getPlaetzeFrei(), is(0));
-        assertThat(getProjekt(golfSpielenId).getPlaetzeFrei(), is(0));
+        assertThat(getProject(pizzaBackenId).getPlaetzeFrei(), is(4));
+        assertThat(getProject(fussballId).getPlaetzeFrei(), is(0));
+        assertThat(getProject(golfSpielenId).getPlaetzeFrei(), is(0));
 
         // Nun versuchen wir unseren Luis Fernandez zu registrieren
         registerNewUserFromAnmeldungFrontendForEmptySlotProjekts(anmeldungJson);
-        Projekt pizzaNachGemischtemRequest = getProjekt(pizzaBackenId);
+        Projekt pizzaNachGemischtemRequest = getProject(pizzaBackenId);
         for(Teilnehmer angemeldeterTeilnehmer : pizzaNachGemischtemRequest.getAngemeldeteTeilnehmer()) {
             assertThat(angemeldeterTeilnehmer.getNachname(), not("Fernandez"));
         }

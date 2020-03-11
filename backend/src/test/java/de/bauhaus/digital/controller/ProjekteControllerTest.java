@@ -34,9 +34,9 @@ public class ProjekteControllerTest extends AbstractControllerTest {
     @Test
     public void addNewProjectAndetrieveItBack() {
         Projekt projekt = createSampleProject();
-        Long projectID = addProjekt(projekt);
+        Long projectID = addProject(projekt);
 
-        Projekt responeProjekt = getProjekt(projectID);
+        Projekt responeProjekt = getProject(projectID);
         assertThat(projectID, is(responeProjekt.getId()));
         assertThat(responeProjekt.getName(), is(projekt.getName()));
         assertThat(responeProjekt.getPlaetzeFrei(), is(projekt.getPlaetzeFrei()));
@@ -50,19 +50,19 @@ public class ProjekteControllerTest extends AbstractControllerTest {
 
     @Test
     public void addProjectAndUserAndAssignProjectToUserAndRetrieveAllProjectsForThisUser() {
-        Long projectID = addProjekt(createSampleProject());
+        Long projectID = addProject(createSampleProject());
 
         Long userId = addUser(createSampleUser());
         List<Teilnehmer> allUsers = getAllUsers();
 
         assertThat(allUsers.get(allUsers.size()-1).getId(), is(userId));
 
-        assertThat(assignUser2Projekt(projectID, userId),is(true));
+        assertThat(assignUserToProject(projectID, userId),is(true));
 
         //Verify that the added user has now the project assigned
         Teilnehmer responseUser = getUser(userId);
 
-        Projekt responseProjekt = getProjekt(projectID);
+        Projekt responseProjekt = getProject(projectID);
         assertThat(responseProjekt.getAngemeldeteTeilnehmer().size(), is(1));
         assertThat(responseProjekt.getAngemeldeteTeilnehmer().get(0).getId(), is(responseUser.getId()));
     }
@@ -70,9 +70,9 @@ public class ProjekteControllerTest extends AbstractControllerTest {
     @Test
     public void assignProjektToUserAndRetrieveAllProjectsForTheUsers() {
         Long userId = addUser(createSampleUser());
-        Long projectId = addProjekt(createSampleProject());
+        Long projectId = addProject(createSampleProject());
 
-        Boolean wasTeilnehmerAssignedToProjekt = assignUser2Projekt(projectId, userId);
+        Boolean wasTeilnehmerAssignedToProjekt = assignUserToProject(projectId, userId);
         assertThat(wasTeilnehmerAssignedToProjekt, is(true));
 
         //Get the user again
@@ -87,10 +87,10 @@ public class ProjekteControllerTest extends AbstractControllerTest {
     @Test
     public void unassignUserFromProjektAndRetrieveAllCancelledProjectsForTheUsers() {
         Long userId = addUser(createSampleUser());
-        Long projectId = addProjekt(createSampleProject());
-        assignUser2Projekt(projectId, userId);
+        Long projectId = addProject(createSampleProject());
+        assignUserToProject(projectId, userId);
 
-        unassignUserFromProjekt(projectId, userId);
+        unassignUserFromProject(projectId, userId);
 
         //Get the user again
         Teilnehmer responseUser = getUser(userId);
@@ -110,11 +110,11 @@ public class ProjekteControllerTest extends AbstractControllerTest {
         // number of registered Teilnehmer in all projects should be equal
         // to number of registered projects of all Teilnehmer
         Projekt projekt1 = createSampleProject();
-        Long projectID1 = addProjekt(projekt1);
+        Long projectID1 = addProject(projekt1);
         assertThat(projekt1.isAktiv(),is(true));
 
         Projekt projekt2 = createSampleProject();
-        Long projectID2 = addProjekt(projekt2);
+        Long projectID2 = addProject(projekt2);
         assertThat(projekt2.isAktiv(),is(true));
 
         Teilnehmer user1 = createSampleUser();
@@ -136,10 +136,10 @@ public class ProjekteControllerTest extends AbstractControllerTest {
         System.out.println("Number of registered participants of all projects: " + sumOfRegisteredTeilnehmer);
 
         //Assign some projects to users
-        assertThat(assignUser2Projekt(projectID1, userId1),is(true));
-        assertThat(assignUser2Projekt(projectID2, userId1),is(true));
-        assertThat(assignUser2Projekt(projectID1, userId2),is(true));
-        assertThat(assignUser2Projekt(projectID2, userId2),is(true));
+        assertThat(assignUserToProject(projectID1, userId1),is(true));
+        assertThat(assignUserToProject(projectID2, userId1),is(true));
+        assertThat(assignUserToProject(projectID1, userId2),is(true));
+        assertThat(assignUserToProject(projectID2, userId2),is(true));
 
         allProjects = getAllProjects();
         System.out.println("Number of projects after assignment: " + allProjects.size());
@@ -156,13 +156,13 @@ public class ProjekteControllerTest extends AbstractControllerTest {
     @Test @Ignore
     public void shouldAssignUserCorrectlyToProjekt() throws Exception {
         // Given
-        Long projectId = addProjekt(createSampleProject());
+        Long projectId = addProject(createSampleProject());
 
         Teilnehmer newUser = createSampleUserOfName("Tirol", "Anton");
         Long userId = addUser(newUser);
 
         // When
-        Boolean isUserAssignedToProject = assignUser2Projekt(projectId, userId);
+        Boolean isUserAssignedToProject = assignUserToProject(projectId, userId);
 
         // Then
         assertThat(isUserAssignedToProject,is(true));
@@ -178,24 +178,24 @@ public class ProjekteControllerTest extends AbstractControllerTest {
     public void shouldUnassignUserCorrectlyFromProjekt() throws Exception {
         // Given
         Long userId = addUser(createSampleUser());
-        Long projectId = addProjekt(createSampleProject());
-        assignUser2Projekt(projectId, userId);
+        Long projectId = addProject(createSampleProject());
+        assignUserToProject(projectId, userId);
 
         // When
-        Boolean isUserUnassignedFromProject = unassignUserFromProjekt(projectId, userId);
+        Boolean isUserUnassignedFromProject = unassignUserFromProject(projectId, userId);
 
         // Then
         assertThat(isUserUnassignedFromProject, is(true));
-        Projekt projekt = getProjekt(projectId);
+        Projekt projekt = getProject(projectId);
         Teilnehmer teilnehmer = projekt.getStornierteTeilnehmer().get(0);
         assertThat(teilnehmer.getId(), is(userId));
     }
 
     @Test
     public void shouldUpdateProjectCorrectly() {
-        Long projectId = addProjekt(createSampleProject());
+        Long projectId = addProject(createSampleProject());
 
-        Projekt projekt = Projekt.newBuilder(getProjekt(projectId))
+        Projekt projekt = Projekt.newBuilder(getProject(projectId))
                 .name("Klettern am Berg")
                 .datumBeginn(LocalDate.of(2019, 8,3))
                 .datumEnde(LocalDate.of(2019, 9,2))
@@ -214,7 +214,7 @@ public class ProjekteControllerTest extends AbstractControllerTest {
 
     @Test
     public void shouldDeleteAddedProjectCorrectly() {
-        Long projectId = addProjekt(createSampleProject());
+        Long projectId = addProject(createSampleProject());
 
         deleteProjekt(projectId);
 
@@ -277,12 +277,12 @@ public class ProjekteControllerTest extends AbstractControllerTest {
 
     @Test
     public void givenProjektWithOneTeilnehmer_whenUpdatingProjektWithZeroSlotsReserved_thenBadRequest() {
-        Long projectId = addProjekt(createSampleProject());
+        Long projectId = addProject(createSampleProject());
         Long userId = addUser(createSampleUser());
 
-        assignUser2Projekt(projectId, userId);
+        assignUserToProject(projectId, userId);
 
-        Projekt projekt = Projekt.newBuilder(getProjekt(projectId))
+        Projekt projekt = Projekt.newBuilder(getProject(projectId))
                 .plaetzeReserviert(0)
                 .build();
 

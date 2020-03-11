@@ -69,9 +69,9 @@ public abstract class AbstractControllerTest {
                 .extract().as(Teilnehmer.class);
     }
 
-    protected Long addProjekt(Projekt projekt) {
+    protected Long addProject(Projekt project) {
         return given()
-                .body(projekt)
+                .body(project)
                 .contentType(ContentType.JSON)
                 .when()
                 .post(BASE_URL+"/projects")
@@ -92,36 +92,36 @@ public abstract class AbstractControllerTest {
                 .body().as(Projekt[].class));
     }
 
-    protected Projekt getProjekt(Long projectID) {
+    protected Projekt getProject(Long projectId) {
         return given()
-                .pathParam("projekt_id", projectID)
+                .pathParam("projectId", projectId)
                 .when()
-                .get(BASE_URL + "/projects/{projekt_id}")
+                .get(BASE_URL + "/projects/{projectId}")
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .assertThat()
                 .extract().as(Projekt.class);
     }
 
-    protected Boolean assignUser2Projekt(Long projektId, Long userId) {
+    protected Boolean assignUserToProject(Long projectId, Long userId) {
         return given()
-                .pathParam("projektId", projektId)
+                .pathParam("projectId", projectId)
                 .pathParam("userId", userId)
                 .contentType(ContentType.JSON)
                 .when()
-                .put(BASE_URL + "/projects/{projektId}/users/{userId}")
+                .put(BASE_URL + "/projects/{projectId}/users/{userId}")
                 .then()
                 .statusCode(is(HttpStatus.SC_OK))
                 .extract().body().as(Boolean.class);
     }
 
-    protected Boolean unassignUserFromProjekt(Long projektId, Long userId) {
+    protected Boolean unassignUserFromProject(Long projectId, Long userId) {
         return given()
-                .pathParam("projektId", projektId)
+                .pathParam("projectId", projectId)
                 .pathParam("userId", userId)
                 .contentType(ContentType.JSON)
                 .when()
-                .delete(BASE_URL + "/projects/{projektId}/users/{userId}")
+                .delete(BASE_URL + "/projects/{projectId}/users/{userId}")
                 .then()
                 .statusCode(is(HttpStatus.SC_OK))
                 .extract().body().as(Boolean.class);

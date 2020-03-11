@@ -4,46 +4,47 @@ package de.bauhaus.digital.controller;
 import static de.bauhaus.digital.DomainFactory.createSampleProject;
 import static de.bauhaus.digital.DomainFactory.createSampleUser;
 import static de.bauhaus.digital.DomainFactory.createSampleUserOfName;
-import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bauhaus.digital.domain.Arzt;
 import de.bauhaus.digital.domain.Behinderung;
 import de.bauhaus.digital.domain.Kontakt;
-import de.bauhaus.digital.domain.Projekt;
 import de.bauhaus.digital.domain.Teilnehmer;
-import de.bauhaus.digital.transformation.AnmeldungJson;
-import io.restassured.RestAssured;
-import io.restassured.authentication.PreemptiveBasicAuthScheme;
 import io.restassured.http.ContentType;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.http.HttpStatus;
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 
 public class TeilnehmerControllerTest extends AbstractControllerTest {
 
     @Test
+    public void givenInvalidCredentials_whenAddingUser_thenGiveHttp401Unauthorized() {
+        Teilnehmer user = createSampleUser();
+
+        given()
+                .auth().basic("wrong", "credentials")
+                .body(user)
+                .contentType(ContentType.JSON)
+                .when()
+                .post(BASE_URL + "/users")
+                .then()
+                .statusCode(is(HttpStatus.SC_UNAUTHORIZED));
+    }
+
+    @Test
     public void givenInvalidId_whenRequestingUser_thenNotFound() {
         given()
-                .pathParam("id", -1)
-            .when()
-                .get(BASE_URL + "/users/{id}")
-            .then()
-                .statusCode(HttpStatus.SC_NOT_FOUND);
+            .pathParam("id", -1)
+        .when()
+            .get(BASE_URL + "/users/{id}")
+        .then()
+            .statusCode(HttpStatus.SC_NOT_FOUND);
     }
 
     @Test
@@ -53,51 +54,11 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
         Long userId = addUser(user);
 
         Teilnehmer responseUser = getUser(userId);
-        assertThat(responseUser.getVorname(), is(user.getVorname()));
-        assertThat(responseUser.getNachname(), is(user.getNachname()));
-    }
 
-    @Test
-    public void add_new_user_should_give_http_401_unauthorized_when_credentials_are_wrong() {
-        Teilnehmer user = createSampleUser();
-
-        given()
-            .auth().basic("wrong", "credentials")
-            .body(user)
-            .contentType(ContentType.JSON)
-        .when()
-            .post(BASE_URL + "/users")
-        .then()
-            .statusCode(is(HttpStatus.SC_UNAUTHORIZED));
-    }
-
-    @Test
-    public void addNewUserAddSeveralListItemsAndRemoveThemAgain() {
-        String allergy = "Arbeiten: Viele Aufgaben und viel reden \n"+
-                "Freizeit: Urlaub und Spaß haben";
-        String nutrition = "Fleisch ist verboten, da Vegetarier\n"+
-                "Obst: Sollte dennoch Obst essen";
-        String illness = "Grippe: Sollte viel Pausen machen\n"+
-                "Husten: Immer in den Arm husten";
-        String drugs = "Nasentropfen: 2x am Tag\n" +
-                "Hustensaft: nach dem Essen";
-
-
-        Teilnehmer user = Teilnehmer.newBuilder(createSampleUser())
-                .allergien(allergy)
-                .essenWeitereLimitierungen(nutrition)
-                .krankheiten(illness)
-                .medikamente(drugs)
-                .build();
-
-        Long userId = addUser(user);
-
-        Teilnehmer responseUser = getUser(userId);
-
-        assertThat(responseUser.getAllergien(), is(allergy));
-        assertThat(responseUser.getEssenWeitereLimitierungen(), is(nutrition));
-        assertThat(responseUser.getKrankheiten(), is(illness));
-        assertThat(responseUser.getMedikamente(),is(drugs));
+        Assertions.assertThat(responseUser).
+                usingRecursiveComparison()
+                .ignoringFields("id", "arzt.id", "behinderung.id", "notfallKontakt.id")
+                .isEqualTo(user);
     }
 
     @Test
@@ -195,7 +156,6 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
 
         Teilnehmer responseUser = getUser(userId);
 
-
         Assert.assertThat(responseUser.getVorname(),is(vorname));
         Assert.assertThat(responseUser.getNachname(),is(nachname));
         Assert.assertThat(responseUser.getGeburtsdatum(),is(geburtsdatum));
@@ -236,8 +196,8 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
     public void should_be_able_to_delete_Teilnehmer_if_was_assigned_to_Projekt() throws Exception {
         // Given
         Long userId = addUser(createSampleUser());
-        Long projectId = addProjekt(createSampleProject());
-        assignUser2Projekt(projectId, userId);
+        Long projectId = addProject(createSampleProject());
+        assignUserToProject(projectId, userId);
 
         // When
         deleteUser(userId);
@@ -250,9 +210,9 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
     public void should_be_able_to_delete_Teilnehmer_if_was_storniert_on_Projekt() throws Exception {
         // Given
         Long userId = addUser(createSampleUser());
-        Long projectId = addProjekt(createSampleProject());
-        assignUser2Projekt(projectId, userId);
-        Boolean isUserUnassignedFromProject = unassignUserFromProjekt(projectId, userId);
+        Long projectId = addProject(createSampleProject());
+        assignUserToProject(projectId, userId);
+        Boolean isUserUnassignedFromProject = unassignUserFromProject(projectId, userId);
         assertThat(isUserUnassignedFromProject, is(true));
 
         // When
