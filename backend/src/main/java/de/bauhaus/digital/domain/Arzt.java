@@ -18,13 +18,27 @@ public class Arzt {
 
     private String telefon;
 
-    public Arzt(String name, String anschrift, String telefon) {
-        this.name = name;
-        this.anschrift = anschrift;
-        this.telefon = telefon;
+    protected Arzt() {}
+
+    private Arzt(Builder builder) {
+        id = builder.id;
+        name = builder.name;
+        anschrift = builder.anschrift;
+        telefon = builder.telefon;
     }
 
-    protected Arzt() {}
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static Builder newBuilder(Arzt copy) {
+        Builder builder = new Builder();
+        builder.id = copy.getId();
+        builder.name = copy.getName();
+        builder.anschrift = copy.getAnschrift();
+        builder.telefon = copy.getTelefon();
+        return builder;
+    }
 
     public long getId() {
         return id;
@@ -52,4 +66,33 @@ public class Arzt {
                 '}';
     }
 
+    public static final class Builder {
+
+        private long id;
+        private String name;
+        private String anschrift;
+        private String telefon;
+
+        private Builder() {
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder anschrift(String anschrift) {
+            this.anschrift = anschrift;
+            return this;
+        }
+
+        public Builder telefon(String telefon) {
+            this.telefon = telefon;
+            return this;
+        }
+
+        public Arzt build() {
+            return new Arzt(this);
+        }
+    }
 }

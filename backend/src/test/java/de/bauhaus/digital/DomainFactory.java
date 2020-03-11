@@ -136,11 +136,19 @@ public class DomainFactory {
     }
 
     public static Arzt createSampleArzt() {
-        return new Arzt("Eich", "Route 1 Alabastia, 39829","555-6891");
+        return Arzt.newBuilder()
+                .name("Eich")
+                .anschrift("Route 1 Alabastia, 39829")
+                .telefon("555-6891")
+                .build();
     }
 
     public static Kontakt createSampleKontakt() {
-        return new Kontakt("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
+        return Kontakt.newBuilder()
+                .name("Igor Eich")
+                .anschrift("Route 4 Neuborkia  96825")
+                .telefon("555-2532")
+                .build();
     }
 
     public static Behinderung createSampleBehinderung() {

@@ -1,6 +1,10 @@
 package de.bauhaus.digital.controller;
 
 
+import static de.bauhaus.digital.DomainFactory.createSampleArzt;
+import static de.bauhaus.digital.DomainFactory.createSampleBehinderung;
+import static de.bauhaus.digital.DomainFactory.createSampleKontakt;
+import static de.bauhaus.digital.DomainFactory.createSampleProjekt;
 import static de.bauhaus.digital.DomainFactory.createSampleTeilnehmer;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,6 +17,7 @@ import de.bauhaus.digital.domain.Kontakt;
 import de.bauhaus.digital.domain.Teilnehmer;
 import io.restassured.http.ContentType;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.http.HttpStatus;
 import org.assertj.core.api.Assertions;
@@ -22,31 +27,38 @@ import org.junit.Test;
 public class TeilnehmerControllerTest extends AbstractControllerTest {
 
     @Test
-    public void givenInvalidCredentials_whenAddingUser_thenGiveHttp401Unauthorized() {
+    public void givenInvalidCredentials_whenAddingTeilnehmer_thenHttp401Unauthorized() {
         Teilnehmer user = createSampleTeilnehmer();
 
         given()
-                .auth().basic("wrong", "credentials")
-                .body(user)
-                .contentType(ContentType.JSON)
-                .when()
-                .post(BASE_URL + "/users")
-                .then()
-                .statusCode(is(HttpStatus.SC_UNAUTHORIZED));
-    }
-
-    @Test
-    public void givenInvalidId_whenRequestingUser_thenNotFound() {
-        given()
-            .pathParam("id", -1)
+            .auth().basic("wrong", "credentials")
+            .body(user)
+            .contentType(ContentType.JSON)
         .when()
-            .get(BASE_URL + "/users/{id}")
+            .post(BASE_URL + "/users")
         .then()
-            .statusCode(HttpStatus.SC_NOT_FOUND);
+            .statusCode(is(HttpStatus.SC_UNAUTHORIZED));
     }
 
     @Test
-    public void givenUser_WhenAddingAndRetrieving_thenTheyMatch() {
+    public void givenTeilnehmer_whenAddingTwoTeilnehmerAndRetrievingAll_thenListHasTwoAdditionalEntries() {
+        int initialSize = getAllUsers().size();
+
+        addUser(createSampleTeilnehmer());
+        addUser(createSampleTeilnehmer());
+
+        List<Teilnehmer> alleTeilnehmer = getAllUsers();
+
+        assertThat(alleTeilnehmer.size(), is(initialSize + 2));
+    }
+
+    @Test
+    public void givenInvalidId_whenRequestingTeilnehmer_thenNotFound() {
+        getNoUser(-1L);
+    }
+
+    @Test
+    public void givenTeilnehmer_whenAddingAndRetrieving_thenTheyMatch() {
         Teilnehmer user = createSampleTeilnehmer();
 
         Long userId = addUser(user);
@@ -60,125 +72,193 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void addTwoUsersAndCheckWhetherAllUsersAreComplete() {
-        int initialSize = getAllUsers().size();
+    public void givenTeilnehmerInDb_whenUpdatingAndRetrieving_thenRetrievedTeilnehmerMatchesUpdated() {
 
-        Long userId = addUser(createSampleTeilnehmer());
-        Long userId2 = addUser(createSampleTeilnehmer());
+        Long teilnehmerId = addUser(createSampleTeilnehmer());
+        Teilnehmer originalTeilnehmer = getUser(teilnehmerId);
 
-        List<Teilnehmer> allUsers = getAllUsers();
+        // Verwaltung
+        boolean aktiv = true;
+        LocalDate registrierungsdatum = LocalDate.now();
+        boolean bezahlt = false;
+        boolean schulkind = true;
+        boolean datenschutzErklaerungAkzeptiert = true;
+        boolean teilnahmeBedingungAkzeptiert = true;
 
-        assertThat(allUsers.size()-initialSize, is(2));
-        long id1 = allUsers.get(initialSize).getId();
-        long id2 = allUsers.get(initialSize+1).getId();
-        assertThat(id1,is(userId));
-        assertThat(id2,is(userId2));
-    }
+        // Grunddaten
+        String vorname = "Marianne U";
+        String nachname = "Musterfrau U";
+        LocalDate geburtsdatum = LocalDate.of(2000, 3, 1);
+        String strasse = "Musterstraße U";
+        String hausnummer = "4a U";
+        String wohnort = "Musterstadt U";
+        String postleitzahl = "99999";
+        String telefon = "9999999999";
+        String email = "update@update.de";
+        boolean darfErmaessigtenPreisZahlen = true;
 
-    @Test
-    public void isUserUpdatedCorrectly() {
-        Long userId = addUser(createSampleTeilnehmer());
+        // Pflichtangaben
+        Boolean darfBehandeltWerden = false;
+        Boolean darfAlleinNachHause = false;
+        Boolean darfReiten = false;
+        Boolean darfSchwimmen = false;
+        String schwimmAbzeichen = "Seepferdchen U";
 
-        Arzt arzt = new Arzt(
-                "Doktor Who",
-                "Arzthaus 1",
-                "555-6891");
-
-        Kontakt kontakt = new Kontakt(
-                "Igor Müller",
-                "Hinter dem Dorf 4",
-                "555-2532");
-
-        String krankheiten = "Grippe: Muss oft Husten Hustenbonbons";
-
-
-        String essenWeitereLimitierungen = "Laktoseintoleranz";
-        String allergien = "Heuschnupfen: Nasenspray nur 2x am Tag";
-
-        Boolean liegtBehinderungVor = true;
-        Behinderung behinderung = Behinderung.newBuilder().
-                rollstuhlNutzungNotwendig(true).
-                merkzeichen_Hilflosigkeit_H(true).
-                wertmarkeVorhanden(true).
-                build();
-
-        String medikamente = "Nasenspray von Forte: 2x am Tag";
-
+        // Allergien, Krankheiten
+        String allergien = "Katzenhaare";
+        String krankheiten = "Grippe";
+        String medikamente = "Tabletten";
         boolean hitzeempfindlich = true;
+        boolean essenVegetarier = true;
+        boolean essenLaktoseUnvertraeglichkeit = true;
+        boolean essenEinerUnvertraeglichkeit = true;
+        String essenWeitereLimitierungen = "vegan";
+        String krankenkasse = "Krankenkasse";
 
-        String vorname = "Klaus";
-        String nachname = "Klausen";
-        LocalDate geburtsdatum = LocalDate.of(1999, 12, 31);
-        String strasse = "Bahnhofstraße";
-        String hausnummer = "5";
-        String wohnort = "Erfurt";
-        String plz = "99082";
-        String telefon = "03544444";
-        String krankenkasse = "AOK";
-        String email = "myEmail@weimar.de";
+        // Behinderung
+        boolean liegtBehinderungVor = true;
 
-        Teilnehmer klausKlausen = Teilnehmer.newBuilder()
-                .id(userId) // Exlicitely set Id of User to update, so our implementation can find it
-                .schulkind(true)
-                .datenschutzErklaerungAkzeptiert(true)
-                .teilnahmeBedingungAkzeptiert(true)
+        // Important: We use the copy-builder, so we automatically use the old Arzt, Kontakt and Behinderung and
+        // make sure we use the correct IDs
+        Teilnehmer teilnehmerToUpdate = Teilnehmer.newBuilder(originalTeilnehmer)
+                .aktiv(aktiv)
+                .registrierungsdatum(registrierungsdatum)
+                .bezahlt(bezahlt)
+                .schulkind(schulkind)
+                .datenschutzErklaerungAkzeptiert(datenschutzErklaerungAkzeptiert)
+                .teilnahmeBedingungAkzeptiert(teilnahmeBedingungAkzeptiert)
                 .vorname(vorname)
                 .nachname(nachname)
                 .geburtsdatum(geburtsdatum)
                 .strasse(strasse)
                 .hausnummer(hausnummer)
                 .wohnort(wohnort)
-                .postleitzahl(plz)
+                .postleitzahl(postleitzahl)
                 .telefon(telefon)
-                .krankenkasse(krankenkasse)
-                .darfBehandeltWerden(false)
-                .notfallKontakt(kontakt)
-                .darfAlleinNachHause(true)
-                .darfReiten(false)
-                .darfSchwimmen(true)
-                .schwimmAbzeichen("Seepferdchen")
-                .bezahlt(false)
-                .darfBehandeltWerden(true)
-                .arzt(arzt)
-                .allergien(allergien)
-                .essenWeitereLimitierungen(essenWeitereLimitierungen)
-                .krankheiten(krankheiten)
-                .liegtBehinderungVor(liegtBehinderungVor)
-                .behinderung(behinderung)
-                .hitzeempfindlich(hitzeempfindlich)
-                .medikamente(medikamente)
                 .email(email)
+                .darfErmaessigtenPreisZahlen(darfErmaessigtenPreisZahlen)
+                .darfBehandeltWerden(darfBehandeltWerden)
+                .darfAlleinNachHause(darfAlleinNachHause)
+                .darfReiten(darfReiten)
+                .darfSchwimmen(darfSchwimmen)
+                .schwimmAbzeichen(schwimmAbzeichen)
+                .allergien(allergien)
+                .krankheiten(krankheiten)
+                .medikamente(medikamente)
+                .hitzeempfindlich(hitzeempfindlich)
+                .essenVegetarier(essenVegetarier)
+                .essenLaktoseUnvertraeglichkeit(essenLaktoseUnvertraeglichkeit)
+                .essenEinerUnvertraeglichkeit(essenEinerUnvertraeglichkeit)
+                .essenWeitereLimitierungen(essenWeitereLimitierungen)
+                .krankenkasse(krankenkasse)
+                .liegtBehinderungVor(liegtBehinderungVor)
                 .build();
 
-        updateUser(klausKlausen);
+        // actual update is here
+        updateUser(teilnehmerToUpdate);
 
-        Teilnehmer responseUser = getUser(userId);
+        Teilnehmer responseTeilnehmer = getUser(teilnehmerId);
 
-        Assert.assertThat(responseUser.getVorname(),is(vorname));
-        Assert.assertThat(responseUser.getNachname(),is(nachname));
-        Assert.assertThat(responseUser.getGeburtsdatum(),is(geburtsdatum));
-        Assert.assertThat(responseUser.getStrasse(),is(strasse));
-        Assert.assertThat(responseUser.getPostleitzahl(),is(plz));
-        Assert.assertThat(responseUser.getWohnort(),is(wohnort));
-        Assert.assertThat(responseUser.getTelefon(),is(telefon));
-        Assert.assertThat(responseUser.getKrankenkasse(),is(krankenkasse));
-        Assert.assertThat(responseUser.getNotfallKontakt().getName(),is(kontakt.getName()));
-        Assert.assertThat(responseUser.getNotfallKontakt().getAnschrift(),is(kontakt.getAnschrift()));
-        Assert.assertThat(responseUser.getNotfallKontakt().getTelefon(),is(kontakt.getTelefon()));
-        Assert.assertThat(responseUser.getArzt().getName(),is(arzt.getName()));
-        Assert.assertThat(responseUser.getArzt().getAnschrift(),is(arzt.getAnschrift()));
-        Assert.assertThat(responseUser.getArzt().getTelefon(),is(arzt.getTelefon()));
-        Assert.assertThat(responseUser.getAllergien(),is(allergien));
-        Assert.assertThat(responseUser.getKrankheiten(),is(krankheiten));
-        Assert.assertThat(responseUser.getEssenWeitereLimitierungen(),is(essenWeitereLimitierungen));
-        Assert.assertThat(responseUser.getMedikamente(),is(medikamente));
-        Assert.assertThat(responseUser.isHitzeempfindlich(),is(hitzeempfindlich));
-        Assert.assertThat(responseUser.getEmail(), is(email));
-        Assert.assertThat(responseUser.isLiegtBehinderungVor(), is(liegtBehinderungVor));
+        Assertions.assertThat(responseTeilnehmer).
+                usingRecursiveComparison()
+                .isEqualTo(teilnehmerToUpdate);
     }
 
     @Test
-    public void isUserDeletedCorrectly() {
+    public void givenTeilnehmerInDb_whenUpdatingNestedEntitiesAndRetrieving_thenRetrievedTeilnehmerMatchesUpdated() {
+
+        Long teilnehmerId = addUser(createSampleTeilnehmer());
+        Teilnehmer originalTeilnehmer = getUser(teilnehmerId);
+
+        // Important: We use the copy-builders to make sure we use the correct IDs
+
+        Arzt updatedArzt = Arzt.newBuilder(originalTeilnehmer.getArzt())
+                .name("Eich U")
+                .anschrift("Route 1 Alabastia, 39829 U")
+                .telefon("555-6891 U").build();
+
+        Kontakt updatedKontakt = Kontakt.newBuilder(originalTeilnehmer.getNotfallKontakt())
+                .name("Igor Eich U")
+                .anschrift("Route 4 Neuborkia  96825 U")
+                .telefon("555-2532 U")
+                .build();
+
+        // Merkzeichen
+        boolean merkzeichen_AussergewoehnlicheGehbehinderung_aG = false;
+        boolean merkzeichen_Hilflosigkeit_H = false;
+        boolean merkzeichen_Blind_Bl = false;
+        boolean merkzeichen_Gehoerlos_Gl = false;
+        boolean merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B = false;
+        boolean merkzeichen_BeeintraechtigungImStrassenverkehr_G = false;
+        boolean merkzeichen_Taubblind_TBL = false;
+
+        // Hilfsmittel
+        boolean rollstuhlNutzungNotwendig = false;
+        String weitereHilfsmittel = "Krücken U";
+
+        // Wertmarke
+        boolean wertmarkeVorhanden = false;
+
+        // Begleitperson
+        boolean begleitungNotwendig = false;
+        boolean begleitpersonPflege = false;
+        boolean begleitpersonMedizinischeVersorgung = false;
+        boolean begleitpersonMobilitaet = false;
+        boolean begleitpersonOrientierung = false;
+        boolean begleitpersonSozialeBegleitung = false;
+        boolean begleitpersonSinneswahrnehmung = false;
+
+        String eingeschraenkteSinne = "Geruchssinn U";
+        String hinweiseZumUmgangMitDemKind = "Nicht unbeaufsichtigt lassen. U";
+        boolean unterstuetzungSucheBegleitperson = false;
+        String gewohnterBegleitpersonenDienstleister = "Dienstleister U";
+        boolean beantragungKostenuebernahmeBegleitperson = false;
+        boolean zustimmungWeitergabeDatenAmtFamilieUndSoziales = false;
+
+        Behinderung updatedBehinderung = Behinderung.newBuilder(originalTeilnehmer.getBehinderung())
+                .merkzeichen_AussergewoehnlicheGehbehinderung_aG(merkzeichen_AussergewoehnlicheGehbehinderung_aG)
+                .merkzeichen_Hilflosigkeit_H(merkzeichen_Hilflosigkeit_H)
+                .merkzeichen_Blind_Bl(merkzeichen_Blind_Bl)
+                .merkzeichen_Gehoerlos_Gl(merkzeichen_Gehoerlos_Gl)
+                .merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B(merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B)
+                .merkzeichen_BeeintraechtigungImStrassenverkehr_G(merkzeichen_BeeintraechtigungImStrassenverkehr_G)
+                .merkzeichen_Taubblind_TBL(merkzeichen_Taubblind_TBL)
+                .rollstuhlNutzungNotwendig(rollstuhlNutzungNotwendig)
+                .weitereHilfsmittel(weitereHilfsmittel)
+                .wertmarkeVorhanden(wertmarkeVorhanden)
+                .begleitungNotwendig(begleitungNotwendig)
+                .begleitpersonPflege(begleitpersonPflege)
+                .begleitpersonMedizinischeVersorgung(begleitpersonMedizinischeVersorgung)
+                .begleitpersonMobilitaet(begleitpersonMobilitaet)
+                .begleitpersonOrientierung(begleitpersonOrientierung)
+                .begleitpersonSozialeBegleitung(begleitpersonSozialeBegleitung)
+                .begleitpersonSinneswahrnehmung(begleitpersonSinneswahrnehmung)
+                .eingeschraenkteSinne(eingeschraenkteSinne)
+                .hinweiseZumUmgangMitDemKind(hinweiseZumUmgangMitDemKind)
+                .unterstuetzungSucheBegleitperson(unterstuetzungSucheBegleitperson)
+                .gewohnterBegleitpersonenDienstleister(gewohnterBegleitpersonenDienstleister)
+                .beantragungKostenuebernahmeBegleitperson(beantragungKostenuebernahmeBegleitperson)
+                .zustimmungWeitergabeDatenAmtFamilieUndSoziales(zustimmungWeitergabeDatenAmtFamilieUndSoziales)
+                .build();
+
+        Teilnehmer teilnehmerToUpdate = Teilnehmer.newBuilder(originalTeilnehmer)
+                .arzt(updatedArzt)
+                .notfallKontakt(updatedKontakt)
+                .behinderung(updatedBehinderung)
+                .build();
+
+        // actual update is here
+        updateUser(teilnehmerToUpdate);
+
+        Teilnehmer responseTeilnehmer = getUser(teilnehmerId);
+
+        Assertions.assertThat(responseTeilnehmer).
+                usingRecursiveComparison()
+                .isEqualTo(teilnehmerToUpdate);
+    }
+
+    @Test
+    public void givenTeilnehmer_whenDeletedAndRequested_thenIsNotFound() {
         Long userId = addUser(createSampleTeilnehmer());
 
         Teilnehmer responseUser = getUser(userId);
@@ -191,24 +271,24 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void should_be_able_to_delete_Teilnehmer_if_was_assigned_to_Projekt() throws Exception {
+    public void givenTeilnehmerThatIsAssignedToProjekt_whenDeletingTeilnehmer_thenNoFail() {
         // Given
-        Long userId = addUser(createSampleTeilnehmer());
-        Long projectId = addProject(DomainFactory.createSampleProjekt());
-        assignUserToProject(projectId, userId);
+        Long teilnehmerId = addUser(createSampleTeilnehmer());
+        Long projektId = addProject(createSampleProjekt());
+        assignUserToProject(projektId, teilnehmerId);
 
         // When
-        deleteUser(userId);
+        deleteUser(teilnehmerId);
 
         // Then
         // pass :)
     }
 
     @Test
-    public void should_be_able_to_delete_Teilnehmer_if_was_storniert_on_Projekt() throws Exception {
+    public void givenTeilnehmerThatWasCancelledFromProjekt_whenDeletingTeilnehmer_thenNoFail() {
         // Given
         Long userId = addUser(createSampleTeilnehmer());
-        Long projectId = addProject(DomainFactory.createSampleProjekt());
+        Long projectId = addProject(createSampleProjekt());
         assignUserToProject(projectId, userId);
         Boolean isUserUnassignedFromProject = unassignUserFromProject(projectId, userId);
         assertThat(isUserUnassignedFromProject, is(true));
@@ -219,6 +299,8 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
         // Then
         // pass :)
     }
+
+    // Helpers -----------------------------------------------------------------------------------
 
     private void updateUser(Teilnehmer teilnehmer) {
         given()
@@ -243,9 +325,9 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
     private void getNoUser(Long userId) {
         given()
             .pathParam("id", userId)
-            .when()
+        .when()
             .get(BASE_URL + "/users/{id}")
-            .then()
+        .then()
             .statusCode(HttpStatus.SC_NOT_FOUND);
     }
 

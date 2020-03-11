@@ -41,19 +41,20 @@ public abstract class AbstractControllerTest {
         return given()
                 .body(teilnehmer)
                 .contentType(ContentType.JSON)
-                .when()
+            .when()
                 .post(BASE_URL + "/users")
-                .then()
+            .then()
                 .statusCode(is(HttpStatus.SC_CREATED))
                 .extract()
                 .body().as(Long.class);
     }
 
     protected List<Teilnehmer> getAllUsers() {
-        return Arrays.asList(given()
-                .when()
+        return Arrays.asList(
+            given()
+            .when()
                 .get(BASE_URL + "/users")
-                .then()
+            .then()
                 .statusCode(HttpStatus.SC_OK)
                 .extract().as(Teilnehmer[].class));
     }
@@ -61,9 +62,9 @@ public abstract class AbstractControllerTest {
     protected Teilnehmer getUser(Long userId) {
         return given()
                 .pathParam("id", userId)
-                .when()
+            .when()
                 .get(BASE_URL + "/users/{id}")
-                .then()
+            .then()
                 .statusCode(HttpStatus.SC_OK)
                 .assertThat()
                 .extract().as(Teilnehmer.class);
@@ -73,9 +74,9 @@ public abstract class AbstractControllerTest {
         return given()
                 .body(project)
                 .contentType(ContentType.JSON)
-                .when()
+            .when()
                 .post(BASE_URL+"/projects")
-                .then()
+            .then()
                 .statusCode(is(HttpStatus.SC_CREATED))
                 .extract()
                 .body().as(Long.class);
@@ -84,9 +85,9 @@ public abstract class AbstractControllerTest {
     protected List<Projekt> getAllProjects() {
         return Arrays.asList(given()
                 .contentType(ContentType.JSON)
-                .when()
+            .when()
                 .get(BASE_URL + "/projects")
-                .then()
+            .then()
                 .statusCode(is(HttpStatus.SC_OK))
                 .extract()
                 .body().as(Projekt[].class));
@@ -95,9 +96,9 @@ public abstract class AbstractControllerTest {
     protected Projekt getProject(Long projectId) {
         return given()
                 .pathParam("projectId", projectId)
-                .when()
+            .when()
                 .get(BASE_URL + "/projects/{projectId}")
-                .then()
+            .then()
                 .statusCode(HttpStatus.SC_OK)
                 .assertThat()
                 .extract().as(Projekt.class);
@@ -108,9 +109,9 @@ public abstract class AbstractControllerTest {
                 .pathParam("projectId", projectId)
                 .pathParam("userId", userId)
                 .contentType(ContentType.JSON)
-                .when()
+            .when()
                 .put(BASE_URL + "/projects/{projectId}/users/{userId}")
-                .then()
+            .then()
                 .statusCode(is(HttpStatus.SC_OK))
                 .extract().body().as(Boolean.class);
     }
@@ -120,9 +121,9 @@ public abstract class AbstractControllerTest {
                 .pathParam("projectId", projectId)
                 .pathParam("userId", userId)
                 .contentType(ContentType.JSON)
-                .when()
+            .when()
                 .delete(BASE_URL + "/projects/{projectId}/users/{userId}")
-                .then()
+            .then()
                 .statusCode(is(HttpStatus.SC_OK))
                 .extract().body().as(Boolean.class);
     }

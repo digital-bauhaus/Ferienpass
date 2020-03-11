@@ -432,11 +432,6 @@ public class Teilnehmer {
         private Builder() {
         }
 
-        public Builder id(long id) {
-            this.id = id;
-            return this;
-        }
-
         public Builder aktiv(boolean aktiv) {
             this.aktiv = aktiv;
             return this;

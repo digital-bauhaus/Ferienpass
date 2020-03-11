@@ -15,8 +15,6 @@ public class TeilnehmerTest {
     @Test
     public void givenTeilnehmerAttributes_whenCreatingUsingTheBuilder_thenCreatedTeilnehmerMatchesAttributes() {
 
-        long id = 1;
-
         // Verwaltung
         boolean aktiv = true;
         LocalDate registrierungsdatum = LocalDate.now();
@@ -65,7 +63,6 @@ public class TeilnehmerTest {
         List<Long> gewuenschteProjekte = new ArrayList<>();
 
         Teilnehmer teilnehmer = Teilnehmer.newBuilder()
-                .id(id)
                 .aktiv(aktiv)
                 .registrierungsdatum(registrierungsdatum)
                 .bezahlt(bezahlt)
@@ -103,7 +100,6 @@ public class TeilnehmerTest {
                 .gewuenschteProjekte(gewuenschteProjekte)
                 .build();
 
-        assertThat(teilnehmer.getId(), is(id));
         assertThat(teilnehmer.isAktiv(), is(aktiv));
         assertThat(teilnehmer.getRegistrierungsdatum(), is(registrierungsdatum));
         assertThat(teilnehmer.isBezahlt(), is(bezahlt));

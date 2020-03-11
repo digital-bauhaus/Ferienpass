@@ -126,19 +126,19 @@ public class AnmeldungToAdmin {
 //        teilnehmer.setArzt(mappeArzt(anmeldungJson));
     }
 
-    private static Arzt mappeArzt(AnmeldungJson anmeldungJson) {
-        return new Arzt(
-                anmeldungJson.getConditionsFamilyDoctorName(),
-                anmeldungJson.getConditionsFamilyDoctorAddress(),
-                anmeldungJson.getConditionsFamilyDoctorPhoneNumber());
-    }
+//    private static Arzt mappeArzt(AnmeldungJson anmeldungJson) {
+//        return new Arzt(
+//                anmeldungJson.getConditionsFamilyDoctorName(),
+//                anmeldungJson.getConditionsFamilyDoctorAddress(),
+//                anmeldungJson.getConditionsFamilyDoctorPhoneNumber());
+//    }
 
-    private static Kontakt mappeNotfallKontakt(AnmeldungJson anmeldungJson) {
-        return new Kontakt(
-                anmeldungJson.getConditionsEmergencyName(),
-                anmeldungJson.getConditionsEmergencyAddress(),
-                anmeldungJson.getConditionsEmergencyPhoneNumber());
-    }
+//    private static Kontakt mappeNotfallKontakt(AnmeldungJson anmeldungJson) {
+//        return new Kontakt(
+//                anmeldungJson.getConditionsEmergencyName(),
+//                anmeldungJson.getConditionsEmergencyAddress(),
+//                anmeldungJson.getConditionsEmergencyPhoneNumber());
+//    }
 
 
     private static LocalDate mappeGeburtsdatum(AnmeldungJson anmeldungJson) {

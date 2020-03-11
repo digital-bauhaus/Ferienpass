@@ -1,8 +1,11 @@
 package de.bauhaus.digital.domain;
 
+import static de.bauhaus.digital.DomainFactory.createSampleBehinderung;
+import static de.bauhaus.digital.DomainFactory.createSampleTeilnehmer;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class BehinderungTest {
@@ -90,6 +93,17 @@ public class BehinderungTest {
         assertThat(behinderung.getGewohnterBegleitpersonenDienstleister(), is(gewohnterBegleitpersonenDienstleister));
         assertThat(behinderung.isBeantragungKostenuebernahmeBegleitperson(), is(beantragungKostenuebernahmeBegleitperson));
         assertThat(behinderung.isZustimmungWeitergabeDatenAmtFamilieUndSoziales(), is(zustimmungWeitergabeDatenAmtFamilieUndSoziales));
+    }
+
+    @Test
+    public void givenBehinderung_whenCreatingUsingTheCopyBuilder_thenCreatedBehinderungMatchesAttributes() {
+        Behinderung behinderung = createSampleBehinderung();
+
+        Behinderung copy = Behinderung.newBuilder(behinderung).build();
+
+        Assertions.assertThat(copy).
+                usingRecursiveComparison()
+                .isEqualTo(behinderung);
     }
 
 }

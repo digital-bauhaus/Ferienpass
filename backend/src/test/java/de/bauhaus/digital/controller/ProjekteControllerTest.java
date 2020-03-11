@@ -24,11 +24,11 @@ public class ProjekteControllerTest extends AbstractControllerTest {
     @Test
     public void givenInvalidId_whenRequestingProject_thenNotFound() {
         given()
-                .pathParam("id", -1)
-            .when()
-                .get(BASE_URL + "/projects/{id}")
-            .then()
-                .statusCode(HttpStatus.SC_NOT_FOUND);
+            .pathParam("id", -1)
+        .when()
+            .get(BASE_URL + "/projects/{id}")
+        .then()
+            .statusCode(HttpStatus.SC_NOT_FOUND);
     }
 
     @Test
@@ -247,14 +247,14 @@ public class ProjekteControllerTest extends AbstractControllerTest {
                 .build();
 
         given()
-                .body(projekt)
-                .contentType(ContentType.JSON)
-            .when()
-                .post(BASE_URL+"/projects")
-            .then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body("errors", hasSize(1))
-                .body("errors[0].field", is("hoechstAlter"));
+            .body(projekt)
+            .contentType(ContentType.JSON)
+        .when()
+            .post(BASE_URL+"/projects")
+        .then()
+            .statusCode(HttpStatus.SC_BAD_REQUEST)
+            .body("errors", hasSize(1))
+            .body("errors[0].field", is("hoechstAlter"));
     }
 
     @Test
@@ -265,14 +265,14 @@ public class ProjekteControllerTest extends AbstractControllerTest {
                 .build();
 
         given()
-                .body(projekt)
-                .contentType(ContentType.JSON)
-            .when()
-                .post(BASE_URL+"/projects")
-                .then()
-            .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body("errors", hasSize(1))
-                .body("errors[0].field", is("plaetzeReserviert"));
+            .body(projekt)
+            .contentType(ContentType.JSON)
+        .when()
+            .post(BASE_URL+"/projects")
+            .then()
+        .statusCode(HttpStatus.SC_BAD_REQUEST)
+            .body("errors", hasSize(1))
+            .body("errors[0].field", is("plaetzeReserviert"));
     }
 
     @Test
@@ -287,51 +287,54 @@ public class ProjekteControllerTest extends AbstractControllerTest {
                 .build();
 
         given()
-                .body(projekt)
-                .contentType(ContentType.JSON)
-            .when()
-                .put(BASE_URL+"/projects")
-            .then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .body("errors", hasSize(1))
-                .body("errors[0].field", is("plaetzeReserviert"));
+            .body(projekt)
+            .contentType(ContentType.JSON)
+        .when()
+            .put(BASE_URL+"/projects")
+        .then()
+            .statusCode(HttpStatus.SC_BAD_REQUEST)
+            .body("errors", hasSize(1))
+            .body("errors[0].field", is("plaetzeReserviert"));
     }
+
+    // Helpers -----------------------------------------------------------------------------------
 
     private List<Projekt> getAllProjekteWhereUserIsAssigned(Long userId) {
         return Arrays.asList(
                 given()
-                        .pathParam("userId", userId)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .get(BASE_URL+"/users/{userId}/projects")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Projekt[].class));
+                    .pathParam("userId", userId)
+                    .contentType(ContentType.JSON)
+                .when()
+                    .get(BASE_URL+"/users/{userId}/projects")
+                .then()
+                    .statusCode(HttpStatus.SC_OK)
+                    .assertThat()
+                    .extract().as(Projekt[].class));
     }
 
     private List<Projekt> getAllProjekteWhereUserIsCancelled(Long userId) {
         return Arrays.asList(
                 given()
-                        .pathParam("userId", userId)
-                        .contentType(ContentType.JSON)
-                        .when()
-                        .get(BASE_URL+"/users/{userId}/cancelledprojects")
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .assertThat()
-                        .extract().as(Projekt[].class));
+                    .pathParam("userId", userId)
+                    .contentType(ContentType.JSON)
+                .when()
+                    .get(BASE_URL+"/users/{userId}/cancelledprojects")
+                .then()
+                    .statusCode(HttpStatus.SC_OK)
+                    .assertThat()
+                    .extract().as(Projekt[].class));
     }
 
     private List<Projekt> getAlleZugewiesenenProjekteByFirstNameAndLastName(String vorname, String nachname) {
-        return Arrays.asList(given()
-                .param("vorname",vorname)
-                .param("nachname",nachname)
+        return Arrays.asList(
+                given()
+                    .param("vorname",vorname)
+                    .param("nachname",nachname)
                 .when()
-                .get(BASE_URL+"/projects/byusername")
+                    .get(BASE_URL+"/projects/byusername")
                 .then()
-                .statusCode(HttpStatus.SC_OK)
-                .extract().as(Projekt[].class));
+                    .statusCode(HttpStatus.SC_OK)
+                    .extract().as(Projekt[].class));
     }
 
     private List<Teilnehmer> getAllAssignedUsersForGivenProject(Long projectId) {
@@ -372,9 +375,9 @@ public class ProjekteControllerTest extends AbstractControllerTest {
     private void getNoProjekt(Long projektId) {
         given()
             .pathParam("id", projektId)
-            .when()
+        .when()
             .get(BASE_URL + "/projects/{id}")
-            .then()
+        .then()
             .statusCode(HttpStatus.SC_NOT_FOUND);
     }
 
