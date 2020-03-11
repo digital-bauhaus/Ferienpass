@@ -113,24 +113,23 @@ public class Projekt {
      * @return true, wenn der Teilnehmer tatsaechlich fuer diese Veranstaltung angemeldet wear
      */
     public boolean storniereTeilnehmer(Teilnehmer zuStornierenderTeilnehmer) {
-        boolean teilnehmerIstAngemeldet =
-                this.angemeldeteTeilnehmer.remove(zuStornierenderTeilnehmer);
-        if (teilnehmerIstAngemeldet)
+        boolean warAngemeldet = this.angemeldeteTeilnehmer.remove(zuStornierenderTeilnehmer);
+        if (warAngemeldet)
         {
             this.stornierteTeilnehmer.add(zuStornierenderTeilnehmer);
             this.plaetzeReserviert = this.plaetzeReserviert - 1;
         }
-        return teilnehmerIstAngemeldet;
+        return warAngemeldet;
     }
 
-    // TODO
-    public boolean deleteTeilnehmerVonAllenProjekten(Teilnehmer zuLoeschenderTeilnehmer) {
-        boolean warAngemeldet = this.angemeldeteTeilnehmer.remove(zuLoeschenderTeilnehmer);
-        boolean warStorniert = this.stornierteTeilnehmer.remove(zuLoeschenderTeilnehmer);
-        return warAngemeldetUndOderStorniert(warAngemeldet, warStorniert);
-    }
-
-    private boolean warAngemeldetUndOderStorniert(boolean warAngemeldet, boolean warStorniert) {
+    /**
+     * Entfernt den Teilnehmer komplett von diesem Projekt (also Anmeldung und Stornierung, sofern vorhanden)
+     * @param zuEntfernenderTeilnehmer
+     * @return true, wenn der Teilnehmer für dieses Projekt angemeldet oder storniert war
+     */
+    public boolean entferneTeilnehmerVonProjekt(Teilnehmer zuEntfernenderTeilnehmer) {
+        boolean warAngemeldet = this.angemeldeteTeilnehmer.remove(zuEntfernenderTeilnehmer);
+        boolean warStorniert = this.stornierteTeilnehmer.remove(zuEntfernenderTeilnehmer);
         return warAngemeldet || warStorniert;
     }
 

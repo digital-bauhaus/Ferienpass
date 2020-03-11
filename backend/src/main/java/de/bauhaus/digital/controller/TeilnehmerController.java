@@ -95,10 +95,12 @@ public class TeilnehmerController {
             throw new UserNotFoundException("Teilnehmer mit id " + id + " wurde nicht gefunden.");
         }
 
-        // Before we delete the Teilnehmer, we need to delete every Projekt assignement
+        // Before we delete the Teilnehmer, we need to delete every Projekt assignment
         // otherwise we will run into https://github.com/digital-bauhaus/Ferienpass/issues/71
-        // TODO check
-        getRegisteredProjectsOfUser(id).stream().forEach(projekt -> projekt.deleteTeilnehmerVonAllenProjekten(getUserById(id)));
+        Teilnehmer teilnehmer = optionalTeilnehmer.get();
+        for (Projekt projekt : projektRepository.findAll()) {
+            projekt.entferneTeilnehmerVonProjekt(teilnehmer);
+        }
 
         teilnehmerRepository.deleteById(id);
         LOG.info("Teilnehmer with id "+ id + " deleted.");
@@ -118,11 +120,6 @@ public class TeilnehmerController {
         List<Projekt> resultList = new ArrayList<>();
         for (Projekt projekt : projektRepository.findAll()) {
             for (Teilnehmer teilnehmer: projekt.getAngemeldeteTeilnehmer()) {
-                if(teilnehmer.getId() == teilnehmerId)
-                    resultList.add(projekt);
-            }
-            // TODO we should not add the stornierten Projekte or rename the method (getAllProjectsOfUser) -> check where it is used
-            for (Teilnehmer teilnehmer: projekt.getStornierteTeilnehmer()) {
                 if(teilnehmer.getId() == teilnehmerId)
                     resultList.add(projekt);
             }
