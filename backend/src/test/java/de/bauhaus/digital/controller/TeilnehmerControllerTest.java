@@ -1,13 +1,12 @@
 package de.bauhaus.digital.controller;
 
 
-import static de.bauhaus.digital.DomainFactory.createSampleProject;
-import static de.bauhaus.digital.DomainFactory.createSampleUser;
-import static de.bauhaus.digital.DomainFactory.createSampleUserOfName;
+import static de.bauhaus.digital.DomainFactory.createSampleTeilnehmer;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import de.bauhaus.digital.DomainFactory;
 import de.bauhaus.digital.domain.Arzt;
 import de.bauhaus.digital.domain.Behinderung;
 import de.bauhaus.digital.domain.Kontakt;
@@ -15,7 +14,6 @@ import de.bauhaus.digital.domain.Teilnehmer;
 import io.restassured.http.ContentType;
 import java.time.LocalDate;
 import java.util.List;
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.http.HttpStatus;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
@@ -25,7 +23,7 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
 
     @Test
     public void givenInvalidCredentials_whenAddingUser_thenGiveHttp401Unauthorized() {
-        Teilnehmer user = createSampleUser();
+        Teilnehmer user = createSampleTeilnehmer();
 
         given()
                 .auth().basic("wrong", "credentials")
@@ -48,8 +46,8 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void addNewUserAndRetrieveItBack() {
-        Teilnehmer user = createSampleUser();
+    public void givenUser_WhenAddingAndRetrieving_thenTheyMatch() {
+        Teilnehmer user = createSampleTeilnehmer();
 
         Long userId = addUser(user);
 
@@ -65,8 +63,8 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
     public void addTwoUsersAndCheckWhetherAllUsersAreComplete() {
         int initialSize = getAllUsers().size();
 
-        Long userId = addUser(createSampleUser());
-        Long userId2 = addUser(createSampleUser());
+        Long userId = addUser(createSampleTeilnehmer());
+        Long userId2 = addUser(createSampleTeilnehmer());
 
         List<Teilnehmer> allUsers = getAllUsers();
 
@@ -79,7 +77,7 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
 
     @Test
     public void isUserUpdatedCorrectly() {
-        Long userId = addUser(createSampleUser());
+        Long userId = addUser(createSampleTeilnehmer());
 
         Arzt arzt = new Arzt(
                 "Doktor Who",
@@ -181,7 +179,7 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
 
     @Test
     public void isUserDeletedCorrectly() {
-        Long userId = addUser(createSampleUser());
+        Long userId = addUser(createSampleTeilnehmer());
 
         Teilnehmer responseUser = getUser(userId);
 
@@ -195,8 +193,8 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
     @Test
     public void should_be_able_to_delete_Teilnehmer_if_was_assigned_to_Projekt() throws Exception {
         // Given
-        Long userId = addUser(createSampleUser());
-        Long projectId = addProject(createSampleProject());
+        Long userId = addUser(createSampleTeilnehmer());
+        Long projectId = addProject(DomainFactory.createSampleProjekt());
         assignUserToProject(projectId, userId);
 
         // When
@@ -209,8 +207,8 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
     @Test
     public void should_be_able_to_delete_Teilnehmer_if_was_storniert_on_Projekt() throws Exception {
         // Given
-        Long userId = addUser(createSampleUser());
-        Long projectId = addProject(createSampleProject());
+        Long userId = addUser(createSampleTeilnehmer());
+        Long projectId = addProject(DomainFactory.createSampleProjekt());
         assignUserToProject(projectId, userId);
         Boolean isUserUnassignedFromProject = unassignUserFromProject(projectId, userId);
         assertThat(isUserUnassignedFromProject, is(true));

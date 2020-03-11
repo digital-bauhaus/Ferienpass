@@ -1,7 +1,7 @@
 package de.bauhaus.digital.repository;
 
-import static de.bauhaus.digital.DomainFactory.createSampleUser;
-import static de.bauhaus.digital.DomainFactory.createSampleUserOfName;
+import static de.bauhaus.digital.DomainFactory.createSampleTeilnehmerBuilder;
+import static de.bauhaus.digital.DomainFactory.createSampleTeilnehmerOfName;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -34,10 +34,10 @@ public class TeilnehmerRepositoryTest {
 
     @Before
     public void init() {
-        Teilnehmer garyEich = createSampleUserOfName("Eich", "Gary");
-        Teilnehmer garyNorris = createSampleUserOfName("Norris", "Gary");
-        Teilnehmer chuckNorris = createSampleUserOfName("Norris", "Chuck");
-        Teilnehmer inactive = Teilnehmer.newBuilder(createSampleUserOfName("nicht", "aktiv")).aktiv(false).build();
+        Teilnehmer garyEich = createSampleTeilnehmerOfName("Gary", "Eich");
+        Teilnehmer garyNorris = createSampleTeilnehmerOfName("Gary", "Norris");
+        Teilnehmer chuckNorris = createSampleTeilnehmerOfName("Chuck", "Norris");
+        Teilnehmer inactive = createSampleTeilnehmerBuilder().aktiv(false).build();
         entityManager.persist(garyEich);
         entityManager.persist(garyNorris);
         entityManager.persist(chuckNorris);
@@ -54,7 +54,7 @@ public class TeilnehmerRepositoryTest {
     @Test
     public void givenTeilnehmerMitBehinderung_whenDeletingTeilnehmer_thenBehinderungIsAlsoDeleted() {
         Behinderung behinderung = Behinderung.newBuilder().build();
-        Teilnehmer teilnehmer = Teilnehmer.newBuilder(createSampleUser())
+        Teilnehmer teilnehmer = createSampleTeilnehmerBuilder()
                 .behinderung(behinderung)
                 .build();
         teilnehmerRepository.save(teilnehmer);

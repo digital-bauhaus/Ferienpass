@@ -1,17 +1,19 @@
 package de.bauhaus.digital.domain;
 
+import static de.bauhaus.digital.DomainFactory.createSampleTeilnehmer;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class TeilnehmerTest {
 
     @Test
-    public void givenTeilnehmerAttributes_whenCreatingUsingTheBuilder_thenCreatedTeilnehmerMatchesAttribues() {
+    public void givenTeilnehmerAttributes_whenCreatingUsingTheBuilder_thenCreatedTeilnehmerMatchesAttributes() {
 
         long id = 1;
 
@@ -32,7 +34,7 @@ public class TeilnehmerTest {
         String wohnort = "Musterstadt";
         String postleitzahl = "012345";
         String telefon = "0123456789";
-        String email = "test@test;de";
+        String email = "test@test.de";
         boolean darfErmaessigtenPreisZahlen = false;
 
         // Pflichtangaben
@@ -40,7 +42,7 @@ public class TeilnehmerTest {
         Boolean darfAlleinNachHause = true;
         Boolean darfReiten = true;
         Boolean darfSchwimmen = true;
-        String schwimmAbzeichen = "Silber";
+        String schwimmAbzeichen = "Seepferdchen";
         Kontakt notfallKontakt = new Kontakt();
 
         // Allergien, Krankheiten
@@ -137,6 +139,17 @@ public class TeilnehmerTest {
         assertThat(teilnehmer.isLiegtBehinderungVor(), is(liegtBehinderungVor));
         assertThat(teilnehmer.getBehinderung(), is(behinderung));
         assertThat(teilnehmer.getGewuenschteProjekte(), is(gewuenschteProjekte));
+    }
+
+    @Test
+    public void givenTeilnehmer_whenCreatingUsingTheCopyBuilder_thenCreatedTeilnehmerMatchesAttributes() {
+        Teilnehmer teilnehmer = createSampleTeilnehmer();
+
+        Teilnehmer copy = Teilnehmer.newBuilder(teilnehmer).build();
+
+        Assertions.assertThat(copy).
+                usingRecursiveComparison()
+                .isEqualTo(teilnehmer);
     }
 
 }

@@ -1,14 +1,14 @@
 package de.bauhaus.digital.controller;
 
 
-import static de.bauhaus.digital.DomainFactory.createSampleProject;
-import static de.bauhaus.digital.DomainFactory.createSampleUser;
-import static de.bauhaus.digital.DomainFactory.createSampleUserOfName;
+import static de.bauhaus.digital.DomainFactory.createSampleTeilnehmer;
+import static de.bauhaus.digital.DomainFactory.createSampleTeilnehmerOfName;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
+import de.bauhaus.digital.DomainFactory;
 import de.bauhaus.digital.domain.Projekt;
 import de.bauhaus.digital.domain.Teilnehmer;
 import io.restassured.http.ContentType;
@@ -33,7 +33,7 @@ public class ProjekteControllerTest extends AbstractControllerTest {
 
     @Test
     public void addNewProjectAndetrieveItBack() {
-        Projekt projekt = createSampleProject();
+        Projekt projekt = DomainFactory.createSampleProjekt();
         Long projectID = addProject(projekt);
 
         Projekt responeProjekt = getProject(projectID);
@@ -50,9 +50,9 @@ public class ProjekteControllerTest extends AbstractControllerTest {
 
     @Test
     public void addProjectAndUserAndAssignProjectToUserAndRetrieveAllProjectsForThisUser() {
-        Long projectID = addProject(createSampleProject());
+        Long projectID = addProject(DomainFactory.createSampleProjekt());
 
-        Long userId = addUser(createSampleUser());
+        Long userId = addUser(createSampleTeilnehmer());
         List<Teilnehmer> allUsers = getAllUsers();
 
         assertThat(allUsers.get(allUsers.size()-1).getId(), is(userId));
@@ -69,8 +69,8 @@ public class ProjekteControllerTest extends AbstractControllerTest {
 
     @Test
     public void assignProjektToUserAndRetrieveAllProjectsForTheUsers() {
-        Long userId = addUser(createSampleUser());
-        Long projectId = addProject(createSampleProject());
+        Long userId = addUser(createSampleTeilnehmer());
+        Long projectId = addProject(DomainFactory.createSampleProjekt());
 
         Boolean wasTeilnehmerAssignedToProjekt = assignUserToProject(projectId, userId);
         assertThat(wasTeilnehmerAssignedToProjekt, is(true));
@@ -86,8 +86,8 @@ public class ProjekteControllerTest extends AbstractControllerTest {
 
     @Test
     public void unassignUserFromProjektAndRetrieveAllCancelledProjectsForTheUsers() {
-        Long userId = addUser(createSampleUser());
-        Long projectId = addProject(createSampleProject());
+        Long userId = addUser(createSampleTeilnehmer());
+        Long projectId = addProject(DomainFactory.createSampleProjekt());
         assignUserToProject(projectId, userId);
 
         unassignUserFromProject(projectId, userId);
@@ -109,18 +109,18 @@ public class ProjekteControllerTest extends AbstractControllerTest {
 
         // number of registered Teilnehmer in all projects should be equal
         // to number of registered projects of all Teilnehmer
-        Projekt projekt1 = createSampleProject();
+        Projekt projekt1 = DomainFactory.createSampleProjekt();
         Long projectID1 = addProject(projekt1);
         assertThat(projekt1.isAktiv(),is(true));
 
-        Projekt projekt2 = createSampleProject();
+        Projekt projekt2 = DomainFactory.createSampleProjekt();
         Long projectID2 = addProject(projekt2);
         assertThat(projekt2.isAktiv(),is(true));
 
-        Teilnehmer user1 = createSampleUser();
+        Teilnehmer user1 = createSampleTeilnehmer();
         Long userId1 = addUser(user1);
 
-        Teilnehmer user2 = createSampleUser();
+        Teilnehmer user2 = createSampleTeilnehmer();
         Long userId2 = addUser(user2);
 
         allProjects = getAllProjects();
@@ -156,9 +156,9 @@ public class ProjekteControllerTest extends AbstractControllerTest {
     @Test @Ignore
     public void shouldAssignUserCorrectlyToProjekt() throws Exception {
         // Given
-        Long projectId = addProject(createSampleProject());
+        Long projectId = addProject(DomainFactory.createSampleProjekt());
 
-        Teilnehmer newUser = createSampleUserOfName("Tirol", "Anton");
+        Teilnehmer newUser = createSampleTeilnehmerOfName("Anton", "Tirol");
         Long userId = addUser(newUser);
 
         // When
@@ -177,8 +177,8 @@ public class ProjekteControllerTest extends AbstractControllerTest {
     @Test
     public void shouldUnassignUserCorrectlyFromProjekt() throws Exception {
         // Given
-        Long userId = addUser(createSampleUser());
-        Long projectId = addProject(createSampleProject());
+        Long userId = addUser(createSampleTeilnehmer());
+        Long projectId = addProject(DomainFactory.createSampleProjekt());
         assignUserToProject(projectId, userId);
 
         // When
@@ -193,7 +193,7 @@ public class ProjekteControllerTest extends AbstractControllerTest {
 
     @Test
     public void shouldUpdateProjectCorrectly() {
-        Long projectId = addProject(createSampleProject());
+        Long projectId = addProject(DomainFactory.createSampleProjekt());
 
         Projekt projekt = Projekt.newBuilder(getProject(projectId))
                 .name("Klettern am Berg")
@@ -214,7 +214,7 @@ public class ProjekteControllerTest extends AbstractControllerTest {
 
     @Test
     public void shouldDeleteAddedProjectCorrectly() {
-        Long projectId = addProject(createSampleProject());
+        Long projectId = addProject(DomainFactory.createSampleProjekt());
 
         deleteProjekt(projectId);
 
@@ -223,7 +223,7 @@ public class ProjekteControllerTest extends AbstractControllerTest {
 
     @Test
     public void givenDatumEndeBeforeDatumBeginn_whenCreatingProjekt_thenBadRequest() {
-        Projekt projekt = Projekt.newBuilder(createSampleProject())
+        Projekt projekt = Projekt.newBuilder(DomainFactory.createSampleProjekt())
                 .datumBeginn(LocalDate.of(2019, 12, 5))
                 .datumEnde(LocalDate.of(2019, 12, 4))
                 .build();
@@ -241,7 +241,7 @@ public class ProjekteControllerTest extends AbstractControllerTest {
 
     @Test
     public void givenHoechstAlterSmallerThanMindestAlter_whenCreatingProjekt_thenBadRequest() {
-        Projekt projekt = Projekt.newBuilder(createSampleProject())
+        Projekt projekt = Projekt.newBuilder(DomainFactory.createSampleProjekt())
                 .mindestAlter(11)
                 .hoechstAlter(10)
                 .build();
@@ -259,7 +259,7 @@ public class ProjekteControllerTest extends AbstractControllerTest {
 
     @Test
     public void givenMoreSlotsReservedThanTotalSlots_whenCreatingProjekt_thenBadRequest() {
-        Projekt projekt = Projekt.newBuilder(createSampleProject())
+        Projekt projekt = Projekt.newBuilder(DomainFactory.createSampleProjekt())
                 .plaetzeReserviert(11)
                 .plaetzeGesamt(5)
                 .build();
@@ -277,8 +277,8 @@ public class ProjekteControllerTest extends AbstractControllerTest {
 
     @Test
     public void givenProjektWithOneTeilnehmer_whenUpdatingProjektWithZeroSlotsReserved_thenBadRequest() {
-        Long projectId = addProject(createSampleProject());
-        Long userId = addUser(createSampleUser());
+        Long projectId = addProject(DomainFactory.createSampleProjekt());
+        Long userId = addUser(createSampleTeilnehmer());
 
         assignUserToProject(projectId, userId);
 

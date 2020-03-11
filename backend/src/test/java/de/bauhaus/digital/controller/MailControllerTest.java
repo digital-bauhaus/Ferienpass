@@ -1,7 +1,7 @@
 package de.bauhaus.digital.controller;
 
 
-import static de.bauhaus.digital.DomainFactory.createSampleUser;
+import static de.bauhaus.digital.DomainFactory.createSampleTeilnehmerBuilder;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -30,7 +30,7 @@ public class MailControllerTest extends AbstractControllerTest {
 
         // Please set SENDGRID_API_KEY=SG.xyz (see Heroku Config Vars!)
 
-        Teilnehmer teilnehmer = Teilnehmer.newBuilder(createSampleUser())
+        Teilnehmer teilnehmer = createSampleTeilnehmerBuilder()
                 .email("ferienpasstest@gmail.com")
                 .build();
 

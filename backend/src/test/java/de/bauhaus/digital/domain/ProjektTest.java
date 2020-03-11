@@ -1,7 +1,7 @@
 package de.bauhaus.digital.domain;
 
-import static de.bauhaus.digital.DomainFactory.createSampleProjectOfSlots;
-import static de.bauhaus.digital.DomainFactory.createSampleUser;
+import static de.bauhaus.digital.DomainFactory.createSampleProjektBuilder;
+import static de.bauhaus.digital.DomainFactory.createSampleTeilnehmer;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -9,12 +9,13 @@ import de.bauhaus.digital.DomainFactory;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class ProjektTest {
 
     @Test
-    public void givenProjektAttributes_whenCreatingUsingTheBuilder_thenCreatedProjektMatchesAttribues() {
+    public void givenProjektAttributes_whenCreatingUsingTheBuilder_thenCreatedProjektMatchesAttributes() {
         boolean aktiv = true;
         String name = "Testprojekt";
         LocalDate datumBeginn = LocalDate.of(2020, 3, 1);
@@ -52,47 +53,58 @@ public class ProjektTest {
     }
 
     @Test
+    public void givenProjekt_whenCreatingUsingTheCopyBuilder_thenCreatedProjektMatchesAttributes() {
+        Projekt projekt = DomainFactory.createSampleProjekt();
+
+        Projekt copy = Projekt.newBuilder(projekt).build();
+
+        Assertions.assertThat(copy).
+                usingRecursiveComparison()
+                .isEqualTo(projekt);
+    }
+
+    @Test
     public void project_with_20_totalSlots_has_20_freeSlots() {
-        Projekt project = createSampleProjectOfSlots(20, 0);
+        Projekt project = createSampleProjektBuilder().plaetzeGesamt(20).plaetzeReserviert(0).build();
         assertThat(project.getPlaetzeFrei(), is(20));
     }
 
     @Test
     public void project_with_20_totalSlots_and_5_reservedSlots_has_15_freeSlots() {
-        Projekt project = createSampleProjectOfSlots(20, 5);
+        Projekt project = createSampleProjektBuilder().plaetzeGesamt(20).plaetzeReserviert(5).build();
         assertThat(project.getPlaetzeFrei(), is(15));
     }
 
     @Test
     public void when_adding_one_teilnehmer_freeSlots_decreases_once() {
-        Projekt project = createSampleProjectOfSlots(20, 0);
+        Projekt project = createSampleProjektBuilder().plaetzeGesamt(20).plaetzeReserviert(0).build();
         int freeSlots = project.getPlaetzeFrei();
-        project.meldeTeilnehmerAn(createSampleUser());
+        project.meldeTeilnehmerAn(createSampleTeilnehmer());
         assertThat(project.getPlaetzeFrei(), is(freeSlots - 1));
     }
 
     @Test
     public void when_adding_one_Teilnehmer_plaetzeReserviert_increases_once() {
-        Projekt kinderuni = createSampleProjectOfSlots(20, 10);
-        kinderuni.meldeTeilnehmerAn(DomainFactory.createSampleUserOfName("Müller", "Luis"));
+        Projekt kinderuni = createSampleProjektBuilder().plaetzeGesamt(20).plaetzeReserviert(10).build();
+        kinderuni.meldeTeilnehmerAn(DomainFactory.createSampleTeilnehmerOfName("Luis", "Müller"));
         assertThat(kinderuni.getPlaetzeReserviert(), is(11));
     }
 
     @Test
     public void when_adding_5_Teilnehmer_plaetzeReserviert_increases_5_times() {
-        Projekt gartenParty = createSampleProjectOfSlots(15, 3);
-        gartenParty.meldeTeilnehmerAn(DomainFactory.createSampleUserOfName("Schulze", "Max"));
-        gartenParty.meldeTeilnehmerAn(DomainFactory.createSampleUserOfName("Meier", "Moritz")  );
-        gartenParty.meldeTeilnehmerAn(DomainFactory.createSampleUserOfName("Schreiner", "Paul"));
-        gartenParty.meldeTeilnehmerAn(DomainFactory.createSampleUserOfName("Müller", "Pauline"));
-        gartenParty.meldeTeilnehmerAn(DomainFactory.createSampleUserOfName("Siegmund", "Peter"));
+        Projekt gartenParty = createSampleProjektBuilder().plaetzeGesamt(15).plaetzeReserviert(3).build();
+        gartenParty.meldeTeilnehmerAn(DomainFactory.createSampleTeilnehmerOfName("Max", "Schulze"));
+        gartenParty.meldeTeilnehmerAn(DomainFactory.createSampleTeilnehmerOfName("Moritz", "Meier")  );
+        gartenParty.meldeTeilnehmerAn(DomainFactory.createSampleTeilnehmerOfName("Paul", "Schreiner"));
+        gartenParty.meldeTeilnehmerAn(DomainFactory.createSampleTeilnehmerOfName("Pauline", "Müller"));
+        gartenParty.meldeTeilnehmerAn(DomainFactory.createSampleTeilnehmerOfName("Peter", "Siegmund"));
         assertThat(gartenParty.getPlaetzeReserviert(), is(8));
     }
 
     @Test
     public void when_cancelling_one_Teilnehmer_plaetzeFrei_increases(){
-        Projekt project = createSampleProjectOfSlots(20, 0);
-        Teilnehmer user = createSampleUser();
+        Projekt project = createSampleProjektBuilder().plaetzeGesamt(20).plaetzeReserviert(0).build();
+        Teilnehmer user = createSampleTeilnehmer();
         project.meldeTeilnehmerAn(user);
         int freeSlots = project.getPlaetzeFrei();
         project.storniereTeilnehmer(user);
@@ -101,8 +113,8 @@ public class ProjektTest {
 
     @Test
     public void when_cancelling_one_Teilnehmer_plaetzeReserviert_decreases(){
-        Projekt project = createSampleProjectOfSlots(20, 0);
-        Teilnehmer user = createSampleUser();
+        Projekt project = createSampleProjektBuilder().plaetzeGesamt(20).plaetzeReserviert(0).build();
+        Teilnehmer user = createSampleTeilnehmer();
         project.meldeTeilnehmerAn(user);
         int reservedSlots = project.getPlaetzeReserviert();
         project.storniereTeilnehmer(user);

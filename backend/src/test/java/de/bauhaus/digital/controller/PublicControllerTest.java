@@ -1,7 +1,7 @@
 package de.bauhaus.digital.controller;
 
 
-import static de.bauhaus.digital.DomainFactory.createSampleProject;
+import static de.bauhaus.digital.DomainFactory.createSampleProjektBuilder;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -37,24 +37,27 @@ public class PublicControllerTest extends AbstractControllerTest {
 
         // Zuerst fuer klare Verhältnisse sorgen und Seiteneffekte vermeiden!
         // Daher neue Projekte anlegen ...
-        Long pizzaBackenId = addProject(createSampleProject(
-                "Pizza backen",
-                LocalDate.of(2018, 7, 12),
-                LocalDate.of(2018, 7, 13),
-                15,
-                3));
-        Long fussballId = addProject(createSampleProject(
-                "Fussball",
-                LocalDate.of(2018, 8, 14),
-                LocalDate.of(2018, 8, 17),
-                10,
-                7));
-        Long golfSpielenId = addProject(createSampleProject(
-                "Golf spielen",
-                LocalDate.of(2018, 7, 2),
-                LocalDate.of(2018, 7, 2),
-                18,
-                5));
+        Long pizzaBackenId = addProject(createSampleProjektBuilder()
+                .name("Pizza backen")
+                .datumBeginn(LocalDate.of(2018, 7, 12))
+                .datumEnde(LocalDate.of(2018, 7, 13))
+                .plaetzeGesamt(15)
+                .plaetzeReserviert(3)
+                .build());
+        Long fussballId = addProject(createSampleProjektBuilder()
+                .name("Fussball")
+                .datumBeginn(LocalDate.of(2018, 8, 14))
+                .datumEnde(LocalDate.of(2018, 8, 17))
+                .plaetzeGesamt(10)
+                .plaetzeReserviert(7)
+                .build());
+        Long golfSpielenId = addProject(createSampleProjektBuilder()
+                .name("Golf spielen")
+                .datumBeginn(LocalDate.of(2018, 7, 2))
+                .datumEnde(LocalDate.of(2018, 7, 2))
+                .plaetzeGesamt(18)
+                .plaetzeReserviert(5)
+                .build());
 
         // ... und deren Ids im anmeldung-post-data.json ueberschreiben
         AnmeldungJson anmeldungJson = objectMapper.readValue(anmeldungJsonFile.getInputStream(), AnmeldungJson.class);
@@ -100,24 +103,27 @@ public class PublicControllerTest extends AbstractControllerTest {
     public void pruefeRegistrierungProjekteBeiApiCallAnmeldungMicroservice() throws IOException {
         // Zuerst fuer klare Verhältnisse sorgen und Seiteneffekte vermeiden!
         // Daher neue Projekte anlegen ...
-        Long pizzaBackenId = addProject(createSampleProject(
-                "Pizza backen",
-                LocalDate.of(2018, 7, 12),
-                LocalDate.of(2018, 7, 13),
-                8,
-                3));
-        Long fussballId = addProject(createSampleProject(
-                "Fussball",
-                LocalDate.of(2018, 8, 14),
-                LocalDate.of(2018, 8, 17),
-                10,
-                7));
-        Long golfSpielenId = addProject(createSampleProject(
-                "Golf spielen",
-                LocalDate.of(2018, 7, 2),
-                LocalDate.of(2018, 7, 2),
-                9,
-                5));
+        Long pizzaBackenId = addProject(createSampleProjektBuilder()
+                .name("Pizza backen")
+                .datumBeginn(LocalDate.of(2018, 7, 12))
+                .datumEnde(LocalDate.of(2018, 7, 13))
+                .plaetzeGesamt(15)
+                .plaetzeReserviert(3)
+                .build());
+        Long fussballId = addProject(createSampleProjektBuilder()
+                .name("Fussball")
+                .datumBeginn(LocalDate.of(2018, 8, 14))
+                .datumEnde(LocalDate.of(2018, 8, 17))
+                .plaetzeGesamt(10)
+                .plaetzeReserviert(7)
+                .build());
+        Long golfSpielenId = addProject(createSampleProjektBuilder()
+                .name("Golf spielen")
+                .datumBeginn(LocalDate.of(2018, 7, 2))
+                .datumEnde(LocalDate.of(2018, 7, 2))
+                .plaetzeGesamt(18)
+                .plaetzeReserviert(5)
+                .build());
 
         // ... und deren Ids im anmeldung-post-data.json ueberschreiben
         AnmeldungJson anmeldungJson = objectMapper.readValue(anmeldungJsonFile.getInputStream(), AnmeldungJson.class);

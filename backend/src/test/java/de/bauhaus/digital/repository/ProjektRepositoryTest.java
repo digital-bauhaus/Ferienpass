@@ -1,7 +1,7 @@
 package de.bauhaus.digital.repository;
 
-import static de.bauhaus.digital.DomainFactory.createSampleProject;
-import static de.bauhaus.digital.DomainFactory.createSampleUser;
+import static de.bauhaus.digital.DomainFactory.createSampleProjektBuilder;
+import static de.bauhaus.digital.DomainFactory.createSampleTeilnehmer;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -35,10 +35,22 @@ public class ProjektRepositoryTest {
 
     @Before
     public void init() {
-        Projekt erstes = createSampleProject("erstes", LocalDate.of(2020, 1, 1), LocalDate.of(2020,1, 2), 10, 0);
-        Projekt zweites = createSampleProject("zweites", LocalDate.of(2021, 1, 1), LocalDate.of(2021,1, 2), 10, 0);
-        Projekt drittes = createSampleProject("drittes", LocalDate.of(2021, 1, 1), LocalDate.of(2021,1, 3), 10, 0);
-        Projekt inaktiv = Projekt.newBuilder(createSampleProject()).aktiv(false).build();
+        Projekt erstes = createSampleProjektBuilder()
+                .name("erstes")
+                .datumBeginn(LocalDate.of(2020, 1, 1))
+                .datumEnde(LocalDate.of(2020, 1, 2))
+                .build();
+        Projekt zweites = createSampleProjektBuilder()
+                .name("zweites")
+                .datumBeginn(LocalDate.of(2021, 1, 1))
+                .datumEnde(LocalDate.of(2021, 1, 2))
+                .build();
+        Projekt drittes = createSampleProjektBuilder()
+                .name("drittes")
+                .datumBeginn(LocalDate.of(2021, 1, 1))
+                .datumEnde(LocalDate.of(2021, 1, 3))
+                .build();
+        Projekt inaktiv = createSampleProjektBuilder().aktiv(false).build();
         entityManager.persist(erstes);
         entityManager.persist(zweites);
         entityManager.persist(drittes);
@@ -54,8 +66,8 @@ public class ProjektRepositoryTest {
 
     @Test
     public void givenProjektMitAngemeldetenTeilnehmern_whenDeletingProjekt_thenTeilnehmerAreNotDeleted() {
-        Teilnehmer teilnehmer = createSampleUser();
-        Projekt projekt = Projekt.newBuilder(createSampleProject())
+        Teilnehmer teilnehmer = createSampleTeilnehmer();
+        Projekt projekt = createSampleProjektBuilder()
                 .angemeldeteTeilnehmer(Collections.singletonList(teilnehmer))
                 .build();
         projektRepository.save(projekt);
