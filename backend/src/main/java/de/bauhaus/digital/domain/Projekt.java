@@ -43,10 +43,12 @@ public class Projekt {
     @PositiveOrZero(message = "Reservierte Plätze dürfen nicht < 0 sein.")
     private int plaetzeReserviert;
 
-    @ManyToMany(cascade= CascadeType.ALL)
+    // do NOT automatically delete Teilnehmer when the Projekt gets deleted!
+    @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
     private List<Teilnehmer> angemeldeteTeilnehmer = new ArrayList<>();
 
-    @ManyToMany(cascade= CascadeType.ALL)
+    // do NOT automatically delete Teilnehmer when the Projekt gets deleted!
+    @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
     private List<Teilnehmer> stornierteTeilnehmer = new ArrayList<>();
 
     protected Projekt() {}
