@@ -17,7 +17,7 @@
 
           <b-form
             ref="form"
-            @submit="onSubmit"
+            @submit.prevent="onSubmit"
           >
             <b-form-group
               id="login-name-group"

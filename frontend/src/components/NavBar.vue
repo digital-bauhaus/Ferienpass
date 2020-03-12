@@ -3,7 +3,7 @@
     toggleable="lg"
     type="dark"
     variant="dark"
-    sticky
+    fixed="top"
   >
     <b-navbar-brand :to="{ path: '/Verwaltung' }">
       Ferienpass: Verwaltung

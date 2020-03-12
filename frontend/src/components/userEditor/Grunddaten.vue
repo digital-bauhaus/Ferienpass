@@ -86,10 +86,10 @@
 
     <CheckBoxGroup
       base="grunddaten-darfErmaessigtenPreisZahlen"
-      :disabled="disabled"
     >
       <CheckBox
         base="grunddaten-darfErmaessigtenPreisZahlen"
+        :disabled="disabled"
         :checked="darfErmaessigtenPreisZahlen"
         @input="$emit('update:darfErmaessigtenPreisZahlen', $event)"
       >
