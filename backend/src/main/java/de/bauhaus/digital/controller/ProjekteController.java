@@ -2,7 +2,7 @@ package de.bauhaus.digital.controller;
 
 import de.bauhaus.digital.domain.Projekt;
 import de.bauhaus.digital.domain.Teilnehmer;
-import de.bauhaus.digital.exception.CustomConstraintException;
+import de.bauhaus.digital.exception.BadRequestException;
 import de.bauhaus.digital.exception.ProjektFullyBookedException;
 import de.bauhaus.digital.exception.ProjektNotFoundException;
 import de.bauhaus.digital.exception.UserNotFoundException;
@@ -10,13 +10,11 @@ import de.bauhaus.digital.repository.ProjektRepository;
 import de.bauhaus.digital.repository.TeilnehmerRepository;
 import java.util.List;
 import java.util.Optional;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.TransactionSystemException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -94,16 +92,13 @@ public class ProjekteController {
                 .build();
 
         // We directly save the Projekt we received in the database
-        Projekt savedProjekt = null;
-        try {
-            savedProjekt = projektRepository.save(projektWithTeilnehmern);
-        } catch (TransactionSystemException e) {
-            if (e.getRootCause() instanceof ConstraintViolationException) {
-                throw new CustomConstraintException("Validation Errors",
-                        (ConstraintViolationException) e.getRootCause());
-            }
-            throw e;
+        // Note: Since we do not have access to the Anmeldungen-List in the JSON (this property is ignored)
+        // we have to do some checks here
+        if (projektWithTeilnehmern.getPlaetzeGesamt() < projektWithTeilnehmern.getPlaetzeBelegt()) {
+            throw new BadRequestException("Es dürfen nicht weniger Gesamtplätze angegeben werden, als aktuell belegt sind.");
         }
+
+        Projekt savedProjekt = projektRepository.save(projektWithTeilnehmern);
 
         LOG.info("Projekt with id " + projektWithTeilnehmern.getId() + " successfully updated in DB.");
         return savedProjekt;

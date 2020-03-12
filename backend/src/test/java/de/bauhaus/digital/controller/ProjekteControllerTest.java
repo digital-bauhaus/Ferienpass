@@ -19,7 +19,6 @@ import java.util.List;
 import org.apache.http.HttpStatus;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ProjekteControllerTest extends AbstractControllerTest {
@@ -251,7 +250,27 @@ public class ProjekteControllerTest extends AbstractControllerTest {
             .statusCode(HttpStatus.SC_CONFLICT);
     }
 
-    // Check Custom Validations -------------------------------------------------------------------
+    @Test
+    public void givenProjektWithOneTeilnehmer_whenUpdatingProjektWithTooMuchReservedSlots_thenBadRequest() {
+        Long projectId = addProject(createSampleProjektBuilder().plaetzeGesamt(10).plaetzeReserviert(9).build());
+        Long userId = addUser(createSampleTeilnehmer());
+
+        assignUserToProject(projectId, userId);
+
+        Projekt projekt = Projekt.newBuilder(getProject(projectId))
+                .plaetzeReserviert(10)
+                .build();
+
+        given()
+                .body(projekt)
+                .contentType(ContentType.JSON)
+                .when()
+                .put(BASE_URL + "/projects")
+                .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST);
+    }
+
+    // Check Custom Constraint Validations ------------------------------------------------------------
 
     @Test
     public void givenDatumEndeBeforeDatumBeginn_whenCreatingProjekt_thenBadRequest() {
@@ -264,7 +283,7 @@ public class ProjekteControllerTest extends AbstractControllerTest {
             .body(projekt)
             .contentType(ContentType.JSON)
         .when()
-            .post(BASE_URL+"/projects")
+            .post(BASE_URL + "/projects")
         .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .body("errors", hasSize(1))
@@ -282,7 +301,7 @@ public class ProjekteControllerTest extends AbstractControllerTest {
             .body(projekt)
             .contentType(ContentType.JSON)
         .when()
-            .post(BASE_URL+"/projects")
+            .post(BASE_URL + "/projects")
         .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
             .body("errors", hasSize(1))
@@ -290,32 +309,9 @@ public class ProjekteControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void givenMoreSlotsReservedThanTotalSlots_whenCreatingProjekt_thenBadRequest() {
+    public void givenMehrReserviertePlaetzeAlsGesamtplaetze_whenCreatingProjekt_thenBadRequest() {
         Projekt projekt = Projekt.newBuilder(DomainFactory.createSampleProjekt())
-                .plaetzeReserviert(11)
-                .plaetzeGesamt(5)
-                .build();
-
-        given()
-            .body(projekt)
-            .contentType(ContentType.JSON)
-        .when()
-            .post(BASE_URL+"/projects")
-            .then()
-        .statusCode(HttpStatus.SC_BAD_REQUEST)
-            .body("errors", hasSize(1))
-            .body("errors[0].field", is("plaetzeReserviert"));
-    }
-
-    // TODO
-    @Test @Ignore
-    public void givenProjektWithOneTeilnehmer_whenUpdatingProjektWithZeroSlotsReserved_thenBadRequest() {
-        Long projectId = addProject(createSampleProjektBuilder().plaetzeGesamt(10).plaetzeReserviert(9).build());
-        Long userId = addUser(createSampleTeilnehmer());
-
-        assignUserToProject(projectId, userId);
-
-        Projekt projekt = Projekt.newBuilder(getProject(projectId))
+                .plaetzeReserviert(10)
                 .plaetzeGesamt(9)
                 .build();
 
@@ -323,10 +319,10 @@ public class ProjekteControllerTest extends AbstractControllerTest {
             .body(projekt)
             .contentType(ContentType.JSON)
         .when()
-            .put(BASE_URL+"/projects")
+            .post(BASE_URL + "/projects")
         .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
-            .body("errors", hasSize(2))
+            .body("errors", hasSize(1))
             .body("errors[0].field", is("plaetzeReserviert"));
     }
 
