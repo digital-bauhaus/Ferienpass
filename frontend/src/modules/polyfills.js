@@ -11,7 +11,7 @@ import 'regenerator-runtime/runtime';
 
 // Polyfill for reportValidity for IE
 // see: https://www.tjvantoll.com/2015/01/28/reportvalidity/
-if (HTMLFormElement.prototype.reportValidity) {
+if (!HTMLFormElement.prototype.reportValidity) {
   HTMLFormElement.prototype.reportValidity = function reportValidity() {
     return this.checkValidity() || this.submit();
   };
