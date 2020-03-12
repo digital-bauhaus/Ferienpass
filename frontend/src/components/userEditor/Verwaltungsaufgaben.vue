@@ -1,10 +1,10 @@
 <template>
   <CheckBoxGroup
     base="verwaltung-bezahlt"
-    :disabled="disabled"
   >
     <CheckBox
       base="verwaltung-bezahlt"
+      :disabled="disabled"
       :checked="bezahlt"
       @input="$emit('update:bezahlt', $event)"
     >

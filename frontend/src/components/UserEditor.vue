@@ -189,11 +189,11 @@
     <CheckBoxGroup
       v-if="!isAdminView"
       base="akzeptanz"
-      :disabled="disabled"
     >
       <CheckBox
         base="datenschutzErklaerungAkzeptiert"
         :required="true"
+        :disabled="disabled"
         :checked="value.datenschutzErklaerungAkzeptiert"
         @input="updateValue('datenschutzErklaerungAkzeptiert', $event)"
       >
@@ -202,6 +202,7 @@
       <CheckBox
         base="teilnahmeBedingungAkzeptiert"
         :required="true"
+        :disabled="disabled"
         :checked="value.teilnahmeBedingungAkzeptiert"
         @input="updateValue('teilnahmeBedingungAkzeptiert', $event)"
       >

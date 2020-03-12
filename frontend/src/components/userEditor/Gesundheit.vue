@@ -33,10 +33,10 @@
     <CheckBoxGroup
       base="gesundheit-hitzeempfindlich"
       label="Hitzeempfindlichkeit"
-      :disabled="disabled"
     >
       <CheckBox
         base="gesundheit-hitzeempfindlich"
+        :disabled="disabled"
         :checked="hitzeempfindlich"
         @input="$emit('update:hitzeempfindlich', $event)"
       >
@@ -47,10 +47,10 @@
     <CheckBoxGroup
       base="gesundheit-ernaehrung"
       label="Ernährungsbesonderheiten"
-      :disabled="disabled"
     >
       <CheckBox
         base="gesundheit-essenVegetarier"
+        :disabled="disabled"
         :checked="essenVegetarier"
         @input="$emit('update:essenVegetarier', $event)"
       >
@@ -58,6 +58,7 @@
       </CheckBox>
       <CheckBox
         base="gesundheit-essenLaktoseUnvertraeglichkeit"
+        :disabled="disabled"
         :checked="essenLaktoseUnvertraeglichkeit"
         @input="$emit('update:essenLaktoseUnvertraeglichkeit', $event)"
       >
@@ -65,6 +66,7 @@
       </CheckBox>
       <CheckBox
         base="gesundheit-essenEierUnvertraeglichkeit"
+        :disabled="disabled"
         :checked="essenEierUnvertraeglichkeit"
         @input="$emit('update:essenEierUnvertraeglichkeit', $event)"
       >

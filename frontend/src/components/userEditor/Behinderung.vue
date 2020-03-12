@@ -14,12 +14,12 @@
 
     <CheckBoxGroup
       base="behinderung-liegtBehinderungVor"
-      :disabled="disabled"
     >
       <CheckBox
         base="behinderung-liegtBehinderungVor"
         :aria-expanded="liegtBehinderungVor"
         aria-controls="behinderung-collapse"
+        :disabled="disabled"
         :checked="liegtBehinderungVor"
         @input="$emit('update:liegtBehinderungVor', $event)"
       >
@@ -34,10 +34,10 @@
       <CheckBoxGroup
         base="behinderung-merkzeichen"
         label="Merkzeichen"
-        :disabled="disabled"
       >
         <CheckBox
           base="behinderung-merkzeichenAussergewoehnlicheGehbehinderungaG"
+          :disabled="disabled"
           :checked="merkzeichenAussergewoehnlicheGehbehinderungaG"
           @input="$emit('update:merkzeichenAussergewoehnlicheGehbehinderungaG', $event)"
         >
@@ -45,6 +45,7 @@
         </CheckBox>
         <CheckBox
           base="behinderung-merkzeichenHilflosigkeitH"
+          :disabled="disabled"
           :checked="merkzeichenHilflosigkeitH"
           @input="$emit('update:merkzeichenHilflosigkeitH', $event)"
         >
@@ -52,6 +53,7 @@
         </CheckBox>
         <CheckBox
           base="behinderung-merkzeichenBlindBl"
+          :disabled="disabled"
           :checked="merkzeichenBlindBl"
           @input="$emit('update:merkzeichenBlindBl', $event)"
         >
@@ -59,6 +61,7 @@
         </CheckBox>
         <CheckBox
           base="behinderung-merkzeichenGehoerlosGl"
+          :disabled="disabled"
           :checked="merkzeichenGehoerlosGl"
           @input="$emit('update:merkzeichenGehoerlosGl', $event)"
         >
@@ -66,6 +69,7 @@
         </CheckBox>
         <CheckBox
           base="behinderung-merkzeichenBerechtigtZurMitnahmeEinerBegleitpersonB"
+          :disabled="disabled"
           :checked="merkzeichenBerechtigtZurMitnahmeEinerBegleitpersonB"
           @input="$emit('update:merkzeichenBerechtigtZurMitnahmeEinerBegleitpersonB', $event)"
         >
@@ -73,6 +77,7 @@
         </CheckBox>
         <CheckBox
           base="behinderung-merkzeichenBeeintraechtigungImStrassenverkehrG"
+          :disabled="disabled"
           :checked="merkzeichenBeeintraechtigungImStrassenverkehrG"
           @input="$emit('update:merkzeichenBeeintraechtigungImStrassenverkehrG', $event)"
         >
@@ -80,6 +85,7 @@
         </CheckBox>
         <CheckBox
           base="behinderung-merkzeichenTaubblindTBL"
+          :disabled="disabled"
           :checked="merkzeichenTaubblindTBL"
           @input="$emit('update:merkzeichenTaubblindTBL', $event)"
         >
@@ -90,10 +96,10 @@
       <CheckBoxGroup
         base="behinderung-rollstuhlNutzungNotwendig"
         label="Hilfsmittel"
-        :disabled="disabled"
       >
         <CheckBox
           base="behinderung-rollstuhlNutzungNotwendig"
+          :disabled="disabled"
           :checked="rollstuhlNutzungNotwendig"
           @input="$emit('update:rollstuhlNutzungNotwendig', $event)"
         >
@@ -112,10 +118,10 @@
       <CheckBoxGroup
         base="behinderung-wertmarkeVorhanden"
         label="Wertmarke"
-        :disabled="disabled"
       >
         <CheckBox
           base="behinderung-wertmarkeVorhanden"
+          :disabled="disabled"
           :checked="wertmarkeVorhanden"
           @input="$emit('update:wertmarkeVorhanden', $event)"
         >
@@ -126,12 +132,12 @@
       <CheckBoxGroup
         base="behinderung-begleitungNotwendig"
         label="Begleitperson"
-        :disabled="disabled"
       >
         <CheckBox
           base="behinderung-begleitungNotwendig"
           :aria-expanded="begleitungNotwendig"
           aria-controls="behinderung-begleitperson-collapse"
+          :disabled="disabled"
           :checked="begleitungNotwendig"
           @input="$emit('update:begleitungNotwendig', $event)"
         >
@@ -147,10 +153,10 @@
         <CheckBoxGroup
           base="behinderung-begleitperson"
           label="Wofür wird die Begleitperson benötigt?"
-          :disabled="disabled"
         >
           <CheckBox
             base="behinderung-begleitpersonPflege"
+            :disabled="disabled"
             :checked="begleitpersonPflege"
             @input="$emit('update:begleitpersonPflege', $event)"
           >
@@ -158,6 +164,7 @@
           </CheckBox>
           <CheckBox
             base="behinderung-begleitpersonMedizinischeVersorgung"
+            :disabled="disabled"
             :checked="begleitpersonMedizinischeVersorgung"
             @input="$emit('update:begleitpersonMedizinischeVersorgung', $event)"
           >
@@ -165,6 +172,7 @@
           </CheckBox>
           <CheckBox
             base="behinderung-begleitpersonMobilitaet"
+            :disabled="disabled"
             :checked="begleitpersonMobilitaet"
             @input="$emit('update:begleitpersonMobilitaet', $event)"
           >
@@ -172,6 +180,7 @@
           </CheckBox>
           <CheckBox
             base="behinderung-begleitpersonOrientierung"
+            :disabled="disabled"
             :checked="begleitpersonOrientierung"
             @input="$emit('update:begleitpersonOrientierung', $event)"
           >
@@ -179,6 +188,7 @@
           </CheckBox>
           <CheckBox
             base="behinderung-begleitpersonSozialeBegleitung"
+            :disabled="disabled"
             :checked="begleitpersonSozialeBegleitung"
             @input="$emit('update:begleitpersonSozialeBegleitung', $event)"
           >
@@ -188,6 +198,7 @@
             base="behinderung-isEingeschraenkteSinne"
             :aria-expanded="begleitpersonSinneswahrnehmung"
             aria-controls="behinderung-eingeschraenkteSinne-collapse"
+            :disabled="disabled"
             :checked="begleitpersonSinneswahrnehmung"
             @input="$emit('update:begleitpersonSinneswahrnehmung', $event)"
           >
@@ -218,12 +229,12 @@
 
         <CheckBoxGroup
           base="behinderung-unterstuetzungSucheBegleitperson"
-          :disabled="disabled"
         >
           <CheckBox
             base="behinderung-unterstuetzungSucheBegleitperson"
             :aria-expanded="unterstuetzungSucheBegleitperson"
             aria-controls="behinderung-gewohnterBegleitpersonenDienstleister-collapse"
+            :disabled="disabled"
             :checked="unterstuetzungSucheBegleitperson"
             @input="$emit('update:unterstuetzungSucheBegleitperson', $event)"
           >
@@ -247,12 +258,12 @@
 
         <CheckBoxGroup
           base="behinderung-beantragungKostenuebernahmeBegleitperson"
-          :disabled="disabled"
         >
           <CheckBox
             base="behinderung-beantragungKostenuebernahmeBegleitperson"
             :aria-expanded="beantragungKostenuebernahmeBegleitperson"
             aria-controls="behinderung-zustimmungWeitergabeDatenAmtFamilieUndSoziales-collapse"
+            :disabled="disabled"
             :checked="beantragungKostenuebernahmeBegleitperson"
             @input="$emit('update:beantragungKostenuebernahmeBegleitperson', $event)"
           >
@@ -271,11 +282,11 @@
         >
           <CheckBoxGroup
             base="behinderung-zustimmungWeitergabeDatenAmtFamilieUndSoziales"
-            :disabled="disabled"
           >
             <CheckBox
               base="behinderung-zustimmungWeitergabeDatenAmtFamilieUndSoziales"
               :required="beantragungKostenuebernahmeBegleitperson"
+              :disabled="disabled"
               :checked="zustimmungWeitergabeDatenAmtFamilieUndSoziales"
               @input="$emit('update:zustimmungWeitergabeDatenAmtFamilieUndSoziales', $event)"
             >
