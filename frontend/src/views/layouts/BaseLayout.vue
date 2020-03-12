@@ -1,7 +1,10 @@
 <template>
   <div class="base-layout">
     <NavigationMenu />
-    <b-container fluid>
+    <b-container
+      fluid
+      class="base-layout__content"
+    >
       <slot />
     </b-container>
   </div>
@@ -17,5 +20,7 @@ export default {
 </script>
 
 <style scoped>
-
+.base-layout__content {
+  padding-top: 70px;
+}
 </style>
