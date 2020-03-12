@@ -143,7 +143,7 @@ export default {
   methods: {
     loadUserData() {
       this.serverErrorMessages = [];
-      return api.getUser(this.userId).then((user) => {
+      return api.getUserById(this.userId).then((user) => {
         this.user = user;
       }).catch((e) => this.serverErrorMessages.push(e.toString()));
     },
@@ -151,12 +151,12 @@ export default {
       return api.getProjects().then((projects) => { this.allProjects = projects; });
     },
     loadProjectsOfUser() {
-      return api.getUsersProjects(this.userId).then(
+      return api.getRegisteredProjectsOfUser(this.userId).then(
         (projects) => { this.projectsOfUser = projects; },
       );
     },
     loadCancelledProjectsOfUser() {
-      return api.getUsersCancelledProjects(this.userId).then(
+      return api.getCancelledProjectsOfUser(this.userId).then(
         (projects) => { this.cancelledProjectsOfUser = projects; },
       );
     },
@@ -171,12 +171,12 @@ export default {
       }).catch((errorMessages) => { this.serverErrorMessages = errorMessages; });
     },
     unassignFromProject(projectId, userId) {
-      api.deleteUserFromProject(projectId, userId).then(() => {
+      api.unassignUserFromProject(projectId, userId).then(() => {
         this.reloadProjectsOfUser();
       });
     },
     assignToProject(projectId, userId) {
-      api.addUserToProject(projectId, userId).then(() => {
+      api.assignUserToProject(projectId, userId).then(() => {
         this.reloadProjectsOfUser();
       });
     },

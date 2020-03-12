@@ -127,7 +127,7 @@ export default {
   methods: {
     loadProjectData() {
       this.serverErrorMessages = [];
-      api.getProject(this.projectId).then((project) => {
+      api.getProjectById(this.projectId).then((project) => {
         this.project = project;
       }).catch((e) => this.serverErrorMessages.push(e.toString()));
     },
