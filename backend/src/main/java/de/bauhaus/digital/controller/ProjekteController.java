@@ -79,10 +79,18 @@ public class ProjekteController {
             throw new ProjektNotFoundException("Projekt mit id " + projekt.getId() + " wurde nicht gefunden.");
         }
 
-        // We directly save the Projekt we received in the database
-        Projekt savedProjekt = projektRepository.save(projekt);
+        // Important: Since we ignore the Anmeldungen and Stornierungen to and from the JSON,
+        // we have to explicitly use the ones from the original, so they do not get lost
+        Projekt originalProjekt = optionalProjekt.get();
+        Projekt projektWithTeilnehmern = Projekt.newBuilder(projekt)
+                .angemeldeteTeilnehmer(originalProjekt.getAngemeldeteTeilnehmer())
+                .stornierteTeilnehmer(originalProjekt.getStornierteTeilnehmer())
+                .build();
 
-        LOG.info("Projekt with id " + projekt.getId() + " successfully updated in DB.");
+        // We directly save the Projekt we received in the database
+        Projekt savedProjekt = projektRepository.save(projektWithTeilnehmern);
+
+        LOG.info("Projekt with id " + projektWithTeilnehmern.getId() + " successfully updated in DB.");
         return savedProjekt;
     }
 

@@ -1,5 +1,6 @@
 package de.bauhaus.digital.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import de.bauhaus.digital.validation.ProjektValidation;
@@ -44,10 +45,12 @@ public class Projekt {
     private int plaetzeReserviert;
 
     // do NOT automatically delete Teilnehmer when the Projekt gets deleted!
+    @JsonIgnore
     @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
     private List<Teilnehmer> angemeldeteTeilnehmer = new ArrayList<>();
 
     // do NOT automatically delete Teilnehmer when the Projekt gets deleted!
+    @JsonIgnore
     @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
     private List<Teilnehmer> stornierteTeilnehmer = new ArrayList<>();
 
