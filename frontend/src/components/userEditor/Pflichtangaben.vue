@@ -58,8 +58,8 @@
 </template>
 
 <script>
-import YesNoRadio from '@/components/wrapper/YesNoRadio.vue';
-import FieldInput from '@/components/wrapper/FieldInput.vue';
+import YesNoRadio from '@/components/form/YesNoRadio.vue';
+import FieldInput from '@/components/form/FieldInput.vue';
 
 export default {
   name: 'Pflichtangaben',

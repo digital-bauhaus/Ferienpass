@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import FieldInput from '@/components/wrapper/FieldInput.vue';
+import FieldInput from '@/components/form/FieldInput.vue';
 
 export default {
   name: 'Kontakt',

@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: 'ErrorAlert',
+  name: 'ErrorBox',
   props: {
     headingText: {
       type: String,

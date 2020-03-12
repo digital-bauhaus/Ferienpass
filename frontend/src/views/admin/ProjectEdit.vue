@@ -3,7 +3,7 @@
     <h1>
       {{ titleText }}
     </h1>
-    <ErrorAlert
+    <ErrorBox
       v-if="showServerErrorAlert"
       :heading-text="serverErrorHeadingText"
       :errors="serverErrorMessages"
@@ -53,7 +53,7 @@
 <script>
 import ProjectEditor from '@/components/ProjectEditor.vue';
 import api from '@/modules/ferienpass-api';
-import ErrorAlert from '@/components/ErrorAlert.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
 import UserList from '@/components/UserList.vue';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
 import UserListForExport from '@/components/UserListForExport.vue';
@@ -65,7 +65,7 @@ export default {
     UserListForExport,
     BaseLayout,
     ProjectEditor,
-    ErrorAlert,
+    ErrorBox,
     UserList,
   },
   data() {

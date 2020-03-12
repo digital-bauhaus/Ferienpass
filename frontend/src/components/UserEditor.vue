@@ -233,10 +233,10 @@ import Datenschutz from '@/components/userEditor/Datenschutz.vue';
 import Angebote from '@/components/userEditor/Angebote.vue';
 import Teilnahmebedingungen from '@/components/userEditor/Teilnahmebedingungen.vue';
 import Kontakt from '@/components/userEditor/Kontakt.vue';
-import CheckBox from '@/components/wrapper/CheckBox.vue';
-import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
-import Group from '@/components/wrapper/Group.vue';
-import FormSection from '@/components/wrapper/FormSection.vue';
+import CheckBox from '@/components/form/CheckBox.vue';
+import CheckBoxGroup from '@/components/form/CheckBoxGroup.vue';
+import Group from '@/components/form/Group.vue';
+import FormSection from '@/components/form/FormSection.vue';
 import Verwaltungsaufgaben from '@/components/userEditor/Verwaltungsaufgaben.vue';
 
 export default {

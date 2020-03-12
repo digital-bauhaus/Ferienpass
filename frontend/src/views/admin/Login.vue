@@ -9,7 +9,7 @@
           :title="title"
           bg-variant="light"
         >
-          <ErrorAlert
+          <ErrorBox
             v-if="showErrorAlert"
             heading-text="Login nicht möglich. Folgende Fehler sind aufgetreten: "
             :errors="serverErrorMessages"
@@ -64,11 +64,11 @@
 
 <script>
 import { LOGIN } from '@/store/action-types';
-import ErrorAlert from '@/components/ErrorAlert.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
 
 export default {
   name: 'Login',
-  components: { ErrorAlert },
+  components: { ErrorBox },
   data() {
     return {
       title: 'Ferienpass Weimar: Administration',

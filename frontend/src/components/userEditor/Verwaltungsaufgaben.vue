@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import CheckBox from '@/components/wrapper/CheckBox.vue';
-import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
+import CheckBox from '@/components/form/CheckBox.vue';
+import CheckBoxGroup from '@/components/form/CheckBoxGroup.vue';
 
 // TODO restliche Felder etc.
 export default {

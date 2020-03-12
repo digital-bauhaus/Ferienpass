@@ -32,7 +32,7 @@
         />
       </ProjektAuswahl>
     </UserEditor>
-    <ErrorAlert
+    <ErrorBox
       v-if="showServerErrorAlert"
       :heading-text="serverErrorHeadingText"
       :errors="serverErrorMessages"
@@ -53,10 +53,10 @@
 
 <script>
 import publicApi from '@/modules/ferienpass-public-api';
-import ErrorAlert from '@/components/ErrorAlert.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
 import UserEditor from '@/components/UserEditor.vue';
-import CheckBox from '@/components/wrapper/CheckBox.vue';
-import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
+import CheckBox from '@/components/form/CheckBox.vue';
+import CheckBoxGroup from '@/components/form/CheckBoxGroup.vue';
 import RegistrationLayout from '@/views/layouts/RegistrationLayout.vue';
 import ProjektAuswahl from '@/components/userEditor/ProjektAuswahl.vue';
 import ProjektAuswahlItem from '@/components/userEditor/ProjektAuswahlItem.vue';
@@ -71,7 +71,7 @@ export default {
     CheckBoxGroup,
     CheckBox,
     UserEditor,
-    ErrorAlert,
+    ErrorBox,
   },
   data() {
     return {
