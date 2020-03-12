@@ -19,7 +19,7 @@
     <hr>
 
     <h2>Angemeldete Projekte</h2>
-    <ProjectList :projects="projectsOfUser">
+    <ProjectList :projects="registeredProjectsOfUser">
       <template v-slot:actions="{ row }">
         <b-button
           size="sm"
@@ -94,7 +94,7 @@ export default {
       serverErrorMessages: [],
       successAutomaticDismissCountDown: 0,
       allProjects: [],
-      projectsOfUser: [],
+      registeredProjectsOfUser: [],
       cancelledProjectsOfUser: [],
       loaded: false,
     };
@@ -120,9 +120,10 @@ export default {
     },
     availableProjects() {
       return this.allProjects.filter((project) => {
-        const isProjectOfUser = this.projectsOfUser.map((userProject) => userProject.id).includes(
-          project.id,
-        );
+        const isProjectOfUser = this.registeredProjectsOfUser
+          .map((userProject) => userProject.id).includes(
+            project.id,
+          );
         const isCancelledProjectOfuser = this.cancelledProjectsOfUser.map(
           (userProject) => userProject.id,
         ).includes(project.id);
@@ -134,10 +135,10 @@ export default {
     const dataPromises = [];
     dataPromises.push(this.loadUserData());
     dataPromises.push(this.loadProjects());
-    dataPromises.push(this.loadProjectsOfUser());
+    dataPromises.push(this.loadRegisteredProjectsOfUser());
     dataPromises.push(this.loadCancelledProjectsOfUser());
     Promise.all(dataPromises).then(() => { this.loaded = true; }).catch(
-      (e) => this.errorMessages.push(e.toString()),
+      (e) => this.serverErrorMessages.push(e.toString()),
     );
   },
   methods: {
@@ -150,9 +151,9 @@ export default {
     loadProjects() {
       return api.getProjects().then((projects) => { this.allProjects = projects; });
     },
-    loadProjectsOfUser() {
+    loadRegisteredProjectsOfUser() {
       return api.getRegisteredProjectsOfUser(this.userId).then(
-        (projects) => { this.projectsOfUser = projects; },
+        (projects) => { this.registeredProjectsOfUser = projects; },
       );
     },
     loadCancelledProjectsOfUser() {
@@ -161,7 +162,7 @@ export default {
       );
     },
     reloadProjectsOfUser() {
-      this.loadProjectsOfUser();
+      this.loadRegisteredProjectsOfUser();
       this.loadCancelledProjectsOfUser();
     },
     updateUser() {
