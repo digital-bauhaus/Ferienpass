@@ -1,8 +1,8 @@
 import api from '@/modules/ferienpass-api';
 
-import { LOGIN_FAILED, LOGIN_SUCCESS, } from './mutation-types';
+import { LOGIN_FAILED, LOGIN_SUCCESS } from './mutation-types';
 
-import { LOGIN, } from './action-types';
+import { LOGIN } from './action-types';
 
 const actions = {
   [LOGIN]({ commit }, { name, password }) {
