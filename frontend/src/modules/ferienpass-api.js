@@ -17,6 +17,7 @@ export default {
   },
 
   // Login API
+
   login(user, password) {
     return AXIOS.get('/login', {
       auth: {
@@ -24,31 +25,6 @@ export default {
         password,
       },
     });
-  },
-
-  // Public API
-
-  registerUser(user) {
-    console.log('register new user via public API');
-    return AXIOS
-      .post('/public/register', user)
-      .then().catch((e) => {
-        if (e.response.data.errors) {
-        // validation errors
-          return Promise.reject(
-            e.response.data.errors.map((error) => `${error.field}: ${error.defaultMessage}`),
-          );
-        }
-        // other errors
-        return Promise.reject([e.toString()]);
-      });
-  },
-
-  // Old Anmeldung to Admin API
-
-  registerTeilnehmer(userAsJson) {
-    console.log('register new User from Anmeldung');
-    return AXIOS.post('/register', userAsJson);
   },
 
   // Project API

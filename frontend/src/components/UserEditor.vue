@@ -195,7 +195,7 @@
         base="datenschutzErklaerungAkzeptiert"
         :required="true"
         :checked="value.datenschutzErklaerungAkzeptiert"
-        @input="$emit('update:datenschutzErklaerungAkzeptiert', $event)"
+        @input="updateValue('datenschutzErklaerungAkzeptiert', $event)"
       >
         Ich habe die Datenschutzerklärung gelesen und akzeptiert. *
       </CheckBox>
@@ -203,7 +203,7 @@
         base="teilnahmeBedingungAkzeptiert"
         :required="true"
         :checked="value.teilnahmeBedingungAkzeptiert"
-        @input="$emit('update:teilnahmeBedingungAkzeptiert', $event)"
+        @input="updateValue('teilnahmeBedingungAkzeptiert', $event)"
       >
         Ich habe die Teilnahmebedingungen gelesen und akzeptiert. Ich bestätige die Richtigkeit meiner
         Angaben. Wurden wissentlich falsche Angaben gemacht, darf die Organisation das angemeldete

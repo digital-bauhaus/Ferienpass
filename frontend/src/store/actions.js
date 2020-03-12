@@ -1,18 +1,13 @@
 import api from '@/modules/ferienpass-api';
 
-import {
-  LOGIN_SUCCESS,
-  LOGIN_FAILED,
-} from './mutation-types';
+import { LOGIN_FAILED, LOGIN_SUCCESS, } from './mutation-types';
 
-import {
-  LOGIN,
-} from './action-types';
+import { LOGIN, } from './action-types';
 
 const actions = {
   [LOGIN]({ commit }, { name, password }) {
     return new Promise((resolve, reject) => {
-      console.log(`Accessing backend with user: '${name} and password ${password}`);
+      console.log('Logging in...');
       api.login(name, password)
         .then((response) => {
           console.log(`Response: '${response.data}' with Statuscode ${response.status}`);
@@ -29,7 +24,7 @@ const actions = {
         .catch((error) => {
           console.log(`Fehler: ${error}`);
           commit(LOGIN_FAILED);
-          reject('Fehlerhafte Anmeldedaten (User und/oder Passwort)!');
+          reject(new Error('Fehlerhafte Anmeldedaten (User und/oder Passwort)!'));
           api.setAuthentication('', '');
         });
     });

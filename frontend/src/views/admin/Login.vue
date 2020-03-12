@@ -90,7 +90,7 @@ export default {
       this.$store.dispatch(LOGIN, { name: this.form.name, password: this.form.password })
         .then(() => this.$router.push('/Verwaltung'))
         .catch((e) => {
-          this.serverErrorMessages.push(e);
+          this.serverErrorMessages.push(e); // TODO errors not messages
         });
     },
   },
