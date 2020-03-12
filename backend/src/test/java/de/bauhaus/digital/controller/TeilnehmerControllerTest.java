@@ -1,23 +1,18 @@
 package de.bauhaus.digital.controller;
 
 
-import static de.bauhaus.digital.DomainFactory.createSampleArzt;
-import static de.bauhaus.digital.DomainFactory.createSampleBehinderung;
-import static de.bauhaus.digital.DomainFactory.createSampleKontakt;
 import static de.bauhaus.digital.DomainFactory.createSampleProjekt;
 import static de.bauhaus.digital.DomainFactory.createSampleTeilnehmer;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import de.bauhaus.digital.DomainFactory;
 import de.bauhaus.digital.domain.Arzt;
 import de.bauhaus.digital.domain.Behinderung;
 import de.bauhaus.digital.domain.Kontakt;
 import de.bauhaus.digital.domain.Teilnehmer;
 import io.restassured.http.ContentType;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.http.HttpStatus;
 import org.assertj.core.api.Assertions;
@@ -28,11 +23,11 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
 
     @Test
     public void givenInvalidCredentials_whenAddingTeilnehmer_thenHttp401Unauthorized() {
-        Teilnehmer user = createSampleTeilnehmer();
+        Teilnehmer teilnehmer = createSampleTeilnehmer();
 
         given()
             .auth().basic("wrong", "credentials")
-            .body(user)
+            .body(teilnehmer)
             .contentType(ContentType.JSON)
         .when()
             .post(BASE_URL + "/users")
@@ -59,16 +54,16 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
 
     @Test
     public void givenTeilnehmer_whenAddingAndRetrieving_thenTheyMatch() {
-        Teilnehmer user = createSampleTeilnehmer();
+        Teilnehmer teilnehmer = createSampleTeilnehmer();
 
-        Long userId = addUser(user);
+        Long teilnehmerId = addUser(teilnehmer);
 
-        Teilnehmer responseUser = getUser(userId);
+        Teilnehmer responseTeilnehmer = getUser(teilnehmerId);
 
-        Assertions.assertThat(responseUser).
+        Assertions.assertThat(responseTeilnehmer).
                 usingRecursiveComparison()
                 .ignoringFields("id", "arzt.id", "behinderung.id", "notfallKontakt.id")
-                .isEqualTo(user);
+                .isEqualTo(teilnehmer);
     }
 
     @Test
@@ -259,15 +254,15 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
 
     @Test
     public void givenTeilnehmer_whenDeletedAndRequested_thenIsNotFound() {
-        Long userId = addUser(createSampleTeilnehmer());
+        Long teilnehmerId = addUser(createSampleTeilnehmer());
 
-        Teilnehmer responseUser = getUser(userId);
+        Teilnehmer responseTeilnehmer = getUser(teilnehmerId);
 
-        Assert.assertThat(responseUser.getId(), is(userId));
+        Assert.assertThat(responseTeilnehmer.getId(), is(teilnehmerId));
 
-        deleteUser(responseUser.getId());
+        deleteUser(responseTeilnehmer.getId());
 
-        getNoUser(userId);
+        getNoUser(teilnehmerId);
     }
 
     @Test
@@ -287,14 +282,14 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
     @Test
     public void givenTeilnehmerThatWasCancelledFromProjekt_whenDeletingTeilnehmer_thenNoFail() {
         // Given
-        Long userId = addUser(createSampleTeilnehmer());
-        Long projectId = addProject(createSampleProjekt());
-        assignUserToProject(projectId, userId);
-        Boolean isUserUnassignedFromProject = unassignUserFromProject(projectId, userId);
+        Long teilnehmerId = addUser(createSampleTeilnehmer());
+        Long projektId = addProject(createSampleProjekt());
+        assignUserToProject(projektId, teilnehmerId);
+        Boolean isUserUnassignedFromProject = unassignUserFromProject(projektId, teilnehmerId);
         assertThat(isUserUnassignedFromProject, is(true));
 
         // When
-        deleteUser(userId);
+        deleteUser(teilnehmerId);
 
         // Then
         // pass :)

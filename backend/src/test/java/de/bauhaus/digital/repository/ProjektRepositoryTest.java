@@ -89,6 +89,30 @@ public class ProjektRepositoryTest {
     }
 
     @Test
+    public void givenProjektMitStorniertenTeilnehmern_whenDeletingProjekt_thenTeilnehmerAreNotDeleted() {
+        Teilnehmer teilnehmer = createSampleTeilnehmer();
+        Projekt projekt = createSampleProjektBuilder()
+                .stornierteTeilnehmer(Collections.singletonList(teilnehmer))
+                .build();
+        projektRepository.save(projekt);
+
+        // check that the Teilnehmer got an ID
+        long teilnehmerId = teilnehmer.getId();
+        assertThat(teilnehmerId, greaterThan(0L));
+
+        // find the Teilnehmer in the database
+        Optional<Teilnehmer> teilnehmerNachSpeichern = teilnehmerRepository.findById(teilnehmerId);
+        assertThat(teilnehmerNachSpeichern.isPresent(), is(true));
+
+        // delete the Projekt
+        projektRepository.delete(projekt);
+
+        // find the Teilnehmer again
+        Optional<Teilnehmer> teilnehmerNachLoeschen = teilnehmerRepository.findById(teilnehmerId);
+        assertThat(teilnehmerNachLoeschen.isPresent(), is(true));
+    }
+
+    @Test
     public void whenFindAllActive_ThenInactiveProjectsAreMissing() {
 
         List<Projekt> allSortedByDatum = projektRepository.findAllActive();

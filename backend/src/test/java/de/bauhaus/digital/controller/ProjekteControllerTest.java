@@ -1,6 +1,7 @@
 package de.bauhaus.digital.controller;
 
 
+import static de.bauhaus.digital.DomainFactory.createSampleProjekt;
 import static de.bauhaus.digital.DomainFactory.createSampleTeilnehmer;
 import static de.bauhaus.digital.DomainFactory.createSampleTeilnehmerOfName;
 import static io.restassured.RestAssured.given;
@@ -13,40 +14,236 @@ import de.bauhaus.digital.domain.Projekt;
 import de.bauhaus.digital.domain.Teilnehmer;
 import io.restassured.http.ContentType;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.http.HttpStatus;
+import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 public class ProjekteControllerTest extends AbstractControllerTest {
 
     @Test
-    public void givenInvalidId_whenRequestingProject_thenNotFound() {
+    public void givenInvalidCredentials_whenAddingProjekt_thenHttp401Unauthorized() {
+        Projekt projekt = createSampleProjekt();
+
         given()
-            .pathParam("id", -1)
+            .auth().basic("wrong", "credentials")
+            .body(projekt)
+            .contentType(ContentType.JSON)
         .when()
-            .get(BASE_URL + "/projects/{id}")
+            .post(BASE_URL + "/projects")
         .then()
-            .statusCode(HttpStatus.SC_NOT_FOUND);
+            .statusCode(is(HttpStatus.SC_UNAUTHORIZED));
     }
 
     @Test
-    public void addNewProjectAndetrieveItBack() {
-        Projekt projekt = DomainFactory.createSampleProjekt();
-        Long projectID = addProject(projekt);
+    public void givenProjekte_whenAddingTwoProjekteAndRetrievingAll_thenListHasTwoAdditionalEntries() {
+        int initialSize = getAllProjects().size();
 
-        Projekt responeProjekt = getProject(projectID);
-        assertThat(projectID, is(responeProjekt.getId()));
-        assertThat(responeProjekt.getName(), is(projekt.getName()));
-        assertThat(responeProjekt.getPlaetzeFrei(), is(projekt.getPlaetzeFrei()));
-        assertThat(responeProjekt.getMindestAlter(), is(projekt.getMindestAlter()));
-        assertThat(responeProjekt.getHoechstAlter(), is(projekt.getHoechstAlter()));
-        assertThat(responeProjekt.getDatumBeginn(), is(projekt.getDatumBeginn()));
-        assertThat(responeProjekt.getPlaetzeGesamt(), is(projekt.getPlaetzeGesamt()));
-        assertThat(responeProjekt.getAngemeldeteTeilnehmer(), is(projekt.getAngemeldeteTeilnehmer()));
+        addProject(createSampleProjekt());
+        addProject(createSampleProjekt());
+
+        List<Projekt> alleProjekte = getAllProjects();
+
+        assertThat(alleProjekte.size(), is(initialSize + 2));
     }
 
+    @Test
+    public void givenInvalidId_whenRequestingProject_thenNotFound() {
+        getNoProjekt(-1L);
+    }
+
+    @Test
+    public void givenProjekt_whenAddingAndRetrieving_thenTheyMatch() {
+        Projekt projekt = createSampleProjekt();
+
+        Long projektId = addProject(projekt);
+
+        Projekt responseProjekt = getProject(projektId);
+
+        Assertions.assertThat(responseProjekt).
+                usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(projekt);
+    }
+
+    @Test
+    public void givenProjektWithAngemeldetenTeilnehmern_whenAddingAndRetrieving_thenAngemeldeteTeilnehmerAreNotIncluded() {
+        Long teilnehmerId = addUser(createSampleTeilnehmer());
+        Long projektId = addProject(createSampleProjekt());
+        assignUserToProject(projektId, teilnehmerId);
+
+        Projekt responseProjekt = getProject(projektId);
+
+        assertThat(responseProjekt.getAngemeldeteTeilnehmer().size(), is(0));
+    }
+
+    @Test
+    public void givenProjektWithStorniertenTeilnehmern_whenAddingAndRetrieving_thenStornierteTeilnehmerAreNotIncluded() {
+        Long teilnehmerId = addUser(createSampleTeilnehmer());
+        Long projektId = addProject(createSampleProjekt());
+        assignUserToProject(projektId, teilnehmerId);
+        unassignUserFromProject(projektId, teilnehmerId);
+
+        Projekt responseProjekt = getProject(projektId);
+
+        assertThat(responseProjekt.getStornierteTeilnehmer().size(), is(0));
+    }
+
+    @Test
+    public void givenProjektInDb_whenUpdatingAndRetrieving_thenRetrievedProjektMatchesUpdated() {
+
+        Long projektId = addProject(createSampleProjekt());
+        Projekt originalProjekt = getProject(projektId);
+
+        boolean aktiv = true;
+        String name = "Testprojekt U";
+        LocalDate datumBeginn = LocalDate.of(2030, 3, 1);
+        LocalDate datumEnde = LocalDate.of(2030, 3, 15);
+        int mindestAlter = 10;
+        int hoechstAlter = 20;
+        int plaetzeGesamt = 30;
+        int plaetzeReserviert = 7;
+        List<Teilnehmer> angemeldeteTeilnehmer = new ArrayList<>(); // TODO
+        List<Teilnehmer> stornierteTeilnehmer = new ArrayList<>(); // TODO
+
+        // Important: We use the copy-builder, so we automatically use the correct ID
+        Projekt projektToUpdate = Projekt.newBuilder(originalProjekt)
+                .aktiv(aktiv)
+                .name(name)
+                .datumBeginn(datumBeginn)
+                .datumEnde(datumEnde)
+                .mindestAlter(mindestAlter)
+                .hoechstAlter(hoechstAlter)
+                .plaetzeGesamt(plaetzeGesamt)
+                .plaetzeReserviert(plaetzeReserviert)
+                .angemeldeteTeilnehmer(angemeldeteTeilnehmer)
+                .stornierteTeilnehmer(stornierteTeilnehmer)
+                .build();
+
+        // actual update is here
+        updateProjekt(projektToUpdate);
+
+        Projekt responseProjekt = getProject(projektId);
+
+        Assertions.assertThat(responseProjekt).
+                usingRecursiveComparison()
+                .isEqualTo(projektToUpdate);
+    }
+
+    @Test
+    public void givenProjektWithAnmeldungenAndStornierungenInDb_whenUpdatingAndRetrieving_AnmeldungenUndStornierungenAreNotLost() {
+
+        Long projektId = addProject(createSampleProjekt());
+        Projekt originalProjekt = getProject(projektId);
+
+        Long teilnehmerId = addUser(createSampleTeilnehmer());
+        Long teilnehmerId2 = addUser(createSampleTeilnehmer());
+        assignUserToProject(projektId, teilnehmerId);
+        assignUserToProject(projektId, teilnehmerId2);
+        unassignUserFromProject(projektId, teilnehmerId);
+
+        // TODO !?
+
+        // Important: We use the copy-builder, so we automatically use the correct ID
+        Projekt projektToUpdate = Projekt.newBuilder(originalProjekt)
+                .angemeldeteTeilnehmer(originalProjekt.getAngemeldeteTeilnehmer())
+                .stornierteTeilnehmer(originalProjekt.getStornierteTeilnehmer())
+                .build();
+
+        // actual update is here
+        updateProjekt(projektToUpdate);
+
+        Projekt responseProjekt = getProject(projektId);
+
+        Assertions.assertThat(responseProjekt).
+                usingRecursiveComparison()
+                .isEqualTo(projektToUpdate);
+    }
+
+    @Test
+    public void givenProjekt_whenDeletedAndRequested_thenIsNotFound() {
+        Long projektId = addProject(createSampleProjekt());
+
+        Projekt responseProjekt = getProject(projektId);
+
+        Assert.assertThat(responseProjekt.getId(), is(projektId));
+
+        deleteProjekt(responseProjekt.getId());
+
+        getNoProjekt(projektId);
+    }
+
+    @Test
+    public void givenTeilnehmerThatIsAssignedToProjekt_whenDeletingProjekt_thenNoFail() {
+        // Given
+        Long teilnehmerId = addUser(createSampleTeilnehmer());
+        Long projektId = addProject(createSampleProjekt());
+        assignUserToProject(projektId, teilnehmerId);
+
+        // When
+        deleteProjekt(projektId);
+
+        // Then
+        // pass :)
+    }
+
+    @Test
+    public void givenTeilnehmerThatWasCancelledFromProjekt_whenDeletingProjekt_thenNoFail() {
+        // Given
+        Long teilnehmerId = addUser(createSampleTeilnehmer());
+        Long projektId = addProject(createSampleProjekt());
+        assignUserToProject(projektId, teilnehmerId);
+        Boolean isUserUnassignedFromProject = unassignUserFromProject(projektId, teilnehmerId);
+        assertThat(isUserUnassignedFromProject, is(true));
+
+        // When
+        deleteProjekt(projektId);
+
+        // Then
+        // pass :)
+    }
+
+    @Test
+    public void shouldAssignUserCorrectlyToProjekt() throws Exception {
+        // Given
+        Long projectId = addProject(createSampleProjekt());
+
+        Teilnehmer newUser = createSampleTeilnehmerOfName("Anton", "Tirol");
+        Long userId = addUser(newUser);
+
+        // When
+        Boolean isUserAssignedToProject = assignUserToProject(projectId, userId);
+
+        // Then
+        assertThat(isUserAssignedToProject,is(true));
+
+        Teilnehmer teilnehmer = getAllAssignedUsersForGivenProject(projectId).get(0);
+        assertThat(teilnehmer.getId(), is(userId));
+
+        List<Projekt> projectsByFirstNameAndLastName = getAlleZugewiesenenProjekteByFirstNameAndLastName("Anton", "Tirol");
+        assertThat(projectsByFirstNameAndLastName.size(),is(1));
+    }
+
+    @Test
+    public void shouldUnassignUserCorrectlyFromProjekt() throws Exception {
+        // Given
+        Long userId = addUser(createSampleTeilnehmer());
+        Long projectId = addProject(DomainFactory.createSampleProjekt());
+        assignUserToProject(projectId, userId);
+
+        // When
+        Boolean isUserUnassignedFromProject = unassignUserFromProject(projectId, userId);
+
+        // Then
+        assertThat(isUserUnassignedFromProject, is(true));
+        Projekt projekt = getProject(projectId);
+        Teilnehmer teilnehmer = projekt.getStornierteTeilnehmer().get(0);
+        assertThat(teilnehmer.getId(), is(userId));
+    }
 
     @Test
     public void addProjectAndUserAndAssignProjectToUserAndRetrieveAllProjectsForThisUser() {
@@ -60,11 +257,11 @@ public class ProjekteControllerTest extends AbstractControllerTest {
         assertThat(assignUserToProject(projectID, userId),is(true));
 
         //Verify that the added user has now the project assigned
-        Teilnehmer responseUser = getUser(userId);
+        Teilnehmer responseTeilnehmer = getUser(userId);
 
         Projekt responseProjekt = getProject(projectID);
         assertThat(responseProjekt.getAngemeldeteTeilnehmer().size(), is(1));
-        assertThat(responseProjekt.getAngemeldeteTeilnehmer().get(0).getId(), is(responseUser.getId()));
+        assertThat(responseProjekt.getAngemeldeteTeilnehmer().get(0).getId(), is(responseTeilnehmer.getId()));
     }
 
     @Test
@@ -76,10 +273,10 @@ public class ProjekteControllerTest extends AbstractControllerTest {
         assertThat(wasTeilnehmerAssignedToProjekt, is(true));
 
         //Get the user again
-        Teilnehmer responseUser = getUser(userId);
+        Teilnehmer responseTeilnehmer = getUser(userId);
 
         //Get all projects for the userID
-        List<Projekt> projectsOfUserID = getAllProjekteWhereUserIsAssigned(responseUser.getId());
+        List<Projekt> projectsOfUserID = getAllProjekteWhereUserIsAssigned(responseTeilnehmer.getId());
         assertThat(projectsOfUserID.size(),is(1));
         assertThat(projectsOfUserID.get(0).getId(), is(projectId));
     }
@@ -93,10 +290,10 @@ public class ProjekteControllerTest extends AbstractControllerTest {
         unassignUserFromProject(projectId, userId);
 
         //Get the user again
-        Teilnehmer responseUser = getUser(userId);
+        Teilnehmer responseTeilnehmer = getUser(userId);
 
         //Get all cancelled projects for the userID
-        List<Projekt> cancelledProjectsOfUser = getAllProjekteWhereUserIsCancelled(responseUser.getId());
+        List<Projekt> cancelledProjectsOfUser = getAllProjekteWhereUserIsCancelled(responseTeilnehmer.getId());
         assertThat(cancelledProjectsOfUser.size(),is(1));
         assertThat(cancelledProjectsOfUser.get(0).getId(), is(projectId));
     }
@@ -153,73 +350,7 @@ public class ProjekteControllerTest extends AbstractControllerTest {
         assertThat(newSumOfRegisteredTeilnehmer,is(sumOfRegisteredTeilnehmer+4));
     }
 
-    @Test @Ignore
-    public void shouldAssignUserCorrectlyToProjekt() throws Exception {
-        // Given
-        Long projectId = addProject(DomainFactory.createSampleProjekt());
-
-        Teilnehmer newUser = createSampleTeilnehmerOfName("Anton", "Tirol");
-        Long userId = addUser(newUser);
-
-        // When
-        Boolean isUserAssignedToProject = assignUserToProject(projectId, userId);
-
-        // Then
-        assertThat(isUserAssignedToProject,is(true));
-
-        Teilnehmer teilnehmer = getAllAssignedUsersForGivenProject(projectId).get(0);
-        assertThat(teilnehmer.getId(), is(userId));
-
-        List<Projekt> projectsByFirstNameAndLastName = getAlleZugewiesenenProjekteByFirstNameAndLastName("Anton", "Tirol");
-        assertThat(projectsByFirstNameAndLastName.size(),is(1));
-    }
-
-    @Test
-    public void shouldUnassignUserCorrectlyFromProjekt() throws Exception {
-        // Given
-        Long userId = addUser(createSampleTeilnehmer());
-        Long projectId = addProject(DomainFactory.createSampleProjekt());
-        assignUserToProject(projectId, userId);
-
-        // When
-        Boolean isUserUnassignedFromProject = unassignUserFromProject(projectId, userId);
-
-        // Then
-        assertThat(isUserUnassignedFromProject, is(true));
-        Projekt projekt = getProject(projectId);
-        Teilnehmer teilnehmer = projekt.getStornierteTeilnehmer().get(0);
-        assertThat(teilnehmer.getId(), is(userId));
-    }
-
-    @Test
-    public void shouldUpdateProjectCorrectly() {
-        Long projectId = addProject(DomainFactory.createSampleProjekt());
-
-        Projekt projekt = Projekt.newBuilder(getProject(projectId))
-                .name("Klettern am Berg")
-                .datumBeginn(LocalDate.of(2019, 8,3))
-                .datumEnde(LocalDate.of(2019, 9,2))
-                .plaetzeReserviert(6)
-                .plaetzeGesamt(25)
-                .build();
-
-        Projekt updatedProjekt = updateProjekt(projekt);
-
-        assertThat(updatedProjekt.getName(), is(projekt.getName()));
-        assertThat(updatedProjekt.getDatumBeginn(), is(projekt.getDatumBeginn()));
-        assertThat(updatedProjekt.getDatumEnde(), is(projekt.getDatumEnde()));
-        assertThat(updatedProjekt.getPlaetzeReserviert(), is(projekt.getPlaetzeReserviert()));
-        assertThat(updatedProjekt.getPlaetzeGesamt(), is(projekt.getPlaetzeGesamt()));
-    }
-
-    @Test
-    public void shouldDeleteAddedProjectCorrectly() {
-        Long projectId = addProject(DomainFactory.createSampleProjekt());
-
-        deleteProjekt(projectId);
-
-        getNoProjekt(projectId);
-    }
+    // Check Custom Validations -------------------------------------------------------------------
 
     @Test
     public void givenDatumEndeBeforeDatumBeginn_whenCreatingProjekt_thenBadRequest() {
