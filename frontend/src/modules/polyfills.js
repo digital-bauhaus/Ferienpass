@@ -8,3 +8,5 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 // import 'intersection-observer' // Optional
+
+// Note: There are other polyfills/fixes that need to be applied after mounting the app in App.vue
