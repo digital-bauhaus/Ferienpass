@@ -14,3 +14,5 @@ import 'regenerator-runtime/runtime';
 if (!HTMLFormElement.prototype.reportValidity) {
   HTMLFormElement.prototype.reportValidity = () => this.checkValidity() || this.submit();
 }
+
+// Note: There are other polyfills/fixes that need to be applied after mounting the app in App.vue
