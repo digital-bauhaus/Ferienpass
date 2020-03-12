@@ -62,12 +62,9 @@ export default {
         .then((willDelete) => {
           if (willDelete) {
             this.errors = [];
-            api.deleteUser(userId).then(() => {
-              this.$emit('user-deleted');
-              return this.$swal('Teilnehmer wurde gelöscht!', {
-                icon: 'success',
-              });
-            }).catch((e) => {
+            api.deleteUser(userId).then(() => this.$swal('Teilnehmer wurde gelöscht!', {
+              icon: 'success',
+            })).catch((e) => {
               this.errors.push(e);
               return this.$swal('Da ist was schief gegangen :(', {
                 icon: 'error',

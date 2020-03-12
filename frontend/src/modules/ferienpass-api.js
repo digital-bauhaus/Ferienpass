@@ -17,51 +17,28 @@ export default {
   },
 
   // Login API
-  login(user, password) {
+  // --------------------------------------
+
+  login(username, password) {
     return AXIOS.get('/login', {
       auth: {
-        username: user,
+        username,
         password,
       },
     });
   },
 
-  // Public API
-
-  registerUser(user) {
-    console.log('register new user via public API');
-    return AXIOS
-      .post('/public/register', user)
-      .then().catch((e) => {
-        if (e.response.data.errors) {
-        // validation errors
-          return Promise.reject(
-            e.response.data.errors.map((error) => `${error.field}: ${error.defaultMessage}`),
-          );
-        }
-        // other errors
-        return Promise.reject([e.toString()]);
-      });
-  },
-
-  // Old Anmeldung to Admin API
-
-  registerTeilnehmer(userAsJson) {
-    console.log('register new User from Anmeldung');
-    return AXIOS.post('/register', userAsJson);
-  },
-
   // Project API
+  // --------------------------------------
 
   getProjects() {
-    return AXIOS.get('/projects').then((response) => response.data);
+    return AXIOS.get('/projects', { auth }).then((response) => response.data);
   },
-  getProject(id) {
-    return AXIOS.get(`/projects/${id}`).then((response) => response.data);
+  getProjectById(id) {
+    return AXIOS.get(`/projects/${id}`, { auth }).then((response) => response.data);
   },
   createProject(project) {
-    console.log('creating new project');
-    return AXIOS.post('/projects', project).then().catch((e) => {
+    return AXIOS.post('/projects', project, { auth }).then().catch((e) => {
       if (e.response.data.errors) {
         // validation errors
         return Promise.reject(
@@ -73,8 +50,7 @@ export default {
     });
   },
   updateProject(project) {
-    console.log('updating existing project');
-    return AXIOS.put('/projects', project).then().catch((e) => {
+    return AXIOS.put('/projects', project, { auth }).then().catch((e) => {
       if (e.response.data.errors) {
         // validation errors
         return Promise.reject(
@@ -86,72 +62,39 @@ export default {
     });
   },
   deleteProject(projectId) {
-    console.log(`Deleting project with id ${projectId}`);
-    return AXIOS.delete(`/projects/${projectId}`);
+    return AXIOS.delete(`/projects/${projectId}`, { auth });
   },
-  getAllUsersAssignedToProject(projectId) {
-    console.log(`Fetch users that are assigned to project with id ${projectId}`);
-    return AXIOS.get(`/projects/${projectId}/users`).then((response) => response.data);
+  assignUserToProject(projectId, userId) {
+    return AXIOS.put(`projects/${projectId}/users/${userId}`, { auth });
+  },
+  unassignUserFromProject(projectId, userId) {
+    return AXIOS.delete(`projects/${projectId}/users/${userId}`, { auth });
+  },
+  getRegisteredUsersOfProject(projectId) {
+    return AXIOS
+      .get(`/projects/${projectId}/users`, { auth })
+      .then((response) => response.data);
+  },
+  getCancelledUsersOfProject(projectId) {
+    return AXIOS
+      .get(`/projects/${projectId}/cancelledusers`, { auth })
+      .then((response) => response.data);
   },
 
   // User API
+  // --------------------------------------
 
-  getUser(userId) {
-    console.log(`Fetch data of user with id ${userId}`);
-    return AXIOS.get(`/users/${userId}`).then((response) => response.data);
+  getUserById(userId) {
+    return AXIOS.get(`/users/${userId}`, { auth }).then((response) => response.data);
   },
   getUsers() {
-    console.log('Get all users from backend');
     return AXIOS
-      .get('/users',
-        {
-          auth,
-        })
+      .get('/users', { auth })
       .then((response) => response.data);
-  },
-  getUsersProjects(userId) {
-    console.log(`Fetch projects of user with id ${userId}`);
-    return AXIOS
-      .get(`/users/${userId}/projects`,
-        {
-          auth,
-        })
-      .then((response) => response.data);
-  },
-  getUsersCancelledProjects(userId) {
-    console.log(`Fetch cancelled projects of user with id ${userId}`);
-    return AXIOS
-      .get(`/users/${userId}/cancelledprojects`,
-        {
-          auth,
-        })
-      .then((response) => response.data);
-  },
-  addUser(user) {
-    console.log('adding user');
-    return AXIOS
-      .post('/users', user,
-        {
-          auth,
-        })
-      .then().catch((e) => {
-        if (e.response.data.errors) {
-        // validation errors
-          return Promise.reject(
-            e.response.data.errors.map((error) => `${error.field}: ${error.defaultMessage}`),
-          );
-        }
-        // other errors
-        return Promise.reject([e.toString()]);
-      });
   },
   updateUser(user) {
-    console.log('updating existing user');
     return AXIOS
-      .put('/users', user,
-        {
-          auth,
-        })
+      .put('/users', user, { auth })
       .then().catch((e) => {
         if (e.response.data.errors) {
         // validation errors
@@ -164,19 +107,17 @@ export default {
       });
   },
   deleteUser(userId) {
-    console.log('Deleting existing user');
-    return AXIOS.delete(`/users/${userId}`,
-      {
-        auth,
-      });
+    return AXIOS.delete(`/users/${userId}`, { auth });
   },
-  deleteUserFromProject(projectId, userId) {
-    console.log(`Deleting user with id ${userId} from project with id ${projectId}`);
-    return AXIOS.delete(`projects/${projectId}/users/${userId}`);
+  getRegisteredProjectsOfUser(userId) {
+    return AXIOS
+      .get(`/users/${userId}/projects`, { auth })
+      .then((response) => response.data);
   },
-  addUserToProject(projectId, userId) {
-    console.log(`Adding user with id ${userId} to project with id ${projectId}`);
-    return AXIOS.put(`projects/${projectId}/users/${userId}`);
+  getCancelledProjectsOfUser(userId) {
+    return AXIOS
+      .get(`/users/${userId}/cancelledprojects`, { auth })
+      .then((response) => response.data);
   },
 
 };

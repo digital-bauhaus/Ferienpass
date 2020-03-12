@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import api from '@/modules/ferienpass-api';
+import publicApi from '@/modules/ferienpass-public-api';
 import ErrorAlert from '@/components/ErrorAlert.vue';
 import UserEditor from '@/components/UserEditor.vue';
 import CheckBox from '@/components/wrapper/CheckBox.vue';
@@ -60,7 +60,6 @@ import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
 import RegistrationLayout from '@/views/layouts/RegistrationLayout.vue';
 import ProjektAuswahl from '@/components/userEditor/ProjektAuswahl.vue';
 import ProjektAuswahlItem from '@/components/userEditor/ProjektAuswahlItem.vue';
-
 
 export default {
   name: 'Registration',
@@ -186,22 +185,24 @@ export default {
   methods: {
     loadProjects() {
       // TODO we need to split the project api into /projects and /public/projects
-      return api.getProjects().then((projects) => {
+      return publicApi.getProjects().then((projects) => {
         this.allProjects = projects;
         this.initGewuenschteProjekteHelper();
         this.loaded = true;
       });
+      // TODO errorhandling
     },
     createUser() {
       this.serverErrorMessages = [];
       const gewuenschteProjekteIds = Object.entries(this.gewuenschteProjekte)
         .filter((entry) => entry[1]).map((entry) => entry[0]);
-      api.registerUser({
+      publicApi.registerUser({
         ...this.user,
         gewuenschteProjekte: gewuenschteProjekteIds,
       }).then(() => {
         this.showSuccessInfo();
       }).catch((errorMessages) => { this.serverErrorMessages = errorMessages; });
+      // TODO errorhandling
     },
     initGewuenschteProjekteHelper() {
       this.allProjects.forEach((project) => {

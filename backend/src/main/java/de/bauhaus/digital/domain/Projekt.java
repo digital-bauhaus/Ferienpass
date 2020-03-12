@@ -1,12 +1,18 @@
 package de.bauhaus.digital.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import de.bauhaus.digital.validation.ProjektValidation;
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -43,10 +49,14 @@ public class Projekt {
     @PositiveOrZero(message = "Reservierte Plätze dürfen nicht < 0 sein.")
     private int plaetzeReserviert;
 
-    @ManyToMany(cascade= CascadeType.ALL)
+    // do NOT automatically delete Teilnehmer when the Projekt gets deleted!
+    @JsonIgnore
+    @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
     private List<Teilnehmer> angemeldeteTeilnehmer = new ArrayList<>();
 
-    @ManyToMany(cascade= CascadeType.ALL)
+    // do NOT automatically delete Teilnehmer when the Projekt gets deleted!
+    @JsonIgnore
+    @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
     private List<Teilnehmer> stornierteTeilnehmer = new ArrayList<>();
 
     protected Projekt() {}
@@ -71,7 +81,7 @@ public class Projekt {
 
     public static Builder newBuilder(Projekt copy) {
         Builder builder = new Builder();
-        builder.id = copy.id;
+        builder.id = copy.getId();
         builder.aktiv = copy.isAktiv();
         builder.name = copy.getName();
         builder.datumBeginn = copy.getDatumBeginn();
@@ -88,53 +98,65 @@ public class Projekt {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Transient
     public int getPlaetzeFrei() {
-        return Math.max(0, this.plaetzeGesamt - this.plaetzeReserviert);
+        return Math.max(0, this.plaetzeGesamt - this.getPlaetzeBelegt());
+    }
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Transient
+    public int getPlaetzeBelegt() {
+        return this.plaetzeReserviert + this.angemeldeteTeilnehmer.size();
     }
 
     /**
-     * Register the user for this project. If the user was cancelled before,
-     * his cancellation is deleted.
-     * @param teilnehmer
+     * Meldet Teilnehmer an. Wenn der Teilnehmer storniert war, wird seine Stornierung aufgehoben
+     *
+     * @param anzumeldenderTeilnehmer Teilnehmer der angemeldet werden soll
      */
-    public void addAnmeldung(Teilnehmer teilnehmer) {
+    public void meldeTeilnehmerAn(Teilnehmer anzumeldenderTeilnehmer) {
         // Note: no check, we just remove the cancellation
-        this.stornierteTeilnehmer.remove(teilnehmer);
+        this.stornierteTeilnehmer.remove(anzumeldenderTeilnehmer);
 
-        this.angemeldeteTeilnehmer.add(teilnehmer);
-        this.plaetzeReserviert = this.plaetzeReserviert + 1;
+        this.angemeldeteTeilnehmer.add(anzumeldenderTeilnehmer);
     }
 
     /**
-     * @param zuStornierenderTeilnehmer
-     * @return true, if the Teilnehmer was actually registered for this
-     * Veranstaltung and could be cancelled
+     * Storniere Teilnehmer von der Veranstaltung.
+     *
+     * @param zuStornierenderTeilnehmer Teilnehmer der storniert werden soll
+     * @return true, wenn der Teilnehmer tatsaechlich fuer diese Veranstaltung angemeldet wear
      */
-    public boolean addStornierung(Teilnehmer zuStornierenderTeilnehmer) {
-        boolean teilnehmerWasRegistered =
-                this.angemeldeteTeilnehmer.remove(zuStornierenderTeilnehmer);
-        if (teilnehmerWasRegistered)
+    public boolean storniereTeilnehmer(Teilnehmer zuStornierenderTeilnehmer) {
+        boolean warAngemeldet = this.angemeldeteTeilnehmer.remove(zuStornierenderTeilnehmer);
+        if (warAngemeldet)
         {
             this.stornierteTeilnehmer.add(zuStornierenderTeilnehmer);
-            this.plaetzeReserviert = this.plaetzeReserviert - 1;
         }
-        return teilnehmerWasRegistered;
+        return warAngemeldet;
     }
 
-    public boolean deleteTeilnehmerVonAllenProjekten(Teilnehmer zuLoeschenderTeilnehmer) {
-        boolean warAngemeldet = this.angemeldeteTeilnehmer.remove(zuLoeschenderTeilnehmer);
-        boolean warStorniert = this.stornierteTeilnehmer.remove(zuLoeschenderTeilnehmer);
-        return warAngemeldetUndOderStorniert(warAngemeldet, warStorniert);
-    }
-
-    private boolean warAngemeldetUndOderStorniert(boolean warAngemeldet, boolean warStorniert) {
+    /**
+     * Entfernt den Teilnehmer komplett von diesem Projekt (also Anmeldung und Stornierung, sofern vorhanden)
+     * @param zuEntfernenderTeilnehmer
+     * @return true, wenn der Teilnehmer für dieses Projekt angemeldet oder storniert war
+     */
+    public boolean entferneTeilnehmerVonProjekt(Teilnehmer zuEntfernenderTeilnehmer) {
+        boolean warAngemeldet = this.angemeldeteTeilnehmer.remove(zuEntfernenderTeilnehmer);
+        boolean warStorniert = this.stornierteTeilnehmer.remove(zuEntfernenderTeilnehmer);
         return warAngemeldet || warStorniert;
     }
 
-    public boolean isTeilnehmerNotAlreadyAsignedToProjekt(Teilnehmer teilnehmer) {
-        return !this.angemeldeteTeilnehmer.contains(teilnehmer);
+    /**
+     * @param teilnehmer
+     * @return true, wenn der Teilnehmer schon für dieses Projekt angemeldet ist
+     */
+    public boolean istTeilnehmerAngemeldet(Teilnehmer teilnehmer) {
+        return this.angemeldeteTeilnehmer.contains(teilnehmer);
     }
 
-    public boolean hasProjektFreeSlots() {
+    /**
+     * @return true, wenn in diesem Projekte noch freie Plätze verügbar sind
+     */
+    public boolean hatProjektFreiePlaetze() {
         return getPlaetzeFrei() > 0;
     }
 

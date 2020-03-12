@@ -1,12 +1,18 @@
 package de.bauhaus.digital.domain;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonView;
+import de.bauhaus.digital.controller.Views;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class Behinderung {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.Internal.class)
     private long id;
 
     // Merkzeichen
@@ -44,6 +50,7 @@ public class Behinderung {
     protected Behinderung() {}
 
     private Behinderung(Builder builder) {
+        id = builder.id;
         merkzeichen_AussergewoehnlicheGehbehinderung_aG = builder.merkzeichen_AussergewoehnlicheGehbehinderung_aG;
         merkzeichen_Hilflosigkeit_H = builder.merkzeichen_Hilflosigkeit_H;
         merkzeichen_Blind_Bl = builder.merkzeichen_Blind_Bl;
@@ -71,6 +78,39 @@ public class Behinderung {
 
     public static Builder newBuilder() {
         return new Builder();
+    }
+
+    public static Builder newBuilder(Behinderung copy) {
+        Builder builder = new Builder();
+        builder.id = copy.getId();
+        builder.merkzeichen_AussergewoehnlicheGehbehinderung_aG = copy
+                .isMerkzeichen_AussergewoehnlicheGehbehinderung_aG();
+        builder.merkzeichen_Hilflosigkeit_H = copy.isMerkzeichen_Hilflosigkeit_H();
+        builder.merkzeichen_Blind_Bl = copy.isMerkzeichen_Blind_Bl();
+        builder.merkzeichen_Gehoerlos_Gl = copy.isMerkzeichen_Gehoerlos_Gl();
+        builder.merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B = copy
+                .isMerkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B();
+        builder.merkzeichen_BeeintraechtigungImStrassenverkehr_G = copy
+                .isMerkzeichen_BeeintraechtigungImStrassenverkehr_G();
+        builder.merkzeichen_Taubblind_TBL = copy.isMerkzeichen_Taubblind_TBL();
+        builder.rollstuhlNutzungNotwendig = copy.isRollstuhlNutzungNotwendig();
+        builder.weitereHilfsmittel = copy.getWeitereHilfsmittel();
+        builder.wertmarkeVorhanden = copy.isWertmarkeVorhanden();
+        builder.begleitungNotwendig = copy.isBegleitungNotwendig();
+        builder.begleitpersonPflege = copy.isBegleitpersonPflege();
+        builder.begleitpersonMedizinischeVersorgung = copy.isBegleitpersonMedizinischeVersorgung();
+        builder.begleitpersonMobilitaet = copy.isBegleitpersonMobilitaet();
+        builder.begleitpersonOrientierung = copy.isBegleitpersonOrientierung();
+        builder.begleitpersonSozialeBegleitung = copy.isBegleitpersonSozialeBegleitung();
+        builder.begleitpersonSinneswahrnehmung = copy.isBegleitpersonSinneswahrnehmung();
+        builder.eingeschraenkteSinne = copy.getEingeschraenkteSinne();
+        builder.hinweiseZumUmgangMitDemKind = copy.getHinweiseZumUmgangMitDemKind();
+        builder.unterstuetzungSucheBegleitperson = copy.isUnterstuetzungSucheBegleitperson();
+        builder.gewohnterBegleitpersonenDienstleister = copy.getGewohnterBegleitpersonenDienstleister();
+        builder.beantragungKostenuebernahmeBegleitperson = copy.isBeantragungKostenuebernahmeBegleitperson();
+        builder.zustimmungWeitergabeDatenAmtFamilieUndSoziales = copy
+                .isZustimmungWeitergabeDatenAmtFamilieUndSoziales();
+        return builder;
     }
 
     public long getId() {
@@ -203,6 +243,7 @@ public class Behinderung {
 
     public static final class Builder {
 
+        private long id;
         private boolean merkzeichen_AussergewoehnlicheGehbehinderung_aG;
         private boolean merkzeichen_Hilflosigkeit_H;
         private boolean merkzeichen_Blind_Bl;

@@ -1,89 +1,213 @@
 package de.bauhaus.digital;
 
-import de.bauhaus.digital.domain.*;
-
+import de.bauhaus.digital.domain.Arzt;
+import de.bauhaus.digital.domain.Behinderung;
+import de.bauhaus.digital.domain.Kontakt;
+import de.bauhaus.digital.domain.Projekt;
+import de.bauhaus.digital.domain.Teilnehmer;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DomainFactory {
 
-    public static Projekt createSampleProject() {
-        return createSampleProject("Schwimmem im See", LocalDate.of(2018, 7,
-                1), LocalDate.of(2018, 7, 3), 10, 5, 15, 20);
+    public static Projekt.Builder createSampleProjektBuilder() {
+        boolean aktiv = true;
+        String name = "Testprojekt";
+        LocalDate datumBeginn = LocalDate.of(2020, 3, 1);
+        LocalDate datumEnde = LocalDate.of(2020, 3, 15);
+        int mindestAlter = 5;
+        int hoechstAlter = 15;
+        int plaetzeGesamt = 20;
+        int plaetzeReserviert = 3;
+        List<Teilnehmer> angemeldeteTeilnehmer = new ArrayList<>();
+        List<Teilnehmer> stornierteTeilnehmer = new ArrayList<>();
+
+        return Projekt.newBuilder()
+                .aktiv(aktiv)
+                .name(name)
+                .datumBeginn(datumBeginn)
+                .datumEnde(datumEnde)
+                .mindestAlter(mindestAlter)
+                .hoechstAlter(hoechstAlter)
+                .plaetzeGesamt(plaetzeGesamt)
+                .plaetzeReserviert(plaetzeReserviert)
+                .angemeldeteTeilnehmer(angemeldeteTeilnehmer)
+                .stornierteTeilnehmer(stornierteTeilnehmer);
     }
 
-    public static Projekt createSampleProjectOfSlots(int plaetzeGesamt, int plaetzeReserviert) {
-        return createSampleProject(
-                "Schwimmem im See",
-                LocalDate.of(2018, 7,1),
-                LocalDate.of(2018, 7, 3),
-                plaetzeGesamt,
-                plaetzeReserviert);
+    public static Projekt createSampleProjekt() {
+        return createSampleProjektBuilder().build();
     }
 
-    public static Projekt createSampleProject(String projektName,
-                                              LocalDate datumBeginn,
-                                              LocalDate datumEnde,
-                                              int plaetzeGesamt,
-                                              int plaetzeReserviert) {
-        return createSampleProject(projektName, datumBeginn, datumEnde, plaetzeGesamt, plaetzeReserviert, 15, 20);
-    }
+    public static Teilnehmer.Builder createSampleTeilnehmerBuilder() {
 
-    public static Projekt createSampleProject(String projektName, LocalDate datumBeginn, LocalDate datumEnde, int plaetzeGesamt, int plaetzeReserviert, int mindestAlter, int hoechstAlter) {
-        return Projekt.newBuilder().name(projektName).datumBeginn(datumBeginn).datumEnde(datumEnde).plaetzeGesamt(plaetzeGesamt).plaetzeReserviert(plaetzeReserviert).mindestAlter(mindestAlter).hoechstAlter(hoechstAlter).build();
-    }
+        // Verwaltung
+        boolean aktiv = true;
+        LocalDate registrierungsdatum = LocalDate.now();
+        boolean bezahlt = false;
+        boolean schulkind = true;
+        boolean datenschutzErklaerungAkzeptiert = true;
+        boolean teilnahmeBedingungAkzeptiert = true;
 
-    public static Teilnehmer createSampleUser() {
-        return createSampleUserOfName("Gary", "Eich");
-    }
+        // Grunddaten
+        String vorname = "Marianne";
+        String nachname = "Musterfrau";
+        LocalDate geburtsdatum = LocalDate.of(2020, 3, 1);
+        String strasse = "Musterstraße";
+        String hausnummer = "4a";
+        String wohnort = "Musterstadt";
+        String postleitzahl = "012345";
+        String telefon = "0123456789";
+        String email = "test@test.de";
+        boolean darfErmaessigtenPreisZahlen = false;
 
-    public static Teilnehmer createSampleUserOfName(String lastName,
-                                                    String firstName) {
-
-        Arzt arzt = new Arzt("Eich", "Route 1 Alabastia, 39829",
-                "555-6891");
-        Kontakt kontact = new Kontakt("Igor Eich", "Route 4 Neuborkia  96825", "555-2532");
-
-        String essenWeitereLimitierungen = "Laktoseintoleranz";
-        String krankheiten = "Grippe: Muss oft Husten und braucht Hustenbonbons";
-        String allergien = "Heuschnupfen: braucht Nasenspray, siehe Medikamente";
-        Behinderung behinderung = Behinderung.newBuilder().
-                rollstuhlNutzungNotwendig(true).
-                merkzeichen_Taubblind_TBL(true).
-                build();
+        // Pflichtangaben
+        Boolean darfBehandeltWerden = true;
+        Boolean darfAlleinNachHause = true;
+        Boolean darfReiten = true;
+        Boolean darfSchwimmen = true;
         String schwimmAbzeichen = "Seepferdchen";
-        String medikamente = "Nasentropfen_ maximal 2x am Tag ein Schub";
-        String email = "myEmail@weimar.de";
+        Kontakt notfallKontakt = createSampleKontakt();
+
+        // Allergien, Krankheiten
+        String allergien = "Katzenhaare";
+        String krankheiten = "Grippe";
+        String medikamente = "Tabletten";
+        boolean hitzeempfindlich = true;
+        boolean essenVegetarier = true;
+        boolean essenLaktoseUnvertraeglichkeit = true;
+        boolean essenEinerUnvertraeglichkeit = true;
+        String essenWeitereLimitierungen = "vegan";
+        String krankenkasse = "Krankenkasse";
+        Arzt arzt = createSampleArzt();
+
+        // Behinderung
+        boolean liegtBehinderungVor = true;
+        Behinderung behinderung = createSampleBehinderung();
+
+        // Speziell fuer Registrierung
+        List<Long> gewuenschteProjekte = new ArrayList<>();
 
         return Teilnehmer.newBuilder()
-                .schulkind(true)
-                .datenschutzErklaerungAkzeptiert(true)
-                .teilnahmeBedingungAkzeptiert(true)
-                .vorname(firstName)
-                .nachname(lastName)
-                .geburtsdatum(LocalDate.of(2005,10,20))
-                .strasse("Bahnhofstraße")
-                .hausnummer("4")
-                .wohnort("Weimar")
-                .postleitzahl("99423")
-                .telefon("03544444")
-                .krankenkasse("AOK")
-                .darfBehandeltWerden(true)
-                .notfallKontakt(kontact)
-                .darfAlleinNachHause(true)
-                .darfReiten(false)
-                .darfSchwimmen(false)
-                .schwimmAbzeichen(schwimmAbzeichen)
-                .bezahlt(false)
-                .darfBehandeltWerden(false)
-                .arzt(arzt)
-                .allergien(allergien)
-                .essenWeitereLimitierungen(essenWeitereLimitierungen)
-                .krankheiten(krankheiten)
-                .liegtBehinderungVor(true)
-                .behinderung(behinderung)
-                .hitzeempfindlich(true)
-                .medikamente(medikamente)
+                .aktiv(aktiv)
+                .registrierungsdatum(registrierungsdatum)
+                .bezahlt(bezahlt)
+                .schulkind(schulkind)
+                .datenschutzErklaerungAkzeptiert(datenschutzErklaerungAkzeptiert)
+                .teilnahmeBedingungAkzeptiert(teilnahmeBedingungAkzeptiert)
+                .vorname(vorname)
+                .nachname(nachname)
+                .geburtsdatum(geburtsdatum)
+                .strasse(strasse)
+                .hausnummer(hausnummer)
+                .wohnort(wohnort)
+                .postleitzahl(postleitzahl)
+                .telefon(telefon)
                 .email(email)
+                .darfErmaessigtenPreisZahlen(darfErmaessigtenPreisZahlen)
+                .darfBehandeltWerden(darfBehandeltWerden)
+                .darfAlleinNachHause(darfAlleinNachHause)
+                .darfReiten(darfReiten)
+                .darfSchwimmen(darfSchwimmen)
+                .schwimmAbzeichen(schwimmAbzeichen)
+                .notfallKontakt(notfallKontakt)
+                .allergien(allergien)
+                .krankheiten(krankheiten)
+                .medikamente(medikamente)
+                .hitzeempfindlich(hitzeempfindlich)
+                .essenVegetarier(essenVegetarier)
+                .essenLaktoseUnvertraeglichkeit(essenLaktoseUnvertraeglichkeit)
+                .essenEinerUnvertraeglichkeit(essenEinerUnvertraeglichkeit)
+                .essenWeitereLimitierungen(essenWeitereLimitierungen)
+                .krankenkasse(krankenkasse)
+                .arzt(arzt)
+                .liegtBehinderungVor(liegtBehinderungVor)
+                .behinderung(behinderung)
+                .gewuenschteProjekte(gewuenschteProjekte);
+    }
+
+    public static Teilnehmer createSampleTeilnehmer() {
+        return createSampleTeilnehmerBuilder().build();
+    }
+
+    public static Teilnehmer createSampleTeilnehmerOfName(String vorname, String nachname) {
+        return createSampleTeilnehmerBuilder().vorname(vorname).nachname(nachname).build();
+    }
+
+    public static Arzt createSampleArzt() {
+        return Arzt.newBuilder()
+                .name("Eich")
+                .anschrift("Route 1 Alabastia, 39829")
+                .telefon("555-6891")
+                .build();
+    }
+
+    public static Kontakt createSampleKontakt() {
+        return Kontakt.newBuilder()
+                .name("Igor Eich")
+                .anschrift("Route 4 Neuborkia  96825")
+                .telefon("555-2532")
+                .build();
+    }
+
+    public static Behinderung createSampleBehinderung() {
+        // Merkzeichen
+        boolean merkzeichen_AussergewoehnlicheGehbehinderung_aG = true;
+        boolean merkzeichen_Hilflosigkeit_H = true;
+        boolean merkzeichen_Blind_Bl = true;
+        boolean merkzeichen_Gehoerlos_Gl = true;
+        boolean merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B = true;
+        boolean merkzeichen_BeeintraechtigungImStrassenverkehr_G = true;
+        boolean merkzeichen_Taubblind_TBL = true;
+
+        // Hilfsmittel
+        boolean rollstuhlNutzungNotwendig = true;
+        String weitereHilfsmittel = "Krücken";
+
+        // Wertmarke
+        boolean wertmarkeVorhanden = true;
+
+        // Begleitperson
+        boolean begleitungNotwendig = true;
+        boolean begleitpersonPflege = true;
+        boolean begleitpersonMedizinischeVersorgung = true;
+        boolean begleitpersonMobilitaet = true;
+        boolean begleitpersonOrientierung = true;
+        boolean begleitpersonSozialeBegleitung = true;
+        boolean begleitpersonSinneswahrnehmung = true;
+
+        String eingeschraenkteSinne = "Geruchssinn";
+        String hinweiseZumUmgangMitDemKind = "Nicht unbeaufsichtigt lassen.";
+        boolean unterstuetzungSucheBegleitperson = true;
+        String gewohnterBegleitpersonenDienstleister = "Dienstleister";
+        boolean beantragungKostenuebernahmeBegleitperson = true;
+        boolean zustimmungWeitergabeDatenAmtFamilieUndSoziales = true;
+
+        return Behinderung.newBuilder()
+                .merkzeichen_AussergewoehnlicheGehbehinderung_aG(merkzeichen_AussergewoehnlicheGehbehinderung_aG)
+                .merkzeichen_Hilflosigkeit_H(merkzeichen_Hilflosigkeit_H)
+                .merkzeichen_Blind_Bl(merkzeichen_Blind_Bl)
+                .merkzeichen_Gehoerlos_Gl(merkzeichen_Gehoerlos_Gl)
+                .merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B(merkzeichen_BerechtigtZurMitnahmeEinerBegleitperson_B)
+                .merkzeichen_BeeintraechtigungImStrassenverkehr_G(merkzeichen_BeeintraechtigungImStrassenverkehr_G)
+                .merkzeichen_Taubblind_TBL(merkzeichen_Taubblind_TBL)
+                .rollstuhlNutzungNotwendig(rollstuhlNutzungNotwendig)
+                .weitereHilfsmittel(weitereHilfsmittel)
+                .wertmarkeVorhanden(wertmarkeVorhanden)
+                .begleitungNotwendig(begleitungNotwendig)
+                .begleitpersonPflege(begleitpersonPflege)
+                .begleitpersonMedizinischeVersorgung(begleitpersonMedizinischeVersorgung)
+                .begleitpersonMobilitaet(begleitpersonMobilitaet)
+                .begleitpersonOrientierung(begleitpersonOrientierung)
+                .begleitpersonSozialeBegleitung(begleitpersonSozialeBegleitung)
+                .begleitpersonSinneswahrnehmung(begleitpersonSinneswahrnehmung)
+                .eingeschraenkteSinne(eingeschraenkteSinne)
+                .hinweiseZumUmgangMitDemKind(hinweiseZumUmgangMitDemKind)
+                .unterstuetzungSucheBegleitperson(unterstuetzungSucheBegleitperson)
+                .gewohnterBegleitpersonenDienstleister(gewohnterBegleitpersonenDienstleister)
+                .beantragungKostenuebernahmeBegleitperson(beantragungKostenuebernahmeBegleitperson)
+                .zustimmungWeitergabeDatenAmtFamilieUndSoziales(zustimmungWeitergabeDatenAmtFamilieUndSoziales)
                 .build();
     }
 

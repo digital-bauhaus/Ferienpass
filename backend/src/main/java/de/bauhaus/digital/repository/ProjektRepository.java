@@ -2,12 +2,9 @@ package de.bauhaus.digital.repository;
 
 
 import de.bauhaus.digital.domain.Projekt;
-import de.bauhaus.digital.domain.Teilnehmer;
+import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
-
-import java.util.List;
 
 public interface ProjektRepository extends CrudRepository<Projekt, Long> {
 

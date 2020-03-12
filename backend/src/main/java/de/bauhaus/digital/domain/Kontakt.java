@@ -1,5 +1,7 @@
 package de.bauhaus.digital.domain;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import de.bauhaus.digital.controller.Views;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +13,7 @@ public class Kontakt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.Internal.class)
     private long id;
 
     private String name;
@@ -20,13 +23,27 @@ public class Kontakt {
     @NotBlank(message = "Notfallkontakt-Telefonnummer muss angegeben werden.")
     private String telefon;
 
-    public Kontakt(String name, String anschrift, String telefon) {
-        this.name = name;
-        this.anschrift = anschrift;
-        this.telefon = telefon;
+    protected Kontakt() {}
+
+    private Kontakt(Builder builder) {
+        id = builder.id;
+        name = builder.name;
+        anschrift = builder.anschrift;
+        telefon = builder.telefon;
     }
 
-    protected Kontakt() {}
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static Builder newBuilder(Kontakt copy) {
+        Builder builder = new Builder();
+        builder.id = copy.getId();
+        builder.name = copy.getName();
+        builder.anschrift = copy.getAnschrift();
+        builder.telefon = copy.getTelefon();
+        return builder;
+    }
 
     public long getId() {
         return id;
@@ -54,4 +71,33 @@ public class Kontakt {
                 '}';
     }
 
+    public static final class Builder {
+
+        private long id;
+        private String name;
+        private String anschrift;
+        private String telefon;
+
+        private Builder() {
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder anschrift(String anschrift) {
+            this.anschrift = anschrift;
+            return this;
+        }
+
+        public Builder telefon(String telefon) {
+            this.telefon = telefon;
+            return this;
+        }
+
+        public Kontakt build() {
+            return new Kontakt(this);
+        }
+    }
 }

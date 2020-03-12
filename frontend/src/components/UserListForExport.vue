@@ -1,6 +1,9 @@
 <template>
   <div class="user-list">
-    <b-button @click="onButtonClick" class="mb-3">
+    <b-button
+      class="mb-3"
+      @click="onButtonClick"
+    >
       PDF Erzeugen
     </b-button>
     <b-table

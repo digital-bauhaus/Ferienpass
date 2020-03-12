@@ -8,7 +8,6 @@ import ProjectEdit from '@/views/admin/ProjectEdit.vue';
 import UserEdit from '@/views/admin/UserEdit.vue';
 import Users from '@/views/admin/Users.vue';
 import store from '@/store';
-import RegistrationOld from '@/views/RegistrationOld.vue';
 
 Vue.use(VueRouter);
 
@@ -16,10 +15,6 @@ const routes = [
   {
     path: '/',
     component: Registration,
-  },
-  {
-    path: '/old',
-    component: RegistrationOld,
   },
   {
     path: '/login',

@@ -19,7 +19,7 @@
     <hr>
 
     <h2>Angemeldete Projekte</h2>
-    <ProjectList :projects="projectsOfUser">
+    <ProjectList :projects="registeredProjectsOfUser">
       <template v-slot:actions="{ row }">
         <b-button
           size="sm"
@@ -94,7 +94,7 @@ export default {
       serverErrorMessages: [],
       successAutomaticDismissCountDown: 0,
       allProjects: [],
-      projectsOfUser: [],
+      registeredProjectsOfUser: [],
       cancelledProjectsOfUser: [],
       loaded: false,
     };
@@ -120,9 +120,10 @@ export default {
     },
     availableProjects() {
       return this.allProjects.filter((project) => {
-        const isProjectOfUser = this.projectsOfUser.map((userProject) => userProject.id).includes(
-          project.id,
-        );
+        const isProjectOfUser = this.registeredProjectsOfUser
+          .map((userProject) => userProject.id).includes(
+            project.id,
+          );
         const isCancelledProjectOfuser = this.cancelledProjectsOfUser.map(
           (userProject) => userProject.id,
         ).includes(project.id);
@@ -134,34 +135,34 @@ export default {
     const dataPromises = [];
     dataPromises.push(this.loadUserData());
     dataPromises.push(this.loadProjects());
-    dataPromises.push(this.loadProjectsOfUser());
+    dataPromises.push(this.loadRegisteredProjectsOfUser());
     dataPromises.push(this.loadCancelledProjectsOfUser());
     Promise.all(dataPromises).then(() => { this.loaded = true; }).catch(
-      (e) => this.errorMessages.push(e.toString()),
+      (e) => this.serverErrorMessages.push(e.toString()),
     );
   },
   methods: {
     loadUserData() {
       this.serverErrorMessages = [];
-      return api.getUser(this.userId).then((user) => {
+      return api.getUserById(this.userId).then((user) => {
         this.user = user;
       }).catch((e) => this.serverErrorMessages.push(e.toString()));
     },
     loadProjects() {
       return api.getProjects().then((projects) => { this.allProjects = projects; });
     },
-    loadProjectsOfUser() {
-      return api.getUsersProjects(this.userId).then(
-        (projects) => { this.projectsOfUser = projects; },
+    loadRegisteredProjectsOfUser() {
+      return api.getRegisteredProjectsOfUser(this.userId).then(
+        (projects) => { this.registeredProjectsOfUser = projects; },
       );
     },
     loadCancelledProjectsOfUser() {
-      return api.getUsersCancelledProjects(this.userId).then(
+      return api.getCancelledProjectsOfUser(this.userId).then(
         (projects) => { this.cancelledProjectsOfUser = projects; },
       );
     },
     reloadProjectsOfUser() {
-      this.loadProjectsOfUser();
+      this.loadRegisteredProjectsOfUser();
       this.loadCancelledProjectsOfUser();
     },
     updateUser() {
@@ -171,12 +172,12 @@ export default {
       }).catch((errorMessages) => { this.serverErrorMessages = errorMessages; });
     },
     unassignFromProject(projectId, userId) {
-      api.deleteUserFromProject(projectId, userId).then(() => {
+      api.unassignUserFromProject(projectId, userId).then(() => {
         this.reloadProjectsOfUser();
       });
     },
     assignToProject(projectId, userId) {
-      api.addUserToProject(projectId, userId).then(() => {
+      api.assignUserToProject(projectId, userId).then(() => {
         this.reloadProjectsOfUser();
       });
     },

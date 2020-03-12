@@ -17,6 +17,7 @@
 import CheckBox from '@/components/wrapper/CheckBox.vue';
 import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
 
+// TODO restliche Felder etc.
 export default {
   name: 'Verwaltungsaufgaben',
   components: {

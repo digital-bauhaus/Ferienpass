@@ -25,7 +25,7 @@
     <div v-if="!isNewProject">
       <h2>Stornierte Nutzer:</h2>
       <UserList
-        :users="project.stornierteTeilnehmer"
+        :users="stornierteTeilnehmer"
         :show-projects="false"
       />
     </div>
@@ -33,7 +33,7 @@
     <div v-if="!isNewProject">
       <h2>Liste für Export:</h2>
       <UserListForExport
-        :users="project.angemeldeteTeilnehmer"
+        :users="angemeldeteTeilnehmer"
       />
     </div>
 
@@ -77,9 +77,9 @@ export default {
         plaetzeReserviert: '',
         mindestAlter: '',
         hoechstAlter: '',
-        angemeldeteTeilnehmer: [],
-        stornierteTeilnehmer: [],
       },
+      angemeldeteTeilnehmer: [],
+      stornierteTeilnehmer: [],
       serverErrorMessages: [],
       successAutomaticDismissCountDown: 0,
     };
@@ -122,13 +122,27 @@ export default {
   created() {
     if (!this.isNewProject) {
       this.loadProjectData();
+      this.loadRegisteredUsers();
+      this.loadCancelledUsers();
     }
   },
   methods: {
     loadProjectData() {
       this.serverErrorMessages = [];
-      api.getProject(this.projectId).then((project) => {
+      api.getProjectById(this.projectId).then((project) => {
         this.project = project;
+      }).catch((e) => this.serverErrorMessages.push(e.toString()));
+    },
+    loadRegisteredUsers() {
+      this.serverErrorMessages = [];
+      api.getRegisteredUsersOfProject(this.projectId).then((users) => {
+        this.angemeldeteTeilnehmer = users;
+      }).catch((e) => this.serverErrorMessages.push(e.toString()));
+    },
+    loadCancelledUsers() {
+      this.serverErrorMessages = [];
+      api.getCancelledUsersOfProject(this.projectId).then((users) => {
+        this.stornierteTeilnehmer = users;
       }).catch((e) => this.serverErrorMessages.push(e.toString()));
     },
     createOrUpdateProject() {

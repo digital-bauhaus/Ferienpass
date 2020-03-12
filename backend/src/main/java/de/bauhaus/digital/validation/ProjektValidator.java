@@ -22,10 +22,6 @@ public class ProjektValidator implements ConstraintValidator<ProjektValidation, 
             context.buildConstraintViolationWithTemplate("Höchstalter darf nicht kleiner als das Mindestalter sein.").addPropertyNode("hoechstAlter").addConstraintViolation();
             valid = false;
         }
-        if (value.getPlaetzeReserviert() < value.getAngemeldeteTeilnehmer().size()) {
-            context.buildConstraintViolationWithTemplate("Es dürfen nicht weniger Plätze reserviert werden als aktuell Teilnehmer angemeldet sind.").addPropertyNode("plaetzeReserviert").addConstraintViolation();
-            valid = false;
-        }
         if (value.getPlaetzeReserviert() > value.getPlaetzeGesamt()) {
             context.buildConstraintViolationWithTemplate("Es dürfen nicht mehr Plätze reserviert werden als überhaupt verfügbar sind.").addPropertyNode("plaetzeReserviert").addConstraintViolation();
             valid = false;
