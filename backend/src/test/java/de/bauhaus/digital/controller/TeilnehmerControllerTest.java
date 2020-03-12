@@ -14,7 +14,6 @@ import de.bauhaus.digital.domain.Projekt;
 import de.bauhaus.digital.domain.Teilnehmer;
 import io.restassured.http.ContentType;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import org.apache.http.HttpStatus;
 import org.assertj.core.api.Assertions;
@@ -363,32 +362,6 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
             .get(BASE_URL + "/users/{id}")
         .then()
             .statusCode(HttpStatus.SC_NOT_FOUND);
-    }
-
-    private List<Projekt> getAlleAngemeldetenProjekteDesTeilnehmers(Long id) {
-        return Arrays.asList(
-                given()
-                    .pathParam("id", id)
-                    .contentType(ContentType.JSON)
-                .when()
-                    .get(BASE_URL + "/users/{id}/projects")
-                .then()
-                    .statusCode(HttpStatus.SC_OK)
-                    .extract()
-                    .body().as(Projekt[].class));
-    }
-
-    private List<Projekt> getAlleStorniertenProjekteDesTeilnehmers(Long id) {
-        return Arrays.asList(
-                given()
-                    .pathParam("id", id)
-                    .contentType(ContentType.JSON)
-                .when()
-                    .get(BASE_URL + "/users/{id}/cancelledprojects")
-                .then()
-                    .statusCode(HttpStatus.SC_OK)
-                    .extract()
-                    .body().as(Projekt[].class));
     }
 
 }

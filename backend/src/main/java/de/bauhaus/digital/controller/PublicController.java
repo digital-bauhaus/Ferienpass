@@ -1,9 +1,11 @@
 package de.bauhaus.digital.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bauhaus.digital.domain.Projekt;
 import de.bauhaus.digital.domain.Teilnehmer;
-import de.bauhaus.digital.exception.ProjektFullyBookedException;
+import de.bauhaus.digital.exception.ProjektNotFoundException;
+import de.bauhaus.digital.exception.RegistrationInvalidException;
 import de.bauhaus.digital.repository.ProjektRepository;
 import de.bauhaus.digital.repository.TeilnehmerRepository;
 import de.bauhaus.digital.transformation.AnmeldungJson;
@@ -12,18 +14,16 @@ import de.bauhaus.digital.transformation.Project;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,37 +49,26 @@ public class PublicController {
      *************************************/
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    ResponseEntity<?> registerUser(@RequestBody @Valid Teilnehmer user) {
+    @ResponseStatus(HttpStatus.OK)
+    @Transactional
+    public void registerUser(@JsonView(Views.Public.class) @RequestBody @Valid Teilnehmer user) {
+        LOG.info("POST called on /public/register/ resource");
 
-        Teilnehmer savedUser;
-
-        Optional<Teilnehmer> maybeTeilnehmer = teilnehmerRepository.findById(user.getId());
-        if (maybeTeilnehmer.isPresent()) {
-            // we already saved the Teilnehmer before, so we update it
-            savedUser = teilnehmerRepository.save(user);
-        } else {
-            savedUser = teilnehmerRepository.save(user);
+        if (user.getGewuenschteProjekte().isEmpty()) {
+            throw new RegistrationInvalidException("Eine Anmeldung ohne gewählte Projekte ist nicht möglich.");
         }
 
-        List<Pair<Long, Boolean>> projectsWithAssignmentState = savedUser.getGewuenschteProjekte().stream().map((projektId) -> {
-            boolean successfull = true;
-            try {
-                projekteController.assignUserToProject(projektId, savedUser.getId());
-            } catch (ProjektFullyBookedException e) {
-                successfull = false;
+        Teilnehmer savedTeilnehmer = teilnehmerRepository.save(user);
+
+        user.getGewuenschteProjekte().forEach((projektId) -> {
+            Optional<Projekt> optionalProjekt = projektRepository.findById(projektId);
+            if (!optionalProjekt.isPresent()) {
+                throw new ProjektNotFoundException("Projekt mit id " + projektId + " wurde nicht gefunden.");
             }
-            return Pair.of(projektId, successfull);
-        }).collect(Collectors.toList());
-        System.out.println(projectsWithAssignmentState.toString());
 
-        if (projectsWithAssignmentState.stream().noneMatch(Pair::getSecond)) {
-            // we have at least one project that could not be assigned
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(projectsWithAssignmentState);
-        }
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser.getId());
+            // Throws FullyBookedException if not possible
+            projekteController.assignUserToProject(projektId, savedTeilnehmer.getId());
+        });
     }
 
     /*******************************************

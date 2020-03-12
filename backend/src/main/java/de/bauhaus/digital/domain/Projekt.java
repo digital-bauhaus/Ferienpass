@@ -2,12 +2,17 @@ package de.bauhaus.digital.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import de.bauhaus.digital.validation.ProjektValidation;
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -76,7 +81,7 @@ public class Projekt {
 
     public static Builder newBuilder(Projekt copy) {
         Builder builder = new Builder();
-        builder.id = copy.id;
+        builder.id = copy.getId();
         builder.aktiv = copy.isAktiv();
         builder.name = copy.getName();
         builder.datumBeginn = copy.getDatumBeginn();

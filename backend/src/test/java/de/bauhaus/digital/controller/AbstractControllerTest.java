@@ -2,7 +2,6 @@ package de.bauhaus.digital.controller;
 
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
 
 import de.bauhaus.digital.FerienpassApplication;
 import de.bauhaus.digital.domain.Projekt;
@@ -125,6 +124,32 @@ public abstract class AbstractControllerTest {
             .delete(BASE_URL + "/projects/{projectId}/users/{userId}")
         .then()
             .statusCode(HttpStatus.SC_OK);
+    }
+
+    protected List<Projekt> getAlleAngemeldetenProjekteDesTeilnehmers(Long id) {
+        return Arrays.asList(
+                given()
+                    .pathParam("id", id)
+                    .contentType(ContentType.JSON)
+                .when()
+                    .get(BASE_URL + "/users/{id}/projects")
+                .then()
+                    .statusCode(HttpStatus.SC_OK)
+                    .extract()
+                    .body().as(Projekt[].class));
+    }
+
+    protected List<Projekt> getAlleStorniertenProjekteDesTeilnehmers(Long id) {
+        return Arrays.asList(
+                given()
+                    .pathParam("id", id)
+                    .contentType(ContentType.JSON)
+                .when()
+                    .get(BASE_URL + "/users/{id}/cancelledprojects")
+                .then()
+                    .statusCode(HttpStatus.SC_OK)
+                    .extract()
+                    .body().as(Projekt[].class));
     }
 
 }

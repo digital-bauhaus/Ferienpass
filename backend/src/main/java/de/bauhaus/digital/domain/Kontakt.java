@@ -1,5 +1,7 @@
 package de.bauhaus.digital.domain;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import de.bauhaus.digital.controller.Views;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +13,7 @@ public class Kontakt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.Internal.class)
     private long id;
 
     private String name;

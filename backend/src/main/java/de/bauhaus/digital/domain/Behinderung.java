@@ -1,12 +1,18 @@
 package de.bauhaus.digital.domain;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonView;
+import de.bauhaus.digital.controller.Views;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class Behinderung {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.Internal.class)
     private long id;
 
     // Merkzeichen
