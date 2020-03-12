@@ -82,7 +82,7 @@
         :hitzeempfindlich="value.hitzeempfindlich"
         :essen-vegetarier="value.essenVegetarier"
         :essen-laktose-unvertraeglichkeit="value.essenLaktoseUnvertraeglichkeit"
-        :essen-eier-unvertraeglichkeit="value.essenEinerUnvertraeglichkeit"
+        :essen-eier-unvertraeglichkeit="value.essenEierUnvertraeglichkeit"
         :essen-weitere-limitierungen="value.essenWeitereLimitierungen"
         @update:allergien="updateValue('allergien', $event)"
         @update:krankheiten="updateValue('krankheiten', $event)"
@@ -91,7 +91,7 @@
         @update:hitzeempfindlich="updateValue('hitzeempfindlich', $event)"
         @update:essenVegetarier="updateValue('essenVegetarier', $event)"
         @update:essenLaktoseUnvertraeglichkeit="updateValue('essenLaktoseUnvertraeglichkeit', $event)"
-        @update:essenEinerUnvertraeglichkeit="updateValue('essenEinerUnvertraeglichkeit', $event)"
+        @update:essenEierUnvertraeglichkeit="updateValue('essenEierUnvertraeglichkeit', $event)"
         @update:essenWeitereLimitierungen="updateValue('essenWeitereLimitierungen', $event)"
       >
         <Group label="Hausarzt">

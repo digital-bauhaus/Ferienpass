@@ -50,7 +50,7 @@ public class TeilnehmerTest {
         boolean hitzeempfindlich = true;
         boolean essenVegetarier = true;
         boolean essenLaktoseUnvertraeglichkeit = true;
-        boolean essenEinerUnvertraeglichkeit = true;
+        boolean essenEierUnvertraeglichkeit = true;
         String essenWeitereLimitierungen = "vegan";
         String krankenkasse = "Krankenkasse";
         Arzt arzt = new Arzt();
@@ -91,7 +91,7 @@ public class TeilnehmerTest {
                 .hitzeempfindlich(hitzeempfindlich)
                 .essenVegetarier(essenVegetarier)
                 .essenLaktoseUnvertraeglichkeit(essenLaktoseUnvertraeglichkeit)
-                .essenEinerUnvertraeglichkeit(essenEinerUnvertraeglichkeit)
+                .essenEierUnvertraeglichkeit(essenEierUnvertraeglichkeit)
                 .essenWeitereLimitierungen(essenWeitereLimitierungen)
                 .krankenkasse(krankenkasse)
                 .arzt(arzt)
@@ -128,7 +128,7 @@ public class TeilnehmerTest {
         assertThat(teilnehmer.isHitzeempfindlich(), is(hitzeempfindlich));
         assertThat(teilnehmer.isEssenVegetarier(), is(essenVegetarier));
         assertThat(teilnehmer.isEssenLaktoseUnvertraeglichkeit(), is(essenLaktoseUnvertraeglichkeit));
-        assertThat(teilnehmer.isEssenEinerUnvertraeglichkeit(), is(essenEinerUnvertraeglichkeit));
+        assertThat(teilnehmer.isEssenEierUnvertraeglichkeit(), is(essenEierUnvertraeglichkeit));
         assertThat(teilnehmer.getEssenWeitereLimitierungen(), is(essenWeitereLimitierungen));
         assertThat(teilnehmer.getKrankenkasse(), is(krankenkasse));
         assertThat(teilnehmer.getArzt(), is(arzt));

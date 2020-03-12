@@ -77,7 +77,7 @@ public class DomainFactory {
         boolean hitzeempfindlich = true;
         boolean essenVegetarier = true;
         boolean essenLaktoseUnvertraeglichkeit = true;
-        boolean essenEinerUnvertraeglichkeit = true;
+        boolean essenEierUnvertraeglichkeit = true;
         String essenWeitereLimitierungen = "vegan";
         String krankenkasse = "Krankenkasse";
         Arzt arzt = createSampleArzt();
@@ -118,7 +118,7 @@ public class DomainFactory {
                 .hitzeempfindlich(hitzeempfindlich)
                 .essenVegetarier(essenVegetarier)
                 .essenLaktoseUnvertraeglichkeit(essenLaktoseUnvertraeglichkeit)
-                .essenEinerUnvertraeglichkeit(essenEinerUnvertraeglichkeit)
+                .essenEierUnvertraeglichkeit(essenEierUnvertraeglichkeit)
                 .essenWeitereLimitierungen(essenWeitereLimitierungen)
                 .krankenkasse(krankenkasse)
                 .arzt(arzt)

@@ -79,6 +79,7 @@ import ErrorAlert from '@/components/ErrorAlert.vue';
 import UserEditor from '@/components/UserEditor.vue';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
 import ProjectList from '@/components/ProjectList.vue';
+import { defaultUser } from '@/modules/models';
 
 export default {
   name: 'UserEdit',
@@ -90,7 +91,7 @@ export default {
   },
   data() {
     return {
-      user: {}, // TODO either define model or move userEditor down
+      user: defaultUser,
       serverErrorMessages: [],
       successAutomaticDismissCountDown: 0,
       allProjects: [],

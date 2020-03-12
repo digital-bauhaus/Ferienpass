@@ -17,7 +17,7 @@
     <div v-if="!isNewProject">
       <h2>Angemeldete Nutzer:</h2>
       <UserList
-        :users="project.angemeldeteTeilnehmer"
+        :users="angemeldeteTeilnehmer"
         :show-projects="false"
       />
     </div>
@@ -57,6 +57,7 @@ import ErrorAlert from '@/components/ErrorAlert.vue';
 import UserList from '@/components/UserList.vue';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
 import UserListForExport from '@/components/UserListForExport.vue';
+import { defaultProject } from '@/modules/models';
 
 export default {
   name: 'ProjectEdit',
@@ -69,15 +70,7 @@ export default {
   },
   data() {
     return {
-      project: {
-        name: '',
-        datumBeginn: '',
-        datumEnde: '',
-        plaetzeGesamt: '',
-        plaetzeReserviert: '',
-        mindestAlter: '',
-        hoechstAlter: '',
-      },
+      project: defaultProject,
       angemeldeteTeilnehmer: [],
       stornierteTeilnehmer: [],
       serverErrorMessages: [],
