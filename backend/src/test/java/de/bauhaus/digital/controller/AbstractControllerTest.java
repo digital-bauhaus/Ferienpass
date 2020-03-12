@@ -44,7 +44,7 @@ public abstract class AbstractControllerTest {
             .when()
                 .post(BASE_URL + "/users")
             .then()
-                .statusCode(is(HttpStatus.SC_CREATED))
+                .statusCode(HttpStatus.SC_CREATED)
                 .extract()
                 .body().as(Long.class);
     }
@@ -56,7 +56,8 @@ public abstract class AbstractControllerTest {
                 .get(BASE_URL + "/users")
             .then()
                 .statusCode(HttpStatus.SC_OK)
-                .extract().as(Teilnehmer[].class));
+                .extract()
+                .body().as(Teilnehmer[].class));
     }
 
     protected Teilnehmer getUser(Long userId) {
@@ -66,8 +67,8 @@ public abstract class AbstractControllerTest {
                 .get(BASE_URL + "/users/{id}")
             .then()
                 .statusCode(HttpStatus.SC_OK)
-                .assertThat()
-                .extract().as(Teilnehmer.class);
+                .extract()
+                .body().as(Teilnehmer.class);
     }
 
     protected Long addProject(Projekt project) {
@@ -77,7 +78,7 @@ public abstract class AbstractControllerTest {
             .when()
                 .post(BASE_URL+"/projects")
             .then()
-                .statusCode(is(HttpStatus.SC_CREATED))
+                .statusCode(HttpStatus.SC_CREATED)
                 .extract()
                 .body().as(Long.class);
     }
@@ -88,7 +89,7 @@ public abstract class AbstractControllerTest {
             .when()
                 .get(BASE_URL + "/projects")
             .then()
-                .statusCode(is(HttpStatus.SC_OK))
+                .statusCode(HttpStatus.SC_OK)
                 .extract()
                 .body().as(Projekt[].class));
     }
@@ -100,32 +101,30 @@ public abstract class AbstractControllerTest {
                 .get(BASE_URL + "/projects/{projectId}")
             .then()
                 .statusCode(HttpStatus.SC_OK)
-                .assertThat()
-                .extract().as(Projekt.class);
+                .extract()
+                .body().as(Projekt.class);
     }
 
-    protected Boolean assignUserToProject(Long projectId, Long userId) {
-        return given()
-                .pathParam("projectId", projectId)
-                .pathParam("userId", userId)
-                .contentType(ContentType.JSON)
-            .when()
-                .put(BASE_URL + "/projects/{projectId}/users/{userId}")
-            .then()
-                .statusCode(is(HttpStatus.SC_OK))
-                .extract().body().as(Boolean.class);
+    protected void assignUserToProject(Long projectId, Long userId) {
+        given()
+            .pathParam("projectId", projectId)
+            .pathParam("userId", userId)
+            .contentType(ContentType.JSON)
+        .when()
+            .put(BASE_URL + "/projects/{projectId}/users/{userId}")
+        .then()
+            .statusCode(HttpStatus.SC_OK);
     }
 
-    protected Boolean unassignUserFromProject(Long projectId, Long userId) {
-        return given()
-                .pathParam("projectId", projectId)
-                .pathParam("userId", userId)
-                .contentType(ContentType.JSON)
-            .when()
-                .delete(BASE_URL + "/projects/{projectId}/users/{userId}")
-            .then()
-                .statusCode(is(HttpStatus.SC_OK))
-                .extract().body().as(Boolean.class);
+    protected void unassignUserFromProject(Long projectId, Long userId) {
+        given()
+            .pathParam("projectId", projectId)
+            .pathParam("userId", userId)
+            .contentType(ContentType.JSON)
+        .when()
+            .delete(BASE_URL + "/projects/{projectId}/users/{userId}")
+        .then()
+            .statusCode(HttpStatus.SC_OK);
     }
 
 }

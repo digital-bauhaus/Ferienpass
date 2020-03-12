@@ -15,7 +15,7 @@ public class BackendControllerTest extends AbstractControllerTest {
 
         get(BASE_URL + "/login")
         .then()
-            .statusCode(is(HttpStatus.SC_OK));
+            .statusCode(HttpStatus.SC_OK);
     }
 
     @Test
@@ -26,7 +26,7 @@ public class BackendControllerTest extends AbstractControllerTest {
         .when()
             .get(BASE_URL + "/login")
         .then()
-            .statusCode(is(HttpStatus.SC_UNAUTHORIZED));
+            .statusCode(HttpStatus.SC_UNAUTHORIZED);
     }
 
 }

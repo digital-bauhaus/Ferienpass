@@ -136,12 +136,17 @@ public class Projekt {
         return warAngemeldet || warStorniert;
     }
 
-    // TODO
-    public boolean isTeilnehmerNotAlreadyAsignedToProjekt(Teilnehmer teilnehmer) {
-        return !this.angemeldeteTeilnehmer.contains(teilnehmer);
+    /**
+     * @param teilnehmer
+     * @return true, wenn der Teilnehmer schon für dieses Projekt angemeldet ist
+     */
+    public boolean istTeilnehmerAngemeldet(Teilnehmer teilnehmer) {
+        return this.angemeldeteTeilnehmer.contains(teilnehmer);
     }
 
-    // TODO
+    /**
+     * @return true, wenn in diesem Projekte noch freie Plätze verügbar sind
+     */
     public boolean hatProjektFreiePlaetze() {
         return getPlaetzeFrei() > 0;
     }

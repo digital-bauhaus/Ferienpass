@@ -337,7 +337,7 @@ public class PublicControllerTest extends AbstractControllerTest {
                 .when()
                 .post(BASE_URL + "/register")
                 .then()
-                .statusCode(is(HttpStatus.SC_CREATED))
+                .statusCode(HttpStatus.SC_CREATED)
                 .extract()
                 .body().as(Long.class);
     }
@@ -349,7 +349,7 @@ public class PublicControllerTest extends AbstractControllerTest {
                 .when()
                 .post(BASE_URL + "/register")
                 .then()
-                .statusCode(is(HttpStatus.SC_CONFLICT))
+                .statusCode(HttpStatus.SC_CONFLICT)
                 .extract()
                 .body().as(Long[].class));
     }

@@ -10,9 +10,11 @@ import static org.hamcrest.Matchers.is;
 import de.bauhaus.digital.domain.Arzt;
 import de.bauhaus.digital.domain.Behinderung;
 import de.bauhaus.digital.domain.Kontakt;
+import de.bauhaus.digital.domain.Projekt;
 import de.bauhaus.digital.domain.Teilnehmer;
 import io.restassured.http.ContentType;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import org.apache.http.HttpStatus;
 import org.assertj.core.api.Assertions;
@@ -32,7 +34,7 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
         .when()
             .post(BASE_URL + "/users")
         .then()
-            .statusCode(is(HttpStatus.SC_UNAUTHORIZED));
+            .statusCode(HttpStatus.SC_UNAUTHORIZED);
     }
 
     @Test
@@ -285,14 +287,51 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
         Long teilnehmerId = addUser(createSampleTeilnehmer());
         Long projektId = addProject(createSampleProjekt());
         assignUserToProject(projektId, teilnehmerId);
-        Boolean isUserUnassignedFromProject = unassignUserFromProject(projektId, teilnehmerId);
-        assertThat(isUserUnassignedFromProject, is(true));
+        unassignUserFromProject(projektId, teilnehmerId);
 
         // When
         deleteUser(teilnehmerId);
 
         // Then
         // pass :)
+    }
+
+    @Test
+    public void givenTeilnehmerIstZuProjektenAngemeldet_whenAlleAngemeldetenProjekteAnfragen_thenListenStimmenUeberein() {
+        // Given
+        Long teilnehmerId = addUser(createSampleTeilnehmer());
+        Long projektId = addProject(createSampleProjekt());
+        Long projektId2 = addProject(createSampleProjekt());
+        assignUserToProject(projektId, teilnehmerId);
+        assignUserToProject(projektId2, teilnehmerId);
+
+        // When
+        List<Projekt> alleAngemeldetenProjekteDesTeilnehmers = getAlleAngemeldetenProjekteDesTeilnehmers(teilnehmerId);
+
+        // Then
+        assertThat(alleAngemeldetenProjekteDesTeilnehmers.size(), is(2));
+        assertThat(alleAngemeldetenProjekteDesTeilnehmers.get(0).getId(), is(projektId));
+        assertThat(alleAngemeldetenProjekteDesTeilnehmers.get(1).getId(), is(projektId2));
+    }
+
+    @Test
+    public void givenTeilnehmerIstZuProjektenStorniert_whenAlleStorniertenProjekteAnfragen_thenListenStimmenUeberein() {
+        // Given
+        Long teilnehmerId = addUser(createSampleTeilnehmer());
+        Long projektId = addProject(createSampleProjekt());
+        Long projektId2 = addProject(createSampleProjekt());
+        assignUserToProject(projektId, teilnehmerId);
+        assignUserToProject(projektId2, teilnehmerId);
+        unassignUserFromProject(projektId, teilnehmerId);
+        unassignUserFromProject(projektId2, teilnehmerId);
+
+        // When
+        List<Projekt> alleAngemeldetenProjekteDesTeilnehmers = getAlleStorniertenProjekteDesTeilnehmers(teilnehmerId);
+
+        // Then
+        assertThat(alleAngemeldetenProjekteDesTeilnehmers.size(), is(2));
+        assertThat(alleAngemeldetenProjekteDesTeilnehmers.get(0).getId(), is(projektId));
+        assertThat(alleAngemeldetenProjekteDesTeilnehmers.get(1).getId(), is(projektId2));
     }
 
     // Helpers -----------------------------------------------------------------------------------
@@ -304,7 +343,7 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
         .when()
             .put(BASE_URL + "/users")
         .then()
-            .statusCode(is(HttpStatus.SC_OK));
+            .statusCode(HttpStatus.SC_OK);
     }
 
     private void deleteUser(long userId) {
@@ -314,7 +353,7 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
         .when()
                 .delete(BASE_URL + "/users/{userId}")
         .then()
-                .statusCode(is(HttpStatus.SC_OK));
+                .statusCode(HttpStatus.SC_OK);
     }
 
     private void getNoUser(Long userId) {
@@ -324,6 +363,32 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
             .get(BASE_URL + "/users/{id}")
         .then()
             .statusCode(HttpStatus.SC_NOT_FOUND);
+    }
+
+    private List<Projekt> getAlleAngemeldetenProjekteDesTeilnehmers(Long id) {
+        return Arrays.asList(
+                given()
+                    .pathParam("id", id)
+                    .contentType(ContentType.JSON)
+                .when()
+                    .get(BASE_URL + "/users/{id}/projects")
+                .then()
+                    .statusCode(HttpStatus.SC_OK)
+                    .extract()
+                    .body().as(Projekt[].class));
+    }
+
+    private List<Projekt> getAlleStorniertenProjekteDesTeilnehmers(Long id) {
+        return Arrays.asList(
+                given()
+                    .pathParam("id", id)
+                    .contentType(ContentType.JSON)
+                .when()
+                    .get(BASE_URL + "/users/{id}/cancelledprojects")
+                .then()
+                    .statusCode(HttpStatus.SC_OK)
+                    .extract()
+                    .body().as(Projekt[].class));
     }
 
 }

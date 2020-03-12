@@ -2,6 +2,7 @@ package de.bauhaus.digital.controller;
 
 import de.bauhaus.digital.domain.Projekt;
 import de.bauhaus.digital.domain.Teilnehmer;
+import de.bauhaus.digital.exception.ProjektFullyBookedException;
 import de.bauhaus.digital.exception.ProjektNotFoundException;
 import de.bauhaus.digital.exception.UserNotFoundException;
 import de.bauhaus.digital.repository.ProjektRepository;
@@ -123,10 +124,24 @@ public class ProjekteController {
         return projekt.getAngemeldeteTeilnehmer();
     }
 
+    @GetMapping(path = "/{projektId}/cancelledusers")
+    public @ResponseBody
+    List<Teilnehmer> getCancelledUsersOfProject(@PathVariable("projektId") Long projektId) {
+        LOG.info("GET called on /projects/" + projektId + "/cancelledusers");
+
+        Optional<Projekt> optionalProjekt = projektRepository.findById(projektId);
+        if (!optionalProjekt.isPresent()) {
+            throw new ProjektNotFoundException("Projekt mit id " + projektId + " wurde nicht gefunden.");
+        }
+
+        Projekt projekt = optionalProjekt.get();
+        LOG.info("Returning " + projekt.getStornierteTeilnehmer().size() + " cancelled Teilnehmer for project " + projekt.getName());
+        return projekt.getStornierteTeilnehmer();
+    }
+
     @RequestMapping(path = "/{projektId}/users/{teilnehmerId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody
-    Boolean assignUserToProject(@PathVariable("projektId") Long projektId, @PathVariable("teilnehmerId") Long teilnehmerId)
+    public void assignUserToProject(@PathVariable("projektId") Long projektId, @PathVariable("teilnehmerId") Long teilnehmerId)
             throws UserNotFoundException, ProjektNotFoundException {
         LOG.info("PUT called on /projects/" + projektId + "/users/" + teilnehmerId);
 
@@ -142,16 +157,16 @@ public class ProjekteController {
         Projekt projekt = optionalProjekt.get();
         Teilnehmer teilnehmer = optionalTeilnehmer.get();
         if (projekt.hatProjektFreiePlaetze()) {
-            return assignUserToProjektWhenNotAlreadyAssigned(teilnehmer, projekt);
+            meldeTeilnehmerAnWennNichtBereitsAngemeldet(teilnehmer, projekt);
         } else {
             LOG.info("Could not assign " + teilnehmer.getNachname() + " to project " + projekt.getName() + " because all free slots are taken.");
-            return false;
+            throw new ProjektFullyBookedException("Projekt mit id " + projektId + " ist leider schon komplett ausgebucht.");
         }
     }
 
     @RequestMapping(path = "/{projektId}/users/{teilnehmerId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody Boolean unassignUserFromProject(@PathVariable("projektId") Long projektId, @PathVariable("teilnehmerId") Long teilnehmerId) {
+    public void unassignUserFromProject(@PathVariable("projektId") Long projektId, @PathVariable("teilnehmerId") Long teilnehmerId) {
         LOG.info("DELETE called on /projects/" + projektId + "/users/" + teilnehmerId);
 
         Optional<Projekt> optionalProjekt = projektRepository.findById(projektId);
@@ -168,18 +183,16 @@ public class ProjekteController {
         projekt.storniereTeilnehmer(teilnehmer);
         projektRepository.save(projekt);
         LOG.info("Teilnehmer " + teilnehmer.getVorname() + " " + teilnehmer.getNachname() + " was cancelled for Projekt: " + projekt.getName());
-        return true;
     }
 
-    private Boolean assignUserToProjektWhenNotAlreadyAssigned(Teilnehmer teilnehmer, Projekt projekt) {
-        if(projekt.isTeilnehmerNotAlreadyAsignedToProjekt(teilnehmer)) {
+    private void meldeTeilnehmerAnWennNichtBereitsAngemeldet(Teilnehmer teilnehmer, Projekt projekt) {
+        if(!projekt.istTeilnehmerAngemeldet(teilnehmer)) {
             projekt.meldeTeilnehmerAn(teilnehmer);
             projektRepository.save(projekt);
-            LOG.info("Teilnehmer " + teilnehmer.getVorname() + " " + teilnehmer.getNachname() + " was registered for Projekt: " + projekt.toString());
+            LOG.info("Teilnehmer " + teilnehmer.getVorname() + " " + teilnehmer.getNachname() + " registered for Projekt: " + projekt.toString());
         } else {
             LOG.info("Teilnehmer " + teilnehmer.getVorname() + " " + teilnehmer.getNachname() + " was already registered for Projekt: " + projekt.getName());
         }
-        return true;
     }
 
 }

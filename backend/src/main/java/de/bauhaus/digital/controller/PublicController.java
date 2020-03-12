@@ -3,6 +3,7 @@ package de.bauhaus.digital.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bauhaus.digital.domain.Projekt;
 import de.bauhaus.digital.domain.Teilnehmer;
+import de.bauhaus.digital.exception.ProjektFullyBookedException;
 import de.bauhaus.digital.repository.ProjektRepository;
 import de.bauhaus.digital.repository.TeilnehmerRepository;
 import de.bauhaus.digital.transformation.AnmeldungJson;
@@ -63,8 +64,13 @@ public class PublicController {
         }
 
         List<Pair<Long, Boolean>> projectsWithAssignmentState = savedUser.getGewuenschteProjekte().stream().map((projektId) -> {
-            return Pair.of(projektId,
-                    projekteController.assignUserToProject(projektId, savedUser.getId()));
+            boolean successfull = true;
+            try {
+                projekteController.assignUserToProject(projektId, savedUser.getId());
+            } catch (ProjektFullyBookedException e) {
+                successfull = false;
+            }
+            return Pair.of(projektId, successfull);
         }).collect(Collectors.toList());
         System.out.println(projectsWithAssignmentState.toString());
 
