@@ -9,4 +9,10 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 // import 'intersection-observer' // Optional
 
+// Polyfill for reportValidity for IE
+// see: https://www.tjvantoll.com/2015/01/28/reportvalidity/
+if (!HTMLFormElement.prototype.reportValidity) {
+  HTMLFormElement.prototype.reportValidity = () => this.checkValidity() || this.submit();
+}
+
 // Note: There are other polyfills/fixes that need to be applied after mounting the app in App.vue
