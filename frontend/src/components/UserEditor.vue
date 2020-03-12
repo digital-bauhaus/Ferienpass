@@ -2,9 +2,7 @@
   <b-form
     ref="form"
     class="user-editor"
-    novalidate
     :validated="showValidationStatus"
-    @submit.prevent="onSubmit"
     @keydown.enter="preventAccidentalSubmit"
   >
     <!-- eslint-disable max-len -->
@@ -213,10 +211,10 @@
     </CheckBoxGroup>
 
     <b-button
-      type="submit"
       variant="primary"
       class="mb-3"
       :disabled="disabled"
+      @click="onSubmitClick"
     >
       {{ submitButtonText }}
     </b-button>
@@ -286,12 +284,25 @@ export default {
       _.set(newValue, propName, newPropValue);
       this.$emit('input', newValue);
     },
-    onSubmit() {
+    onSubmitClick() {
+      console.log('on submit click');
       this.showValidationStatus = true;
       if (this.$refs.form.checkValidity()) {
         this.$emit('submit');
       } else {
+        console.log('else');
         this.$refs.form.reportValidity();
+      }
+    },
+    onSubmit() {
+      console.log('on submit');
+      this.showValidationStatus = true;
+      if (this.$refs.form.checkValidity()) {
+        this.$emit('submit');
+      } else {
+        console.log('else');
+        this.$refs.form.reportValidity();
+        this.$refs.form.submit();
       }
     },
     preventAccidentalSubmit(event) {
