@@ -11,6 +11,7 @@ import de.bauhaus.digital.repository.TeilnehmerRepository;
 import de.bauhaus.digital.transformation.AnmeldungJson;
 import de.bauhaus.digital.transformation.AnmeldungToAdmin;
 import de.bauhaus.digital.transformation.Project;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,8 +53,8 @@ public class PublicController {
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     @Transactional
-    public void registerUser(@JsonView(Views.Public.class) @RequestBody @Valid Teilnehmer user) {
-        LOG.info("POST called on /public/register/ resource");
+    public void registerUser(@JsonView(Views.Public.class) @RequestBody @Valid Teilnehmer user) throws IOException {
+        LOG.info("POST called on /public/register resource");
 
         if (user.getGewuenschteProjekte().isEmpty()) {
             throw new RegistrationInvalidException("Eine Anmeldung ohne gewählte Projekte ist nicht möglich.");
@@ -69,6 +71,21 @@ public class PublicController {
             // Throws FullyBookedException if not possible
             projekteController.assignUserToProject(projektId, savedTeilnehmer.getId());
         });
+
+        mailController.sendMail(savedTeilnehmer);
+    }
+
+    /*************************************
+     * Project API
+     *************************************/
+
+    @RequestMapping(path = "/projects", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    List<Projekt> getProjects() {
+        LOG.info("GET called on /public/projects resource");
+
+        return projekteController.getProjects();
     }
 
     /*******************************************

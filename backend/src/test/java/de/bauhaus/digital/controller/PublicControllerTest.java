@@ -152,6 +152,47 @@ public class PublicControllerTest extends AbstractControllerTest {
         assertThat(alleAngemeldetenProjekteDesTeilnehmers.get(1).getId(), is(projektId2));
     }
 
+    @Test
+    public void giveNoAuthentication_whenRegistrierung_thenTeilnehmerWirdAngelegt() {
+        Long projektId = addProject(createSampleProjekt());
+        Long projektId2 = addProject(createSampleProjekt());
+        List<Long> gewuenschteProjekte = Arrays.asList(projektId, projektId2);
+        Teilnehmer teilnehmer = createSampleTeilnehmerBuilder().gewuenschteProjekte(gewuenschteProjekte).build();
+
+        revokeRestCredentials();
+        registerTeilnehmer(teilnehmer);
+        initRestCredentials();
+
+        List<Teilnehmer> alleTeilnehmer = getAllUsers();
+        Teilnehmer registrierterTeilnehmer = alleTeilnehmer.get(0);
+
+        assertThat(alleTeilnehmer.size(), is(1));
+        Assertions.assertThat(registrierterTeilnehmer).
+                usingRecursiveComparison()
+                .ignoringFields("id", "arzt.id", "behinderung.id", "notfallKontakt.id", "gewuenschteProjekte")
+                .isEqualTo(teilnehmer);
+    }
+
+    @Test
+    public void givenNoAuthentication_whenRequestingAlleProjekte_thenSuccess() {
+        int initialSize = getAllProjects().size();
+
+        addProject(createSampleProjekt());
+        addProject(createSampleProjekt());
+
+        List<Projekt> alleProjekte = Arrays.asList(
+                given()
+                    .contentType(ContentType.JSON)
+                .when()
+                    .get(BASE_URL + "/public/projects")
+                .then()
+                    .statusCode(HttpStatus.SC_OK)
+                    .extract()
+                    .body().as(Projekt[].class));
+
+        assertThat(alleProjekte.size(), is(initialSize + 2));
+    }
+
 
     private void registerTeilnehmer(Teilnehmer teilnehmer) {
         whenRegisterTeilnehmer(teilnehmer)

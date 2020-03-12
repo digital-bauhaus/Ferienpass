@@ -28,7 +28,15 @@ public abstract class AbstractControllerTest {
     protected static final String BASE_URL = "http://localhost:8089/api";
 
     @Before
-    public void init() {
+    public void initForEachTest() {
+        initRestCredentials();
+    }
+
+    protected void revokeRestCredentials() {
+        RestAssured.reset();
+    }
+
+    protected void initRestCredentials() {
         // Init RestAssured with BasicAuth credentials once - so we don't need to do that on every RestAssured call
         PreemptiveBasicAuthScheme authScheme = new PreemptiveBasicAuthScheme();
         authScheme.setUserName("test");

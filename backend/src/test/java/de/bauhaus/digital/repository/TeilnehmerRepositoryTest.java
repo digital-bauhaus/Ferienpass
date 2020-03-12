@@ -33,7 +33,7 @@ public class TeilnehmerRepositoryTest {
     private BehinderungRepository behinderungRepository;
 
     @Before
-    public void init() {
+    public void initForEachTest() {
         Teilnehmer garyEich = createSampleTeilnehmerOfName("Gary", "Eich");
         Teilnehmer garyNorris = createSampleTeilnehmerOfName("Gary", "Norris");
         Teilnehmer chuckNorris = createSampleTeilnehmerOfName("Chuck", "Norris");
