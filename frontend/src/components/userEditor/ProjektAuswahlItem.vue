@@ -4,12 +4,11 @@
     class="projekt-auswahl-item"
     :invalid-feedback="invalidFeedback"
     :state="state"
-    :disabled="disabled || !isSelectable"
   >
     <b-form-checkbox
       :id="`$projekt-${projekt.id}-value`"
+      :disabled="disabled || !isSelectable"
       :checked="checked"
-      :indeterminate="!isSelectable"
       @input="$emit('input', $event)"
     >
       <ul class="projekt-auswahl-item__list">
