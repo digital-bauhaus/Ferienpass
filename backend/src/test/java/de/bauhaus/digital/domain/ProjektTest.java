@@ -84,21 +84,21 @@ public class ProjektTest {
     }
 
     @Test
-    public void when_adding_one_Teilnehmer_plaetzeReserviert_increases_once() {
+    public void when_adding_one_Teilnehmer_plaetzeBelegt_increases_once() {
         Projekt kinderuni = createSampleProjektBuilder().plaetzeGesamt(20).plaetzeReserviert(10).build();
         kinderuni.meldeTeilnehmerAn(DomainFactory.createSampleTeilnehmerOfName("Luis", "Müller"));
-        assertThat(kinderuni.getPlaetzeReserviert(), is(11));
+        assertThat(kinderuni.getPlaetzeBelegt(), is(11));
     }
 
     @Test
-    public void when_adding_5_Teilnehmer_plaetzeReserviert_increases_5_times() {
+    public void when_adding_5_Teilnehmer_plaetzeBelegt_increases_5_times() {
         Projekt gartenParty = createSampleProjektBuilder().plaetzeGesamt(15).plaetzeReserviert(3).build();
         gartenParty.meldeTeilnehmerAn(DomainFactory.createSampleTeilnehmerOfName("Max", "Schulze"));
         gartenParty.meldeTeilnehmerAn(DomainFactory.createSampleTeilnehmerOfName("Moritz", "Meier")  );
         gartenParty.meldeTeilnehmerAn(DomainFactory.createSampleTeilnehmerOfName("Paul", "Schreiner"));
         gartenParty.meldeTeilnehmerAn(DomainFactory.createSampleTeilnehmerOfName("Pauline", "Müller"));
         gartenParty.meldeTeilnehmerAn(DomainFactory.createSampleTeilnehmerOfName("Peter", "Siegmund"));
-        assertThat(gartenParty.getPlaetzeReserviert(), is(8));
+        assertThat(gartenParty.getPlaetzeBelegt(), is(8));
     }
 
     @Test
@@ -112,13 +112,13 @@ public class ProjektTest {
     }
 
     @Test
-    public void when_cancelling_one_Teilnehmer_plaetzeReserviert_decreases(){
+    public void when_cancelling_one_Teilnehmer_plaetzeBelegt_decreases(){
         Projekt project = createSampleProjektBuilder().plaetzeGesamt(20).plaetzeReserviert(0).build();
         Teilnehmer user = createSampleTeilnehmer();
         project.meldeTeilnehmerAn(user);
-        int reservedSlots = project.getPlaetzeReserviert();
+        int occupiedSlots = project.getPlaetzeBelegt();
         project.storniereTeilnehmer(user);
-        assertThat(project.getPlaetzeReserviert(), is(reservedSlots - 1));
+        assertThat(project.getPlaetzeBelegt(), is(occupiedSlots - 1));
     }
 
 }

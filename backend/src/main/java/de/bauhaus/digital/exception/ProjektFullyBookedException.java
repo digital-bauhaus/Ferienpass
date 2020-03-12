@@ -5,15 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
 public class ProjektFullyBookedException extends RuntimeException {
-    public ProjektFullyBookedException() {
-        super();
-    }
-
     public ProjektFullyBookedException(String message) {
         super(message);
-    }
-
-    public ProjektFullyBookedException(String message, Throwable cause) {
-        super(message, cause);
     }
 }

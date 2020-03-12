@@ -98,7 +98,13 @@ public class Projekt {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Transient
     public int getPlaetzeFrei() {
-        return Math.max(0, this.plaetzeGesamt - this.plaetzeReserviert);
+        return Math.max(0, this.plaetzeGesamt - this.getPlaetzeBelegt());
+    }
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Transient
+    public int getPlaetzeBelegt() {
+        return this.plaetzeReserviert + this.angemeldeteTeilnehmer.size();
     }
 
     /**
@@ -111,7 +117,6 @@ public class Projekt {
         this.stornierteTeilnehmer.remove(anzumeldenderTeilnehmer);
 
         this.angemeldeteTeilnehmer.add(anzumeldenderTeilnehmer);
-        this.plaetzeReserviert = this.plaetzeReserviert + 1;
     }
 
     /**
@@ -125,7 +130,6 @@ public class Projekt {
         if (warAngemeldet)
         {
             this.stornierteTeilnehmer.add(zuStornierenderTeilnehmer);
-            this.plaetzeReserviert = this.plaetzeReserviert - 1;
         }
         return warAngemeldet;
     }

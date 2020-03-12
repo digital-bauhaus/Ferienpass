@@ -310,13 +310,13 @@ public class ProjekteControllerTest extends AbstractControllerTest {
     // TODO
     @Test @Ignore
     public void givenProjektWithOneTeilnehmer_whenUpdatingProjektWithZeroSlotsReserved_thenBadRequest() {
-        Long projectId = addProject(DomainFactory.createSampleProjekt());
+        Long projectId = addProject(createSampleProjektBuilder().plaetzeGesamt(10).plaetzeReserviert(9).build());
         Long userId = addUser(createSampleTeilnehmer());
 
         assignUserToProject(projectId, userId);
 
         Projekt projekt = Projekt.newBuilder(getProject(projectId))
-                .plaetzeReserviert(0)
+                .plaetzeGesamt(9)
                 .build();
 
         given()
@@ -326,7 +326,7 @@ public class ProjekteControllerTest extends AbstractControllerTest {
             .put(BASE_URL+"/projects")
         .then()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
-            .body("errors", hasSize(1))
+            .body("errors", hasSize(2))
             .body("errors[0].field", is("plaetzeReserviert"));
     }
 

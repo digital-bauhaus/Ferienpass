@@ -2,6 +2,7 @@ package de.bauhaus.digital.controller;
 
 import de.bauhaus.digital.domain.Projekt;
 import de.bauhaus.digital.domain.Teilnehmer;
+import de.bauhaus.digital.exception.CustomConstraintException;
 import de.bauhaus.digital.exception.ProjektFullyBookedException;
 import de.bauhaus.digital.exception.ProjektNotFoundException;
 import de.bauhaus.digital.exception.UserNotFoundException;
@@ -9,11 +10,14 @@ import de.bauhaus.digital.repository.ProjektRepository;
 import de.bauhaus.digital.repository.TeilnehmerRepository;
 import java.util.List;
 import java.util.Optional;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.TransactionSystemException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
 @RequestMapping("/api/projects")
+@Validated
 public class ProjekteController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProjekteController.class);
@@ -72,7 +77,7 @@ public class ProjekteController {
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
-    Projekt updateProject(@RequestBody @Valid Projekt projekt) {
+    Projekt updateProject(@RequestBody @Valid Projekt projekt) throws Throwable {
         LOG.info("PUT called on /projects resource");
 
         Optional<Projekt> optionalProjekt = projektRepository.findById(projekt.getId());
@@ -89,7 +94,16 @@ public class ProjekteController {
                 .build();
 
         // We directly save the Projekt we received in the database
-        Projekt savedProjekt = projektRepository.save(projektWithTeilnehmern);
+        Projekt savedProjekt = null;
+        try {
+            savedProjekt = projektRepository.save(projektWithTeilnehmern);
+        } catch (TransactionSystemException e) {
+            if (e.getRootCause() instanceof ConstraintViolationException) {
+                throw new CustomConstraintException("Validation Errors",
+                        (ConstraintViolationException) e.getRootCause());
+            }
+            throw e;
+        }
 
         LOG.info("Projekt with id " + projektWithTeilnehmern.getId() + " successfully updated in DB.");
         return savedProjekt;
