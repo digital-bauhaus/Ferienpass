@@ -13,6 +13,7 @@ import 'regenerator-runtime/runtime';
 // see: https://www.tjvantoll.com/2015/01/28/reportvalidity/
 if (!HTMLFormElement.prototype.reportValidity) {
   HTMLFormElement.prototype.reportValidity = function reportValidity() {
+    console.log('reportValidity Handler');
     return this.checkValidity() || this.submit();
   };
 }
