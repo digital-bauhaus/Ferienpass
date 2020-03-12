@@ -14,7 +14,6 @@ import de.bauhaus.digital.domain.Projekt;
 import de.bauhaus.digital.domain.Teilnehmer;
 import io.restassured.http.ContentType;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.http.HttpStatus;
@@ -107,8 +106,6 @@ public class ProjekteControllerTest extends AbstractControllerTest {
         int hoechstAlter = 20;
         int plaetzeGesamt = 30;
         int plaetzeReserviert = 7;
-        List<Teilnehmer> angemeldeteTeilnehmer = new ArrayList<>(); // TODO
-        List<Teilnehmer> stornierteTeilnehmer = new ArrayList<>(); // TODO
 
         // Important: We use the copy-builder, so we automatically use the correct ID
         Projekt projektToUpdate = Projekt.newBuilder(originalProjekt)
@@ -120,8 +117,6 @@ public class ProjekteControllerTest extends AbstractControllerTest {
                 .hoechstAlter(hoechstAlter)
                 .plaetzeGesamt(plaetzeGesamt)
                 .plaetzeReserviert(plaetzeReserviert)
-                .angemeldeteTeilnehmer(angemeldeteTeilnehmer)
-                .stornierteTeilnehmer(stornierteTeilnehmer)
                 .build();
 
         // actual update is here
@@ -146,22 +141,20 @@ public class ProjekteControllerTest extends AbstractControllerTest {
         assignUserToProject(projektId, teilnehmerId2);
         unassignUserFromProject(projektId, teilnehmerId);
 
-        // TODO !?
+        List<Teilnehmer> allAssignedUsersForOriginalProject = getAllAssignedUsersForGivenProject(projektId);
+        List<Teilnehmer> allCancelledUsersForOriginalProject = getAllCancelledUsersForGivenProject(projektId);
 
         // Important: We use the copy-builder, so we automatically use the correct ID
-        Projekt projektToUpdate = Projekt.newBuilder(originalProjekt)
-                .angemeldeteTeilnehmer(originalProjekt.getAngemeldeteTeilnehmer())
-                .stornierteTeilnehmer(originalProjekt.getStornierteTeilnehmer())
-                .build();
+        Projekt projektToUpdate = Projekt.newBuilder(originalProjekt).build();
 
         // actual update is here
         updateProjekt(projektToUpdate);
 
-        Projekt responseProjekt = getProject(projektId);
+        List<Teilnehmer> allAssignedUsersForUpdatedProject = getAllAssignedUsersForGivenProject(projektId);
+        List<Teilnehmer> allCancelledUsersForUpdatedProject = getAllCancelledUsersForGivenProject(projektId);
 
-        Assertions.assertThat(responseProjekt).
-                usingRecursiveComparison()
-                .isEqualTo(projektToUpdate);
+        assertThat(allAssignedUsersForOriginalProject.get(0).getId(), is(allAssignedUsersForUpdatedProject.get(0).getId()));
+        assertThat(allCancelledUsersForOriginalProject.get(0).getId(), is(allCancelledUsersForUpdatedProject.get(0).getId()));
     }
 
     @Test
