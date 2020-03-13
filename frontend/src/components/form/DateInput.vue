@@ -91,6 +91,7 @@ export default {
     onClose(selectedDates, dateInInternalFormat, flatPickrInstance) {
       // When the calender dialog is closed, we explicitly set the current text (user input)
       // as date for flatPickr
+      // Idea taken from here: https://github.com/flatpickr/flatpickr/issues/1551
       flatPickrInstance.setDate(
         flatPickrInstance.altInput.value, false, flatPickrInstance.config.altFormat,
       );
