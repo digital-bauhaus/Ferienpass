@@ -5,8 +5,11 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.ClickTrackingSetting;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import com.sendgrid.helpers.mail.objects.Personalization;
+import com.sendgrid.helpers.mail.objects.TrackingSettings;
 import de.bauhaus.digital.domain.Teilnehmer;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -38,17 +41,43 @@ public class MailController {
     @Value(value = "classpath:mail/mailtext.txt")
     private Resource mailtext;
 
+    @Value(value = "${ferienpass.confirmmail.bcc}")
+    private String confirmMailBcc;
+
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody void sendMail(@RequestBody Teilnehmer teilnehmer) throws IOException {
         LOG.info("POST called on /mail resource");
 
-        Mail mail = new Mail(
-                new Email("mail@ferienpass-weimar.de"),
-                "Ihre Anmeldung für den Ferienpass Weimar: Nur ein Schritt fehlt noch!",
-                new Email(teilnehmer.getEmail()),
-                new Content("text/plain", readMailText()));
+        Mail mail = new Mail();
 
+        // tracking settings
+        TrackingSettings trackingSettings = new TrackingSettings();
+        ClickTrackingSetting clickTrackingSetting = new ClickTrackingSetting();
+        clickTrackingSetting.setEnableText(false);
+        trackingSettings.setClickTrackingSetting(clickTrackingSetting);
+        mail.setTrackingSettings(trackingSettings);
+
+        // sender
+        Email from = new Email("ferienpass@stadtweimar.de", "Ferienpass Weimar");
+        mail.setFrom(from);
+
+        // subject
+        mail.setSubject("Ihre Anmeldung für den Ferienpass Weimar: Nur ein Schritt fehlt noch!");
+
+        // recipient and bcc for ferienbuero
+        Email toTeilnehmer = new Email(teilnehmer.getEmail());
+        Email toFerienbuero = new Email(confirmMailBcc);
+        Personalization personalization = new Personalization();
+        personalization.addTo(toTeilnehmer);
+        personalization.addBcc(toFerienbuero);
+        mail.addPersonalization(personalization);
+
+        // content
+        Content content = new Content("text/plain", readMailText());
+        mail.addContent(content);
+
+        // actual mail request
         Request sendgridRequest = new Request();
         sendgridRequest.setMethod(Method.POST);
         sendgridRequest.setEndpoint("mail/send");
