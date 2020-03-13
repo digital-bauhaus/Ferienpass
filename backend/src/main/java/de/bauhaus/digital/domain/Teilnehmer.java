@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -105,6 +106,7 @@ public class Teilnehmer {
 
     private boolean essenVegetarier;
     private boolean essenLaktoseUnvertraeglichkeit;
+    @Column(name = 'essen_einer_unvertraeglichkeit') // TODO remove
     private boolean essenEierUnvertraeglichkeit;
     private String essenWeitereLimitierungen;
 
