@@ -1,6 +1,6 @@
 import axios from 'axios/index';
 
-export const AXIOS = axios.create({
+const AXIOS = axios.create({
   baseURL: '/api',
   headers: {
     // disable browser popup (https://stackoverflow.com/questions/37763186/spring-boot-security-shows-http-basic-auth-popup-after-failed-login)
@@ -44,28 +44,10 @@ export default {
     return AXIOS.get(`/projects/${id}`, { auth }).then((response) => response.data);
   },
   createProject(project) {
-    return AXIOS.post('/projects', project, { auth }).then().catch((e) => {
-      if (e.response.data.errors) {
-        // validation errors
-        return Promise.reject(
-          e.response.data.errors.map((error) => `${error.field}: ${error.defaultMessage}`),
-        );
-      }
-      // other errors
-      return Promise.reject([e.toString()]);
-    });
+    return AXIOS.post('/projects', project, { auth });
   },
   updateProject(project) {
-    return AXIOS.put('/projects', project, { auth }).then().catch((e) => {
-      if (e.response.data.errors) {
-        // validation errors
-        return Promise.reject(
-          e.response.data.errors.map((error) => `${error.field}: ${error.defaultMessage}`),
-        );
-      }
-      // other errors
-      return Promise.reject([e.toString()]);
-    });
+    return AXIOS.put('/projects', project, { auth });
   },
   deleteProject(projectId) {
     return AXIOS.delete(`/projects/${projectId}`, { auth });
@@ -100,17 +82,7 @@ export default {
   },
   updateUser(user) {
     return AXIOS
-      .put('/users', user, { auth })
-      .then().catch((e) => {
-        if (e.response.data.errors) {
-        // validation errors
-          return Promise.reject(
-            e.response.data.errors.map((error) => `${error.field}: ${error.defaultMessage}`),
-          );
-        }
-        // other errors
-        return Promise.reject([e.toString()]);
-      });
+      .put('/users', user, { auth });
   },
   deleteUser(userId) {
     return AXIOS.delete(`/users/${userId}`, { auth });

@@ -97,10 +97,10 @@
 </template>
 
 <script>
-import DynamicInputList from '@/components/wrapper/DynamicInputList.vue';
-import FieldInput from '@/components/wrapper/FieldInput.vue';
-import CheckBox from '@/components/wrapper/CheckBox.vue';
-import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
+import DynamicInputList from '@/components/form/DynamicInputList.vue';
+import FieldInput from '@/components/form/FieldInput.vue';
+import CheckBox from '@/components/form/CheckBox.vue';
+import CheckBoxGroup from '@/components/form/CheckBoxGroup.vue';
 
 export default {
   name: 'Gesundheit',

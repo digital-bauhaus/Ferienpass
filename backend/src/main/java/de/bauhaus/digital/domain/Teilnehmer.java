@@ -105,7 +105,7 @@ public class Teilnehmer {
 
     private boolean essenVegetarier;
     private boolean essenLaktoseUnvertraeglichkeit;
-    private boolean essenEinerUnvertraeglichkeit;
+    private boolean essenEierUnvertraeglichkeit;
     private String essenWeitereLimitierungen;
 
     private String krankenkasse;
@@ -160,7 +160,7 @@ public class Teilnehmer {
         hitzeempfindlich = builder.hitzeempfindlich;
         essenVegetarier = builder.essenVegetarier;
         essenLaktoseUnvertraeglichkeit = builder.essenLaktoseUnvertraeglichkeit;
-        essenEinerUnvertraeglichkeit = builder.essenEinerUnvertraeglichkeit;
+        essenEierUnvertraeglichkeit = builder.essenEierUnvertraeglichkeit;
         essenWeitereLimitierungen = builder.essenWeitereLimitierungen;
         krankenkasse = builder.krankenkasse;
         arzt = builder.arzt;
@@ -204,7 +204,7 @@ public class Teilnehmer {
         builder.hitzeempfindlich = copy.isHitzeempfindlich();
         builder.essenVegetarier = copy.isEssenVegetarier();
         builder.essenLaktoseUnvertraeglichkeit = copy.isEssenLaktoseUnvertraeglichkeit();
-        builder.essenEinerUnvertraeglichkeit = copy.isEssenEinerUnvertraeglichkeit();
+        builder.essenEierUnvertraeglichkeit = copy.isEssenEierUnvertraeglichkeit();
         builder.essenWeitereLimitierungen = copy.getEssenWeitereLimitierungen();
         builder.krankenkasse = copy.getKrankenkasse();
         builder.arzt = copy.getArzt();
@@ -330,8 +330,8 @@ public class Teilnehmer {
         return essenLaktoseUnvertraeglichkeit;
     }
 
-    public boolean isEssenEinerUnvertraeglichkeit() {
-        return essenEinerUnvertraeglichkeit;
+    public boolean isEssenEierUnvertraeglichkeit() {
+        return essenEierUnvertraeglichkeit;
     }
 
     public String getEssenWeitereLimitierungen() {
@@ -390,7 +390,7 @@ public class Teilnehmer {
                 ", hitzeempfindlich=" + hitzeempfindlich +
                 ", essenVegetarier=" + essenVegetarier +
                 ", essenLaktoseUnvertraeglichkeit=" + essenLaktoseUnvertraeglichkeit +
-                ", essenEinerUnvertraeglichkeit=" + essenEinerUnvertraeglichkeit +
+                ", essenEierUnvertraeglichkeit=" + essenEierUnvertraeglichkeit +
                 ", essenWeitereLimitierungen='" + essenWeitereLimitierungen + '\'' +
                 ", krankenkasse='" + krankenkasse + '\'' +
                 ", arzt=" + arzt +
@@ -431,7 +431,7 @@ public class Teilnehmer {
         private boolean hitzeempfindlich;
         private boolean essenVegetarier;
         private boolean essenLaktoseUnvertraeglichkeit;
-        private boolean essenEinerUnvertraeglichkeit;
+        private boolean essenEierUnvertraeglichkeit;
         private String essenWeitereLimitierungen;
         private String krankenkasse;
         private Arzt arzt;
@@ -582,8 +582,8 @@ public class Teilnehmer {
             return this;
         }
 
-        public Builder essenEinerUnvertraeglichkeit(boolean essenEinerUnvertraeglichkeit) {
-            this.essenEinerUnvertraeglichkeit = essenEinerUnvertraeglichkeit;
+        public Builder essenEierUnvertraeglichkeit(boolean essenEierUnvertraeglichkeit) {
+            this.essenEierUnvertraeglichkeit = essenEierUnvertraeglichkeit;
             return this;
         }
 

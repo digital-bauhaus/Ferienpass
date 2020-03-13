@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import ParagraphList from '@/components/wrapper/ParagraphList.vue';
-import ParagraphListItem from '@/components/wrapper/ParagraphListItem.vue';
+import ParagraphList from '@/components/form/ParagraphList.vue';
+import ParagraphListItem from '@/components/form/ParagraphListItem.vue';
 
 export default {
   name: 'Datenschutz',

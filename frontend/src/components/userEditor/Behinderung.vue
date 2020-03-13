@@ -301,10 +301,10 @@
 </template>
 
 <script>
-import CheckBox from '@/components/wrapper/CheckBox.vue';
-import TextAreaInput from '@/components/wrapper/TextAreaInput.vue';
-import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
-import FieldInput from '@/components/wrapper/FieldInput.vue';
+import CheckBox from '@/components/form/CheckBox.vue';
+import TextAreaInput from '@/components/form/TextAreaInput.vue';
+import CheckBoxGroup from '@/components/form/CheckBoxGroup.vue';
+import FieldInput from '@/components/form/FieldInput.vue';
 
 export default {
   name: 'Behinderung',

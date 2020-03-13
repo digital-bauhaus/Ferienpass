@@ -9,10 +9,10 @@
           :title="title"
           bg-variant="light"
         >
-          <ErrorAlert
+          <ErrorBox
             v-if="showErrorAlert"
             heading-text="Login nicht möglich. Folgende Fehler sind aufgetreten: "
-            :errors="serverErrorMessages"
+            :error-messages="serverErrors"
           />
 
           <b-form
@@ -64,15 +64,15 @@
 
 <script>
 import { LOGIN } from '@/store/action-types';
-import ErrorAlert from '@/components/ErrorAlert.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
 
 export default {
   name: 'Login',
-  components: { ErrorAlert },
+  components: { ErrorBox },
   data() {
     return {
       title: 'Ferienpass Weimar: Administration',
-      serverErrorMessages: [],
+      serverErrors: [],
       form: {
         name: '',
         password: '',
@@ -81,16 +81,16 @@ export default {
   },
   computed: {
     showErrorAlert() {
-      return this.serverErrorMessages.length > 0;
+      return this.serverErrors.length > 0;
     },
   },
   methods: {
     onSubmit() {
-      this.serverErrorMessages = [];
+      this.serverErrors = [];
       this.$store.dispatch(LOGIN, { name: this.form.name, password: this.form.password })
         .then(() => this.$router.push('/Verwaltung'))
         .catch((e) => {
-          this.serverErrorMessages.push(e); // TODO errors not messages
+          this.serverErrors.push(e.toString());
         });
     },
   },

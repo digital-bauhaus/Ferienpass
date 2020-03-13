@@ -38,12 +38,12 @@ public class PublicControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void givenTeilnehmerOhneWunschprojekte_whenRegistrierung_thenTeilnehmerWirdNichtAngelegtMitHttpBadRequest() {
+    public void givenTeilnehmerOhneWunschprojekte_whenRegistrierung_thenTeilnehmerWirdNichtAngelegtMitHttpUnprocessableEntity() {
         Teilnehmer teilnehmer = createSampleTeilnehmer();
 
         whenRegisterTeilnehmer(teilnehmer)
         .then()
-            .statusCode(HttpStatus.SC_BAD_REQUEST);
+            .statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY);
 
         assertThat(getAllUsers().size(), is(0));
     }

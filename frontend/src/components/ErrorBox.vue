@@ -8,7 +8,7 @@
     <b>{{ headingText }}</b>
     <ul>
       <li
-        v-for="error in errors"
+        v-for="error in errorMessages"
         :key="error"
       >
         {{ error }}
@@ -19,13 +19,13 @@
 
 <script>
 export default {
-  name: 'ErrorAlert',
+  name: 'ErrorBox',
   props: {
     headingText: {
       type: String,
       required: true,
     },
-    errors: {
+    errorMessages: {
       type: Array,
       required: true,
     },

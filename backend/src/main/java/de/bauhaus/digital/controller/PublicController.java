@@ -3,8 +3,8 @@ package de.bauhaus.digital.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import de.bauhaus.digital.domain.Projekt;
 import de.bauhaus.digital.domain.Teilnehmer;
-import de.bauhaus.digital.exception.BadRequestException;
 import de.bauhaus.digital.exception.ProjektNotFoundException;
+import de.bauhaus.digital.exception.ValidationException;
 import de.bauhaus.digital.repository.ProjektRepository;
 import de.bauhaus.digital.repository.TeilnehmerRepository;
 import java.io.IOException;
@@ -51,7 +51,7 @@ public class PublicController {
         LOG.info("POST called on /public/register resource");
 
         if (user.getGewuenschteProjekte().isEmpty()) {
-            throw new BadRequestException("Eine Anmeldung ohne gewählte Projekte ist nicht möglich.");
+            throw new ValidationException("Eine Anmeldung ohne gewählte Projekte ist nicht möglich.");
         }
 
         Teilnehmer savedTeilnehmer = teilnehmerRepository.save(user);

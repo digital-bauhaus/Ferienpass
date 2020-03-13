@@ -107,7 +107,7 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
         boolean hitzeempfindlich = true;
         boolean essenVegetarier = true;
         boolean essenLaktoseUnvertraeglichkeit = true;
-        boolean essenEinerUnvertraeglichkeit = true;
+        boolean essenEierUnvertraeglichkeit = true;
         String essenWeitereLimitierungen = "vegan";
         String krankenkasse = "Krankenkasse";
 
@@ -144,7 +144,7 @@ public class TeilnehmerControllerTest extends AbstractControllerTest {
                 .hitzeempfindlich(hitzeempfindlich)
                 .essenVegetarier(essenVegetarier)
                 .essenLaktoseUnvertraeglichkeit(essenLaktoseUnvertraeglichkeit)
-                .essenEinerUnvertraeglichkeit(essenEinerUnvertraeglichkeit)
+                .essenEierUnvertraeglichkeit(essenEierUnvertraeglichkeit)
                 .essenWeitereLimitierungen(essenWeitereLimitierungen)
                 .krankenkasse(krankenkasse)
                 .liegtBehinderungVor(liegtBehinderungVor)

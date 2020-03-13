@@ -8,13 +8,7 @@
     @keydown.enter="preventAccidentalSubmit"
   >
     <!-- eslint-disable max-len -->
-
-    <FormSection
-      v-if="isAdminView"
-      label="Verwaltungsaufgaben"
-    >
-      <Verwaltungsaufgaben />
-    </FormSection>
+    <slot name="before" />
 
     <FormSection label="Grunddaten">
       <Grunddaten
@@ -82,7 +76,7 @@
         :hitzeempfindlich="value.hitzeempfindlich"
         :essen-vegetarier="value.essenVegetarier"
         :essen-laktose-unvertraeglichkeit="value.essenLaktoseUnvertraeglichkeit"
-        :essen-eier-unvertraeglichkeit="value.essenEinerUnvertraeglichkeit"
+        :essen-eier-unvertraeglichkeit="value.essenEierUnvertraeglichkeit"
         :essen-weitere-limitierungen="value.essenWeitereLimitierungen"
         @update:allergien="updateValue('allergien', $event)"
         @update:krankheiten="updateValue('krankheiten', $event)"
@@ -91,7 +85,7 @@
         @update:hitzeempfindlich="updateValue('hitzeempfindlich', $event)"
         @update:essenVegetarier="updateValue('essenVegetarier', $event)"
         @update:essenLaktoseUnvertraeglichkeit="updateValue('essenLaktoseUnvertraeglichkeit', $event)"
-        @update:essenEinerUnvertraeglichkeit="updateValue('essenEinerUnvertraeglichkeit', $event)"
+        @update:essenEierUnvertraeglichkeit="updateValue('essenEierUnvertraeglichkeit', $event)"
         @update:essenWeitereLimitierungen="updateValue('essenWeitereLimitierungen', $event)"
       >
         <Group label="Hausarzt">
@@ -163,54 +157,7 @@
       />
     </FormSection>
 
-    <FormSection
-      v-if="!isAdminView"
-      label="Angebote"
-    >
-      <Angebote>
-        <slot />
-      </Angebote>
-    </FormSection>
-
-    <FormSection
-      v-if="!isAdminView"
-      label="Datenschutzerklärung"
-    >
-      <Datenschutz />
-    </FormSection>
-
-    <FormSection
-      v-if="!isAdminView"
-      label="Teilnahmebedingungen"
-    >
-      <Teilnahmebedingungen />
-    </FormSection>
-
-    <CheckBoxGroup
-      v-if="!isAdminView"
-      base="akzeptanz"
-    >
-      <CheckBox
-        base="datenschutzErklaerungAkzeptiert"
-        :required="true"
-        :disabled="disabled"
-        :checked="value.datenschutzErklaerungAkzeptiert"
-        @input="updateValue('datenschutzErklaerungAkzeptiert', $event)"
-      >
-        Ich habe die Datenschutzerklärung gelesen und akzeptiert. *
-      </CheckBox>
-      <CheckBox
-        base="teilnahmeBedingungAkzeptiert"
-        :required="true"
-        :disabled="disabled"
-        :checked="value.teilnahmeBedingungAkzeptiert"
-        @input="updateValue('teilnahmeBedingungAkzeptiert', $event)"
-      >
-        Ich habe die Teilnahmebedingungen gelesen und akzeptiert. Ich bestätige die Richtigkeit meiner
-        Angaben. Wurden wissentlich falsche Angaben gemacht, darf die Organisation das angemeldete
-        Kind von den Angeboten ausschließen. *
-      </CheckBox>
-    </CheckBoxGroup>
+    <slot name="after" />
 
     <b-button
       type="submit"
@@ -229,27 +176,15 @@ import Grunddaten from '@/components/userEditor/Grunddaten.vue';
 import Pflichtangaben from '@/components/userEditor/Pflichtangaben.vue';
 import Gesundheit from '@/components/userEditor/Gesundheit.vue';
 import Behinderung from '@/components/userEditor/Behinderung.vue';
-import Datenschutz from '@/components/userEditor/Datenschutz.vue';
-import Angebote from '@/components/userEditor/Angebote.vue';
-import Teilnahmebedingungen from '@/components/userEditor/Teilnahmebedingungen.vue';
 import Kontakt from '@/components/userEditor/Kontakt.vue';
-import CheckBox from '@/components/wrapper/CheckBox.vue';
-import CheckBoxGroup from '@/components/wrapper/CheckBoxGroup.vue';
-import Group from '@/components/wrapper/Group.vue';
-import FormSection from '@/components/wrapper/FormSection.vue';
-import Verwaltungsaufgaben from '@/components/userEditor/Verwaltungsaufgaben.vue';
+import Group from '@/components/form/Group.vue';
+import FormSection from '@/components/form/FormSection.vue';
 
 export default {
   name: 'UserEditor',
   components: {
-    Verwaltungsaufgaben,
     FormSection,
-    CheckBoxGroup,
-    CheckBox,
     Kontakt,
-    Teilnahmebedingungen,
-    Angebote,
-    Datenschutz,
     Behinderung,
     Gesundheit,
     Pflichtangaben,
@@ -257,10 +192,6 @@ export default {
     Group,
   },
   props: {
-    isAdminView: {
-      type: Boolean,
-      default: false,
-    },
     value: {
       type: Object,
       required: true,

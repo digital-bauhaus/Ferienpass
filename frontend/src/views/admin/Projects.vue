@@ -31,13 +31,14 @@
 import api from '@/modules/ferienpass-api';
 import ProjectList from '@/components/ProjectList.vue';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
+import { DeleteDialog, FailureToast, SuccessDialog } from '@/modules/sweet-alert';
+import handleCommonServerError from '@/modules/error-handling';
 
 export default {
   name: 'Projects',
   components: { BaseLayout, ProjectList },
   data() {
     return {
-      serverErrorMessages: [],
       projects: [],
     };
   },
@@ -46,34 +47,31 @@ export default {
   },
   methods: {
     loadProjects() {
-      this.serverErrorMessages = [];
       api.getProjects().then((projects) => { this.projects = projects; })
-        .catch((e) => this.serverErrorMessages.push(e));
+        .catch(() => {
+          FailureToast.fire({
+            text: 'Fehler: Projekte konnten nicht geladen werden.',
+          });
+        });
     },
     deleteProject(projectId) {
-      this.$swal({
-        title: 'Wirklich löschen?',
-        text: 'Das Projekt wird vollständig gelöscht!',
-        icon: 'warning',
-        buttons: true,
-        dangerMode: true,
-      })
-        .then((willDelete) => {
-          if (willDelete) {
-            this.serverErrorMessages = [];
-            api.deleteProject(projectId).then(() => {
-              this.loadProjects();
-              return this.$swal('Projekt wurde gelöscht!', {
-                icon: 'success',
-              });
-            }).catch((e) => {
-              this.serverErrorMessages.push(e);
-              return this.$swal('Da ist was schief gegangen :(', {
-                icon: 'error',
-              });
-            });
-          }
+      DeleteDialog.fire({
+        text: 'Das Projekt wird vollständig gelöscht und die Daten sind verloren!',
+      }).then((result) => {
+        if (result.value) {
+          this.doDeleteProject(projectId);
+        }
+      });
+    },
+    doDeleteProject(projectId) {
+      api.deleteProject(projectId).then(() => {
+        SuccessDialog.fire({
+          text: 'Projekt wurde gelöscht!',
         });
+        this.loadProjects();
+      }).catch((error) => {
+        handleCommonServerError(error);
+      });
     },
   },
 };

@@ -14,6 +14,7 @@
       add-button-text="Hinzufügen"
       duplicate-tag-text="Doppelter Eintrag"
       :separator="separator"
+      add-on-change
       :value="value"
       @input="$emit('input', $event)"
     >

@@ -32,46 +32,47 @@
 import api from '@/modules/ferienpass-api';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
 import UserList from '@/components/UserList.vue';
+import { DeleteDialog, FailureToast, SuccessDialog } from '@/modules/sweet-alert';
+import handleCommonServerError from '@/modules/error-handling';
 
 export default {
   name: 'Users',
   components: { UserList, BaseLayout },
   data() {
     return {
-      serverErrorMessages: [],
       users: [],
     };
   },
   created() {
-    this.loadProjects();
+    this.loadUsers();
   },
   methods: {
-    loadProjects() {
-      this.serverErrorMessages = [];
+    loadUsers() {
       api.getUsers().then((users) => { this.users = users; })
-        .catch((e) => this.serverErrorMessages.push(e));
+        .catch(() => {
+          FailureToast.fire({
+            text: 'Fehler: Teilnehmer konnten nicht geladen werden.',
+          });
+        });
     },
     deleteUser(userId) {
-      this.$swal({
-        title: 'Wirklich löschen?',
+      DeleteDialog.fire({
         text: 'Der Teilnehmer wird vollständig gelöscht und die Daten sind verloren! Er muss sich über die Anmeldung wieder NEU anmelden!',
-        icon: 'warning',
-        buttons: true,
-        dangerMode: true,
-      })
-        .then((willDelete) => {
-          if (willDelete) {
-            this.errors = [];
-            api.deleteUser(userId).then(() => this.$swal('Teilnehmer wurde gelöscht!', {
-              icon: 'success',
-            })).catch((e) => {
-              this.errors.push(e);
-              return this.$swal('Da ist was schief gegangen :(', {
-                icon: 'error',
-              });
-            });
-          }
+      }).then((result) => {
+        if (result.value) {
+          this.doDeleteUser(userId);
+        }
+      });
+    },
+    doDeleteUser(userId) {
+      api.deleteUser(userId).then(() => {
+        SuccessDialog.fire({
+          text: 'Teilnehmer wurde gelöscht!',
         });
+        this.loadUsers();
+      }).catch((error) => {
+        handleCommonServerError(error);
+      });
     },
   },
 };

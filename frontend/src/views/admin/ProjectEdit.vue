@@ -3,11 +3,6 @@
     <h1>
       {{ titleText }}
     </h1>
-    <ErrorAlert
-      v-if="showServerErrorAlert"
-      :heading-text="serverErrorHeadingText"
-      :errors="serverErrorMessages"
-    />
     <ProjectEditor
       v-model="project"
       :submit-button-text="submitButtonText"
@@ -17,7 +12,7 @@
     <div v-if="!isNewProject">
       <h2>Angemeldete Nutzer:</h2>
       <UserList
-        :users="project.angemeldeteTeilnehmer"
+        :users="angemeldeteTeilnehmer"
         :show-projects="false"
       />
     </div>
@@ -36,27 +31,18 @@
         :users="angemeldeteTeilnehmer"
       />
     </div>
-
-    <b-alert
-      class="fixed-bottom w-50 mx-auto"
-      :show="successAutomaticDismissCountDown"
-      dismissible
-      variant="success"
-      @dismissed="successAutomaticDismissCountDown=0"
-      @dismiss-count-down="successAutomaticDismissCountDown = $event"
-    >
-      {{ successText }}
-    </b-alert>
   </BaseLayout>
 </template>
 
 <script>
 import ProjectEditor from '@/components/ProjectEditor.vue';
 import api from '@/modules/ferienpass-api';
-import ErrorAlert from '@/components/ErrorAlert.vue';
 import UserList from '@/components/UserList.vue';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
 import UserListForExport from '@/components/UserListForExport.vue';
+import { defaultProject } from '@/modules/models';
+import { FailureToast, SuccessToast } from '@/modules/sweet-alert';
+import handleCommonServerError from '@/modules/error-handling';
 
 export default {
   name: 'ProjectEdit',
@@ -64,24 +50,14 @@ export default {
     UserListForExport,
     BaseLayout,
     ProjectEditor,
-    ErrorAlert,
     UserList,
   },
   data() {
     return {
-      project: {
-        name: '',
-        datumBeginn: '',
-        datumEnde: '',
-        plaetzeGesamt: '',
-        plaetzeReserviert: '',
-        mindestAlter: '',
-        hoechstAlter: '',
-      },
+      project: defaultProject,
       angemeldeteTeilnehmer: [],
       stornierteTeilnehmer: [],
-      serverErrorMessages: [],
-      successAutomaticDismissCountDown: 0,
+      loaded: false,
     };
   },
   computed: {
@@ -103,62 +79,58 @@ export default {
       }
       return 'Speichern';
     },
-    successText() {
-      if (this.isNewProject) {
-        return 'Veranstaltung erfolgreich angelegt.';
-      }
-      return 'Veranstaltung erfolgreich gespeichert.';
-    },
-    serverErrorHeadingText() {
-      if (this.isNewProject) {
-        return 'Anlegen nicht möglich. Bitte beheben Sie folgende Fehler:';
-      }
-      return 'Speichern nicht möglich. Bitte beheben Sie folgende Fehler:';
-    },
-    showServerErrorAlert() {
-      return this.serverErrorMessages.length > 0;
-    },
   },
   created() {
     if (!this.isNewProject) {
-      this.loadProjectData();
-      this.loadRegisteredUsers();
-      this.loadCancelledUsers();
+      const dataPromises = [];
+      dataPromises.push(this.loadProjectData);
+      dataPromises.push(this.loadRegisteredUsers);
+      dataPromises.push(this.loadCancelledUsers);
+      Promise.all(dataPromises).then(() => { this.loaded = true; });
     }
   },
   methods: {
     loadProjectData() {
-      this.serverErrorMessages = [];
       api.getProjectById(this.projectId).then((project) => {
         this.project = project;
-      }).catch((e) => this.serverErrorMessages.push(e.toString()));
+      }).catch(() => {
+        FailureToast.fire({
+          text: 'Fehler: Projekt konnte nicht geladen werden.',
+        });
+      });
     },
     loadRegisteredUsers() {
-      this.serverErrorMessages = [];
       api.getRegisteredUsersOfProject(this.projectId).then((users) => {
         this.angemeldeteTeilnehmer = users;
-      }).catch((e) => this.serverErrorMessages.push(e.toString()));
+      }).catch(() => {
+        FailureToast.fire({
+          text: 'Fehler: Angemeldete Teilnehmers des Projektes konnten nicht geladen werden.',
+        });
+      });
     },
     loadCancelledUsers() {
-      this.serverErrorMessages = [];
       api.getCancelledUsersOfProject(this.projectId).then((users) => {
         this.stornierteTeilnehmer = users;
-      }).catch((e) => this.serverErrorMessages.push(e.toString()));
+      }).catch(() => {
+        FailureToast.fire({
+          text: 'Fehler: Stornierte Teilnehmers des Projektes konnten nicht geladen werden.',
+        });
+      });
     },
     createOrUpdateProject() {
-      this.serverErrorMessages = [];
       if (this.isNewProject) {
         api.createProject(this.project).then(() => {
-          this.showSuccessInfo();
-        }).catch((errorMessages) => { this.serverErrorMessages = errorMessages; });
+          SuccessToast.fire({ text: 'Anlegen erfolgreich' });
+        }).catch((error) => {
+          handleCommonServerError(error);
+        });
       } else {
         api.updateProject(this.project).then(() => {
-          this.showSuccessInfo();
-        }).catch((errorMessages) => { this.serverErrorMessages = errorMessages; });
+          SuccessToast.fire({ text: 'Speichern erfolgreich' });
+        }).catch((error) => {
+          handleCommonServerError(error);
+        });
       }
-    },
-    showSuccessInfo() {
-      this.successAutomaticDismissCountDown = 5;
     },
   },
 };

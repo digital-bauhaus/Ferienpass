@@ -251,7 +251,7 @@ public class ProjekteControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void givenProjektWithOneTeilnehmer_whenUpdatingProjektWithTooMuchReservedSlots_thenBadRequest() {
+    public void givenProjektWithOneTeilnehmer_whenUpdatingProjektWithTooMuchReservedSlots_thenHttpUnprocessableEntity() {
         Long projectId = addProject(createSampleProjektBuilder().plaetzeGesamt(10).plaetzeReserviert(9).build());
         Long userId = addUser(createSampleTeilnehmer());
 
@@ -262,12 +262,12 @@ public class ProjekteControllerTest extends AbstractControllerTest {
                 .build();
 
         given()
-                .body(projekt)
-                .contentType(ContentType.JSON)
-                .when()
-                .put(BASE_URL + "/projects")
-                .then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST);
+            .body(projekt)
+            .contentType(ContentType.JSON)
+        .when()
+            .put(BASE_URL + "/projects")
+        .then()
+            .statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY);
     }
 
     // Check Custom Constraint Validations ------------------------------------------------------------
