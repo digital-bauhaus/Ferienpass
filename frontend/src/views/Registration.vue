@@ -49,10 +49,10 @@
 
         <CheckBoxGroup
           base="akzeptanz"
-          :disabled="formDisabled"
         >
           <CheckBox
             v-model="user.datenschutzErklaerungAkzeptiert"
+            :disabled="formDisabled"
             base="datenschutzErklaerungAkzeptiert"
             :required="true"
           >
@@ -60,6 +60,7 @@
           </CheckBox>
           <CheckBox
             v-model="user.teilnahmeBedingungAkzeptiert"
+            :disabled="formDisabled"
             base="teilnahmeBedingungAkzeptiert"
             :required="true"
           >
