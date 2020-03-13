@@ -1,5 +1,6 @@
 package de.bauhaus.digital.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonView;
 import de.bauhaus.digital.controller.Views;
@@ -105,6 +106,7 @@ public class Teilnehmer {
 
     private boolean essenVegetarier;
     private boolean essenLaktoseUnvertraeglichkeit;
+    @JsonProperty("essenEierUnvertraeglichkeit")
     private boolean essenEinerUnvertraeglichkeit;
     private String essenWeitereLimitierungen;
 
