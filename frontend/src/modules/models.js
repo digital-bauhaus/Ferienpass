@@ -1,5 +1,8 @@
 export const defaultUser = {
   id: null,
+  aktiv: true,
+  registrierungsdatum: '',
+  bezahlt: false,
   schulkind: false,
   vorname: '',
   nachname: '',

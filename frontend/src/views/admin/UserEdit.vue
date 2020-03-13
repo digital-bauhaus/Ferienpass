@@ -11,7 +11,12 @@
     >
       <template v-slot:before>
         <FormSection label="Verwaltungsaufgaben">
-          <Verwaltungsaufgaben />
+          <Verwaltungsaufgaben
+            :bezahlt.sync="user.bezahlt"
+            :registrierungsdatum="user.registrierungsdatum"
+            :datenschutz-erklaerung-akzeptiert="user.datenschutzErklaerungAkzeptiert"
+            :teilnahme-bedingung-akzeptiert="user.teilnahmeBedingungAkzeptiert"
+          />
         </FormSection>
       </template>
     </UserEditor>
@@ -116,14 +121,14 @@ export default {
   },
   created() {
     const dataPromises = [];
-    dataPromises.push(this.loadUserData);
-    dataPromises.push(this.loadProjects);
-    dataPromises.push(this.loadRegisteredProjectsOfUser);
-    dataPromises.push(this.loadCancelledProjectsOfUser);
+    dataPromises.push(this.loadUserData());
+    dataPromises.push(this.loadProjects());
+    dataPromises.push(this.loadRegisteredProjectsOfUser());
+    dataPromises.push(this.loadCancelledProjectsOfUser());
     Promise.all(dataPromises).then(() => { this.loaded = true; });
   },
   methods: {
-    loadUserData() {
+    async loadUserData() {
       return api.getUserById(this.userId).then((user) => {
         this.user = user;
       }).catch(() => {
@@ -132,14 +137,14 @@ export default {
         });
       });
     },
-    loadProjects() {
+    async loadProjects() {
       return api.getProjects().then((projects) => { this.allProjects = projects; }).catch(() => {
         FailureToast.fire({
           text: 'Fehler: Projekte konnten nicht geladen werden.',
         });
       });
     },
-    loadRegisteredProjectsOfUser() {
+    async loadRegisteredProjectsOfUser() {
       return api.getRegisteredProjectsOfUser(this.userId).then(
         (projects) => { this.registeredProjectsOfUser = projects; },
       ).catch(() => {
@@ -148,7 +153,7 @@ export default {
         });
       });
     },
-    loadCancelledProjectsOfUser() {
+    async loadCancelledProjectsOfUser() {
       return api.getCancelledProjectsOfUser(this.userId).then(
         (projects) => { this.cancelledProjectsOfUser = projects; },
       ).catch(() => {

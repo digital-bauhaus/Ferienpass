@@ -83,15 +83,15 @@ export default {
   created() {
     if (!this.isNewProject) {
       const dataPromises = [];
-      dataPromises.push(this.loadProjectData);
-      dataPromises.push(this.loadRegisteredUsers);
-      dataPromises.push(this.loadCancelledUsers);
+      dataPromises.push(this.loadProjectData());
+      dataPromises.push(this.loadRegisteredUsers());
+      dataPromises.push(this.loadCancelledUsers());
       Promise.all(dataPromises).then(() => { this.loaded = true; });
     }
   },
   methods: {
-    loadProjectData() {
-      api.getProjectById(this.projectId).then((project) => {
+    async loadProjectData() {
+      return api.getProjectById(this.projectId).then((project) => {
         this.project = project;
       }).catch(() => {
         FailureToast.fire({
@@ -99,8 +99,8 @@ export default {
         });
       });
     },
-    loadRegisteredUsers() {
-      api.getRegisteredUsersOfProject(this.projectId).then((users) => {
+    async loadRegisteredUsers() {
+      return api.getRegisteredUsersOfProject(this.projectId).then((users) => {
         this.angemeldeteTeilnehmer = users;
       }).catch(() => {
         FailureToast.fire({
@@ -108,8 +108,8 @@ export default {
         });
       });
     },
-    loadCancelledUsers() {
-      api.getCancelledUsersOfProject(this.projectId).then((users) => {
+    async loadCancelledUsers() {
+      return api.getCancelledUsersOfProject(this.projectId).then((users) => {
         this.stornierteTeilnehmer = users;
       }).catch(() => {
         FailureToast.fire({
