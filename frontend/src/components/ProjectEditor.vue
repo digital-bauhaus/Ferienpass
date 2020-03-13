@@ -22,7 +22,7 @@
           base="project-beginDate"
           label="Beginndatum"
           :required="true"
-          placeholder="Datum (TT.MM.JJJ)"
+          placeholder="Datum (TT.MM.JJJJ)"
           :value="value.datumBeginn"
           @update="updateValue('datumBeginn', $event)"
         />
@@ -32,7 +32,7 @@
           base="project-endDate"
           label="Enddatum"
           :required="true"
-          placeholder="Datum (TT.MM.JJJ)"
+          placeholder="Datum (TT.MM.JJJJ)"
           :value="value.datumEnde"
           @update="updateValue('datumEnde', $event)"
         />
