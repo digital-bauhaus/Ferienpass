@@ -3,11 +3,6 @@
     <h1>
       {{ titleText }}
     </h1>
-    <ErrorBox
-      v-if="showServerErrorAlert"
-      :heading-text="serverErrorHeadingText"
-      :error-messages="serverErrorMessages"
-    />
 
     <UserEditor
       v-model="user"
@@ -64,29 +59,19 @@
         </b-button>
       </template>
     </ProjectList>
-
-    <b-alert
-      class="fixed-bottom w-50 mx-auto"
-      :show="successAutomaticDismissCountDown"
-      dismissible
-      variant="success"
-      @dismissed="successAutomaticDismissCountDown=0"
-      @dismiss-count-down="successAutomaticDismissCountDown = $event"
-    >
-      {{ successText }}
-    </b-alert>
   </BaseLayout>
 </template>
 
 <script>
 import api from '@/modules/ferienpass-api';
-import ErrorBox from '@/components/ErrorBox.vue';
 import UserEditor from '@/components/UserEditor.vue';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
 import ProjectList from '@/components/ProjectList.vue';
 import Verwaltungsaufgaben from '@/components/userEditor/Verwaltungsaufgaben.vue';
 import FormSection from '@/components/form/FormSection.vue';
 import { defaultUser } from '@/modules/models';
+import { FailureToast, SuccessToast } from '@/modules/sweet-alert';
+import handleCommonServerError from '@/modules/error-handling';
 
 export default {
   name: 'UserEdit',
@@ -94,15 +79,12 @@ export default {
     ProjectList,
     BaseLayout,
     UserEditor,
-    ErrorBox,
     Verwaltungsaufgaben,
     FormSection,
   },
   data() {
     return {
       user: defaultUser,
-      serverErrorMessages: [],
-      successAutomaticDismissCountDown: 0,
       allProjects: [],
       registeredProjectsOfUser: [],
       cancelledProjectsOfUser: [],
@@ -118,15 +100,6 @@ export default {
     },
     submitButtonText() {
       return 'Speichern';
-    },
-    successText() {
-      return 'Teilnehmer erfolgreich gespeichert.';
-    },
-    serverErrorHeadingText() {
-      return 'Speichern nicht möglich. Bitte beheben Sie folgende Fehler:';
-    },
-    showServerErrorAlert() {
-      return this.serverErrorMessages.length > 0;
     },
     availableProjects() {
       return this.allProjects.filter((project) => {
@@ -147,55 +120,72 @@ export default {
     dataPromises.push(this.loadProjects());
     dataPromises.push(this.loadRegisteredProjectsOfUser());
     dataPromises.push(this.loadCancelledProjectsOfUser());
-    Promise.all(dataPromises).then(() => { this.loaded = true; }).catch(
-      (e) => this.serverErrorMessages.push(e.toString()),
-    );
+    Promise.all(dataPromises).then(() => { this.loaded = true; });
   },
   methods: {
     loadUserData() {
-      this.serverErrorMessages = [];
       return api.getUserById(this.userId).then((user) => {
         this.user = user;
-      }).catch((e) => this.serverErrorMessages.push(e.toString()));
+      }).catch(() => {
+        FailureToast.fire({
+          text: 'Fehler: Teilnehmer konnte nicht geladen werden.',
+        });
+      });
     },
     loadProjects() {
-      return api.getProjects().then((projects) => { this.allProjects = projects; });
+      return api.getProjects().then((projects) => { this.allProjects = projects; }).catch(() => {
+        FailureToast.fire({
+          text: 'Fehler: Projekte konnten nicht geladen werden.',
+        });
+      });
     },
     loadRegisteredProjectsOfUser() {
       return api.getRegisteredProjectsOfUser(this.userId).then(
         (projects) => { this.registeredProjectsOfUser = projects; },
-      );
+      ).catch(() => {
+        FailureToast.fire({
+          text: 'Fehler: Angemeldete Projekte des Teilnehmers konnten nicht geladen werden.',
+        });
+      });
     },
     loadCancelledProjectsOfUser() {
       return api.getCancelledProjectsOfUser(this.userId).then(
         (projects) => { this.cancelledProjectsOfUser = projects; },
-      );
+      ).catch(() => {
+        FailureToast.fire({
+          text: 'Fehler: Stornierte Projekte des Teilnehmers konnten nicht geladen werden.',
+        });
+      });
     },
     reloadProjectsOfUser() {
       this.loadRegisteredProjectsOfUser();
       this.loadCancelledProjectsOfUser();
     },
     updateUser() {
-      this.serverErrorMessages = [];
       api.updateUser(this.user).then(() => {
-        this.showSuccessInfo();
-      }).catch((errorMessages) => { this.serverErrorMessages = errorMessages; });
+        SuccessToast.fire({ text: 'Speichern erfolgreich' });
+      }).catch((error) => {
+        handleCommonServerError(error);
+      });
     },
     unassignFromProject(projectId, userId) {
       api.unassignUserFromProject(projectId, userId).then(() => {
+        SuccessToast.fire({ text: 'Stornierung erfolgreich' });
         this.reloadProjectsOfUser();
+      }).catch((error) => {
+        handleCommonServerError(error);
       });
     },
     assignToProject(projectId, userId) {
       api.assignUserToProject(projectId, userId).then(() => {
+        SuccessToast.fire({ text: 'Anmeldung erfolgreich' });
         this.reloadProjectsOfUser();
+      }).catch((error) => {
+        handleCommonServerError(error);
       });
     },
     reactivateProject(projectId, userId) {
       this.assignToProject(projectId, userId);
-    },
-    showSuccessInfo() {
-      this.successAutomaticDismissCountDown = 5;
     },
   },
 };

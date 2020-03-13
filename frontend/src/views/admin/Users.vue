@@ -32,7 +32,7 @@
 import api from '@/modules/ferienpass-api';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
 import UserList from '@/components/UserList.vue';
-import { DeleteDialog, FailureToast, SuccessDialog, } from '@/modules/sweet-alert';
+import { DeleteDialog, FailureToast, SuccessDialog } from '@/modules/sweet-alert';
 import handleCommonServerError from '@/modules/error-handling';
 
 export default {

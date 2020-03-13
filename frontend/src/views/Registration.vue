@@ -82,7 +82,7 @@ import RegistrationLayout from '@/views/layouts/RegistrationLayout.vue';
 import ProjektAuswahl from '@/components/userEditor/ProjektAuswahl.vue';
 import ProjektAuswahlItem from '@/components/userEditor/ProjektAuswahlItem.vue';
 import { defaultUser } from '@/modules/models';
-import { FailureDialog, SuccessDialog, TechnicalProblemsModal, } from '@/modules/sweet-alert';
+import { FailureDialog, SuccessDialog, TechnicalProblemsModal } from '@/modules/sweet-alert';
 import FormSection from '@/components/form/FormSection.vue';
 import Angebote from '@/components/userEditor/Angebote.vue';
 import Datenschutz from '@/components/userEditor/Datenschutz.vue';
@@ -176,7 +176,6 @@ export default {
       console.log(JSON.stringify(this.gewuenschteProjekte));
     },
     updateGewuenschteProjekte(projectsFromServer) {
-      console.log(JSON.stringify(this.gewuenschteProjekte));
       const updatedGewuenschteProjekte = {};
       projectsFromServer.forEach((project) => {
         updatedGewuenschteProjekte[project.id] = false;
@@ -187,7 +186,6 @@ export default {
         }
       });
       this.gewuenschteProjekte = updatedGewuenschteProjekte;
-      console.log(JSON.stringify(this.gewuenschteProjekte));
     },
     updateGewuenschtesProjekt(projektId, newValue) {
       this.gewuenschteProjekte[projektId] = newValue;
