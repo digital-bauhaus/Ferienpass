@@ -72,7 +72,7 @@ export default {
     },
     state() {
       return !(this.isTooYoung || this.isTooOld
-        || this.isFullyBooked || this.beginsDuringAnother);
+        || this.isFullyBooked || this.atTheSameTimeAsAnother);
     },
     isTooYoung() {
       return this.ageAtProjectStart < this.projekt.mindestAlter;
@@ -80,7 +80,7 @@ export default {
     isTooOld() {
       return this.ageAtProjectStart > this.projekt.hoechstAlter;
     },
-    beginsDuringAnother() {
+    atTheSameTimeAsAnother() {
       return this.alleProjekte.some((otherProjekt) => {
         if (this.projekt.id !== otherProjekt.id && this.gewuenschteProjekte[otherProjekt.id]) {
           const thisProjektBeginDatum = dayjs(this.projekt.datumBeginn);
@@ -89,20 +89,20 @@ export default {
           const otherProjektEndDatum = dayjs(otherProjekt.datumEnde);
 
           // pruefe zeitliche Ueberschneidungen
-          if (thisProjektBeginDatum.isBefore(otherProjektBeginDatum)
-              && thisProjektEndDatum.isAfter(otherProjektEndDatum)) {
+          if (thisProjektBeginDatum.isSameOrBefore(otherProjektBeginDatum)
+              && thisProjektEndDatum.isSameOrAfter(otherProjektEndDatum)) {
             return true;
           }
-          if (thisProjektEndDatum.isAfter(otherProjektBeginDatum)
-              && thisProjektEndDatum.isBefore(otherProjektEndDatum)) {
+          if (thisProjektEndDatum.isSameOrAfter(otherProjektBeginDatum)
+              && thisProjektEndDatum.isSameOrBefore(otherProjektEndDatum)) {
             return true;
           }
-          if (thisProjektBeginDatum.isBefore(otherProjektEndDatum)
-              && thisProjektEndDatum.isAfter(otherProjektBeginDatum)) {
+          if (thisProjektBeginDatum.isSameOrBefore(otherProjektEndDatum)
+              && thisProjektEndDatum.isSameOrAfter(otherProjektBeginDatum)) {
             return true;
           }
-          if (thisProjektEndDatum.isAfter(otherProjektBeginDatum)
-              && thisProjektBeginDatum.isBefore(otherProjektEndDatum)) {
+          if (thisProjektEndDatum.isSameOrAfter(otherProjektBeginDatum)
+              && thisProjektBeginDatum.isSameOrBefore(otherProjektEndDatum)) {
             return true;
           }
         }
@@ -122,7 +122,7 @@ export default {
       if (this.isTooOld) {
         return 'Altersbeschränkung nicht erfüllt.';
       }
-      if (this.beginsDuringAnother) {
+      if (this.atTheSameTimeAsAnother) {
         return 'Zeitliche Überschneidung.';
       }
       return '';

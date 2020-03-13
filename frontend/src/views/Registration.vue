@@ -194,6 +194,7 @@ export default {
           case 422:
             // custom validation error
             FailureDialog.fire({
+              icon: 'warning',
               text: error.response.data.message,
             });
             break;
