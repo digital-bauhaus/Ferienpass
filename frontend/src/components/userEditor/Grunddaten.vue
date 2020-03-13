@@ -23,6 +23,8 @@
       label="Geburtsdatum meines Kindes"
       :required="true"
       :disabled="disabled"
+      :placeholder="'TT.MM.JJJJ'"
+      :max-date="Date.now()"
       :value="geburtsdatum"
       @update="$emit('update:geburtsdatum', $event)"
     />

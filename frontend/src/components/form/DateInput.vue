@@ -10,7 +10,7 @@
         ref="flatpickr"
         :value="value"
         :config="config"
-        placeholder="TT.MM.JJJJ"
+        :placeholder="placeholder"
         :disabled="disabled"
         :required="required"
         @input="onDatePickerInput"
@@ -70,6 +70,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    maxDate: {
+      type: Date,
+      default: null,
+    },
   },
   data() {
     return {
@@ -80,7 +84,7 @@ export default {
         altInput: true,
         allowInput: true,
         locale: German,
-        maxDate: Date.now(),
+        maxDate: this.maxDate,
       },
     };
   },
