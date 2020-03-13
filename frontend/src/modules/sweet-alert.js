@@ -14,7 +14,7 @@ const TechnicalProblemsModal = Swal.mixin({
 
 const TechnicalProblemsDialog = Swal.mixin({
   titleText: 'Oh nein!',
-  text: 'Da ist leider etwas unerwartetes schiefgegangen.<br>Bitte versuchen Sie es später nochmal.',
+  html: 'Da ist leider etwas unerwartetes schiefgegangen.<br>Bitte versuchen Sie es später nochmal.',
   icon: 'error',
   showCancelButton: false,
   confirmButtonText: 'Ok',

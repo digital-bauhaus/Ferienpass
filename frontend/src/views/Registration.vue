@@ -200,7 +200,7 @@ export default {
     },
     handleRegistrationSuccess() {
       SuccessDialog.fire({
-        html: 'Ihre Anmeldung war erfolgreich!<br>Sie erhalten eine eMail mit der Zahlungsaufforderung.',
+        html: 'Ihre Anmeldung war erfolgreich!<br>Sie erhalten innerhalb der nächsten 3 Werktage eine eMail mit der Zahlungsaufforderung.',
       }).then(() => {
         this.registrierungErfolgreichAbgeschlossen = true;
       });
