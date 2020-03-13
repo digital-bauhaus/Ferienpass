@@ -18,10 +18,9 @@
       @update="$emit('update:vorname', $event)"
     />
 
-    <FieldInput
+    <DateInput
       base="grunddaten-geburtsdatum"
       label="Geburtsdatum meines Kindes"
-      type="date"
       :required="true"
       :disabled="disabled"
       :value="geburtsdatum"
@@ -105,10 +104,13 @@
 import FieldInput from '@/components/form/FieldInput.vue';
 import CheckBoxGroup from '@/components/form/CheckBoxGroup.vue';
 import CheckBox from '@/components/form/CheckBox.vue';
+import DateInput from '@/components/form/DateInput.vue';
 
 export default {
   name: 'Grunddaten',
-  components: { CheckBox, CheckBoxGroup, FieldInput },
+  components: {
+    DateInput, CheckBox, CheckBoxGroup, FieldInput,
+  },
   props: {
     disabled: {
       type: Boolean,

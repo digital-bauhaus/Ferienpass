@@ -18,9 +18,8 @@
       </b-col>
 
       <b-col sm="6">
-        <FieldInput
+        <DateInput
           base="project-beginDate"
-          type="date"
           label="Beginndatum"
           :required="true"
           placeholder="Datum (TT.MM.JJJ)"
@@ -29,9 +28,8 @@
         />
       </b-col>
       <b-col sm="6">
-        <FieldInput
+        <DateInput
           base="project-endDate"
-          type="date"
           label="Enddatum"
           :required="true"
           placeholder="Datum (TT.MM.JJJ)"
@@ -97,10 +95,11 @@
 
 <script>
 import FieldInput from '@/components/form/FieldInput.vue';
+import DateInput from '@/components/form/DateInput.vue';
 
 export default {
   name: 'ProjectEditor',
-  components: { FieldInput },
+  components: { DateInput, FieldInput },
   props: {
     value: {
       type: Object,
