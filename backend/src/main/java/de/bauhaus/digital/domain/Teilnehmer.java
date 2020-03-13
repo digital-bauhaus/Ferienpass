@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -106,8 +105,7 @@ public class Teilnehmer {
 
     private boolean essenVegetarier;
     private boolean essenLaktoseUnvertraeglichkeit;
-    @Column(name = 'essen_einer_unvertraeglichkeit') // TODO remove
-    private boolean essenEierUnvertraeglichkeit;
+    private boolean essenEinerUnvertraeglichkeit;
     private String essenWeitereLimitierungen;
 
     private String krankenkasse;
@@ -162,7 +160,7 @@ public class Teilnehmer {
         hitzeempfindlich = builder.hitzeempfindlich;
         essenVegetarier = builder.essenVegetarier;
         essenLaktoseUnvertraeglichkeit = builder.essenLaktoseUnvertraeglichkeit;
-        essenEierUnvertraeglichkeit = builder.essenEierUnvertraeglichkeit;
+        essenEinerUnvertraeglichkeit = builder.essenEierUnvertraeglichkeit;
         essenWeitereLimitierungen = builder.essenWeitereLimitierungen;
         krankenkasse = builder.krankenkasse;
         arzt = builder.arzt;
@@ -333,7 +331,7 @@ public class Teilnehmer {
     }
 
     public boolean isEssenEierUnvertraeglichkeit() {
-        return essenEierUnvertraeglichkeit;
+        return essenEinerUnvertraeglichkeit;
     }
 
     public String getEssenWeitereLimitierungen() {
@@ -392,7 +390,7 @@ public class Teilnehmer {
                 ", hitzeempfindlich=" + hitzeempfindlich +
                 ", essenVegetarier=" + essenVegetarier +
                 ", essenLaktoseUnvertraeglichkeit=" + essenLaktoseUnvertraeglichkeit +
-                ", essenEierUnvertraeglichkeit=" + essenEierUnvertraeglichkeit +
+                ", essenEierUnvertraeglichkeit=" + essenEinerUnvertraeglichkeit +
                 ", essenWeitereLimitierungen='" + essenWeitereLimitierungen + '\'' +
                 ", krankenkasse='" + krankenkasse + '\'' +
                 ", arzt=" + arzt +
