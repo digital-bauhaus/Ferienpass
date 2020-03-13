@@ -14,6 +14,7 @@
           <CheckBox
             v-model="user.schulkind"
             base="user-schulkind"
+            :disabled="registrierungErfolgreichAbgeschlossen"
             :required="true"
           >
             Mein Kind geht zur Schule *
@@ -110,11 +111,12 @@ export default {
       gewuenschteProjekte: {},
       allProjects: [],
       projectsLoaded: false,
+      registrierungErfolgreichAbgeschlossen: false,
     };
   },
   computed: {
     formDisabled() {
-      return !this.user.schulkind;
+      return (!this.user.schulkind) || this.registrierungErfolgreichAbgeschlossen;
     },
     titleText() {
       return 'Ferienpass Weimar – Anmeldung';
@@ -199,6 +201,8 @@ export default {
     handleRegistrationSuccess() {
       SuccessDialog.fire({
         html: 'Ihre Anmeldung war erfolgreich!<br>Sie erhalten eine eMail mit der Zahlungsaufforderung.',
+      }).then(() => {
+        this.registrierungErfolgreichAbgeschlossen = true;
       });
     },
     handleRegistrationError(error) {
