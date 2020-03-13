@@ -1,27 +1,30 @@
 <template>
   <b-form-group
     :id="`${base}-group`"
+    class="date-input"
     :label-for="`${base}-value`"
     :label="`${label}${required ? ' *' : ''}`"
   >
-    <b-input-group>
+    <b-input-group class="date-input__input-group">
       <flat-pickr
         ref="flatpickr"
-        :value="date"
+        :value="value"
         :config="config"
-        class="form-control"
         placeholder="TT.MM.JJJJ"
+        :disabled="disabled"
+        :required="required"
         @input="onDatePickerInput"
-        @on-change="onDatePickerChange"
         @on-close="onClose"
       />
       <b-input-group-append>
-        <b-button data-toggle>
+        <b-button
+          :disabled="disabled"
+          data-toggle
+        >
           <BIconCalendar />
         </b-button>
       </b-input-group-append>
     </b-input-group>
-    <p>{{ date }}</p>
   </b-form-group>
 </template>
 
@@ -48,7 +51,7 @@ export default {
       required: true,
     },
     value: {
-      type: [String, Number],
+      type: [String, Date],
       required: true,
     },
     label: {
@@ -70,35 +73,38 @@ export default {
   },
   data() {
     return {
-      date: null,
       config: {
-        wrap: true, // set wrap to true only when using 'input-group'
-        dateFormat: 'd.m.Y',
+        wrap: true, // true, because we use it around bootstrap
+        dateFormat: 'Y-m-d', // the 'internal' format, used as value
+        altFormat: 'd.m.Y', // the 'display' format that is shown to the user
+        altInput: true,
         allowInput: true,
         locale: German,
         maxDate: Date.now(),
-        onKeyDown: this.onKeyDown,
-        onValueUpdate: this.onValueUpdate,
-        onChange: this.onChange,
       },
     };
   },
   methods: {
-    onDatePickerInput(event) {
-      console.log(`onDatePickerInput : ${event}: ${this.date}`);
-      this.date = event;
+    onDatePickerInput(dateInInternalFormat) {
+      this.$emit('update', dateInInternalFormat);
     },
-    onDatePickerChange(event) {
-      console.log(`onDatePickerChange: ${event} | ${this.date}`);
-    },
-    onClose() {
-      console.log('onClose');
-      // this.$refs.flatpickr.fp.setDate(this.date, false, 'd.m.Y');
+    onClose(selectedDates, dateInInternalFormat, flatPickrInstance) {
+      // When the calender dialog is closed, we explicitly set the current text (user input)
+      // as date for flatPickr
+      flatPickrInstance.setDate(
+        flatPickrInstance.altInput.value, false, flatPickrInstance.config.altFormat,
+      );
+      this.onDatePickerInput(dateInInternalFormat);
     },
   },
 };
 </script>
 
 <style scoped>
+.date-input__input-group > .form-control {
+  /*the normal bootstrap css is faulty because of the hidden flatpickr input element*/
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
 
 </style>
