@@ -2,10 +2,10 @@ package de.bauhaus.digital.controller;
 
 import de.bauhaus.digital.domain.Projekt;
 import de.bauhaus.digital.domain.Teilnehmer;
-import de.bauhaus.digital.exception.BadRequestException;
 import de.bauhaus.digital.exception.ProjektFullyBookedException;
 import de.bauhaus.digital.exception.ProjektNotFoundException;
 import de.bauhaus.digital.exception.UserNotFoundException;
+import de.bauhaus.digital.exception.ValidationException;
 import de.bauhaus.digital.repository.ProjektRepository;
 import de.bauhaus.digital.repository.TeilnehmerRepository;
 import java.util.List;
@@ -95,7 +95,7 @@ public class ProjekteController {
         // Note: Since we do not have access to the Anmeldungen-List in the JSON (this property is ignored)
         // we have to do some checks here
         if (projektWithTeilnehmern.getPlaetzeGesamt() < projektWithTeilnehmern.getPlaetzeBelegt()) {
-            throw new BadRequestException("Es dürfen nicht weniger Gesamtplätze angegeben werden, als aktuell belegt sind.");
+            throw new ValidationException("Es dürfen nicht weniger Gesamtplätze angegeben werden, als aktuell belegt sind.");
         }
 
         Projekt savedProjekt = projektRepository.save(projektWithTeilnehmern);

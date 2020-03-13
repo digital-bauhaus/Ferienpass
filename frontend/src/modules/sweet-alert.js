@@ -2,9 +2,56 @@ import Swal from 'sweetalert2';
 
 import '@sweetalert2/theme-bootstrap-4/bootstrap-4.scss';
 
-const SuccessToast = Swal.mixin({
-  toast: true,
+const TechnicalProblemsModal = Swal.mixin({
+  titleText: 'Oh Nein!',
+  html: 'Leider haben wir gerade technische Schwierigkeiten.<br>Bitte versuchen Sie es später nochmal.',
+  icon: 'error',
+  position: 'top',
+  showConfirmButton: false,
+  allowOutsideClick: false,
+  allowEscapeKey: false,
+});
+
+const TechnicalProblemsDialog = Swal.mixin({
+  titleText: 'Oh nein!',
+  text: 'Da ist leider etwas unerwartetes schiefgegangen.<br>Bitte versuchen Sie es später nochmal.',
+  icon: 'error',
+  showCancelButton: false,
+  confirmButtonText: 'Ok',
+  focusConfirm: true,
+  customClass: {
+    confirmButton: 'btn btn-primary mx-2',
+  },
+  buttonsStyling: false,
+});
+
+const FailureDialog = Swal.mixin({
+  titleText: 'Oh nein!',
+  icon: 'error',
+  showCancelButton: false,
+  confirmButtonText: 'Ok',
+  focusConfirm: true,
+  customClass: {
+    confirmButton: 'btn btn-primary mx-2',
+  },
+  buttonsStyling: false,
+});
+
+const SuccessDialog = Swal.mixin({
+  titleText: 'Geschafft!',
   icon: 'success',
+  showCancelButton: false,
+  confirmButtonText: 'Ok',
+  focusConfirm: true,
+  customClass: {
+    confirmButton: 'btn btn-primary mx-2',
+  },
+  buttonsStyling: false,
+});
+
+const FailureToast = Swal.mixin({
+  toast: true,
+  icon: 'error',
   position: 'bottom',
   showConfirmButton: false,
   timer: 3000,
@@ -15,9 +62,9 @@ const SuccessToast = Swal.mixin({
   },
 });
 
-const FailureToast = Swal.mixin({
+const SuccessToast = Swal.mixin({
   toast: true,
-  icon: 'error',
+  icon: 'success',
   position: 'bottom',
   showConfirmButton: false,
   timer: 3000,
@@ -43,30 +90,7 @@ const DeleteDialog = Swal.mixin({
   buttonsStyling: false,
 });
 
-const SuccessDialog = Swal.mixin({
-  titleText: 'Geschafft!',
-  icon: 'success',
-  showCancelButton: false,
-  confirmButtonText: 'Ok',
-  focusConfirm: true,
-  customClass: {
-    confirmButton: 'btn btn-primary mx-2',
-  },
-  buttonsStyling: false,
-});
-
-const FailureDialog = Swal.mixin({
-  titleText: 'Oh nein!',
-  icon: 'error',
-  showCancelButton: false,
-  confirmButtonText: 'Ok',
-  focusConfirm: true,
-  customClass: {
-    confirmButton: 'btn btn-primary mx-2',
-  },
-  buttonsStyling: false,
-});
-
 export {
-  Swal, SuccessToast, FailureToast, DeleteDialog, SuccessDialog, FailureDialog,
+  Swal, SuccessToast, FailureToast,
+  DeleteDialog, SuccessDialog, FailureDialog, TechnicalProblemsModal, TechnicalProblemsDialog,
 };
