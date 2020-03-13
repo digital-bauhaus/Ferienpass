@@ -8,7 +8,7 @@
     <b>{{ headingText }}</b>
     <ul>
       <li
-        v-for="error in errors"
+        v-for="error in errorMessages"
         :key="error"
       >
         {{ error }}
@@ -25,7 +25,7 @@ export default {
       type: String,
       required: true,
     },
-    errors: {
+    errorMessages: {
       type: Array,
       required: true,
     },

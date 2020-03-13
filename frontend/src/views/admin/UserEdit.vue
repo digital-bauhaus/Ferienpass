@@ -6,15 +6,20 @@
     <ErrorBox
       v-if="showServerErrorAlert"
       :heading-text="serverErrorHeadingText"
-      :errors="serverErrorMessages"
+      :error-messages="serverErrorMessages"
     />
 
     <UserEditor
       v-model="user"
-      :is-admin-view="true"
       :submit-button-text="submitButtonText"
       @submit="updateUser"
-    />
+    >
+      <template v-slot:before>
+        <FormSection label="Verwaltungsaufgaben">
+          <Verwaltungsaufgaben />
+        </FormSection>
+      </template>
+    </UserEditor>
 
     <hr>
 
@@ -79,6 +84,8 @@ import ErrorBox from '@/components/ErrorBox.vue';
 import UserEditor from '@/components/UserEditor.vue';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
 import ProjectList from '@/components/ProjectList.vue';
+import Verwaltungsaufgaben from '@/components/userEditor/Verwaltungsaufgaben.vue';
+import FormSection from '@/components/form/FormSection.vue';
 import { defaultUser } from '@/modules/models';
 
 export default {
@@ -88,6 +95,8 @@ export default {
     BaseLayout,
     UserEditor,
     ErrorBox,
+    Verwaltungsaufgaben,
+    FormSection,
   },
   data() {
     return {

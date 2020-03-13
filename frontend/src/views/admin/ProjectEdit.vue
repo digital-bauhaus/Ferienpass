@@ -6,7 +6,7 @@
     <ErrorBox
       v-if="showServerErrorAlert"
       :heading-text="serverErrorHeadingText"
-      :errors="serverErrorMessages"
+      :error-messages="serverErrorMessages"
     />
     <ProjectEditor
       v-model="project"

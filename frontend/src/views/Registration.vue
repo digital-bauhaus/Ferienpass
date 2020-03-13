@@ -3,34 +3,72 @@
     <h1>
       {{ titleText }}
     </h1>
-    <CheckBoxGroup base="user-schulkind">
-      <CheckBox
-        v-model="user.schulkind"
-        base="user-schulkind"
-        :required="true"
-      >
-        Mein Kind geht zur Schule *
-      </CheckBox>
-    </CheckBoxGroup>
     <UserEditor
       v-model="user"
-      :disabled="!user.schulkind"
+      :disabled="formDisabled"
       :submit-button-text="submitButtonText"
       @submit="createUser"
     >
-      <ProjektAuswahl v-if="projectsLoaded">
-        <ProjektAuswahlItem
-          v-for="projekt in allProjects"
-          :key="projekt.id"
-          :projekt="projekt"
-          :geburtsdatum="user.geburtsdatum"
-          :alle-projekte="allProjects"
-          :gewuenschte-projekte="gewuenschteProjekte"
-          :disabled="!user.schulkind"
-          :checked="gewuenschteProjekte[projekt.id]"
-          @input="updateGewuenschtesProjekt(projekt.id, $event)"
-        />
-      </ProjektAuswahl>
+      <template v-slot:before>
+        <CheckBoxGroup base="user-schulkind">
+          <CheckBox
+            v-model="user.schulkind"
+            base="user-schulkind"
+            :required="true"
+          >
+            Mein Kind geht zur Schule *
+          </CheckBox>
+        </CheckBoxGroup>
+      </template>
+      <template v-slot:after>
+        <FormSection label="Angebote">
+          <Angebote>
+            <ProjektAuswahl v-if="projectsLoaded">
+              <ProjektAuswahlItem
+                v-for="projekt in allProjects"
+                :key="projekt.id"
+                :projekt="projekt"
+                :geburtsdatum="user.geburtsdatum"
+                :alle-projekte="allProjects"
+                :gewuenschte-projekte="gewuenschteProjekte"
+                :disabled="formDisabled"
+                :checked="gewuenschteProjekte[projekt.id]"
+                @input="updateGewuenschtesProjekt(projekt.id, $event)"
+              />
+            </ProjektAuswahl>
+          </Angebote>
+        </FormSection>
+
+        <FormSection label="Datenschutzerklärung">
+          <Datenschutz />
+        </FormSection>
+
+        <FormSection label="Teilnahmebedingungen">
+          <Teilnahmebedingungen />
+        </FormSection>
+
+        <CheckBoxGroup
+          base="akzeptanz"
+          :disabled="formDisabled"
+        >
+          <CheckBox
+            v-model="user.datenschutzErklaerungAkzeptiert"
+            base="datenschutzErklaerungAkzeptiert"
+            :required="true"
+          >
+            Ich habe die Datenschutzerklärung gelesen und akzeptiert. *
+          </CheckBox>
+          <CheckBox
+            v-model="user.teilnahmeBedingungAkzeptiert"
+            base="teilnahmeBedingungAkzeptiert"
+            :required="true"
+          >
+            Ich habe die Teilnahmebedingungen gelesen und akzeptiert. Ich bestätige die
+            Richtigkeit meiner Angaben. Wurden wissentlich falsche Angaben gemacht, darf die
+            Organisation das angemeldete Kind von den Angeboten ausschließen. *
+          </CheckBox>
+        </CheckBoxGroup>
+      </template>
     </UserEditor>
   </RegistrationLayout>
 </template>
@@ -50,10 +88,18 @@ import {
   TechnicalProblemsDialog,
   TechnicalProblemsModal,
 } from '@/modules/sweet-alert';
+import FormSection from '@/components/form/FormSection.vue';
+import Angebote from '@/components/userEditor/Angebote.vue';
+import Datenschutz from '@/components/userEditor/Datenschutz.vue';
+import Teilnahmebedingungen from '@/components/userEditor/Teilnahmebedingungen.vue';
 
 export default {
   name: 'Registration',
   components: {
+    Teilnahmebedingungen,
+    Datenschutz,
+    Angebote,
+    FormSection,
     ProjektAuswahlItem,
     ProjektAuswahl,
     RegistrationLayout,
@@ -70,6 +116,9 @@ export default {
     };
   },
   computed: {
+    formDisabled() {
+      return !this.user.schulkind;
+    },
     titleText() {
       return 'Ferienpass Weimar – Anmeldung';
     },
@@ -187,7 +236,7 @@ export default {
                 html: this.buildListHtmlFromErrors(error.response.data.errors),
               });
             } else {
-              // other spring errors
+              // other spring errorMessages
               TechnicalProblemsDialog.fire();
             }
             break;
