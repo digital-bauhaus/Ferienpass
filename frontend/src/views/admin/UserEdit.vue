@@ -116,10 +116,10 @@ export default {
   },
   created() {
     const dataPromises = [];
-    dataPromises.push(this.loadUserData());
-    dataPromises.push(this.loadProjects());
-    dataPromises.push(this.loadRegisteredProjectsOfUser());
-    dataPromises.push(this.loadCancelledProjectsOfUser());
+    dataPromises.push(this.loadUserData);
+    dataPromises.push(this.loadProjects);
+    dataPromises.push(this.loadRegisteredProjectsOfUser);
+    dataPromises.push(this.loadCancelledProjectsOfUser);
     Promise.all(dataPromises).then(() => { this.loaded = true; });
   },
   methods: {
