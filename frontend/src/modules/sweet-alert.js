@@ -15,6 +15,19 @@ const SuccessToast = Swal.mixin({
   },
 });
 
+const FailureToast = Swal.mixin({
+  toast: true,
+  icon: 'error',
+  position: 'bottom',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  onOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  },
+});
+
 const DeleteDialog = Swal.mixin({
   titleText: 'Wirklich löschen?',
   icon: 'warning',
@@ -55,5 +68,5 @@ const FailureDialog = Swal.mixin({
 });
 
 export {
-  Swal, SuccessToast, DeleteDialog, SuccessDialog, FailureDialog,
+  Swal, SuccessToast, FailureToast, DeleteDialog, SuccessDialog, FailureDialog,
 };

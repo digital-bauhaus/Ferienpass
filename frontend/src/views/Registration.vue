@@ -61,6 +61,7 @@ import RegistrationLayout from '@/views/layouts/RegistrationLayout.vue';
 import ProjektAuswahl from '@/components/userEditor/ProjektAuswahl.vue';
 import ProjektAuswahlItem from '@/components/userEditor/ProjektAuswahlItem.vue';
 import { defaultUser } from '@/modules/models';
+import { SuccessDialog } from '@/modules/sweet-alert';
 
 export default {
   name: 'Registration',
@@ -151,7 +152,9 @@ export default {
       };
     },
     showSuccessInfo() {
-      this.successAutomaticDismissCountDown = 5;
+      SuccessDialog.fire({
+        html: 'Ihre Anmeldung war erfolgreich!<br>Sie erhalten eine eMail mit der Zahlungsaufforderung.',
+      });
     },
     modalSuccess() {
       this.$swal('Geschafft!',
