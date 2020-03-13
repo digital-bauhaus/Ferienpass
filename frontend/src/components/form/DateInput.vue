@@ -106,8 +106,8 @@ export default {
 </script>
 
 <style scoped>
-.date-input__input-group > .form-control {
-  /*the normal bootstrap css is faulty because of the hidden flatpickr input element*/
+/*the normal bootstrap css is faulty because of the hidden flatpickr input element*/
+.date-input__input-group >>> .form-control:not(:first-child) {
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
 }
