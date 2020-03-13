@@ -31,7 +31,7 @@ public class MailControllerTest extends AbstractControllerTest {
         // Please set SENDGRID_API_KEY=SG.xyz (see Heroku Config Vars!)
 
         Teilnehmer teilnehmer = createSampleTeilnehmerBuilder()
-                .email("ferienpasstest@gmail.com")
+                .email("test@test.de")
                 .build();
 
         given()
