@@ -82,16 +82,12 @@ import RegistrationLayout from '@/views/layouts/RegistrationLayout.vue';
 import ProjektAuswahl from '@/components/userEditor/ProjektAuswahl.vue';
 import ProjektAuswahlItem from '@/components/userEditor/ProjektAuswahlItem.vue';
 import { defaultUser } from '@/modules/models';
-import {
-  FailureDialog,
-  SuccessDialog,
-  TechnicalProblemsDialog,
-  TechnicalProblemsModal,
-} from '@/modules/sweet-alert';
+import { FailureDialog, SuccessDialog, TechnicalProblemsModal, } from '@/modules/sweet-alert';
 import FormSection from '@/components/form/FormSection.vue';
 import Angebote from '@/components/userEditor/Angebote.vue';
 import Datenschutz from '@/components/userEditor/Datenschutz.vue';
 import Teilnahmebedingungen from '@/components/userEditor/Teilnahmebedingungen.vue';
+import handleCommonServerError from '@/modules/error-handling';
 
 export default {
   name: 'Registration',
@@ -219,50 +215,8 @@ export default {
           this.reloadProjects();
         });
       } else {
-        this.handleCommonServerError(error);
+        handleCommonServerError(error);
       }
-    },
-    handleCommonServerError(error) {
-      // see: https://github.com/axios/axios#handling-errors
-      if (error.response) {
-        console.log(error.response);
-        switch (error.response.status) {
-          case 400:
-            if (error.response.data?.errors) {
-              // validation error
-              FailureDialog.fire({
-                icon: 'warning',
-                titleText: 'Bitte korrigieren Sie folgende Fehler: ',
-                html: this.buildListHtmlFromErrors(error.response.data.errors),
-              });
-            } else {
-              // other spring errorMessages
-              TechnicalProblemsDialog.fire();
-            }
-            break;
-          case 422:
-            // custom validation error
-            FailureDialog.fire({
-              icon: 'warning',
-              text: error.response.data.message,
-            });
-            break;
-          default:
-            TechnicalProblemsDialog.fire();
-            break;
-        }
-      } else {
-        // Problem is with Axios or we got no response at all
-        TechnicalProblemsDialog.fire();
-      }
-    },
-    buildListHtmlFromErrors(errors) {
-      let errorHtml = '<ul class="text-left">';
-      errors.forEach((error) => {
-        errorHtml += `<li>${error.defaultMessage}</li>`;
-      });
-      errorHtml += '</ul>';
-      return errorHtml;
     },
   },
 };

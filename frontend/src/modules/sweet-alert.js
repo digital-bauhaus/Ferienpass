@@ -52,14 +52,9 @@ const SuccessDialog = Swal.mixin({
 const FailureToast = Swal.mixin({
   toast: true,
   icon: 'error',
-  position: 'bottom',
+  position: 'top-end',
   showConfirmButton: false,
-  timer: 3000,
-  timerProgressBar: true,
-  onOpen: (toast) => {
-    toast.addEventListener('mouseenter', Swal.stopTimer);
-    toast.addEventListener('mouseleave', Swal.resumeTimer);
-  },
+  timer: 5000,
 });
 
 const SuccessToast = Swal.mixin({

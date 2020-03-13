@@ -1,6 +1,6 @@
 import axios from 'axios/index';
 
-export const AXIOS = axios.create({
+const AXIOS = axios.create({
   baseURL: '/api',
   headers: {
     // disable browser popup (https://stackoverflow.com/questions/37763186/spring-boot-security-shows-http-basic-auth-popup-after-failed-login)
