@@ -16,8 +16,9 @@
             base="user-schulkind"
             :disabled="registrierungErfolgreichAbgeschlossen"
             :required="true"
+            size="lg"
           >
-            Mein Kind geht zur Schule *
+            Mein Kind geht zur Schule und ist daher berechtigt am Ferienpass teilzunehmen *
           </CheckBox>
         </CheckBoxGroup>
       </template>

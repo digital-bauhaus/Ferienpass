@@ -5,6 +5,7 @@
     :required="required"
     :checked="checked"
     :disabled="disabled"
+    :size="size"
     @input="$emit('input', $event)"
   >
     <slot />
@@ -34,6 +35,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+    size: {
+      type: String,
+      default: '',
     },
   },
 };
