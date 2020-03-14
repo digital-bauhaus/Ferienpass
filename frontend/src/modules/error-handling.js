@@ -34,6 +34,13 @@ const handleCommonServerError = function handleCommonServerError(error) {
           text: error.response.data.message,
         });
         break;
+      case 409:
+        // conflict error when assigning projects
+        FailureDialog.fire({
+          icon: 'warning',
+          text: error.response.data.message,
+        });
+        break;
       default:
         TechnicalProblemsDialog.fire();
         break;
