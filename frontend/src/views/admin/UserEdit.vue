@@ -44,6 +44,7 @@
           size="sm"
           class="m-1"
           variant="warning"
+          :disabled="row.item.plaetzeFrei === 0"
           @click="reactivateProject(row.item.id, user.id)"
         >
           Reaktivieren
@@ -58,6 +59,7 @@
           size="sm"
           class="m-1"
           variant="warning"
+          :disabled="row.item.plaetzeFrei === 0"
           @click="assignToProject(row.item.id, user.id)"
         >
           Anmelden
