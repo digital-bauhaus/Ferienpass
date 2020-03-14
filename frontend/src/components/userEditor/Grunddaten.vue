@@ -94,7 +94,7 @@
         :checked="darfErmaessigtenPreisZahlen"
         @input="$emit('update:darfErmaessigtenPreisZahlen', $event)"
       >
-        Ich bin berechtig den ermäßigten Preis zu zahlen. Ich beziehe finanzielle Leistungen des
+        Ich bin berechtigt den ermäßigten Preis zu zahlen. Ich beziehe finanzielle Leistungen des
         Sozialamtes (Wohngeld, Kinderzuschlag, Bildung- und Teilhabe) oder des
         Jobcenters (ALG II, Harz IV).
       </CheckBox>
