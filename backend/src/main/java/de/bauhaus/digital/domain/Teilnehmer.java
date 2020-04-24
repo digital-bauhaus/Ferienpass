@@ -33,9 +33,16 @@ public class Teilnehmer {
 
     // Verwaltung
 
+    // aktiv is not part of the public API (so it cannot be set/manipulated)
+    @JsonView(Views.Internal.class)
     private boolean aktiv = true;
+
+    // registrierungsdatum is not part of the public API (so it cannot be set/manipulated)
+    @JsonView(Views.Internal.class)
     private LocalDate registrierungsdatum = LocalDate.now();
 
+    // bezahlt is not part of the public API (so it cannot be set/manipulated)
+    @JsonView(Views.Internal.class)
     private boolean bezahlt = false;
 
     @AssertTrue(message = "Das Kind muss zur Schule gehen.")
