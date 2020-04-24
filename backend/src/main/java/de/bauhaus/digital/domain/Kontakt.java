@@ -11,6 +11,8 @@ import javax.validation.constraints.NotBlank;
 @Entity
 public class Kontakt {
 
+    // the id of a Kontakt is not part of the public API, this way a malicious user cannot
+    // manipulate the id in the JSON-Body when registering a Teilnehmer to override the data of another Teilnehmer
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(Views.Internal.class)

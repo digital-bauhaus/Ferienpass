@@ -22,6 +22,8 @@ import javax.validation.constraints.PositiveOrZero;
 @ProjektValidation
 public class Projekt {
 
+    // The id of a Projekt is not internal, because we also need it in the public API, so users can register
+    // for specific projects
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -49,13 +51,15 @@ public class Projekt {
     @PositiveOrZero(message = "Reservierte Plätze dürfen nicht < 0 sein.")
     private int plaetzeReserviert;
 
-    // do NOT automatically delete Teilnehmer when the Projekt gets deleted!
+    // we have an explicit API to handle users of a project, so we will not expose these lists
     @JsonIgnore
+    // do NOT automatically delete Teilnehmer when the Projekt gets deleted!
     @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
     private List<Teilnehmer> angemeldeteTeilnehmer = new ArrayList<>();
 
-    // do NOT automatically delete Teilnehmer when the Projekt gets deleted!
+    // we have an explicit API to handle users of a project, so we will not expose these lists
     @JsonIgnore
+    // do NOT automatically delete Teilnehmer when the Projekt gets deleted!
     @ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
     private List<Teilnehmer> stornierteTeilnehmer = new ArrayList<>();
 
