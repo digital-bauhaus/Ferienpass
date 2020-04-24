@@ -75,7 +75,7 @@ public class PublicController {
 
     @RequestMapping(path = "/projects", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody
+    public @ResponseBody @JsonView(Views.Public.class)
     List<Projekt> getProjects() {
         LOG.info("GET called on /public/projects resource");
 
