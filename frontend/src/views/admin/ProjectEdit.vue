@@ -29,6 +29,7 @@
       <h2>Liste für Export:</h2>
       <UserListForExport
         :users="angemeldeteTeilnehmer"
+        :project-name="project.name"
       />
     </div>
   </BaseLayout>
