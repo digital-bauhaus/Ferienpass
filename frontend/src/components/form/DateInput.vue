@@ -95,11 +95,13 @@ export default {
     onClose(selectedDates, dateInInternalFormat, flatPickrInstance) {
       // When the calender dialog is closed, we explicitly set the current text (user input)
       // as date for flatPickr
+      // This is needed so we correctly update the date, when the user does not use the datepicker,
+      // but enters a date directly in the input box
       // Idea taken from here: https://github.com/flatpickr/flatpickr/issues/1551
+      const triggerChange = true;
       flatPickrInstance.setDate(
-        flatPickrInstance.altInput.value, false, flatPickrInstance.config.altFormat,
+        flatPickrInstance.altInput.value, triggerChange, flatPickrInstance.config.altFormat,
       );
-      this.onDatePickerInput(dateInInternalFormat);
     },
   },
 };

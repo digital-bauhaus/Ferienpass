@@ -24,7 +24,7 @@
       :required="true"
       :disabled="disabled"
       :placeholder="'TT.MM.JJJJ'"
-      :max-date="Date.now()"
+      :max-date="new Date()"
       :value="geburtsdatum"
       @update="$emit('update:geburtsdatum', $event)"
     />

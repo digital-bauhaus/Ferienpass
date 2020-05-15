@@ -177,7 +177,6 @@ export default {
         gewuenschteProjekte[project.id] = false;
       });
       this.gewuenschteProjekte = gewuenschteProjekte;
-      console.log(JSON.stringify(this.gewuenschteProjekte));
     },
     updateGewuenschteProjekte(projectsFromServer) {
       const updatedGewuenschteProjekte = {};
