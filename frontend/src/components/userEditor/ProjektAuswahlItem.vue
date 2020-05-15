@@ -4,13 +4,12 @@
     class="projekt-auswahl-item"
     :invalid-feedback="invalidFeedback"
     :state="state"
-    :label="projekt.name"
-    label-sr-only
   >
     <b-form-checkbox
       :id="`projekt-${projekt.id}-value`"
       :disabled="disabled || !isSelectable"
       :checked="checked"
+      :aria-label="projekt.name"
       @input="$emit('input', $event)"
     >
       <ul class="projekt-auswahl-item__list">
