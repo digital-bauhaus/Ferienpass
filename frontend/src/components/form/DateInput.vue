@@ -6,13 +6,19 @@
     :label="`${label}${required ? ' *' : ''}`"
   >
     <b-input-group class="date-input__input-group">
+      <b-input
+        v-if="disabled"
+        disabled
+      />
       <flat-pickr
+        v-else
         ref="flatpickr"
         :value="value"
         :config="config"
         :placeholder="placeholder"
         :disabled="disabled"
         :required="required"
+        :class="'form-control input'"
         @input="onDatePickerInput"
         @on-close="onClose"
       />
@@ -112,6 +118,7 @@ export default {
 .date-input__input-group >>> .form-control:not(:first-child) {
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
+  margin-left: 0;
 }
 
 </style>
