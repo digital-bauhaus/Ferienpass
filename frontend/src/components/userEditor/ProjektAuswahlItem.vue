@@ -1,12 +1,14 @@
 <template>
   <b-form-group
-    :id="`$projekt-${projekt.id}-group`"
+    :id="`projekt-${projekt.id}-group`"
     class="projekt-auswahl-item"
     :invalid-feedback="invalidFeedback"
     :state="state"
+    :label="projekt.name"
+    label-sr-only
   >
     <b-form-checkbox
-      :id="`$projekt-${projekt.id}-value`"
+      :id="`projekt-${projekt.id}-value`"
       :disabled="disabled || !isSelectable"
       :checked="checked"
       @input="$emit('input', $event)"

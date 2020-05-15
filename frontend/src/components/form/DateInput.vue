@@ -26,6 +26,7 @@
         <b-button
           :disabled="disabled"
           data-toggle
+          aria-label="Kalender öffnen"
         >
           <BIconCalendar />
         </b-button>
