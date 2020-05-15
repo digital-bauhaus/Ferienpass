@@ -26,6 +26,15 @@
     },
     "SPRING_JPA_HIBERNATE_DDL-AUTO": {
       "required": true
+    },
+    "SENDGRID_API_KEY": {
+      "required": true
+    },
+    "SENDGRID_PASSWORD": {
+      "required": true
+    },
+    "SENDGRID_USERNAME": {
+      "required": true
     }
   },
   "formation": {
