@@ -8,10 +8,12 @@
     <b-input-group class="date-input__input-group">
       <b-input
         v-if="disabled"
+        :id="`${base}-value`"
         disabled
       />
       <flat-pickr
         v-else
+        :id="`${base}-value`"
         ref="flatpickr"
         :value="value"
         :config="config"
