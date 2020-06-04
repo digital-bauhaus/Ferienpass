@@ -15,6 +15,20 @@
         :checked="row.item.bezahlt"
       />
     </template>
+    <template v-slot:cell(vorname)="row">
+      <b-link
+        :to="{path: '../UserEdit', query: {id: row.item.id }}"
+      >
+        {{ row.item.vorname }}
+      </b-link>
+    </template>
+    <template v-slot:cell(nachname)="row">
+      <b-link
+        :to="{path: '../UserEdit', query: {id: row.item.id }}"
+      >
+        {{ row.item.nachname }}
+      </b-link>
+    </template>
     <template v-slot:cell(projects)="row">
       <ul>
         <li

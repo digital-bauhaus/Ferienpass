@@ -39,7 +39,7 @@
             size="sm"
             class="m-1"
             variant="warning"
-            :disabled="row.item.plaetzeFrei === 0"
+            :disabled="project.plaetzeFrei === 0"
             @click="reactivateProject(project.id, row.item.id)"
           >
             Reaktivieren
@@ -131,7 +131,8 @@ export default {
         });
       });
     },
-    reloadUsersOfProjects() {
+    reloadAllProjectData() {
+      this.loadProjectData();
       this.loadRegisteredUsers();
       this.loadCancelledUsers();
     },
@@ -153,7 +154,7 @@ export default {
     unassignFromProject(projectId, userId) {
       api.unassignUserFromProject(projectId, userId).then(() => {
         SuccessToast.fire({ text: 'Stornierung erfolgreich' });
-        this.reloadUsersOfProjects();
+        this.reloadAllProjectData();
       }).catch((error) => {
         handleCommonServerError(error);
       });
@@ -161,7 +162,7 @@ export default {
     assignToProject(projectId, userId) {
       api.assignUserToProject(projectId, userId).then(() => {
         SuccessToast.fire({ text: 'Anmeldung erfolgreich' });
-        this.reloadUsersOfProjects();
+        this.reloadAllProjectData();
       }).catch((error) => {
         handleCommonServerError(error);
       });
