@@ -16,6 +16,7 @@ import BaseLayout from '@/views/layouts/BaseLayout.vue';
 import UserListForExport from '@/components/UserListForExport.vue';
 import { defaultProject } from '@/modules/models';
 import { FailureToast } from '@/modules/sweet-alert';
+import dayjs, { SHORT_DATE_FORMAT } from '@/modules/dayjs';
 
 export default {
   name: 'ProjectUsers',
@@ -35,7 +36,10 @@ export default {
       return parseInt(this.$route.query.id, 10);
     },
     titleText() {
-      return this.createHeaderText();
+      if (this.project.id) {
+        return `Teilnehmerliste: ${this.project.name} (${this.formatDate(this.project.datumBeginn)} - ${this.formatDate(this.project.datumEnde)})`;
+      }
+      return 'Teilnehmerliste';
     },
   },
   created() {
@@ -68,6 +72,9 @@ export default {
         return `Teilnehmerliste: ${project.name} (${this.formatDate(project.datumBeginn)} - ${this.formatDate(project.datumEnde)})`;
       }
       return 'Teilnehmerliste';
+    },
+    formatDate(stringDate) {
+      return dayjs(stringDate).format(SHORT_DATE_FORMAT);
     },
   },
 };
