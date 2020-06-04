@@ -2,7 +2,7 @@
   <div class="user-list-export">
     <b-button
       class="mb-3"
-      @click="onButtonClick"
+      @click="onCreatePdfButtonClick"
     >
       PDF Erzeugen
     </b-button>
@@ -26,15 +26,15 @@
       <template v-slot:cell(notfall)="row">
         <ul>
           <li>Name: {{ row.item.notfallKontakt.name }}<br></li>
-          <li>Tel: {{ row.item.notfallKontakt.telefon }}<br></li>
+          <li>Tel.: {{ row.item.notfallKontakt.telefon }}<br></li>
         </ul>
       </template>
       <template v-slot:cell(zustimmung)="row">
         <ul>
           <li>Behandlungserlaubnis? {{ row.item.darfBehandeltWerden ? 'Ja' : 'Nein' }}<br></li>
-          <li>Allein heimgehen? {{ row.item.darfAlleinNachHause ? 'Ja' : 'Nein' }}<br></li>
-          <li>Reiten? {{ row.item.darfReiten ? 'Ja' : 'Nein' }}<br></li>
-          <li>Schwimmen? {{ row.item.darfSchwimmen ? 'Ja' : 'Nein' }}<br></li>
+          <li>Darf allein heimgehen? {{ row.item.darfAlleinNachHause ? 'Ja' : 'Nein' }}<br></li>
+          <li>Darf Reiten? {{ row.item.darfReiten ? 'Ja' : 'Nein' }}<br></li>
+          <li>Darf Schwimmen? {{ row.item.darfSchwimmen ? 'Ja' : 'Nein' }}<br></li>
           <li>Schwimmabzeichen: {{ row.item.schwimmAbzeichen }}<br></li>
         </ul>
       </template>
@@ -62,6 +62,7 @@
 
 <script>
 import JsPDF from 'jspdf';
+import sanitize from 'sanitize-filename';
 import dayjs, { SHORT_DATE_FORMAT } from '../modules/dayjs';
 import 'jspdf-autotable';
 
@@ -82,8 +83,8 @@ export default {
       type: Array,
       required: true,
     },
-    projectName: {
-      type: String,
+    project: {
+      type: Object,
       required: true,
     },
   },
@@ -92,7 +93,7 @@ export default {
       fields: [
         { key: 'name', label: 'Name', sortable: false },
         { key: 'alter', label: 'Alter', sortable: false },
-        { key: 'notfall', label: 'Notfall Kontakt', sortable: false },
+        { key: 'notfall', label: 'Notfallkontakt', sortable: false },
         { key: 'zustimmung', label: 'Zustimmung', sortable: false },
         { key: 'gesundheit', label: 'Einschränkungen', sortable: false },
         { key: 'behinderung', label: 'Behinderung', sortable: false },
@@ -100,13 +101,21 @@ export default {
     };
   },
   methods: {
-    onButtonClick() {
-      const pfdDocument = new JsPDF('l');
-      pfdDocument.autoTable({
-        html: '#user-list-export-table', rowPageBreak: 'auto', includeHiddenHtml: false,
+    onCreatePdfButtonClick() {
+      const pdfDocument = new JsPDF('l');
+      pdfDocument.text(
+        this.createHeaderText(this.project), 14, 20,
+      );
+      pdfDocument.autoTable({
+        startY: 25,
+        html: '#user-list-export-table',
+        rowPageBreak: 'auto',
+        includeHiddenHtml: false,
       });
-      // TODO safe file with project name as filename (sanitize before)
-      pfdDocument.save('table.pdf');
+      pdfDocument.save(`${sanitize(this.project.name)}.pdf`);
+    },
+    createHeaderText(project) {
+      return `${project.name} (${this.formatDate(project.datumBeginn)} - ${this.formatDate(project.datumEnde)})`;
     },
     formatDate(stringDate) {
       return dayjs(stringDate).format(SHORT_DATE_FORMAT);
