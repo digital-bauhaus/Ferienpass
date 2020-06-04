@@ -16,19 +16,36 @@
       <UserList
         :users="angemeldeteTeilnehmer"
         :show-projects="false"
-      />
+      >
+        <template v-slot:actions="{ row }">
+          <b-button
+            size="sm"
+            class="m-1"
+            variant="warning"
+            @click="unassignFromProject(project.id, row.item.id)"
+          >
+            Stornieren
+          </b-button>
+        </template>
+      </UserList>
 
       <h2>Stornierte Nutzer:</h2>
       <UserList
         :users="stornierteTeilnehmer"
         :show-projects="false"
-      />
-
-      <h2>Liste für Export:</h2>
-      <UserListForExport
-        :users="angemeldeteTeilnehmer"
-        :project="project"
-      />
+      >
+        <template v-slot:actions="{ row }">
+          <b-button
+            size="sm"
+            class="m-1"
+            variant="warning"
+            :disabled="project.plaetzeFrei === 0"
+            @click="reactivateProject(project.id, row.item.id)"
+          >
+            Reaktivieren
+          </b-button>
+        </template>
+      </UserList>
     </div>
   </BaseLayout>
 </template>
@@ -38,7 +55,6 @@ import ProjectEditor from '@/components/ProjectEditor.vue';
 import api from '@/modules/ferienpass-api';
 import UserList from '@/components/UserList.vue';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
-import UserListForExport from '@/components/UserListForExport.vue';
 import { defaultProject } from '@/modules/models';
 import { FailureToast, SuccessToast } from '@/modules/sweet-alert';
 import handleCommonServerError from '@/modules/error-handling';
@@ -46,7 +62,6 @@ import handleCommonServerError from '@/modules/error-handling';
 export default {
   name: 'ProjectEdit',
   components: {
-    UserListForExport,
     BaseLayout,
     ProjectEditor,
     UserList,
@@ -116,6 +131,11 @@ export default {
         });
       });
     },
+    reloadAllProjectData() {
+      this.loadProjectData();
+      this.loadRegisteredUsers();
+      this.loadCancelledUsers();
+    },
     createOrUpdateProject() {
       if (this.isNewProject) {
         api.createProject(this.project).then(() => {
@@ -130,6 +150,25 @@ export default {
           handleCommonServerError(error);
         });
       }
+    },
+    unassignFromProject(projectId, userId) {
+      api.unassignUserFromProject(projectId, userId).then(() => {
+        SuccessToast.fire({ text: 'Stornierung erfolgreich' });
+        this.reloadAllProjectData();
+      }).catch((error) => {
+        handleCommonServerError(error);
+      });
+    },
+    assignToProject(projectId, userId) {
+      api.assignUserToProject(projectId, userId).then(() => {
+        SuccessToast.fire({ text: 'Anmeldung erfolgreich' });
+        this.reloadAllProjectData();
+      }).catch((error) => {
+        handleCommonServerError(error);
+      });
+    },
+    reactivateProject(projectId, userId) {
+      this.assignToProject(projectId, userId);
     },
   },
 };

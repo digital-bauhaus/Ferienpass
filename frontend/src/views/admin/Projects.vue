@@ -17,6 +17,13 @@
         <b-button
           size="sm"
           class="m-1"
+          :to="{path: '../ProjectUsers', query: {id: row.item.id }}"
+        >
+          Teilnehmerliste
+        </b-button>
+        <b-button
+          size="sm"
+          class="m-1"
           variant="danger"
           @click="deleteProject(row.item.id)"
         >

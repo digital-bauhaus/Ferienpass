@@ -9,6 +9,13 @@
     :fields="fields"
     :sticky-header="'700px'"
   >
+    <template v-slot:cell(name)="row">
+      <b-link
+        :to="{path: '../ProjectEdit', query: {id: row.item.id }}"
+      >
+        {{ row.item.name }}
+      </b-link>
+    </template>
     <template v-slot:cell(actions)="row">
       <slot
         name="actions"

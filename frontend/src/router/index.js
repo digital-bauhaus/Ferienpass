@@ -7,6 +7,7 @@ import Projects from '@/views/admin/Projects.vue';
 import ProjectEdit from '@/views/admin/ProjectEdit.vue';
 import UserEdit from '@/views/admin/UserEdit.vue';
 import Users from '@/views/admin/Users.vue';
+import ProjectUsers from '@/views/admin/ProjectUsers.vue';
 import store from '@/store';
 
 Vue.use(VueRouter);
@@ -33,6 +34,11 @@ const routes = [
   {
     path: '/ProjectEdit',
     component: ProjectEdit,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/ProjectUsers',
+    component: ProjectUsers,
     meta: { requiresAuth: true },
   },
   {
