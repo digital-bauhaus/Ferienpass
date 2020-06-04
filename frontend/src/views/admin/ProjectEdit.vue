@@ -10,25 +10,24 @@
     />
 
     <div v-if="!isNewProject">
+      <hr>
+
       <h2>Angemeldete Nutzer:</h2>
       <UserList
         :users="angemeldeteTeilnehmer"
         :show-projects="false"
       />
-    </div>
 
-    <div v-if="!isNewProject">
       <h2>Stornierte Nutzer:</h2>
       <UserList
         :users="stornierteTeilnehmer"
         :show-projects="false"
       />
-    </div>
 
-    <div v-if="!isNewProject">
       <h2>Liste für Export:</h2>
       <UserListForExport
         :users="angemeldeteTeilnehmer"
+        :project="project"
       />
     </div>
   </BaseLayout>
