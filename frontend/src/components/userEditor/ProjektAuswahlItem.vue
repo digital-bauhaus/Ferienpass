@@ -31,6 +31,8 @@
 <script>
 import dayjs, { SHORT_DATE_FORMAT } from '../../modules/dayjs';
 
+const MAX_NUMBER_OF_PROJECTS_PER_USER = 4;
+
 export default {
   name: 'ProjektAuswahlItem',
   model: {
@@ -73,13 +75,22 @@ export default {
     },
     state() {
       return !(this.isTooYoung || this.isTooOld
-        || this.isFullyBooked || this.atTheSameTimeAsAnother);
+        || this.isFullyBooked || this.isTooManyProjects || this.atTheSameTimeAsAnother);
     },
     isTooYoung() {
       return this.ageAtProjectStart < this.projekt.mindestAlter;
     },
     isTooOld() {
       return this.ageAtProjectStart > this.projekt.hoechstAlter;
+    },
+    isFullyBooked() {
+      return this.projekt.plaetzeFrei <= 0;
+    },
+    isTooManyProjects() {
+      const currentNumberOfProjects = Object.entries(this.gewuenschteProjekte)
+      // eslint-disable-next-line no-unused-vars
+        .filter(([key, value]) => value).length;
+      return !this.checked && currentNumberOfProjects >= MAX_NUMBER_OF_PROJECTS_PER_USER;
     },
     atTheSameTimeAsAnother() {
       return this.alleProjekte.some((otherProjekt) => {
@@ -110,18 +121,18 @@ export default {
         return false;
       });
     },
-    isFullyBooked() {
-      return this.projekt.plaetzeFrei <= 0;
-    },
     invalidFeedback() {
-      if (this.isFullyBooked) {
-        return 'Projekt ist leider schon ausgebucht.';
-      }
       if (this.isTooYoung) {
         return 'Altersbeschränkung nicht erfüllt.';
       }
       if (this.isTooOld) {
         return 'Altersbeschränkung nicht erfüllt.';
+      }
+      if (this.isFullyBooked) {
+        return 'Projekt ist leider schon ausgebucht.';
+      }
+      if (this.isTooManyProjects) {
+        return `Sie dürfen sich für maximal ${MAX_NUMBER_OF_PROJECTS_PER_USER} Projekte anmelden.`;
       }
       if (this.atTheSameTimeAsAnother) {
         return 'Zeitliche Überschneidung.';
