@@ -16,9 +16,9 @@
       />
     </template>
     <template v-slot:cell(projects)="row">
-      <ul v-if="projectsLoaded">
+      <ul>
         <li
-          v-for="projectName of projectNamesByUserId[row.item.id]"
+          v-for="projectName of row.item.angemeldeteProjektNamen"
           :key="projectName"
         >
           {{ projectName }}
@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import api from '../modules/ferienpass-api';
 import dayjs, { SHORT_DATE_FORMAT } from '../modules/dayjs';
 
 export default {
@@ -77,37 +76,10 @@ export default {
       ],
     };
   },
-  created() {
-    if (this.showProjects) {
-      this.loadProjectsOfUsers();
-    }
-  },
   methods: {
     formatDate(stringDate) {
       return dayjs(stringDate).format(SHORT_DATE_FORMAT);
     },
-    loadProjectsOfUsers() {
-      // TODO proper error handling
-      this.serverErrorMessages = [];
-      // instead of one api-call per user,
-      // we request ALL projects and build a lookup-table ourselves
-      api.getProjects().then((projects) => {
-        this.users.forEach((user) => {
-          this.projectNamesByUserId[user.id] = this.findProjectNamesForUserId(projects, user.id);
-        });
-        this.projectsLoaded = true;
-      }).catch((e) => this.serverErrorMessages.push(e));
-    },
-    findProjectNamesForUserId(projects, userId) {
-      const projectNames = [];
-      projects.forEach((project) => {
-        if (project.angemeldeteTeilnehmer.map((user) => user.id).includes(userId)) {
-          projectNames.push(project.name);
-        }
-      });
-      return projectNames;
-    },
-
   },
 };
 </script>

@@ -1,18 +1,21 @@
 package de.bauhaus.digital.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.annotation.JsonView;
 import de.bauhaus.digital.controller.Views;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.AssertTrue;
@@ -133,10 +136,15 @@ public class Teilnehmer {
     @JoinColumn(name = "behinderung_id")
     private Behinderung behinderung;
 
+    // Projekte
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "angemeldeteTeilnehmer", cascade= {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+    private List<Projekt> angemeldeteProjekte = new ArrayList<>();
+
     // Speziell fuer Registrierung
 
     @Transient
-    @JsonSetter
     private List<Long> gewuenschteProjekte = new ArrayList<>();
 
     protected Teilnehmer() {}
@@ -223,6 +231,11 @@ public class Teilnehmer {
         builder.behinderung = copy.getBehinderung();
         builder.gewuenschteProjekte = copy.getGewuenschteProjekte();
         return builder;
+    }
+
+    @JsonProperty(access = Access.READ_ONLY)
+    public List<String> getAngemeldeteProjektNamen() {
+        return angemeldeteProjekte.stream().map(Projekt::getName).collect(Collectors.toList());
     }
 
     public long getId() {
