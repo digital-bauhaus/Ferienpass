@@ -87,6 +87,7 @@ export default {
       return dayjs(stringDate).format(SHORT_DATE_FORMAT);
     },
     loadProjectsOfUsers() {
+      // TODO proper error handling
       this.serverErrorMessages = [];
       // instead of one api-call per user,
       // we request ALL projects and build a lookup-table ourselves

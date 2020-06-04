@@ -23,12 +23,6 @@
         :users="stornierteTeilnehmer"
         :show-projects="false"
       />
-
-      <h2>Liste für Export:</h2>
-      <UserListForExport
-        :users="angemeldeteTeilnehmer"
-        :project="project"
-      />
     </div>
   </BaseLayout>
 </template>
@@ -38,7 +32,6 @@ import ProjectEditor from '@/components/ProjectEditor.vue';
 import api from '@/modules/ferienpass-api';
 import UserList from '@/components/UserList.vue';
 import BaseLayout from '@/views/layouts/BaseLayout.vue';
-import UserListForExport from '@/components/UserListForExport.vue';
 import { defaultProject } from '@/modules/models';
 import { FailureToast, SuccessToast } from '@/modules/sweet-alert';
 import handleCommonServerError from '@/modules/error-handling';
@@ -46,7 +39,6 @@ import handleCommonServerError from '@/modules/error-handling';
 export default {
   name: 'ProjectEdit',
   components: {
-    UserListForExport,
     BaseLayout,
     ProjectEditor,
     UserList,
