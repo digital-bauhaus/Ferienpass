@@ -85,7 +85,7 @@ export default {
         { key: 'wohnort', label: 'Wohnort', sortable: true },
         { key: 'telefon', label: 'Telefon', sortable: true },
         { key: 'email', label: 'Email', sortable: true },
-        this.showProjects && { key: 'projects', label: 'Projekte', sortable: false },
+        this.showProjects && { key: 'projects', label: 'Veranstaltungen', sortable: false },
         { key: 'actions', label: 'Aktionen', sortable: false },
       ],
     };

@@ -82,4 +82,5 @@ export const defaultProject = {
   plaetzeBelegt: '',
   mindestAlter: '',
   hoechstAlter: '',
+  gruppe: '',
 };

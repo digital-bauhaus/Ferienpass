@@ -4,8 +4,8 @@
       Mein Kind möchte an folgenden Veranstaltungen teilnehmen:
       <br>
       <b>Hinweis:</b>
-      Grau hinterlegte Projekte sind ausgebucht oder können aufgrund der Altersbeschränkung nicht
-      gewählt werden.
+      Grau hinterlegte Veranstaltungen sind ausgebucht oder können aufgrund der Altersbeschränkung
+      nicht gewählt werden.
     </p>
     <slot />
     <p>

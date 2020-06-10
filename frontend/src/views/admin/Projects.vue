@@ -57,13 +57,13 @@ export default {
       api.getProjects().then((projects) => { this.projects = projects; })
         .catch(() => {
           FailureToast.fire({
-            text: 'Fehler: Projekte konnten nicht geladen werden.',
+            text: 'Fehler: Veranstaltungen konnten nicht geladen werden.',
           });
         });
     },
     deleteProject(projectId) {
       DeleteDialog.fire({
-        text: 'Das Projekt wird vollständig gelöscht und die Daten sind verloren!',
+        text: 'Die Veranstaltung wird vollständig gelöscht und die Daten sind verloren!',
       }).then((result) => {
         if (result.value) {
           this.doDeleteProject(projectId);
@@ -73,7 +73,7 @@ export default {
     doDeleteProject(projectId) {
       api.deleteProject(projectId).then(() => {
         SuccessDialog.fire({
-          text: 'Projekt wurde gelöscht!',
+          text: 'Veranstaltung wurde gelöscht!',
         });
         this.loadProjects();
       }).catch((error) => {

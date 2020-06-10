@@ -24,6 +24,7 @@ public class ProjektTest {
         int hoechstAlter = 15;
         int plaetzeGesamt = 20;
         int plaetzeReserviert = 3;
+        String gruppe = "Gruppe";
         List<Teilnehmer> angemeldeteTeilnehmer = new ArrayList<>();
         List<Teilnehmer> stornierteTeilnehmer = new ArrayList<>();
 
@@ -36,6 +37,7 @@ public class ProjektTest {
                 .hoechstAlter(hoechstAlter)
                 .plaetzeGesamt(plaetzeGesamt)
                 .plaetzeReserviert(plaetzeReserviert)
+                .gruppe(gruppe)
                 .angemeldeteTeilnehmer(angemeldeteTeilnehmer)
                 .stornierteTeilnehmer(stornierteTeilnehmer)
                 .build();
@@ -48,6 +50,7 @@ public class ProjektTest {
         assertThat(projekt.getHoechstAlter(), is(hoechstAlter));
         assertThat(projekt.getPlaetzeGesamt(), is(plaetzeGesamt));
         assertThat(projekt.getPlaetzeReserviert(), is(plaetzeReserviert));
+        assertThat(projekt.getGruppe(), is(gruppe));
         assertThat(projekt.getAngemeldeteTeilnehmer(), is(angemeldeteTeilnehmer));
         assertThat(projekt.getStornierteTeilnehmer(), is(stornierteTeilnehmer));
     }
