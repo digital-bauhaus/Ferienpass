@@ -153,7 +153,7 @@ export default {
         return `Sie dürfen sich für maximal ${MAX_NUMBER_OF_PROJECTS_PER_USER} Veranstaltungen anmelden.`;
       }
       if (this.isSameGroupAsAnother) {
-        return `Sie dürfen sich nur für eine Veranstaltung der Gruppe ${this.projekt.gruppe} anmelden.`;
+        return `Sie dürfen sich nur für eine Veranstaltung der Gruppe "${this.projekt.gruppe}" anmelden.`;
       }
       if (this.atTheSameTimeAsAnother) {
         return 'Zeitliche Überschneidung.';

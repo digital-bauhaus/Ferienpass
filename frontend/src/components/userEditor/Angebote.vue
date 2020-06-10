@@ -1,11 +1,16 @@
 <template>
   <div>
     <p>
-      Mein Kind möchte an folgenden Veranstaltungen teilnehmen:
-      <br>
       <b>Hinweis:</b>
       Grau hinterlegte Veranstaltungen sind ausgebucht oder können aufgrund der Altersbeschränkung
-      nicht gewählt werden.
+      nicht gewählt werden.<br>
+      Auf Grund der aktuellen Vorgaben werden in diesem Jahr weniger Plätze angeboten.
+      Um allen Kindern schöne Ferien zu ermöglichen können Sie pro Kind maximal 4 Angebote
+      auswählen.<br>
+      Doppelt oder mehrfach angebotene Projekte (z.B. Klettern oder Angeln) dürfen pro Kind nur
+      einmal gebucht werden.<br>
+      <br>
+      Mein Kind möchte an folgenden Veranstaltungen teilnehmen:
     </p>
     <slot />
     <p>

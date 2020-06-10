@@ -11,7 +11,7 @@ public interface ProjektRepository extends CrudRepository<Projekt, Long> {
     @Query(value="FROM Projekt p WHERE p.aktiv=true")
     List<Projekt> findAllActive();
 
-    @Query(value="FROM Projekt p WHERE p.aktiv=true ORDER BY p.datumBeginn, p.datumEnde ASC")
+    @Query(value="FROM Projekt p WHERE p.aktiv=true ORDER BY p.datumBeginn, p.datumEnde, p.name ASC")
     List<Projekt> findAllActiveSortedByDatum();
 
 }
