@@ -105,6 +105,7 @@ public class ProjekteControllerTest extends AbstractControllerTest {
         int hoechstAlter = 20;
         int plaetzeGesamt = 30;
         int plaetzeReserviert = 7;
+        String gruppe = "Neue Gruppe";
 
         // Important: We use the copy-builder, so we automatically use the correct ID
         Projekt projektToUpdate = Projekt.newBuilder(originalProjekt)
@@ -116,6 +117,7 @@ public class ProjekteControllerTest extends AbstractControllerTest {
                 .hoechstAlter(hoechstAlter)
                 .plaetzeGesamt(plaetzeGesamt)
                 .plaetzeReserviert(plaetzeReserviert)
+                .gruppe(gruppe)
                 .build();
 
         // actual update is here

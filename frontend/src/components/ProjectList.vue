@@ -51,6 +51,7 @@ export default {
         { key: 'plaetzeReserviert', label: '#Reserviert', sortable: true },
         { key: 'mindestAlter', label: 'Mindestalter', sortable: true },
         { key: 'hoechstAlter', label: 'Höchstalter', sortable: true },
+        { key: 'gruppe', label: 'Gruppe', sortable: true },
         { key: 'actions', label: 'Aktionen', sortable: false },
       ],
     };

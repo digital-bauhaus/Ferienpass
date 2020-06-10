@@ -74,8 +74,12 @@ export default {
       return this.state;
     },
     state() {
-      return !(this.isTooYoung || this.isTooOld
-        || this.isFullyBooked || this.isTooManyProjects || this.atTheSameTimeAsAnother);
+      return !(this.isTooYoung
+        || this.isTooOld
+        || this.isFullyBooked
+        || this.isTooManyProjects
+        || this.isSameGroupAsAnother
+        || this.atTheSameTimeAsAnother);
     },
     isTooYoung() {
       return this.ageAtProjectStart < this.projekt.mindestAlter;
@@ -91,6 +95,20 @@ export default {
       // eslint-disable-next-line no-unused-vars
         .filter(([key, value]) => value).length;
       return !this.checked && currentNumberOfProjects >= MAX_NUMBER_OF_PROJECTS_PER_USER;
+    },
+    isSameGroupAsAnother() {
+      if (this.projekt.gruppe === '') {
+        return false;
+      }
+      return this.alleProjekte.some((otherProjekt) => {
+        if (this.projekt.id !== otherProjekt.id && this.gewuenschteProjekte[otherProjekt.id]) {
+          // pruefe auf gleiche Gruppe
+          if (this.projekt.gruppe === otherProjekt.gruppe) {
+            return true;
+          }
+        }
+        return false;
+      });
     },
     atTheSameTimeAsAnother() {
       return this.alleProjekte.some((otherProjekt) => {
@@ -133,6 +151,9 @@ export default {
       }
       if (this.isTooManyProjects) {
         return `Sie dürfen sich für maximal ${MAX_NUMBER_OF_PROJECTS_PER_USER} Projekte anmelden.`;
+      }
+      if (this.isSameGroupAsAnother) {
+        return `Sie dürfen sich nur für ein Projekt der Gruppe ${this.projekt.gruppe} anmelden.`;
       }
       if (this.atTheSameTimeAsAnother) {
         return 'Zeitliche Überschneidung.';

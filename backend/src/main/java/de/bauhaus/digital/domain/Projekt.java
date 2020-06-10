@@ -51,6 +51,8 @@ public class Projekt {
     @PositiveOrZero(message = "Reservierte Plätze dürfen nicht < 0 sein.")
     private int plaetzeReserviert;
 
+    private String gruppe;
+
     // we have an explicit API to handle users of a project, so we will not expose these lists
     @JsonIgnore
     // do NOT automatically delete Teilnehmer when the Projekt gets deleted!
@@ -75,6 +77,7 @@ public class Projekt {
         hoechstAlter = builder.hoechstAlter;
         plaetzeGesamt = builder.plaetzeGesamt;
         plaetzeReserviert = builder.plaetzeReserviert;
+        gruppe = builder.gruppe;
         angemeldeteTeilnehmer = builder.angemeldeteTeilnehmer;
         stornierteTeilnehmer = builder.stornierteTeilnehmer;
     }
@@ -94,6 +97,7 @@ public class Projekt {
         builder.hoechstAlter = copy.getHoechstAlter();
         builder.plaetzeGesamt = copy.getPlaetzeGesamt();
         builder.plaetzeReserviert = copy.getPlaetzeReserviert();
+        builder.gruppe = copy.getGruppe();
         builder.angemeldeteTeilnehmer = copy.getAngemeldeteTeilnehmer();
         builder.stornierteTeilnehmer = copy.getStornierteTeilnehmer();
         return builder;
@@ -200,6 +204,10 @@ public class Projekt {
         return plaetzeReserviert;
     }
 
+    public String getGruppe() {
+        return gruppe;
+    }
+
     public List<Teilnehmer> getAngemeldeteTeilnehmer() {
         return angemeldeteTeilnehmer;
     }
@@ -220,6 +228,7 @@ public class Projekt {
                 ", hoechstAlter=" + hoechstAlter +
                 ", plaetzeGesamt=" + plaetzeGesamt +
                 ", plaetzeReserviert=" + plaetzeReserviert +
+                ", gruppe=" + gruppe +
                 ", angemeldeteTeilnehmer=" + angemeldeteTeilnehmer +
                 ", stornierteTeilnehmer=" + stornierteTeilnehmer +
                 '}';
@@ -236,6 +245,7 @@ public class Projekt {
         private int hoechstAlter;
         private int plaetzeGesamt;
         private int plaetzeReserviert;
+        private String gruppe;
         private List<Teilnehmer> angemeldeteTeilnehmer = new ArrayList<>();
         private List<Teilnehmer> stornierteTeilnehmer = new ArrayList<>();
 
@@ -279,6 +289,11 @@ public class Projekt {
 
         public Builder plaetzeReserviert(int plaetzeReserviert) {
             this.plaetzeReserviert = plaetzeReserviert;
+            return this;
+        }
+
+        public Builder gruppe(String gruppe) {
+            this.gruppe = gruppe;
             return this;
         }
 

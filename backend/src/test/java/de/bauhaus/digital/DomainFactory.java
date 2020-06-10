@@ -20,6 +20,7 @@ public class DomainFactory {
         int hoechstAlter = 15;
         int plaetzeGesamt = 20;
         int plaetzeReserviert = 3;
+        String gruppe = "Gruppe";
         List<Teilnehmer> angemeldeteTeilnehmer = new ArrayList<>();
         List<Teilnehmer> stornierteTeilnehmer = new ArrayList<>();
 
@@ -32,6 +33,7 @@ public class DomainFactory {
                 .hoechstAlter(hoechstAlter)
                 .plaetzeGesamt(plaetzeGesamt)
                 .plaetzeReserviert(plaetzeReserviert)
+                .gruppe(gruppe)
                 .angemeldeteTeilnehmer(angemeldeteTeilnehmer)
                 .stornierteTeilnehmer(stornierteTeilnehmer);
     }

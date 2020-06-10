@@ -82,6 +82,17 @@
           @update="updateValue('hoechstAlter', $event)"
         />
       </b-col>
+
+      <b-col sm="6">
+        <FieldInput
+          base="project-group"
+          label="Gruppe"
+          placeholder="Name der Gruppe zu der diese Veranstaltung gehört"
+          :value="value.gruppe"
+          @update="updateValue('gruppe', $event)"
+        />
+      </b-col>
+
     </b-form-row>
 
     <b-button
