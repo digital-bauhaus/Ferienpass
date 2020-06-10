@@ -109,7 +109,7 @@ export default {
         this.project = project;
       }).catch(() => {
         FailureToast.fire({
-          text: 'Fehler: Projekt konnte nicht geladen werden.',
+          text: 'Fehler: Veranstaltung konnte nicht geladen werden.',
         });
       });
     },
@@ -118,7 +118,7 @@ export default {
         this.angemeldeteTeilnehmer = users;
       }).catch(() => {
         FailureToast.fire({
-          text: 'Fehler: Angemeldete Teilnehmers des Projektes konnten nicht geladen werden.',
+          text: 'Fehler: Angemeldete Teilnehmers der Veranstaltung konnten nicht geladen werden.',
         });
       });
     },
@@ -127,7 +127,7 @@ export default {
         this.stornierteTeilnehmer = users;
       }).catch(() => {
         FailureToast.fire({
-          text: 'Fehler: Stornierte Teilnehmers des Projektes konnten nicht geladen werden.',
+          text: 'Fehler: Stornierte Teilnehmers der Veranstaltung konnten nicht geladen werden.',
         });
       });
     },

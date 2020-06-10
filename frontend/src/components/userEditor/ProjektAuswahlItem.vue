@@ -147,13 +147,13 @@ export default {
         return 'Altersbeschränkung nicht erfüllt.';
       }
       if (this.isFullyBooked) {
-        return 'Projekt ist leider schon ausgebucht.';
+        return 'Veranstaltung ist leider schon ausgebucht.';
       }
       if (this.isTooManyProjects) {
-        return `Sie dürfen sich für maximal ${MAX_NUMBER_OF_PROJECTS_PER_USER} Projekte anmelden.`;
+        return `Sie dürfen sich für maximal ${MAX_NUMBER_OF_PROJECTS_PER_USER} Veranstaltungen anmelden.`;
       }
       if (this.isSameGroupAsAnother) {
-        return `Sie dürfen sich nur für ein Projekt der Gruppe ${this.projekt.gruppe} anmelden.`;
+        return `Sie dürfen sich nur für eine Veranstaltung der Gruppe ${this.projekt.gruppe} anmelden.`;
       }
       if (this.atTheSameTimeAsAnother) {
         return 'Zeitliche Überschneidung.';

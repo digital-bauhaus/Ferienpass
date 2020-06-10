@@ -51,7 +51,7 @@ public class PublicController {
         LOG.info("POST called on /public/register resource");
 
         if (user.getGewuenschteProjekte().isEmpty()) {
-            throw new ValidationException("Eine Anmeldung ohne gewählte Projekte ist nicht möglich.");
+            throw new ValidationException("Eine Anmeldung ohne gewählte Veranstaltungen ist nicht möglich.");
         }
 
         Teilnehmer savedTeilnehmer = teilnehmerRepository.save(user);
@@ -59,7 +59,7 @@ public class PublicController {
         user.getGewuenschteProjekte().forEach((projektId) -> {
             Optional<Projekt> optionalProjekt = projektRepository.findById(projektId);
             if (!optionalProjekt.isPresent()) {
-                throw new ProjektNotFoundException("Projekt mit id " + projektId + " wurde nicht gefunden.");
+                throw new ProjektNotFoundException("Veranstaltung mit id " + projektId + " wurde nicht gefunden.");
             }
 
             // Throws FullyBookedException if not possible

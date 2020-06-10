@@ -53,7 +53,7 @@ public class ProjekteController {
 
         Optional<Projekt> optionalProjekt = projektRepository.findById(id);
         if (!optionalProjekt.isPresent()) {
-            throw new ProjektNotFoundException("Projekt mit id " + id + " wurde nicht gefunden.");
+            throw new ProjektNotFoundException("Veranstaltung mit id " + id + " wurde nicht gefunden.");
         }
 
         return optionalProjekt.get();
@@ -80,7 +80,7 @@ public class ProjekteController {
 
         Optional<Projekt> optionalProjekt = projektRepository.findById(projekt.getId());
         if (!optionalProjekt.isPresent()) {
-            throw new ProjektNotFoundException("Projekt mit id " + projekt.getId() + " wurde nicht gefunden.");
+            throw new ProjektNotFoundException("Veranstaltung mit id " + projekt.getId() + " wurde nicht gefunden.");
         }
 
         // Important: Since we ignore the Anmeldungen and Stornierungen to and from the JSON,
@@ -111,7 +111,7 @@ public class ProjekteController {
 
         Optional<Projekt> optionalProjekt = projektRepository.findById(id);
         if (!optionalProjekt.isPresent()) {
-            throw new ProjektNotFoundException("Projekt mit id " + id + " wurde nicht gefunden.");
+            throw new ProjektNotFoundException("Veranstaltung mit id " + id + " wurde nicht gefunden.");
         }
 
         projektRepository.deleteById(id);
@@ -125,7 +125,7 @@ public class ProjekteController {
 
         Optional<Projekt> optionalProjekt = projektRepository.findById(projektId);
         if (!optionalProjekt.isPresent()) {
-            throw new ProjektNotFoundException("Projekt mit id " + projektId + " wurde nicht gefunden.");
+            throw new ProjektNotFoundException("Veranstaltung mit id " + projektId + " wurde nicht gefunden.");
         }
 
         Projekt projekt = optionalProjekt.get();
@@ -140,7 +140,7 @@ public class ProjekteController {
 
         Optional<Projekt> optionalProjekt = projektRepository.findById(projektId);
         if (!optionalProjekt.isPresent()) {
-            throw new ProjektNotFoundException("Projekt mit id " + projektId + " wurde nicht gefunden.");
+            throw new ProjektNotFoundException("Veranstaltung mit id " + projektId + " wurde nicht gefunden.");
         }
 
         Projekt projekt = optionalProjekt.get();
@@ -156,7 +156,7 @@ public class ProjekteController {
 
         Optional<Projekt> optionalProjekt = projektRepository.findById(projektId);
         if (!optionalProjekt.isPresent()) {
-            throw new ProjektNotFoundException("Projekt mit id " + projektId + " wurde nicht gefunden.");
+            throw new ProjektNotFoundException("Veranstaltung mit id " + projektId + " wurde nicht gefunden.");
         }
         Optional<Teilnehmer> optionalTeilnehmer = teilnehmerRepository.findById(teilnehmerId);
         if (!optionalTeilnehmer.isPresent()) {
@@ -169,7 +169,7 @@ public class ProjekteController {
             meldeTeilnehmerAnWennNichtBereitsAngemeldet(teilnehmer, projekt);
         } else {
             LOG.info("Could not assign " + teilnehmer.getNachname() + " to project " + projekt.getName() + " because all free slots are taken.");
-            throw new ProjektFullyBookedException("Projekt mit id " + projektId + " ist leider schon komplett ausgebucht.");
+            throw new ProjektFullyBookedException("Veranstaltung mit id " + projektId + " ist leider schon komplett ausgebucht.");
         }
     }
 
@@ -180,7 +180,7 @@ public class ProjekteController {
 
         Optional<Projekt> optionalProjekt = projektRepository.findById(projektId);
         if (!optionalProjekt.isPresent()) {
-            throw new ProjektNotFoundException("Projekt mit id " + projektId + " wurde nicht gefunden.");
+            throw new ProjektNotFoundException("Veranstaltung mit id " + projektId + " wurde nicht gefunden.");
         }
         Optional<Teilnehmer> optionalTeilnehmer = teilnehmerRepository.findById(teilnehmerId);
         if (!optionalTeilnehmer.isPresent()) {

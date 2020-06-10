@@ -23,7 +23,7 @@
 
     <hr>
 
-    <h2>Angemeldete Projekte</h2>
+    <h2>Angemeldete Veranstaltungen</h2>
     <ProjectList :projects="registeredProjectsOfUser">
       <template v-slot:actions="{ row }">
         <b-button
@@ -37,7 +37,7 @@
       </template>
     </ProjectList>
 
-    <h2>Stornierte Projekte</h2>
+    <h2>Stornierte Veranstaltungen</h2>
     <ProjectList :projects="cancelledProjectsOfUser">
       <template v-slot:actions="{ row }">
         <b-button
@@ -52,7 +52,7 @@
       </template>
     </ProjectList>
 
-    <h2>Verfügbare Projekte</h2>
+    <h2>Verfügbare Veranstaltungen</h2>
     <ProjectList :projects="availableProjects">
       <template v-slot:actions="{ row }">
         <b-button
@@ -142,7 +142,7 @@ export default {
     async loadProjects() {
       return api.getProjects().then((projects) => { this.allProjects = projects; }).catch(() => {
         FailureToast.fire({
-          text: 'Fehler: Projekte konnten nicht geladen werden.',
+          text: 'Fehler: Veranstaltungen konnten nicht geladen werden.',
         });
       });
     },
@@ -151,7 +151,7 @@ export default {
         (projects) => { this.registeredProjectsOfUser = projects; },
       ).catch(() => {
         FailureToast.fire({
-          text: 'Fehler: Angemeldete Projekte des Teilnehmers konnten nicht geladen werden.',
+          text: 'Fehler: Angemeldete Veranstaltungen des Teilnehmers konnten nicht geladen werden.',
         });
       });
     },
@@ -160,7 +160,7 @@ export default {
         (projects) => { this.cancelledProjectsOfUser = projects; },
       ).catch(() => {
         FailureToast.fire({
-          text: 'Fehler: Stornierte Projekte des Teilnehmers konnten nicht geladen werden.',
+          text: 'Fehler: Stornierte Veranstaltungen des Teilnehmers konnten nicht geladen werden.',
         });
       });
     },
