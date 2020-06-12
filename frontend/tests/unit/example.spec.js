@@ -1,6 +1,8 @@
 import { shallowMount } from '@vue/test-utils';
 import Verwaltung from '@/views/admin/Verwaltung.vue';
 
+import '@/modules/bootstrap-vue';
+
 describe('Verwaltung.vue', () => {
   it('renders props.msg when passed', () => {
     const msg = 'Ferienpass Weimar';
