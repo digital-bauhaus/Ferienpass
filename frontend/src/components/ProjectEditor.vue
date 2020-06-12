@@ -92,7 +92,6 @@
           @update="updateValue('gruppe', $event)"
         />
       </b-col>
-
     </b-form-row>
 
     <b-button
