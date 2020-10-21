@@ -27,6 +27,12 @@
     "SPRING_JPA_HIBERNATE_DDL-AUTO": {
       "required": true
     },
+    "SPRING_SECURITY_USER_NAME": {
+      "required": true
+    },
+    "SPRING_SECURITY_USER_PASSWORD": {
+      "required": true
+    },
     "SENDGRID_API_KEY": {
       "required": true
     },
@@ -45,5 +51,5 @@
   "name": "Ferienpass",
   "scripts": {
   },
-  "stack": "heroku-18"
+  "stack": "heroku-18",
 }

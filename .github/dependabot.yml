@@ -9,6 +9,7 @@ updates:
     # Check the npm registry for updates every day (weekdays)
     schedule:
       interval: "daily"
+    versioning-strategy: increase-if-necessary
 
   # Enable version updates for Docker
   - package-ecosystem: "maven"

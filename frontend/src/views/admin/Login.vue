@@ -61,7 +61,6 @@
   </b-container>
 </template>
 
-
 <script>
 import { LOGIN } from '@/store/action-types';
 import ErrorBox from '@/components/ErrorBox.vue';

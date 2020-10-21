@@ -17,9 +17,9 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<rest-assured.version>3.3.0</rest-assured.version>
-		<postgresql.version>42.2.5</postgresql.version>
+		<postgresql.version>42.2.16</postgresql.version>
 		<springfox.version>2.9.2</springfox.version>
-		<sendgrid-java.version>4.4.1</sendgrid-java.version>
+		<sendgrid-java.version>4.4.8</sendgrid-java.version>
 	</properties>
 
 	<dependencies>
@@ -32,6 +32,10 @@
 			<!-- Setup Spring Boot -->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 		<dependency>
 			<!-- Automatically restart whenever files on the classpath change -->
