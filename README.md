@@ -87,7 +87,6 @@ Die bisherige Microservice-Struktur wird zugunsten einer vereinfachten Weiterent
 
 ## Prerequisites
 
-* Maven
 * Java
 * NPM (optional)
 
@@ -95,7 +94,6 @@ MacOS
 
 ```console
 > brew cask install java
-> brew install maven
 > brew install npm
 ```
 
@@ -103,7 +101,6 @@ Windows
 
 ```console
 > choco install jdk
-> choco install maven
 > choco install npm
 ```
 
@@ -111,22 +108,36 @@ Linux
 
 ```console
 > apt-get install jdk
-> apt-get install maven
 > apt-get install npm
 ```
 
 ### Local Setup
 
-build project
+Wir nutzen den [maven-wrapper](https://github.com/takari/maven-wrapper).
+Dadurch wird keine eigene Maven-Installation benötigt.
 
-```console
-> mvn clean install
+Unter Linux und Mac kann der maven-wrapper so eingesetzt werden
+```
+./mvnw <maven command here>
 ```
 
-run project
+Unter Windows erfolgt der Aufruf mit
+```
+mvnw.cmd <maven command here>
+```
+
+Im folgenden gehen wir immer von Aufrufen unter Linux aus.
+
+#### build project
 
 ```console
-> mvn --projects backend spring-boot:run
+> .mvnw clean install
+```
+
+#### run project
+
+```console
+> .mvnw --projects backend spring-boot:run
 ```
 
 check following links
