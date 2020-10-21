@@ -17,7 +17,6 @@
   </CenteredLayout>
 </template>
 
-
 <script>
 import CenteredLayout from '@/views/layouts/CenteredLayout.vue';
 
