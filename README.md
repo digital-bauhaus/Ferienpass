@@ -68,8 +68,6 @@ Der Inhalt der Mail wird über die Datei [mailtext.txt](backend/src/main/resourc
 
 Die bisherige Microservice-Struktur wird zugunsten einer vereinfachten Weiterentwicklung und Wartung aufgegeben und in einen Mini-Monolithen bzw. Microlithen überführt.
 
-
-
     +-------------------+   +--------------------+
     |                   |   |                    |
     |                   |   |                    |
@@ -98,10 +96,14 @@ Die bisherige Microservice-Struktur wird zugunsten einer vereinfachten Weiterent
             |                           |
             +---------------------------+
 
+Die beiden fachlichen Frontends sind dabei als gemeinsames Vue-Projekt umgesetzt: Modul/Unterordner [frontend](frontend).
+
+Das Spring Boot Backend befindet sich im Modul/Unterordner [backend](backend).
+
 ## Prerequisites
 
 * Java
-* NPM (optional)
+* npm (optional, für lokale Frontend-Entwicklung)
 
 MacOS
 
@@ -139,9 +141,11 @@ Unter Windows erfolgt der Aufruf mit
 mvnw.cmd <maven command here>
 ```
 
-Im folgenden gehen wir immer von Aufrufen unter Linux aus.
+Im Folgenden gehen wir immer von Aufrufen unter Linux aus.
 
 #### build project
+
+Der folgende Befehl baut das `frontend`-Projekt und kopiert die dabei entstehenden Artefakte in den `resources`-Ordner des `backend`-Projektes. Dadurch kann es direkt vom eingebetteten Tomcat-Server des Spring Boot Backends ausgeliefert werden. 
 
 ```console
 > .mvnw clean install
@@ -149,17 +153,50 @@ Im folgenden gehen wir immer von Aufrufen unter Linux aus.
 
 #### run project
 
+Backend-Server starten
+
 ```console
 > .mvnw --projects backend spring-boot:run
 ```
 
-check following links
+Dieser läuft dann auf Port 8088 und stellt dort die REST-API und die Frontends bereit.
+
+REST-API:
+
+`http://localhost:8088/api`
+
+`http://localhost:8088/swagger-ui.html`
+
+Anmeldungs-Frontend:
 
 `http://localhost:8088/#/`
 
+Verwaltungs-Frontend:
+
 `http://localhost:8088/#/Veranstaltungen/`
 
-`http://localhost:8088/swagger-ui.html`
+#### local frontend development
+
+Für die lokale Entwicklung des Frontends ist es einfacher die entsprechenden Targets aus der [package.json](frontend/package.json) des `frontend`-Moduls zu verwenden.
+
+Dafür muss zuerst (wie oben beschrieben) der Backend-Server gestartet werden, damit die REST-API zur Verfügung steht.
+
+Danach kann mit folgendem Befehl ein lokaler Entwicklungsserver auf Port 8080 gestartet werden, der u.a. Hot-Reload unterstützt.
+```
+cd frontend
+npm run serve
+```
+
+Anmeldungs-Frontend:
+
+`http://localhost:8080/#/`
+
+Verwaltungs-Frontend:
+
+`http://localhost:8080/#/Veranstaltungen/`
+
+Weitere Informationen in der [README](frontend/README.md) des `frontend`-Moduls.
+
 
 ### Continuous Integration and Deployment
 
