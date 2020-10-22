@@ -67,19 +67,17 @@
 							<arguments>run test:unit</arguments>
 						</configuration>
 					</execution>
-					<!-- Run End2End tests with Nightwatch -->
-					<!--
+					<!-- Run End2End tests with Cypress -->
 					<execution>
-					<id>npm run test:e2e</id>
+					<id>npm run test:e2e:ci</id>
 					<goals>
 						<goal>npm</goal>
 					</goals>
 					<phase>test</phase>
 					<configuration>
-					  	<arguments>run test:e2e</arguments>
+					  	<arguments>run test:e2e:ci</arguments>
 					</configuration>
 					</execution>
-					-->
 				</executions>
 			</plugin>
 		</plugins>
