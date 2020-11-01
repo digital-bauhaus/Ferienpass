@@ -37,6 +37,15 @@ So geschehen z.B. im Mai 2019 im Rahmen eins [Hackathons](https://www.meetup.com
 
 Die Anmeldungsseite steht direkt auf der Startseite zur Verfügung (lokal http://localhost:8088/), die Administrationsfunktionen liegen tiefer und finden sich ab http://localhost:8088/login.
 
+Ausschnitt aus dem Anmeldeformular (Beispieldaten):
+![anmeldeformular](docs/Ausschnitt_Anmeldeformular.png)
+
+Anlegen einer Veranstaltung im Verwaltungsbereich (Beispieldaten):
+![veranstaltung-anlegen](docs/Veranstaltung_anlegen.png)
+
+Übersicht über alle Veranstaltungen im Verwaltungsbereich (Beispieldaten):
+![veranstaltungen-uebersicht](docs/Veranstaltungssuebersicht.png)
+
 #### Login
 
 Der Login unter https://ferienpass.herokuapp.com/login ist nun abgesichert - die Credentials werden lokal über die [application.properties](backend/src/main/resources/application.properties) konfiguriert, im PR bzw. Produktivdeployment über Umgebungsvariablen in Heroku: 
