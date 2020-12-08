@@ -19,7 +19,7 @@
     "core-js": "^3.6.5",
     "dayjs": "^1.9.3",
     "flatpickr": "^4.6.6",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.2.0",
     "jspdf-autotable": "^3.5.13",
     "lodash-es": "^4.17.15",
     "moment": "^2.29.1",
