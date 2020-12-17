@@ -19,7 +19,7 @@
 		<rest-assured.version>3.3.0</rest-assured.version>
 		<postgresql.version>42.2.16</postgresql.version>
 		<springfox.version>2.9.2</springfox.version>
-		<sendgrid-java.version>4.4.8</sendgrid-java.version>
+		<sendgrid-java.version>4.7.1</sendgrid-java.version>
 	</properties>
 
 	<dependencies>
