@@ -27,7 +27,8 @@ jobs:
       - name: Test with Maven
         run: mvn --batch-mode --no-transfer-progress verify
 
-      - uses: codecov/codecov-action@v1
+      - name: Code Coverage Report
+        uses: codecov/codecov-action@v1
         with:
           file: ./backend/target/site/jacoco/jacoco.xml
           name: codecov
