@@ -1,4 +1,5 @@
 *.class
+.envrc
 
 # Package Files #
 *.jar

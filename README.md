@@ -1,7 +1,7 @@
 # Ferienpass
 
-[![Build Status](https://travis-ci.org/digital-bauhaus/Ferienpass.svg?branch=master)](https://travis-ci.org/digital-bauhaus/Ferienpass)
-[![Coverage Status](https://coveralls.io/repos/github/digital-bauhaus/Ferienpass/badge.svg?branch=master)](https://coveralls.io/github/digital-bauhaus/Ferienpass?branch=master)
+[![Build Status](https://github.com/digital-bauhaus/Ferienpass/workflows/build/badge.svg)](https://github.com/digital-bauhaus/Ferienpass/actions)
+[![codecov](https://codecov.io/gh/digital-bauhaus/Ferienpass/branch/master/graph/badge.svg?token=VPYDCKP7FE)](https://codecov.io/gh/digital-bauhaus/Ferienpass)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/digital-bauhaus/Ferienpass-Anmeldung/blob/master/LICENSE)
 
 Dieses Projekt beinhaltet alle Informationen und den Quellcode rund um die Digitalisierung des Anmeldeprozesses für Kinder der Stadt Weimar in Thüringen für Sommerferien-Aktivitäten im Rahmen des gemeinnützigen [Ferienpass-Projektes](http://www.ferienpass-weimar.de/).
