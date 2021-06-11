@@ -31,7 +31,7 @@
 <script>
 import dayjs, { SHORT_DATE_FORMAT } from '../../modules/dayjs';
 
-const MAX_NUMBER_OF_PROJECTS_PER_USER = 4;
+const MAX_NUMBER_OF_PROJECTS_PER_USER = 100;
 
 export default {
   name: 'ProjektAuswahlItem',
