@@ -17,7 +17,7 @@
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.18.1",
     "core-js": "^3.6.5",
-    "dayjs": "^1.9.3",
+    "dayjs": "^1.10.7",
     "flatpickr": "^4.6.6",
     "jspdf": "^1.5.3",
     "jspdf-autotable": "^3.5.13",
