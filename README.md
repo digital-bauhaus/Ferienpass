@@ -137,7 +137,7 @@ Linux
 
 ### Local Setup
 
-Wir nutzen den [maven-wrapper](https://github.com/takari/maven-wrapper).
+Wir nutzen den [maven-wrapper](https://maven.apache.org/wrapper/).
 Dadurch wird keine eigene Maven-Installation benötigt.
 
 Unter Linux und Mac kann der maven-wrapper so eingesetzt werden
