@@ -22,7 +22,7 @@
     "jspdf": "^1.5.3",
     "jspdf-autotable": "^3.5.13",
     "lodash-es": "^4.17.15",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "regenerator-runtime": "^0.13.7",
     "sanitize-filename": "^1.6.3",
     "sweetalert2": "^9.17.2",
