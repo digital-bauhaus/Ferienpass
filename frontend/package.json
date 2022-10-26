@@ -15,7 +15,7 @@
     "@sweetalert2/theme-bootstrap-4": "^3.2.0",
     "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
-    "bootstrap-vue": "^2.18.1",
+    "bootstrap-vue": "^2.23.1",
     "core-js": "^3.6.5",
     "dayjs": "^1.9.3",
     "flatpickr": "^4.6.6",
