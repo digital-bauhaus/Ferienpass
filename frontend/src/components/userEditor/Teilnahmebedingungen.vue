@@ -9,9 +9,8 @@
       Bei allen Angeboten sind die Vorgaben bzw. Anweisungen des Betreuungspersonals
       einzuhalten (insbesondere im Zusammenhang mit gesetzlichen Regelungen, wie z.B.
       Corona-Verordnungen, Aufsichtspflicht oder Jugendschutzgesetz, …).
-      Bei der Veranstaltung gelten die gültigen Corona-Verordnungen und das Jugendschutzgesetz
-      sowie ein striktes Rauch- und Alkoholverbot. Mund-Nasen-Bedeckungen sind für die Kinder
-      mitzubringen. Bei entsprechenden Verstößen behalten wir uns vor, Teilnehmende ggf. vorzeitig
+      Bei Veranstaltungen gilt das Jugendschutzgesetz sowie ein striktes Rauch- und Alkoholverbot.
+      Bei entsprechenden Verstößen behalten wir uns vor, Teilnehmende ggf. vorzeitig
       auszuschließen und sie nach Hause zu schicken bzw. abholen zu lassen. In diesen Fällen
       versuchen wir, Sie rechtzeitig darüber in Kenntnis zu setzen.
     </ParagraphListItem>
