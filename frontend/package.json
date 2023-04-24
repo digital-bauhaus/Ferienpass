@@ -33,13 +33,13 @@
     "vuex": "^3.5.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.8",
+    "@vue/cli-plugin-babel": "^5.0.8",
     "@vue/cli-plugin-e2e-cypress": "^4.5.8",
-    "@vue/cli-plugin-eslint": "^4.5.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
     "@vue/cli-plugin-router": "^4.5.8",
-    "@vue/cli-plugin-unit-jest": "^4.5.8",
+    "@vue/cli-plugin-unit-jest": "^5.0.8",
     "@vue/cli-plugin-vuex": "^4.5.8",
-    "@vue/cli-service": "^4.5.8",
+    "@vue/cli-service": "^5.0.8",
     "@vue/eslint-config-airbnb": "^5.1.0",
     "@vue/test-utils": "^1.1.0",
     "babel-eslint": "^10.1.0",
@@ -48,7 +48,7 @@
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-vue": "^6.2.2",
     "node-sass": "^4.14.1",
-    "sass-loader": "^8.0.2",
+    "sass-loader": "^13.2.0",
     "vue-template-compiler": "^2.6.12"
   }
 }
